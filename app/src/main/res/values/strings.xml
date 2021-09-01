@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">OPAL</string>
+    <string name="opal_logo_desc">OPAL Logo</string>
+    <string name="username_hint">Enter Username</string>
+    <string name="password_hint">Enter Password</string>
+    <string name="signin_btn">Sign in</string>
+    <string name="register_link">Register Account</string>
+</resources>
