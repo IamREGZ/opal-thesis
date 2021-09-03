@@ -9,7 +9,8 @@ class PrimaryEditText(
 ) : AppCompatEditText(context, attrs), FontImplementation {
 
     init {
-        typeface = applyRegularFont(context, attrs) //Initiates the custom font change
+        //Initiates the custom font change
+        typeface = applyRegularFont(context, attrs)
     }
 
 }

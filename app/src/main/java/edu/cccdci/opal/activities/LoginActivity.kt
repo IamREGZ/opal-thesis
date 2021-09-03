@@ -1,5 +1,6 @@
 package edu.cccdci.opal.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import edu.cccdci.opal.databinding.ActivityLoginBinding
@@ -15,6 +16,13 @@ class LoginActivity : AppCompatActivity() {
 
         with(binding) {
             setContentView(root)
+
+            tvRegister.setOnClickListener {
+                //Launch the Register Activity
+                startActivity(
+                    Intent(this@LoginActivity, RegisterActivity::class.java)
+                )
+            }
         }
 
     }

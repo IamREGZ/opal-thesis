@@ -9,4 +9,9 @@
     <string name="signin_btn"><b>Sign in</b></string>
     <string name="no_account_lbl">Don\'t have an account?</string>
     <string name="register_link"><b><u>REGISTER</u></b></string>
+
+    <!--  Strings for Register  -->
+    <string name="register_btn"><b>Register</b></string>
+    <string name="with_account_lbl">Already have an account?</string>
+    <string name="signin_link"><b><u>SIGN IN</u></b></string>
 </resources>

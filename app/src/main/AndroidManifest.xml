@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OPAL">
 
-        <!--  Splash Screen Activity (First to open)  -->
+        <!-- Splash Screen Activity (First to open) -->
         <activity
             android:name=".activities.SplashScreenActivity"
             android:screenOrientation="portrait"
@@ -22,9 +22,15 @@
             </intent-filter>
         </activity>
 
-        <!--  Login Activity (This is next)  -->
+        <!-- Login Activity (This is next) -->
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- Register Activity (When Register TextView is clicked) -->
+        <activity
+            android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
     </application>
