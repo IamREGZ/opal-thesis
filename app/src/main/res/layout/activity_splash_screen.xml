@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_color"
-    tools:context=".SplashScreen">
+    tools:context=".activities.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="@dimen/opal_logo_width"
+        android:layout_height="@dimen/opal_logo_height"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/opal_logo_transparent"
-        android:contentDescription="@string/opal_logo_desc" />
+        app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  App Logo  -->
+    <dimen name="opal_logo_width">200dp</dimen>
+    <dimen name="opal_logo_height">200dp</dimen>
+
+    <!--  Text Sizes  -->
+    <dimen name="main_text_size">18sp</dimen>
+    <dimen name="login_edittext_size">20sp</dimen>
+    <dimen name="login_button_text_size">24sp</dimen>
+
+    <!--  Button Radius  -->
+    <dimen name="button_radius">10dp</dimen>
+</resources>

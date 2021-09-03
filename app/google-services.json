@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "451635792760",
+    "project_id": "opal-project-38868",
+    "storage_bucket": "opal-project-38868.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451635792760:android:215c8e0ae503e77373968d",
+        "android_client_info": {
+          "package_name": "edu.cccdci.opal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451635792760-nrdcg2t8mdv59jck68s1qodl6fhtlh8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.cccdci.opal",
+            "certificate_hash": "88bc54f2eef7bc6d68efa64f3546ec0f30f7265a"
+          }
+        },
+        {
+          "client_id": "451635792760-feefs7vhjuulgcb1a1dlureb9k0ps05j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACsFxIGJvAztLuQNtPiQTV-YlDSr2vbss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451635792760-feefs7vhjuulgcb1a1dlureb9k0ps05j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

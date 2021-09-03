@@ -1,8 +1,12 @@
 <resources>
+    <!--  Name of Application  -->
     <string name="app_name">OPAL</string>
-    <string name="opal_logo_desc">OPAL Logo</string>
+
+    <!--  Strings for Log-in  -->
     <string name="username_hint">Enter Username</string>
     <string name="password_hint">Enter Password</string>
-    <string name="signin_btn">Sign in</string>
-    <string name="register_link">Register Account</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="signin_btn"><b>Sign in</b></string>
+    <string name="no_account_lbl">Don\'t have an account?</string>
+    <string name="register_link"><b><u>REGISTER</u></b></string>
 </resources>

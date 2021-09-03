@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OPAL">
+
+        <!--  Splash Screen Activity (First to open)  -->
         <activity
-            android:name=".SplashScreen"
+            android:name=".activities.SplashScreenActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,9 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--  Login Activity (This is next)  -->
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/NoActionBar"></activity>
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <!-- For Splash Screen -->
+    <!-- No action bar -->
     <style name="NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
