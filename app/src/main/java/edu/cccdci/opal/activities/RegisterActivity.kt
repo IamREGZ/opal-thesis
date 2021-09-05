@@ -17,7 +17,7 @@ class RegisterActivity : AppCompatActivity() {
         with(binding) {
             setContentView(root)
 
-            tvSignin.setOnClickListener {
+            btnCancel.setOnClickListener {
                 startActivity(
                     Intent(this@RegisterActivity, LoginActivity::class.java)
                 )
