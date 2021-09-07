@@ -3,6 +3,7 @@ package edu.cccdci.opal.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import edu.cccdci.opal.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -11,6 +12,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
@@ -18,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
             setContentView(root)
 
             tvRegister.setOnClickListener {
-                //Launch the Register Activity
+                //Open the Register Activity
                 startActivity(
                     Intent(this@LoginActivity, RegisterActivity::class.java)
                 )

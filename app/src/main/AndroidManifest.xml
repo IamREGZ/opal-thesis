@@ -33,6 +33,10 @@
             android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
+        <!-- Message Activity (Snackbar message pops up in Register) -->
+        <activity android:name=".activities.MessageActivity" />
+
     </application>
 
 </manifest>

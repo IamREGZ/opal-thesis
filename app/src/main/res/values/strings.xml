@@ -3,15 +3,33 @@
     <string name="app_name">OPAL</string>
 
     <!--  Strings for Log-in  -->
-    <string name="username_hint">Enter Username</string>
-    <string name="password_hint">Enter Password</string>
+    <string name="login_username_hint">Enter Username</string>
+    <string name="login_password_hint">Enter Password</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="signin_btn"><b>Sign in</b></string>
+    <string name="signin_btn">Sign in</string>
     <string name="no_account_lbl">Don\'t have an account?</string>
     <string name="register_link"><b><u>REGISTER</u></b></string>
 
     <!--  Strings for Register  -->
-    <string name="register_btn"><b>Register</b></string>
-    <string name="with_account_lbl">Already have an account?</string>
-    <string name="signin_link"><b><u>SIGN IN</u></b></string>
+    <string name="account_registration">ACCOUNT REGISTRATION</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="terms_and_conditions">I agree to the <b><u>Terms and Conditions</u></b></string>
+    <string name="register_btn">Register</string>
+    <string name="cancel_btn">Cancel</string>
+
+    <!--  Message Prompts for Register  -->
+    <string name="err_blank_fname">Please enter your first name</string>
+    <string name="err_blank_lname">Please enter your last name</string>
+    <string name="err_blank_email">Please enter your email address</string>
+    <string name="err_blank_username">Please enter your username</string>
+    <string name="err_blank_password">Please enter your password</string>
+    <string name="err_blank_confirm_password">Please enter confirm password</string>
+    <string name="err_passwords_not_match">Passwords do not match</string>
+    <string name="err_unchecked_tac">Please agree to our T&amp;C</string>
+    <string name="msg_register_success">Your account is successfully registered!</string>
 </resources>
