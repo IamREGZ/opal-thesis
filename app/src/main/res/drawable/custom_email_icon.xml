@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!--  Focused Username Icon  -->
     <item android:state_focused="true"
-        android:drawable="@drawable/ic_username_focused" />
+        android:drawable="@drawable/ic_email_focused" />
 
     <!--  Unocused Username Icon  -->
     <item android:state_focused="false"
-        android:drawable="@drawable/ic_username" />
+        android:drawable="@drawable/ic_email" />
 </selector>

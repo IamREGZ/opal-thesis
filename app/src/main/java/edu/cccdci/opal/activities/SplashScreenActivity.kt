@@ -34,12 +34,19 @@ class SplashScreenActivity : AppCompatActivity() {
                 )
             }
 
-            ivLogo.alpha = 0f
+            ivLogo.alpha = 0f //Initial alpha for logo
+
+            //Animate the splash screen logo by fading in
             ivLogo.animate().setDuration(1500).alpha(1f).withEndAction {
-                val i = Intent(this@SplashScreenActivity, LoginActivity::class.java)
-                startActivity(i)
+                //Opens the Login Activity
+                startActivity(
+                    Intent(
+                        this@SplashScreenActivity,
+                        LoginActivity::class.java
+                    )
+                )
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                finish()
+                finish() //Closes the Splash Screen
             }
         }
 

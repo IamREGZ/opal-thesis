@@ -7,26 +7,39 @@
     <!--  Text Sizes  -->
     <dimen name="main_text_size">18sp</dimen>
     <dimen name="header_text_size">24sp</dimen>
-    <dimen name="login_edittext_size">24sp</dimen>
+    <dimen name="login_edittext_size">22sp</dimen>
     <dimen name="login_button_text_size">22sp</dimen>
     <dimen name="register_buttons_text_size">18sp</dimen>
 
-    <!--  Button Radius  -->
-    <dimen name="button_radius">10dp</dimen>
+    <!--  Button Dimens  -->
+    <dimen name="button_radius">15dp</dimen>
+
+    <!--  EditText Dimens  -->
+    <dimen name="et_login_radius">20dp</dimen>
     <dimen name="et_radius">10dp</dimen>
     <dimen name="et_stroke_width">2dp</dimen>
 
-    <!--  Paddings and Margins  -->
-    <dimen name="login_layout_padding">40dp</dimen>
-    <dimen name="register_layout_padding">15dp</dimen>
-    <dimen name="login_edittext_height">60dp</dimen>
-    <dimen name="login_icon_padding">12dp</dimen>
-    <dimen name="login_edittext_padding">15dp</dimen>
-    <dimen name="login_button_height">50dp</dimen>
-    <dimen name="register_buttons_height">40dp</dimen>
+    <!--  General Margins  -->
     <dimen name="small_margin">5dp</dimen>
     <dimen name="medium_margin">10dp</dimen>
-    <dimen name="med_larg_margin">15dp</dimen>
+    <dimen name="medium_large_margin">15dp</dimen>
     <dimen name="large_margin">24dp</dimen>
     <dimen name="xl_margin">36dp</dimen>
+
+    <!--  Login Dimens  -->
+    <dimen name="login_layout_padding">30dp</dimen>
+    <dimen name="login_edittext_height">60dp</dimen>
+    <dimen name="login_icon_padding">10dp</dimen>
+    <dimen name="login_edittext_padding">15dp</dimen>
+    <dimen name="login_button_height">50dp</dimen>
+
+    <!--  Register Dimens  -->
+    <dimen name="register_layout_padding">15dp</dimen>
+    <dimen name="register_buttons_height">40dp</dimen>
+
+    <!--  Progress Dialog Dimens  -->
+    <dimen name="progress_dialog_padding">8dp</dimen>
+    <dimen name="progress_spinner_size">60dp</dimen>
+    <dimen name="progress_text_size">16sp</dimen>
+
 </resources>

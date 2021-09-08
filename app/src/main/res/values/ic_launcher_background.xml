@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--  Background color of App Icon  -->
-    <color name="ic_launcher_background">@color/mainBackgroundColor</color>
+    <color name="ic_launcher_background">@color/primaryColorTheme</color>
 </resources>

@@ -157,7 +157,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_register_confpass"
+            android:id="@+id/til_register_conf_pass"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -173,7 +173,7 @@
             app:endIconTint="@color/app_black">
 
             <edu.cccdci.opal.utils.MainEditText
-                android:id="@+id/et_register_confpass"
+                android:id="@+id/et_register_conf_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -191,7 +191,6 @@
             android:text="@string/terms_and_conditions"
             android:textColor="@color/app_black"
             android:textSize="@dimen/main_text_size" />
-
 
         <LinearLayout
             android:layout_width="match_parent"

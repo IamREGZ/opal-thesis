@@ -3,10 +3,10 @@
     <string name="app_name">OPAL</string>
 
     <!--  Strings for Log-in  -->
-    <string name="login_username_hint">Enter Username</string>
+    <string name="login_username_hint">Enter Email Address</string>
     <string name="login_password_hint">Enter Password</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="signin_btn">Sign in</string>
+    <string name="sign_in_btn">Sign in</string>
     <string name="no_account_lbl">Don\'t have an account?</string>
     <string name="register_link"><b><u>REGISTER</u></b></string>
 
@@ -32,4 +32,7 @@
     <string name="err_passwords_not_match">Passwords do not match</string>
     <string name="err_unchecked_tac">Please agree to our T&amp;C</string>
     <string name="msg_register_success">Your account is successfully registered!</string>
+
+    <!--  Dialog Progress  -->
+    <string name="msg_please_wait">Please wait&#8230;</string>
 </resources>
