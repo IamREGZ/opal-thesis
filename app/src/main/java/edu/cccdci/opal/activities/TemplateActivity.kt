@@ -2,12 +2,13 @@ package edu.cccdci.opal.activities
 
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.DialogProgressBinding
 
-open class MessageActivity : AppCompatActivity() {
+open class TemplateActivity : AppCompatActivity() {
 
     private lateinit var contentProgDialog: Dialog
 
@@ -22,7 +23,7 @@ open class MessageActivity : AppCompatActivity() {
             //Display a red snackbar if there's an error
             msgPromptView.setBackgroundColor(
                 ContextCompat.getColor(
-                    this@MessageActivity,
+                    this@TemplateActivity,
                     R.color.colorErrorMessage
                 )
             )
@@ -30,13 +31,14 @@ open class MessageActivity : AppCompatActivity() {
             //Display a green snackbar if the task is successful
             msgPromptView.setBackgroundColor(
                 ContextCompat.getColor(
-                    this@MessageActivity,
+                    this@TemplateActivity,
                     R.color.colorSuccessMessage
                 )
             )
         }
+
         msgPrompt.show() //Shows the snackbar
-    }
+    } //end of showMessagePrompt method
 
     //Function to show the loading dialog
     fun showProgressDialog(message: String) {
@@ -44,19 +46,38 @@ open class MessageActivity : AppCompatActivity() {
         contentProgDialog = Dialog(this)
 
         with(contentProgDialog) {
-            setContentView(dialogBind.root)
 
-            dialogBind.tvProgressText.text = message
+            with(dialogBind) {
+                setContentView(root)
+                tvProgressText.text = message
+            } //end of with(dialogBind)
+
             setCancelable(false)
             setCanceledOnTouchOutside(false)
 
-            show()
-        }
-    }
+            show() //Displays the dialog
+        } //end of with(contentProgDialog)
+
+    } //end of showProgressDialog method
 
     //Function to hide the loading dialog
     fun hideProgressDialog() {
         contentProgDialog.dismiss()
-    }
+    } //end of hideProgressDialog method
 
-}
+    //Function to setup the Action Bar for navigation
+    protected fun setupActionBar(tlb: Toolbar) {
+        setSupportActionBar(tlb)
+        val actionBar = supportActionBar
+
+        //Customize the navigation icon
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back_nav_black)
+        }
+
+        //Add functionality to the button
+        tlb.setNavigationOnClickListener { onBackPressed() }
+    } //end of setupActionBar method
+
+} //end of TemplateActivity class

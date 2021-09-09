@@ -22,7 +22,15 @@
     <string name="register_btn">Register</string>
     <string name="cancel_btn">Cancel</string>
 
-    <!--  Message Prompts for Register  -->
+    <!--  Strings for Forgot Password  -->
+    <string name="forgot_password_header">FORGOT PASSWORD</string>
+    <string name="forgot_password_desc">
+        Please enter your email address in the text field provided below.
+        We\'ll send you an email to reset your password.
+    </string>
+    <string name="forgot_password_submit">Submit</string>
+
+    <!--  Message Prompts  -->
     <string name="err_blank_fname">Please enter your first name</string>
     <string name="err_blank_lname">Please enter your last name</string>
     <string name="err_blank_email">Please enter your email address</string>
@@ -32,6 +40,9 @@
     <string name="err_passwords_not_match">Passwords do not match</string>
     <string name="err_unchecked_tac">Please agree to our T&amp;C</string>
     <string name="msg_register_success">Your account is successfully registered!</string>
+    <string name="msg_recovery_email_submitted">
+        Email sent successfully! Check your email to reset your password.
+    </string>
 
     <!--  Dialog Progress  -->
     <string name="msg_please_wait">Please wait&#8230;</string>

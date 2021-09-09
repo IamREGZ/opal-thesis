@@ -9,13 +9,14 @@ import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityLoginBinding
 
-class LoginActivity : MessageActivity(), View.OnClickListener {
+class LoginActivity : TemplateActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        //Force disables dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
@@ -28,9 +29,9 @@ class LoginActivity : MessageActivity(), View.OnClickListener {
             tvForgotPassword.setOnClickListener(this@LoginActivity)
             //Click event for Register TextView
             tvRegister.setOnClickListener(this@LoginActivity)
-        }
+        } //end of with(binding)
 
-    }
+    } //end of onCreate method
 
     override fun onClick(view: View?) {
         if (view != null) {
@@ -43,7 +44,12 @@ class LoginActivity : MessageActivity(), View.OnClickListener {
 
                 //Open the Forgot Password Activity
                 R.id.tv_forgot_password -> {
-                    // TODO: Forgot Password
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            ForgotPasswordActivity::class.java
+                        )
+                    )
                 }
 
                 //Open the Register Activity
@@ -56,11 +62,11 @@ class LoginActivity : MessageActivity(), View.OnClickListener {
                     )
                 }
 
-            }
+            } //end of when
 
-        }
+        } //end of if
 
-    }
+    } //end of onClick method
 
     //Function to validate login information
     private fun validateLogin(): Boolean = with(binding) {
@@ -78,8 +84,9 @@ class LoginActivity : MessageActivity(), View.OnClickListener {
             }
 
             else -> true //If all inputs are valid
-        }
-    }
+        } //end of when
+
+    } //end of validateLogin method
 
     //Function to login user
     private fun loginUser() {
@@ -107,12 +114,12 @@ class LoginActivity : MessageActivity(), View.OnClickListener {
                             //If it is not successful
                             showMessagePrompt(task.exception!!.message.toString(), true)
                         }
-                    }
+                    } //end of signInWithEmailAndPassword
 
-            }
+            } //end of if
 
-        }
+        } //end of with(binding)
 
-    }
+    } //end of loginUser method
 
-}
+} //end of LoginActivity class

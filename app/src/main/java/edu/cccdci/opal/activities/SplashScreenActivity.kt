@@ -47,8 +47,9 @@ class SplashScreenActivity : AppCompatActivity() {
                 )
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 finish() //Closes the Splash Screen
-            }
-        }
+            } //end of withEndAction
+
+        } //end of with(binding)
 
 //        //Non-animated Splash Screen
 //        @Suppress("DEPRECATION")
@@ -62,5 +63,6 @@ class SplashScreenActivity : AppCompatActivity() {
 //            },
 //            1500 //Delay Duration
 //        )
-    }
-}
+    } //end of onCreate method
+
+} //end of SplashScreenActivity class

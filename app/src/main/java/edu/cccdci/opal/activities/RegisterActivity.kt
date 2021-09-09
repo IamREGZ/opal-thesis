@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityRegisterBinding
 
-class RegisterActivity : MessageActivity(), View.OnClickListener {
+class RegisterActivity : TemplateActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRegisterBinding
 
@@ -25,8 +25,9 @@ class RegisterActivity : MessageActivity(), View.OnClickListener {
             btnRegister.setOnClickListener(this@RegisterActivity)
             //Click event for Cancel Button
             btnCancel.setOnClickListener(this@RegisterActivity)
-        }
-    }
+        } //end of with(binding)
+
+    } //end of onCreate method
 
     override fun onClick(view: View?) {
         if (view != null) {
@@ -40,11 +41,11 @@ class RegisterActivity : MessageActivity(), View.OnClickListener {
                 R.id.btn_cancel -> {
                     onBackPressed()
                 }
-            }
+            } //end of when
 
-        }
+        } //end of if
 
-    }
+    } //end of onClick method
 
     //Function to validate user registration
     private fun registerValidation(): Boolean = with(binding) {
@@ -115,8 +116,9 @@ class RegisterActivity : MessageActivity(), View.OnClickListener {
             }
 
             else -> true //If all user inputs are valid
-        }
-    }
+        } //end of when
+
+    } //end of registerValidation method
 
     //Function to register user account
     private fun registerUser() {
@@ -159,12 +161,12 @@ class RegisterActivity : MessageActivity(), View.OnClickListener {
                                 task.exception!!.message.toString(), true
                             )
                         }
-                    }
+                    } //end of createUserWithEmailAndPassword
 
-            }
+            } //end of if
 
-        }
+        } //end of with(binding)
 
-    }
+    } //end of registerUser method
 
-}
+} //end of RegisterActivity class

@@ -15,7 +15,7 @@
         android:paddingEnd="@dimen/register_layout_padding">
 
         <ImageView
-            android:id="@+id/iv_signup_logo"
+            android:id="@+id/iv_register_logo"
             android:layout_width="@dimen/opal_signup_logo_size"
             android:layout_height="@dimen/opal_signup_logo_size"
             android:layout_gravity="center"

@@ -36,7 +36,7 @@
         android:paddingEnd="@dimen/login_edittext_padding"
         android:textColor="@color/app_white"
         android:textColorHint="@color/et_hint_white"
-        android:textSize="@dimen/login_edittext_size" />
+        android:textSize="@dimen/main_text_size" />
 
     <edu.cccdci.opal.utils.MainEditText
         android:id="@+id/et_password"
@@ -54,7 +54,7 @@
         android:paddingEnd="@dimen/login_edittext_padding"
         android:textColor="@color/app_white"
         android:textColorHint="@color/et_hint_white"
-        android:textSize="@dimen/login_edittext_size" />
+        android:textSize="@dimen/main_text_size" />
 
     <edu.cccdci.opal.utils.MainTextView
         android:id="@+id/tv_forgot_password"
