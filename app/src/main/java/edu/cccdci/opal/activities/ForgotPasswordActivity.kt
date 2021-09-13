@@ -1,7 +1,6 @@
 package edu.cccdci.opal.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
@@ -56,10 +55,9 @@ class ForgotPasswordActivity : TemplateActivity() {
                 //Successful task
                 if (task.isSuccessful) {
                     //Displays a toast message
-                    Toast.makeText(
+                    longToastMessage(
                         this@ForgotPasswordActivity,
-                        resources.getString(R.string.msg_recovery_email_submitted),
-                        Toast.LENGTH_LONG
+                        resources.getString(R.string.msg_recovery_email_submitted)
                     ).show()
 
                     finish() //Closes the activity

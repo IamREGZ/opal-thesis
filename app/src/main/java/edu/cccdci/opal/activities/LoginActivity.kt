@@ -3,11 +3,14 @@ package edu.cccdci.opal.activities
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityLoginBinding
+import edu.cccdci.opal.dataclasses.User
+import edu.cccdci.opal.firestore.FirestoreClass
 
 class LoginActivity : TemplateActivity(), View.OnClickListener {
 
@@ -38,7 +41,6 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
             when (view.id) {
                 //Logins the user and sends to home page
                 R.id.btn_login -> {
-                    // TODO: Login User and go to Home Page
                     loginUser()
                 }
 
@@ -104,14 +106,18 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
 
-                        hideProgressDialog() //Hide the loading message
-
                         //Successful task
                         if (task.isSuccessful) {
-                            // TODO: Go to home page
-                            showMessagePrompt("Logged in successfully", false)
+                            FirestoreClass().getUserDetails(this@LoginActivity)
                         } else {
                             //If it is not successful
+
+                            hideProgressDialog() //Hide the loading message
+
+                            //Clear the text fields
+                            etEmail.text?.clear()
+                            etPassword.text?.clear()
+
                             showMessagePrompt(task.exception!!.message.toString(), true)
                         }
                     } //end of signInWithEmailAndPassword
@@ -121,5 +127,32 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
         } //end of with(binding)
 
     } //end of loginUser method
+
+    fun logInSuccessPrompt(user: User) {
+
+        hideProgressDialog() //Hide the loading message
+
+        //Log the user details in the console
+        Log.i("First Name: ", user.firstName)
+        Log.i("Last Name: ", user.lastName)
+        Log.i("Email Address: ", user.emailAdd)
+        Log.i("Username: ", user.userName)
+
+        //Displays a Toast message
+        longToastMessage(
+            this@LoginActivity,
+            resources.getString(R.string.msg_login_success)
+        ).show()
+
+        //Opens the home page
+        startActivity(
+            Intent(
+                this@LoginActivity,
+                MainActivity::class.java
+            )
+        )
+        finish() //Closes the current activity
+
+    } //end of logInSuccessPrompt method
 
 } //end of LoginActivity class

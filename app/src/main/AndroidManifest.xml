@@ -43,6 +43,11 @@
         <!-- Message Activity (Snackbar message pops up in Register) -->
         <activity android:name=".activities.TemplateActivity" />
 
+        <!-- Main Activity (Home Page of the App) -->
+        <activity
+            android:name=".activities.MainActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

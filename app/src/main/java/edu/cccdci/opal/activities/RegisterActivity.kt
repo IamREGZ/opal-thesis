@@ -3,11 +3,13 @@ package edu.cccdci.opal.activities
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityRegisterBinding
+import edu.cccdci.opal.dataclasses.User
+import edu.cccdci.opal.firestore.FirestoreClass
 
 class RegisterActivity : TemplateActivity(), View.OnClickListener {
 
@@ -137,25 +139,29 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 //Create a Firebase Authentication using Email and Password
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
-
-                        hideProgressDialog() //Hide the loading message
-
                         //Successful task
                         if (task.isSuccessful) {
-                            //val firebaseUser: FirebaseUser = task.result!!.user!!
-                            //showMessagePrompt(resources.getString(R.string.msg_register_success), false)
+                            val fBaseUser: FirebaseUser = task.result!!.user!!
 
-                            //Displays a toast message
-                            Toast.makeText(
-                                this@RegisterActivity,
-                                resources.getString(R.string.msg_register_success),
-                                Toast.LENGTH_LONG
-                            ).show()
+                            //Object to store user data
+                            val user = User(
+                                fBaseUser.uid,
+                                etRegisterFname.text.toString().trim { it <= ' ' },
+                                etRegisterLname.text.toString().trim { it <= ' ' },
+                                etRegisterEmail.text.toString().trim { it <= ' ' },
+                                etRegisterUser.text.toString().trim { it <= ' ' }
+                            )
 
-                            FirebaseAuth.getInstance().signOut()
-                            finish() //Close the activity
+                            //Call the
+                            FirestoreClass().registerUser(
+                                this@RegisterActivity, user
+                            )
+
+                            finish() //Closes the activity
 
                         } else {
+                            hideProgressDialog() //Hide the loading message
+
                             //If it is not successful
                             showMessagePrompt(
                                 task.exception!!.message.toString(), true
@@ -168,5 +174,16 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
         } //end of with(binding)
 
     } //end of registerUser method
+
+    //Function to prompt user that he/she is registered
+    fun registerSuccessPrompt() {
+        hideProgressDialog() //Hide the loading message
+
+        //Displays a toast message
+        longToastMessage(
+            this@RegisterActivity,
+            resources.getString(R.string.msg_register_success)
+        ).show()
+    } //end of registerSuccessPrompt method
 
 } //end of RegisterActivity class

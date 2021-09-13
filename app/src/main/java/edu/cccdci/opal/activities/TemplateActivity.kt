@@ -1,6 +1,8 @@
 package edu.cccdci.opal.activities
 
 import android.app.Dialog
+import android.content.Context
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -79,5 +81,9 @@ open class TemplateActivity : AppCompatActivity() {
         //Add functionality to the button
         tlb.setNavigationOnClickListener { onBackPressed() }
     } //end of setupActionBar method
+
+    //Function to create a Toast Message that displays for a long time
+    fun longToastMessage(context: Context, msg: String): Toast =
+        Toast.makeText(context, msg, Toast.LENGTH_LONG)
 
 } //end of TemplateActivity class
