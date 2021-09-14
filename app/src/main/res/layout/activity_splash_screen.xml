@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"
+    android:background="@color/primaryColorTheme"
     tools:context=".activities.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="@dimen/opal_logo_width"
-        android:layout_height="@dimen/opal_logo_height"
+        android:layout_width="@dimen/opal_logo_size"
+        android:layout_height="@dimen/opal_logo_size"
         android:contentDescription="@string/app_name"
         android:scaleType="fitCenter"
+        android:src="@drawable/opal_logo_transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/opal_logo_transparent"
-        app:tint="@color/white" />
+        app:tint="@color/app_white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

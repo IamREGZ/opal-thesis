@@ -10,9 +10,16 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--  User-defined colors  -->
-    <color name="main_color">#FF417E05</color>
-    <color name="color_green">#FF014421</color>
-    <color name="color_teal">#FF007474</color>
-    <color name="hint_black">#C01B1B1B</color>
-    <!--  Temporary Color Green: #FF009150  -->
+    <color name="primaryColorTheme">#FF00611C</color>
+    <color name="primaryAccentColor">#FF014421</color>
+    <color name="primaryDarkModeColor">#FF32CD32</color>
+    <color name="secondaryColorTheme">#FF00827F</color>
+    <color name="secondaryAccentColor">#FF006666</color>
+    <color name="secondaryDarkModeColor">#FF40E0D0</color>
+    <color name="app_white">#FFF8F8FF</color>
+    <color name="app_black">#FF0F0F0F</color>
+    <color name="et_hint_white">#A0F8F8FF</color>
+    <color name="et_hint_black">#D00F0F0F</color>
+    <color name="colorErrorMessage">#FFED1C24</color>
+    <color name="colorSuccessMessage">#FF009150</color>
 </resources>

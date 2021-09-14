@@ -3,10 +3,10 @@ package edu.cccdci.opal.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import edu.cccdci.opal.databinding.ActivitySplashScreenBinding
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -15,45 +15,54 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        //Makes the activity full screen
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
+        //Animated Splash Screen
+        with(binding) {
+            setContentView(root)
 
-        @Suppress("DEPRECATION")
-        Handler().postDelayed(
-            {
-                //Launch the Main Activity
-                startActivity(
-                    Intent(this@SplashScreenActivity, LoginActivity::class.java)
+            //Makes the activity full screen
+            @Suppress("DEPRECATION")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.insetsController?.hide(WindowInsets.Type.statusBars())
+            } else {
+                window.setFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
                 )
-                finish() //Closes the activity
-            },
-            1500 //Delay Duration
-        )
+            }
 
-//        //Animated Splash Screen
-//        with(binding) {
-//            setContentView(root)
-//
-//            ivLogo.alpha = 0f
-//            ivLogo.animate().setDuration(1500).alpha(1f).withEndAction {
-//                val i = Intent(this@SplashScreenActivity, LoginActivity::class.java)
-//                startActivity(i)
-//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-//                finish()
-//            }
-//        }
+            ivLogo.alpha = 0f //Initial alpha for logo
 
-    }
-}
+            //Animate the splash screen logo by fading in
+            ivLogo.animate().setDuration(1500).alpha(1f).withEndAction {
+                //Opens the Login Activity
+                startActivity(
+                    Intent(
+                        this@SplashScreenActivity,
+                        LoginActivity::class.java
+                    )
+                )
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                finish() //Closes the Splash Screen
+            } //end of withEndAction
+
+        } //end of with(binding)
+
+//        //Non-animated Splash Screen
+//        @Suppress("DEPRECATION")
+//        Handler().postDelayed(
+//            {
+//                //Launch the Main Activity
+//                startActivity(
+//                    Intent(this@SplashScreenActivity, LoginActivity::class.java)
+//                )
+//                finish() //Closes the activity
+//            },
+//            1500 //Delay Duration
+//        )
+    } //end of onCreate method
+
+} //end of SplashScreenActivity class

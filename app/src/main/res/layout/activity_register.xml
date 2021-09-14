@@ -1,48 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingStart="@dimen/register_layout_padding"
-    android:paddingEnd="@dimen/register_layout_padding"
+    android:background="@color/app_white"
     tools:context=".activities.RegisterActivity">
 
-    <edu.cccdci.opal.utils.PrimaryButton
-        android:id="@+id/btn_register"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_button"
-        android:foreground="?attr/selectableItemBackground"
-        android:text="@string/register_btn"
-        android:textColor="@color/white"
-        android:textSize="@dimen/login_button_text_size" />
+        android:orientation="vertical"
+        android:paddingStart="@dimen/register_layout_padding"
+        android:paddingEnd="@dimen/register_layout_padding">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/large_margin"
-        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_register_logo"
+            android:layout_width="@dimen/opal_signup_logo_size"
+            android:layout_height="@dimen/opal_signup_logo_size"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/large_margin"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitCenter"
+            android:src="@drawable/opal_logo_sign_up" />
 
-        <edu.cccdci.opal.utils.PrimaryTextView
-            android:id="@+id/tv_with_account_lbl"
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_register_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:text="@string/account_registration"
+            android:textAlignment="center"
+            android:textColor="@color/app_black"
+            android:textSize="@dimen/header_text_size" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_register_fname"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:hint="@string/first_name"
+            android:textColorHint="@color/et_hint_black"
+            app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+            app:boxCornerRadiusBottomStart="@dimen/et_radius"
+            app:boxCornerRadiusTopEnd="@dimen/et_radius"
+            app:boxCornerRadiusTopStart="@dimen/et_radius"
+            app:boxStrokeWidth="@dimen/et_stroke_width">
+
+            <edu.cccdci.opal.utils.MainEditText
+                android:id="@+id/et_register_fname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_register_lname"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:hint="@string/last_name"
+            android:textColorHint="@color/et_hint_black"
+            app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+            app:boxCornerRadiusBottomStart="@dimen/et_radius"
+            app:boxCornerRadiusTopEnd="@dimen/et_radius"
+            app:boxCornerRadiusTopStart="@dimen/et_radius"
+            app:boxStrokeWidth="@dimen/et_stroke_width">
+
+            <edu.cccdci.opal.utils.MainEditText
+                android:id="@+id/et_register_lname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_register_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:hint="@string/email_address"
+            android:textColorHint="@color/et_hint_black"
+            app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+            app:boxCornerRadiusBottomStart="@dimen/et_radius"
+            app:boxCornerRadiusTopEnd="@dimen/et_radius"
+            app:boxCornerRadiusTopStart="@dimen/et_radius"
+            app:boxStrokeWidth="@dimen/et_stroke_width">
+
+            <edu.cccdci.opal.utils.MainEditText
+                android:id="@+id/et_register_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_register_user"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:hint="@string/username"
+            android:textColorHint="@color/et_hint_black"
+            app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+            app:boxCornerRadiusBottomStart="@dimen/et_radius"
+            app:boxCornerRadiusTopEnd="@dimen/et_radius"
+            app:boxCornerRadiusTopStart="@dimen/et_radius"
+            app:boxStrokeWidth="@dimen/et_stroke_width">
+
+            <edu.cccdci.opal.utils.MainEditText
+                android:id="@+id/et_register_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_register_pass"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:hint="@string/password"
+            android:textColorHint="@color/et_hint_black"
+            app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+            app:boxCornerRadiusBottomStart="@dimen/et_radius"
+            app:boxCornerRadiusTopEnd="@dimen/et_radius"
+            app:boxCornerRadiusTopStart="@dimen/et_radius"
+            app:boxStrokeWidth="@dimen/et_stroke_width"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/app_black">
+
+            <edu.cccdci.opal.utils.MainEditText
+                android:id="@+id/et_register_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_register_conf_pass"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:hint="@string/confirm_password"
+            android:textColorHint="@color/et_hint_black"
+            app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+            app:boxCornerRadiusBottomStart="@dimen/et_radius"
+            app:boxCornerRadiusTopEnd="@dimen/et_radius"
+            app:boxCornerRadiusTopStart="@dimen/et_radius"
+            app:boxStrokeWidth="@dimen/et_stroke_width"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/app_black">
+
+            <edu.cccdci.opal.utils.MainEditText
+                android:id="@+id/et_register_conf_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <edu.cccdci.opal.utils.MainCheckBox
+            android:id="@+id/cb_terms_and_conditions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/with_account_lbl"
-            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/small_margin"
+            android:checked="false"
+            android:text="@string/terms_and_conditions"
+            android:textColor="@color/app_black"
             android:textSize="@dimen/main_text_size" />
 
-        <edu.cccdci.opal.utils.PrimaryTextView
-            android:id="@+id/tv_signin"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/signin_link"
-            android:textColor="@color/black"
-            android:textSize="@dimen/main_text_size" />
+            android:layout_marginTop="@dimen/medium_margin"
+            android:orientation="horizontal">
+
+            <edu.cccdci.opal.utils.MainButton
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/register_buttons_height"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:layout_weight="1"
+                android:background="@drawable/custom_button"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/register_btn"
+                android:textColor="@color/app_white"
+                android:textSize="@dimen/register_buttons_text_size" />
+
+            <edu.cccdci.opal.utils.MainButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/register_buttons_height"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_weight="1"
+                android:background="@drawable/custom_button"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/cancel_btn"
+                android:textColor="@color/app_white"
+                android:textSize="@dimen/register_buttons_text_size" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
