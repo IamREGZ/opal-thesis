@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_home"
+        android:title="Home"/>
+
+    <item
+        android:id="@+id/nav_address"
+        android:icon="@drawable/ic_address"
+        android:title="Address"/>
+
+    <item
+        android:id="@+id/nav_near_me"
+        android:icon="@drawable/near_me"
+        android:title="Near Me"/>
+
+    <item
+        android:id="@+id/nav_history"
+        android:icon="@drawable/ic_order"
+        android:title="Order History"/>
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"/>
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_logout"
+        android:title="Log-Out" />
+
+    <item android:title="Contact Us">
+        <menu>
+            <item
+                android:id="@+id/about_us"
+                android:icon="@drawable/ic_about_us"
+                android:title="About Us" />
+            <item
+                android:id="@+id/join"
+                android:icon="@drawable/ic_join"
+                android:title="Join Community" />
+        </menu>
+    </item>
+
+</menu>
