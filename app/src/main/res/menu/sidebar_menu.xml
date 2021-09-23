@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/app_white"
+    tools:showIn="navigation_view">
+
+    <!-- Home Menu Item -->
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home" />
+
+    <!-- Address Menu Item -->
+    <item
+        android:id="@+id/nav_address"
+        android:icon="@drawable/ic_address"
+        android:title="@string/nav_address" />
+
+    <!-- Near Me Menu Item -->
+    <item
+        android:id="@+id/nav_near_me"
+        android:icon="@drawable/near_me"
+        android:title="@string/nav_near_me" />
+
+    <!-- Order History Menu Item -->
+    <item
+        android:id="@+id/nav_order_history"
+        android:icon="@drawable/ic_order"
+        android:title="@string/nav_order_history" />
+
+    <!-- Settings Menu Item -->
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/nav_settings" />
+
+    <!-- Sign Out Menu Item -->
+    <item
+        android:id="@+id/nav_signout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/nav_sign_out" />
+
+    <!-- Contact Us Menu Item Group -->
+    <item android:title="@string/nav_subhead_contact_us">
+
+        <menu>
+            <!-- About Us Submenu Item -->
+            <item
+                android:id="@+id/nav_about_us"
+                android:icon="@drawable/ic_about_us"
+                android:title="@string/nav_about_us" />
+            <!-- Join Community Submenu Item -->
+            <item
+                android:id="@+id/nav_join"
+                android:icon="@drawable/ic_join"
+                android:title="@string/nav_join_community" />
+        </menu>
+
+    </item>
+
+</menu>

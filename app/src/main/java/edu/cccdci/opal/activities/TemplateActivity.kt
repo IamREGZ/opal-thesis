@@ -86,4 +86,7 @@ open class TemplateActivity : AppCompatActivity() {
     fun longToastMessage(context: Context, msg: String): Toast =
         Toast.makeText(context, msg, Toast.LENGTH_LONG)
 
+    fun shortToastMessage(context: Context, msg: String): Toast =
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+
 } //end of TemplateActivity class

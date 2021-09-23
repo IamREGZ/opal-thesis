@@ -2,7 +2,8 @@
 <resources>
     <!--  App Logo  -->
     <dimen name="opal_logo_size">200dp</dimen>
-    <dimen name="opal_signup_logo_size">120dp</dimen>
+    <dimen name="opal_small_logo_size">120dp</dimen>
+    <dimen name="opal_profile_logo_size">100dp</dimen>
 
     <!--  Text Sizes  -->
     <dimen name="main_text_size">18sp</dimen>

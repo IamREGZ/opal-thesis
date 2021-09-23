@@ -40,12 +40,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <!-- Message Activity (Snackbar message pops up in Register) -->
+        <!-- Template Activity (Snackbar, toast, dialogs, etc.) -->
         <activity android:name=".activities.TemplateActivity" />
 
         <!-- Main Activity (Home Page of the App) -->
-        <activity
-            android:name=".activities.MainActivity"
+        <activity android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />
 
     </application>

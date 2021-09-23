@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/iv_register_logo"
-            android:layout_width="@dimen/opal_signup_logo_size"
-            android:layout_height="@dimen/opal_signup_logo_size"
+            android:layout_width="@dimen/opal_small_logo_size"
+            android:layout_height="@dimen/opal_small_logo_size"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/large_margin"
             android:contentDescription="@string/app_name"
