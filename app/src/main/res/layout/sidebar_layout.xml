@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@drawable/nav_header_gradient"
+    android:orientation="vertical"
+    android:padding="@dimen/large_margin">
 
-    <ImageView
-        android:id="@+id/iv_profile_page"
-        android:layout_width="@dimen/opal_profile_logo_size"
-        android:layout_height="@dimen/opal_profile_logo_size"
-        android:layout_marginStart="@dimen/large_margin"
-        android:layout_marginTop="@dimen/large_margin"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/opal_logo_sign_up" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_nav_profile_pic"
+        android:layout_width="@dimen/nav_profile_picture_size"
+        android:layout_height="@dimen/nav_profile_picture_size"
+        android:contentDescription="@string/user_profile_photo_cd"
+        android:src="@drawable/ic_prof_image_placeholder"
+        app:civ_border_color="@color/primaryAccentColor"
+        app:civ_border_width="@dimen/nav_profile_picture_stroke" />
 
     <edu.cccdci.opal.utils.HeaderTextView
         android:id="@+id/tv_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/large_margin"
         android:layout_marginTop="@dimen/medium_margin"
-        android:text="@string/profile_name"
-        android:textColor="@color/app_black"
+        android:text="@string/nav_profile_full_name"
+        android:textColor="@color/app_white"
         android:textSize="@dimen/header_text_size" />
 
     <edu.cccdci.opal.utils.MainTextView
+        android:id="@+id/tv_profile_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/large_margin"
         android:layout_marginTop="@dimen/small_margin"
-        android:layout_marginBottom="@dimen/large_margin"
-        android:text="@string/profile_username"
-        android:textColor="@color/app_black"
+        android:text="@string/nav_profile_username"
+        android:textColor="@color/app_white"
         android:textSize="@dimen/main_text_size" />
 
 </LinearLayout>

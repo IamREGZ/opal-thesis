@@ -5,20 +5,18 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityLoginBinding
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
+import edu.cccdci.opal.utils.Constants
 
 class LoginActivity : TemplateActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Force disables dark mode
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -138,19 +136,12 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
         Log.i("Email Address: ", user.emailAdd)
         Log.i("Username: ", user.userName)
 
-        //Displays a Toast message
-        longToastMessage(
-            this@LoginActivity,
-            resources.getString(R.string.msg_login_success)
-        ).show()
+        //Create an Intent to launch MainActivity
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        //Add extra user information to intent
+        intent.putExtra(Constants.EXTRA_USER_INFO, user)
 
-        //Opens the home page
-        startActivity(
-            Intent(
-                this@LoginActivity,
-                MainActivity::class.java
-            )
-        )
+        startActivity(intent) //Opens the home page
         finish() //Closes the current activity
 
     } //end of logInSuccessPrompt method

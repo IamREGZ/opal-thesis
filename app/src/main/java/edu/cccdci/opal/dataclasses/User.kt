@@ -1,11 +1,10 @@
 package edu.cccdci.opal.dataclasses
 
-//Data class to store User information
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-/*
-Note that gender, phoneNum, profilePic and isVendor variables
-have default values since these will be user later on.
-*/
+//Data class to store User information
+@Parcelize
 data class User(
     val id: String = "",
     val firstName: String = "",
@@ -16,4 +15,9 @@ data class User(
     val phoneNum: String = "",
     val profilePic: String = "",
     val isVendor: Boolean = false
-)
+) : Parcelable
+
+/*
+gender, phoneNum, profilePic and isVendor variables
+will be used later on.
+*/

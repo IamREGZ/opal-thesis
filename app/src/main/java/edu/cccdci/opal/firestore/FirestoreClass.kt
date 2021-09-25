@@ -1,6 +1,8 @@
 package edu.cccdci.opal.firestore
 
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -61,6 +63,22 @@ class FirestoreClass {
                 Log.i(activity.javaClass.simpleName, document.toString())
 
                 val user = document.toObject(User::class.java)!!
+
+                val sharedPrefs = activity.getSharedPreferences(
+                    Constants.OPAL_PREFERENCES,
+                    Context.MODE_PRIVATE
+                )
+
+                val spEditor: SharedPreferences.Editor = sharedPrefs.edit()
+
+                spEditor.putString(
+                    Constants.SIGNED_IN_FULL_NAME,
+                    "${user.firstName} ${user.lastName}"
+                ).apply()
+
+                spEditor.putString(
+                    Constants.SIGNED_IN_USERNAME, user.userName
+                ).apply()
 
                 //In Login Activity, it sends the user to the home page
                 if (activity is LoginActivity) {

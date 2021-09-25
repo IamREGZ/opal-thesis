@@ -13,6 +13,7 @@
         android:layout_height="match_parent">
 
         <edu.cccdci.opal.utils.MainTextView
+            android:id="@+id/tv_welcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome"

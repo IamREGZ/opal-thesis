@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  Checked Radio Button (White Text)  -->
+    <item android:color="@color/app_white" android:state_checked="true" />
+
+    <!--  Checked Radio Button (Gray Text)  -->
+    <item android:color="@color/uncheckedRadioButton"
+        android:state_checked="false" />
+</selector>
