@@ -119,7 +119,7 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
             else -> true //If all user inputs are valid
         } //end of when
 
-    } //end of registerValidation method
+    } //end of with(binding) and registerValidation method
 
     //Function to register user account
     private fun registerUser() {

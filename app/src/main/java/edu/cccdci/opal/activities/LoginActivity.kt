@@ -3,7 +3,6 @@ package edu.cccdci.opal.activities
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
@@ -86,7 +85,7 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
             else -> true //If all inputs are valid
         } //end of when
 
-    } //end of validateLogin method
+    } //end of with(binding) and validateLogin method
 
     //Function to login user
     private fun loginUser() {
@@ -126,15 +125,10 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
 
     } //end of loginUser method
 
+    //Function to prompt that he/she is logged in
     fun logInSuccessPrompt(user: User) {
 
         hideProgressDialog() //Hide the loading message
-
-        //Log the user details in the console
-        Log.i("First Name: ", user.firstName)
-        Log.i("Last Name: ", user.lastName)
-        Log.i("Email Address: ", user.emailAdd)
-        Log.i("Username: ", user.userName)
 
         //Create an Intent to launch MainActivity
         val intent = Intent(this@LoginActivity, MainActivity::class.java)

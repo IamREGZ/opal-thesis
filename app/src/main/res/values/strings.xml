@@ -31,14 +31,16 @@
     <string name="forgot_password_submit">Submit</string>
 
     <!--  Error Messages  -->
-    <string name="err_blank_fname">Please enter your first name</string>
-    <string name="err_blank_lname">Please enter your last name</string>
-    <string name="err_blank_email">Please enter your email address</string>
-    <string name="err_blank_username">Please enter your username</string>
-    <string name="err_blank_password">Please enter your password</string>
-    <string name="err_blank_confirm_password">Please enter confirm password</string>
-    <string name="err_passwords_not_match">Passwords do not match</string>
-    <string name="err_unchecked_tac">Please agree to our T&amp;C</string>
+    <string name="err_blank_fname">Please enter your first name.</string>
+    <string name="err_blank_lname">Please enter your last name.</string>
+    <string name="err_blank_email">Please enter your email address.</string>
+    <string name="err_blank_username">Please enter your username.</string>
+    <string name="err_blank_password">Please enter your password.</string>
+    <string name="err_blank_confirm_password">Please enter confirm password.</string>
+    <string name="err_passwords_not_match">Passwords do not match.</string>
+    <string name="err_unchecked_tac">Please agree to our T&amp;C.</string>
+    <string name="err_blank_phone">Please enter your phone number.</string>
+    <string name="err_no_gender_selected">Please select your gender.</string>
     <string name="err_permission_denied">
         Storage permission denied. You can also allow it from your device\'s settings.
     </string>
@@ -49,12 +51,15 @@
     <!--  Message Prompts  -->
     <string name="msg_register_success">Your account is successfully registered!</string>
     <string name="msg_recovery_email_submitted">
-        Email sent successfully! Check your email to reset your password.
+        Email sent successfully. Check your email to reset your password.
     </string>
     <string name="msg_logout_success">Logged out successfully!</string>
+    <string name="msg_user_info_changed">Your user information is changed successfully.</string>
 
     <!--  Dialog Progress  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
+    <string name="msg_saving_changes">Saving changes&#8230;</string>
+    <!-- <string name="msg_uploading">Uploading&#8230;</string> -->
 
     <!--  Toolbar Titles  -->
     <string name="tlb_title_user_profile">USER PROFILE</string>

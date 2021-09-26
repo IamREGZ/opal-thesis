@@ -1,7 +1,7 @@
 package edu.cccdci.opal.dataclasses
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 //Data class to store User information
 @Parcelize
@@ -18,6 +18,6 @@ data class User(
 ) : Parcelable
 
 /*
-gender, phoneNum, profilePic and isVendor variables
-will be used later on.
-*/
+ * gender, phoneNum, profilePic and isVendor variables
+ * will be used later on upon account registration.
+ */
