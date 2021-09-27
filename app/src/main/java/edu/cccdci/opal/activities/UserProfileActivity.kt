@@ -32,26 +32,40 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
         with(binding) {
             setContentView(root)
             //Setups the Action Bar of the current activity
-            setupActionBar(tlbUserProfileActivity)
+            setupActionBar(tlbUserProfileActivity, false)
 
             //Check if there's an existing parcelable extra info
             if (intent.hasExtra(Constants.EXTRA_USER_INFO)) {
                 mUserInfo = intent.getParcelableExtra(Constants.EXTRA_USER_INFO)!!
             }
 
-            //Sets the attributes of each EditText
+            //Fill up the available fields
             with(mUserInfo) {
-                etProfileFname.isEnabled = false
+                //Full Name
                 etProfileFname.setText(firstName)
-
-                etProfileLname.isEnabled = false
                 etProfileLname.setText(lastName)
 
+                //Email (Disabled)
                 etProfileEmail.isEnabled = false
                 etProfileEmail.setText(emailAdd)
 
+                //Username (Disabled)
                 etProfileUsername.isEnabled = false
                 etProfileUsername.setText(userName)
+
+                etProfilePhone.setText(phoneNum) //Phone Number
+
+                //Check one of the radio buttons depending on the selected gender
+                when (gender) {
+                    Constants.GENDER_MALE -> rbProfileMale.isChecked = true
+                    Constants.GENDER_FEMALE -> rbProfileFemale.isChecked = true
+                    else -> rbProfileOther.isChecked = true
+                }
+
+                //Load the current profile picture
+                GlideLoader(this@UserProfileActivity)
+                    .loadUserPicture(profilePic, ivUserProfilePhoto)
+
             } //end of with(userInfo)
 
             //Click event for User Profile Photo ImageView
@@ -185,21 +199,27 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
     //Function to validate user profile information changes
     private fun userProfileValidation(): Boolean = with(binding) {
         when {
+            //If the First Name field is empty
+            TextUtils.isEmpty(etProfileFname.text.toString().trim { it <= ' ' }) -> {
+                showMessagePrompt(resources.getString(R.string.err_blank_fname), true)
+                false
+            }
+
+            //If the Last Name field is empty
+            TextUtils.isEmpty(etProfileLname.text.toString().trim { it <= ' ' }) -> {
+                showMessagePrompt(resources.getString(R.string.err_blank_lname), true)
+                false
+            }
+
             //If the Phone Number field is empty
             TextUtils.isEmpty(etProfilePhone.text.toString().trim { it <= ' ' }) -> {
-                showMessagePrompt(
-                    resources.getString(R.string.err_blank_phone),
-                    true
-                )
+                showMessagePrompt(resources.getString(R.string.err_blank_phone), true)
                 false
             }
 
             //If no gender is selected
             rgProfileGender.checkedRadioButtonId == -1 -> {
-                showMessagePrompt(
-                    resources.getString(R.string.err_no_gender_selected),
-                    true
-                )
+                showMessagePrompt(resources.getString(R.string.err_no_gender_selected), true)
                 false
             }
 
@@ -215,15 +235,33 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
             //Create a HashMap to store values to update multiple fields
             val userHashMap = HashMap<String, Any>()
 
-            //Stores phoneNum value
-            userHashMap[Constants.PHONENUM] = etProfilePhone
-                .text.toString().trim { it <= ' ' }
+            val firstName = etProfileFname.text.toString().trim { it <= ' ' }
+            //Save the new first name if it is different from previous first name
+            if (firstName != mUserInfo.firstName) {
+                userHashMap[Constants.FIRST_NAME] = firstName
+            }
+
+            val lastName = etProfileLname.text.toString().trim { it <= ' ' }
+            //Save the new last name if it is different from previous last name
+            if (lastName != mUserInfo.lastName) {
+                userHashMap[Constants.FIRST_NAME] = lastName
+            }
+
+            val phoneNumber = etProfilePhone.text.toString().trim { it <= ' ' }
+            //Save the new phone number if it is different from previous phone number
+            if (phoneNumber != mUserInfo.phoneNum) {
+                userHashMap[Constants.PHONENUM] = phoneNumber
+            }
 
             //Stores gender value, depending on the selected radio button
-            userHashMap[Constants.GENDER] = when {
+            val gender = when {
                 rbProfileMale.isChecked -> Constants.GENDER_MALE
                 rbProfileFemale.isChecked -> Constants.GENDER_FEMALE
                 else -> Constants.GENDER_OTHER
+            }
+            //Save the new gender if it is different from previous phone number
+            if (gender != mUserInfo.gender) {
+                userHashMap[Constants.GENDER] = gender
             }
 
             //Stores user profile image URL, if the user uploaded the image

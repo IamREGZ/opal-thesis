@@ -1,7 +1,6 @@
 package edu.cccdci.opal.utils
 
 import android.content.Context
-import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import edu.cccdci.opal.R
@@ -10,11 +9,11 @@ import java.io.IOException
 class GlideLoader(val context: Context) {
 
     //Function to load the user image using Glide
-    fun loadUserPicture(imageURI: Uri, imageView: ImageView) {
+    fun loadUserPicture(image: Any, imageView: ImageView) {
         try {
             Glide
                 .with(context) //Using the current context
-                .load(imageURI) //Load the image URI
+                .load(image) //Load the image URI
                 .centerCrop() //How should the image be scaled
                 .placeholder(R.drawable.ic_prof_image_placeholder) //Default placeholder
                 .into(imageView) //View that will load the user image

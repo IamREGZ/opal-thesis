@@ -11,6 +11,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import edu.cccdci.opal.activities.LoginActivity
+import edu.cccdci.opal.activities.MainActivity
 import edu.cccdci.opal.activities.RegisterActivity
 import edu.cccdci.opal.activities.UserProfileActivity
 import edu.cccdci.opal.dataclasses.User
@@ -66,31 +67,51 @@ class FirestoreClass {
             .addOnSuccessListener { document ->
                 Log.i(activity.javaClass.simpleName, document.toString())
 
+                //Convert the retrieved document to object
                 val user = document.toObject(User::class.java)!!
 
+                //Creates the Shared Preferences
                 val sharedPrefs = activity.getSharedPreferences(
                     Constants.OPAL_PREFERENCES,
                     Context.MODE_PRIVATE
                 )
 
+                //Create the editor for Shared Preferences
                 val spEditor: SharedPreferences.Editor = sharedPrefs.edit()
 
+                //Shared Preference for User's Full Name
                 spEditor.putString(
                     Constants.SIGNED_IN_FULL_NAME,
                     "${user.firstName} ${user.lastName}"
                 ).apply()
 
+                //Shared Preference for User's Username
                 spEditor.putString(
                     Constants.SIGNED_IN_USERNAME, user.userName
                 ).apply()
 
-                //In Login Activity, it sends the user to the home page
-                if (activity is LoginActivity) {
-                    activity.logInSuccessPrompt(user)
+                //Shared Preference for User's Profile Picture
+                spEditor.putString(
+                    Constants.SIGNED_IN_PROFILE_PIC, user.profilePic
+                ).apply()
+
+                when (activity) {
+                    //In Login Activity, it sends the user to the home page
+                    is LoginActivity -> {
+                        activity.logInSuccessPrompt(user)
+                    }
+
+                    /* In Main Activity, it sets the placeholder values in
+                     * the sidebar header to the user's information.
+                     */
+                    is MainActivity -> {
+                        activity.setSideNavProfileHeader(sharedPrefs, user)
+                    }
                 }
             }
             //If failed
             .addOnFailureListener { e ->
+
                 //Closes the loading message in the Login Activity
                 if (activity is LoginActivity) {
                     activity.hideProgressDialog()

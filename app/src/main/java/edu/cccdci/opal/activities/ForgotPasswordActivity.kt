@@ -17,7 +17,7 @@ class ForgotPasswordActivity : TemplateActivity() {
         with(binding) {
             setContentView(root)
             //Setups the Action Bar of the current activity
-            setupActionBar(tlbForgotPwActivity)
+            setupActionBar(tlbForgotPwActivity, true)
 
             btnSubmitRecoveryEmail.setOnClickListener {
                 val email: String = etRecoveryEmail.text.toString()

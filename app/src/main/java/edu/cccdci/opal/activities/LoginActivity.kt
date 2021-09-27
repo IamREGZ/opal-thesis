@@ -9,7 +9,6 @@ import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityLoginBinding
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
-import edu.cccdci.opal.utils.Constants
 
 class LoginActivity : TemplateActivity(), View.OnClickListener {
 
@@ -130,12 +129,9 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
 
         hideProgressDialog() //Hide the loading message
 
-        //Create an Intent to launch MainActivity
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        //Add extra user information to intent
-        intent.putExtra(Constants.EXTRA_USER_INFO, user)
-
-        startActivity(intent) //Opens the home page
+        startActivity(Intent(
+            this@LoginActivity, MainActivity::class.java)
+        ) //Opens the home page
         finish() //Closes the current activity
 
     } //end of logInSuccessPrompt method

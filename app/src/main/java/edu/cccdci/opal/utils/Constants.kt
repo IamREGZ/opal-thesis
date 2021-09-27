@@ -9,6 +9,8 @@ import android.webkit.MimeTypeMap
 object Constants {
     //For Cloud Firestore (Collection, Documents, and Fields)
     const val USERS: String = "users"
+    const val FIRST_NAME: String = "firstName"
+    const val LAST_NAME: String = "lastName"
     const val GENDER: String = "gender"
     const val PHONENUM: String = "phoneNum"
     const val PROFILEPIC: String = "profilePic"
@@ -22,6 +24,7 @@ object Constants {
     const val OPAL_PREFERENCES: String = "OPALPrefs"
     const val SIGNED_IN_FULL_NAME: String = "signed_in_full_name"
     const val SIGNED_IN_USERNAME: String = "signed_in_username"
+    const val SIGNED_IN_PROFILE_PIC: String = "signed_in_profile_pic"
     const val EXTRA_USER_INFO: String = "extra_user_info"
 
     //For Requesting Permissions

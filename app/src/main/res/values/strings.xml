@@ -53,7 +53,6 @@
     <string name="msg_recovery_email_submitted">
         Email sent successfully. Check your email to reset your password.
     </string>
-    <string name="msg_logout_success">Logged out successfully!</string>
     <string name="msg_user_info_changed">Your user information is changed successfully.</string>
 
     <!--  Dialog Progress  -->
