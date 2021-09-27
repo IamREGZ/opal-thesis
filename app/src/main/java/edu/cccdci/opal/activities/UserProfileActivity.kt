@@ -244,7 +244,7 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
             val lastName = etProfileLname.text.toString().trim { it <= ' ' }
             //Save the new last name if it is different from previous last name
             if (lastName != mUserInfo.lastName) {
-                userHashMap[Constants.FIRST_NAME] = lastName
+                userHashMap[Constants.LAST_NAME] = lastName
             }
 
             val phoneNumber = etProfilePhone.text.toString().trim { it <= ' ' }
