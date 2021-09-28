@@ -3,9 +3,7 @@ package edu.cccdci.opal.activities
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityLoginBinding
@@ -17,8 +15,6 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Force disables dark mode
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -88,7 +84,7 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
             else -> true //If all inputs are valid
         } //end of when
 
-    } //end of validateLogin method
+    } //end of with(binding) and validateLogin method
 
     //Function to login user
     private fun loginUser() {
@@ -128,29 +124,14 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
 
     } //end of loginUser method
 
+    //Function to prompt that he/she is logged in
     fun logInSuccessPrompt(user: User) {
 
         hideProgressDialog() //Hide the loading message
 
-        //Log the user details in the console
-        Log.i("First Name: ", user.firstName)
-        Log.i("Last Name: ", user.lastName)
-        Log.i("Email Address: ", user.emailAdd)
-        Log.i("Username: ", user.userName)
-
-        //Displays a Toast message
-        longToastMessage(
-            this@LoginActivity,
-            resources.getString(R.string.msg_login_success)
-        ).show()
-
-        //Opens the home page
-        startActivity(
-            Intent(
-                this@LoginActivity,
-                MainActivity::class.java
-            )
-        )
+        startActivity(Intent(
+            this@LoginActivity, MainActivity::class.java)
+        ) //Opens the home page
         finish() //Closes the current activity
 
     } //end of logInSuccessPrompt method
