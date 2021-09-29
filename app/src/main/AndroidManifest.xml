@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.cccdci.opal" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="edu.cccdci.opal"
+    tools:ignore="LockedOrientationActivity">
+
+    <!-- Permission to access device storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -8,16 +13,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OPAL" >
-        <activity
-            android:name=".activities.BottomNav"
-            android:exported="true" />
-        <activity
-            android:name=".activities.ButtomNavigation"
-            android:exported="true" />
-        <activity
-            android:name=".activities.Buttom_Navigation"
-            android:exported="true" /> <!-- Splash Screen Activity (First to open) -->
+        android:theme="@style/Theme.OPAL"
+        tools:ignore="AllowBackup">
+
+        <!-- Splash Screen Activity (First to open) -->
         <activity
             android:name=".activities.SplashScreenActivity"
             android:screenOrientation="portrait"
@@ -27,23 +26,50 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Login Activity (This is next) -->
+        </activity>
+        
+        <!-- Login Activity (This is next) -->
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" /> <!-- Register Activity (When Register TextView is clicked) -->
+            android:theme="@style/NoActionBar" />
+        
+        <!-- Register Activity (When Register TextView is clicked) -->
         <activity
             android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" /> <!-- Forgot Password Activity (When Forgot Password TextView is clicked) -->
+            android:theme="@style/NoActionBar" />
+        
+        <!-- Forgot Password Activity (When Forgot Password TextView is clicked) -->
         <activity
             android:name=".activities.ForgotPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" /> <!-- Message Activity (Snackbar message pops up in Register) -->
-        <activity android:name=".activities.TemplateActivity" /> <!-- Main Activity (Home Page of the App) -->
+            android:theme="@style/NoActionBar" />
+
+        <!-- Template Activity (Snackbar, toast, dialogs, etc.) -->
+        <activity android:name=".activities.TemplateActivity" />
+
+        <!-- Main Activity (Home Page of the App) -->
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />
+
+        <!-- User Profile Activity (Change User Information) -->
+        <activity
+            android:name=".activities.UserProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        
+        <activity
+            android:name=".activities.BottomNav"
+            android:exported="true" />
+        <activity
+            android:name=".activities.ButtomNavigation"
+            android:exported="true" />
+        <activity
+            android:name=".activities.Buttom_Navigation"
+            android:exported="true" />
+
     </application>
 
 </manifest>

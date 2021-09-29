@@ -68,22 +68,35 @@ open class TemplateActivity : AppCompatActivity() {
     } //end of hideProgressDialog method
 
     //Function to setup the Action Bar for navigation
-    protected fun setupActionBar(tlb: Toolbar) {
+    protected fun setupActionBar(tlb: Toolbar, isBlack: Boolean) {
         setSupportActionBar(tlb)
-        val actionBar = supportActionBar
 
         //Customize the navigation icon
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back_nav_black)
+        if (supportActionBar != null) {
+            //Enables button in the Action Bar
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+            //If isBlack is true, use black icon. Otherwise, white.
+            val backIcon: Int = if (isBlack) {
+                R.drawable.ic_back_nav_black
+            } else {
+                R.drawable.ic_back_nav_white
+            }
+
+            //Sets the icon of the back button
+            supportActionBar!!.setHomeAsUpIndicator(backIcon)
         }
 
         //Add functionality to the button
         tlb.setNavigationOnClickListener { onBackPressed() }
+
     } //end of setupActionBar method
 
     //Function to create a Toast Message that displays for a long time
     fun longToastMessage(context: Context, msg: String): Toast =
         Toast.makeText(context, msg, Toast.LENGTH_LONG)
+
+    fun shortToastMessage(context: Context, msg: String): Toast =
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT)
 
 } //end of TemplateActivity class

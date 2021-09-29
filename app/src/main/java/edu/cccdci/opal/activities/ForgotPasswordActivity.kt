@@ -1,7 +1,6 @@
 package edu.cccdci.opal.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityForgotPasswordBinding
@@ -11,8 +10,6 @@ class ForgotPasswordActivity : TemplateActivity() {
     private lateinit var binding: ActivityForgotPasswordBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Force disables dark mode
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
@@ -20,7 +17,7 @@ class ForgotPasswordActivity : TemplateActivity() {
         with(binding) {
             setContentView(root)
             //Setups the Action Bar of the current activity
-            setupActionBar(tlbForgotPwActivity)
+            setupActionBar(tlbForgotPwActivity, true)
 
             btnSubmitRecoveryEmail.setOnClickListener {
                 val email: String = etRecoveryEmail.text.toString()

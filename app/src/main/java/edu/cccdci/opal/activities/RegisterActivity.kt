@@ -3,7 +3,6 @@ package edu.cccdci.opal.activities
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import edu.cccdci.opal.R
@@ -16,9 +15,9 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
+
         super.onCreate(savedInstanceState)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
 
         with(binding) {
             setContentView(root)
@@ -120,7 +119,7 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
             else -> true //If all user inputs are valid
         } //end of when
 
-    } //end of registerValidation method
+    } //end of with(binding) and registerValidation method
 
     //Function to register user account
     private fun registerUser() {

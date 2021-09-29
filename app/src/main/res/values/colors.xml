@@ -22,4 +22,5 @@
     <color name="et_hint_black">#D00F0F0F</color>
     <color name="colorErrorMessage">#FFED1C24</color>
     <color name="colorSuccessMessage">#FF009150</color>
+    <color name="uncheckedRadioButton">#FF808080</color>
 </resources>

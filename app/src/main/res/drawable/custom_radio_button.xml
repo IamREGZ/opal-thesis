@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  Checked Radio Button (Solid Green Color)  -->
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/primaryColorTheme" />
+            <corners android:radius="@dimen/radio_button_radius" />
+        </shape>
+    </item>
+
+    <!--  Unchecked Radio Button (Outlined Button)  -->
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <stroke android:width="@dimen/radio_button_stroke"
+                android:color="@color/uncheckedRadioButton" />
+            <corners android:radius="@dimen/radio_button_radius" />
+        </shape>
+    </item>
+</selector>
