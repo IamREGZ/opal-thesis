@@ -49,26 +49,16 @@
         <!-- Template Activity (Snackbar, toast, dialogs, etc.) -->
         <activity android:name=".activities.TemplateActivity" />
 
-        <!-- Main Activity (Home Page of the App) -->
+        <!-- (Home Page of the App) -->
         <activity
-            android:name=".activities.MainActivity"
-            android:screenOrientation="portrait" />
+            android:name=".activities.HomeActivity"
+            android:exported="true" />
 
         <!-- User Profile Activity (Change User Information) -->
         <activity
             android:name=".activities.UserProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-        
-        <activity
-            android:name=".activities.BottomNav"
-            android:exported="true" />
-        <activity
-            android:name=".activities.ButtomNavigation"
-            android:exported="true" />
-        <activity
-            android:name=".activities.Buttom_Navigation"
-            android:exported="true" />
 
     </application>
 

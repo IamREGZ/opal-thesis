@@ -9,51 +9,67 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
-import edu.cccdci.opal.databinding.ActivityMainBinding
+import edu.cccdci.opal.databinding.ActivityHomeBinding
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.GlideLoader
 
-class MainActivity :
-    TemplateActivity(),
+class HomeActivity : TemplateActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     View.OnClickListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var mUserInfo: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
 
         with(binding) {
             setContentView(root)
 
-            //Sets up the Sidebar Profile Header
+            val navHostFragment = supportFragmentManager
+                .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            val navController = navHostFragment.navController
+
+            val appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.fragment_home,
+                    R.id.fragment_markets,
+                    R.id.fragment_categories,
+                    R.id.fragment_notifications
+                )
+            )
+            setupActionBarWithNavController(navController, appBarConfiguration)
+
+            bottomNavigationView.setupWithNavController(navController)
 
             //Adds the Hamburger Button Toggle in Action Bar
             toggle = ActionBarDrawerToggle(
-                this@MainActivity, dlHomepage,
+                this@HomeActivity, dlHomeDrawer,
                 R.string.open, R.string.close
             )
 
-            dlHomepage.addDrawerListener(toggle)
+            dlHomeDrawer.addDrawerListener(toggle)
             toggle.syncState()
 
             //Sets up Navigation Action Bar
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-            //Item Selected event for any sidebar items
-            nvSidebar.setNavigationItemSelectedListener(this@MainActivity)
-        } //end of with(binding)
+            nvSidebar.setNavigationItemSelectedListener(this@HomeActivity)
+        }
 
-    } //end of onCreate method
+    }
 
     override fun onClick(view: View?) {
         if (view != null) {
@@ -62,7 +78,7 @@ class MainActivity :
                 R.id.iv_nav_profile_pic -> {
                     //Create an Intent to launch UserProfileActivity
                     val intent = Intent(
-                        this@MainActivity,
+                        this@HomeActivity,
                         UserProfileActivity::class.java
                     )
                     //Add extra user information to intent
@@ -71,7 +87,7 @@ class MainActivity :
                     //Opens the edit user profile
                     startActivity(intent)
                     //Closes the drawer layout
-                    binding.dlHomepage.closeDrawer(GravityCompat.START)
+                    binding.dlHomeDrawer.closeDrawer(GravityCompat.START)
                 }
 
             } //end of when
@@ -85,38 +101,26 @@ class MainActivity :
         super.onResume()
 
         //Gets the user profile data
-        FirestoreClass().getUserDetails(this@MainActivity)
+        FirestoreClass().getUserDetails(this@HomeActivity)
     } //end of onResume method
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            //TODO: Send to Home Page
-            R.id.nav_home -> shortToastMessage(
-                this@MainActivity,
-                "You clicked Home"
-            ).show()
-
             //TODO: Send to Address List
             R.id.nav_address -> shortToastMessage(
-                this@MainActivity,
+                this@HomeActivity,
                 "You clicked Address"
-            ).show()
-
-            //TODO: Send to Stores Near User
-            R.id.nav_near_me -> shortToastMessage(
-                this@MainActivity,
-                "You clicked Near Me"
             ).show()
 
             //TODO: Send to User Order History
             R.id.nav_order_history -> shortToastMessage(
-                this@MainActivity,
+                this@HomeActivity,
                 "You clicked Order History"
             ).show()
 
             //TODO: Send to Application Settings
             R.id.nav_settings -> shortToastMessage(
-                this@MainActivity,
+                this@HomeActivity,
                 "You clicked Settings"
             ).show()
 
@@ -125,13 +129,13 @@ class MainActivity :
 
             //TODO: Send to About Us
             R.id.nav_about_us -> shortToastMessage(
-                this@MainActivity,
+                this@HomeActivity,
                 "You clicked About Us"
             ).show()
 
             //TODO: Send to Join Community
             R.id.nav_join -> shortToastMessage(
-                this@MainActivity,
+                this@HomeActivity,
                 "You clicked Join Community"
             ).show()
         } //end of when
@@ -152,14 +156,14 @@ class MainActivity :
 
         //Get user information from Shared Preferences
         val signedInName = sp.getString(
-            Constants.SIGNED_IN_FULL_NAME, "undefined undefined"
-        )!!
+            Constants.SIGNED_IN_FULL_NAME,
+            "undefined undefined")!!
         val signedInUserName = sp.getString(
-            Constants.SIGNED_IN_USERNAME, "undefined"
-        )!!
+            Constants.SIGNED_IN_USERNAME,
+            "undefined")!!
         val signedInProfilePic = sp.getString(
-            Constants.SIGNED_IN_PROFILE_PIC, ""
-        )!!
+            Constants.SIGNED_IN_PROFILE_PIC,
+            "")!!
 
         //Gets the header view from sidebar
         val header = binding.nvSidebar.getHeaderView(0)
@@ -174,12 +178,11 @@ class MainActivity :
         navUserName.text = signedInUserName
 
         //Change the profile picture with the image in the Cloud Storage
-        GlideLoader(this@MainActivity).loadUserPicture(
-            signedInProfilePic, navProfile
-        )
+        GlideLoader(this@HomeActivity)
+            .loadUserPicture(signedInProfilePic, navProfile)
 
         //Click event for Navigation Profile Picture ImageView
-        navProfile.setOnClickListener(this@MainActivity)
+        navProfile.setOnClickListener(this@HomeActivity)
 
     } //end of setSideNavProfileHeader method
 
@@ -190,15 +193,19 @@ class MainActivity :
 
         //Create an Intent to launch LoginActivity
         val intent = Intent(
-            this@MainActivity,
+            this@HomeActivity,
             LoginActivity::class.java
         )
-        //To ensure that no more activity layers active after the user signs out
+        //To ensure that no more activity layers are active after the user signs out
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        shortToastMessage(
+            this@HomeActivity, resources.getString(R.string.msg_signed_out)
+        ).show()
 
         startActivity(intent) //Opens the login page
         finish() //Closes the current activity
 
     } //end of signOutUser method
 
-} //end of MainActivity class
+}

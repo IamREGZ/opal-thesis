@@ -179,7 +179,7 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
         hideProgressDialog() //Hide the loading message
 
         //Displays a toast message
-        longToastMessage(
+        shortToastMessage(
             this@RegisterActivity,
             resources.getString(R.string.msg_register_success)
         ).show()

@@ -59,7 +59,7 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
                 when (gender) {
                     Constants.GENDER_MALE -> rbProfileMale.isChecked = true
                     Constants.GENDER_FEMALE -> rbProfileFemale.isChecked = true
-                    else -> rbProfileOther.isChecked = true
+                    Constants.GENDER_OTHER -> rbProfileOther.isChecked = true
                 }
 
                 //Load the current profile picture

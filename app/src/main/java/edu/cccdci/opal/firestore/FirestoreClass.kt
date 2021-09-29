@@ -10,8 +10,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import edu.cccdci.opal.activities.HomeActivity
 import edu.cccdci.opal.activities.LoginActivity
-import edu.cccdci.opal.activities.MainActivity
 import edu.cccdci.opal.activities.RegisterActivity
 import edu.cccdci.opal.activities.UserProfileActivity
 import edu.cccdci.opal.dataclasses.User
@@ -98,13 +98,13 @@ class FirestoreClass {
                 when (activity) {
                     //In Login Activity, it sends the user to the home page
                     is LoginActivity -> {
-                        activity.logInSuccessPrompt(user)
+                        activity.logInSuccessPrompt()
                     }
 
-                    /* In Main Activity, it sets the placeholder values in
+                    /* In Home Activity, it sets the placeholder values in
                      * the sidebar header to the user's information.
                      */
-                    is MainActivity -> {
+                    is HomeActivity -> {
                         activity.setSideNavProfileHeader(sharedPrefs, user)
                     }
                 }

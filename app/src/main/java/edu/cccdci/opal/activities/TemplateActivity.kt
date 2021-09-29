@@ -92,11 +92,12 @@ open class TemplateActivity : AppCompatActivity() {
 
     } //end of setupActionBar method
 
-    //Function to create a Toast Message that displays for a long time
-    fun longToastMessage(context: Context, msg: String): Toast =
-        Toast.makeText(context, msg, Toast.LENGTH_LONG)
-
+    //Function to create a Toast message that displays for a short time
     fun shortToastMessage(context: Context, msg: String): Toast =
         Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+
+    //Function to create a Toast message that displays for a long time
+    fun longToastMessage(context: Context, msg: String): Toast =
+        Toast.makeText(context, msg, Toast.LENGTH_LONG)
 
 } //end of TemplateActivity class

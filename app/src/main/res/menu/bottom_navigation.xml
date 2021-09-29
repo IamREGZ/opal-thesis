@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Home Menu Item -->
     <item
-        android:id="@+id/to_home_nav"
+        android:id="@+id/fragment_home"
         android:icon="@drawable/nav_home"
-        android:title="Home" />
-    <item
-        android:id="@+id/to_store_nav"
-        android:icon="@drawable/shop"
-        android:title="Shop" />
-    <item
-        android:id="@+id/to_notification_nav"
-        android:icon="@drawable/notification"
-        android:title="Notification" />
-    <item
-        android:id="@+id/to_categories_nav"
-        android:icon="@drawable/categories"
-        android:title="Categories" />
+        android:title="@string/home" />
 
+    <!-- Markets Menu Item -->
+    <item
+        android:id="@+id/fragment_markets"
+        android:icon="@drawable/shop"
+        android:title="@string/markets" />
+
+    <!-- Categories Menu Item -->
+    <item
+        android:id="@+id/fragment_categories"
+        android:icon="@drawable/categories"
+        android:title="@string/categories" />
+
+    <!-- Notifications Menu Item -->
+    <item
+        android:id="@+id/fragment_notifications"
+        android:icon="@drawable/notification"
+        android:title="@string/notifications" />
 
 </menu>

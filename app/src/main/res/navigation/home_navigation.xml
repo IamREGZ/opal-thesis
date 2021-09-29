@@ -3,26 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_navigation"
-    app:startDestination="@id/to_home_nav">
+    app:startDestination="@id/fragment_home">
 
     <fragment
-        android:id="@+id/to_home_nav"
-        android:name="edu.cccdci.opal.ToHomeNav"
-        android:label="fragment_to_home_nav"
-        tools:layout="@layout/fragment_to_home_nav" />
+        android:id="@+id/fragment_home"
+        android:name="edu.cccdci.opal.fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
     <fragment
-        android:id="@+id/to_store_nav"
-        android:name="edu.cccdci.opal.ToStoreNav"
-        android:label="fragment_to_store_nav"
-        tools:layout="@layout/fragment_to_store_nav" />
+        android:id="@+id/fragment_markets"
+        android:name="edu.cccdci.opal.fragments.MarketsFragment"
+        android:label="Markets"
+        tools:layout="@layout/fragment_markets" />
+
     <fragment
-        android:id="@+id/to_notification_nav"
-        android:name="edu.cccdci.opal.ToNotificationNav"
-        android:label="fragment_to_notification_nav"
-        tools:layout="@layout/fragment_to_notification_nav" />
+        android:id="@+id/fragment_categories"
+        android:name="edu.cccdci.opal.fragments.CategoriesFragment"
+        android:label="Categories"
+        tools:layout="@layout/fragment_categories" />
+
     <fragment
-        android:id="@+id/to_categories"
-        android:name="edu.cccdci.opal.ToCategories"
-        android:label="to_categories_nav"
-        tools:layout="@layout/fragment_to_categories_nav" />
+        android:id="@+id/fragment_notifications"
+        android:name="edu.cccdci.opal.fragments.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" />
+
 </navigation>

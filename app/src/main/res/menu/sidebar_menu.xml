@@ -4,23 +4,11 @@
     android:color="@color/app_white"
     tools:showIn="navigation_view">
 
-    <!-- Home Menu Item -->
-    <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="@string/nav_home" />
-
     <!-- Address Menu Item -->
     <item
         android:id="@+id/nav_address"
         android:icon="@drawable/ic_address"
         android:title="@string/nav_address" />
-
-    <!-- Near Me Menu Item -->
-    <item
-        android:id="@+id/nav_near_me"
-        android:icon="@drawable/ic_near_me"
-        android:title="@string/nav_near_me" />
 
     <!-- Order History Menu Item -->
     <item

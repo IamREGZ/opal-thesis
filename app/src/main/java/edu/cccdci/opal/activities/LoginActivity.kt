@@ -7,7 +7,6 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityLoginBinding
-import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
 
 class LoginActivity : TemplateActivity(), View.OnClickListener {
@@ -93,7 +92,7 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
             if (validateLogin()) {
 
                 //Display the loading message
-                showProgressDialog(resources.getString(R.string.msg_please_wait))
+                showProgressDialog(resources.getString(R.string.msg_signing_in))
 
                 val email = etEmail.text.toString().trim { it <= ' ' }
                 val password = etPassword.text.toString().trim { it <= ' ' }
@@ -125,12 +124,12 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
     } //end of loginUser method
 
     //Function to prompt that he/she is logged in
-    fun logInSuccessPrompt(user: User) {
+    fun logInSuccessPrompt() {
 
         hideProgressDialog() //Hide the loading message
 
         startActivity(Intent(
-            this@LoginActivity, MainActivity::class.java)
+            this@LoginActivity, HomeActivity::class.java)
         ) //Opens the home page
         finish() //Closes the current activity
 
