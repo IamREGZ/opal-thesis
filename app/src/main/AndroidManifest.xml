@@ -20,26 +20,26 @@
         <activity
             android:name=".activities.SplashScreenActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        
         <!-- Login Activity (This is next) -->
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-
+        
         <!-- Register Activity (When Register TextView is clicked) -->
         <activity
             android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-
+        
         <!-- Forgot Password Activity (When Forgot Password TextView is clicked) -->
         <activity
             android:name=".activities.ForgotPasswordActivity"
@@ -59,6 +59,16 @@
             android:name=".activities.UserProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+        
+        <activity
+            android:name=".activities.BottomNav"
+            android:exported="true" />
+        <activity
+            android:name=".activities.ButtomNavigation"
+            android:exported="true" />
+        <activity
+            android:name=".activities.Buttom_Navigation"
+            android:exported="true" />
 
     </application>
 

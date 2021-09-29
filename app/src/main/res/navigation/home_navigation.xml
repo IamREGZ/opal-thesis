@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_navigation"
+    app:startDestination="@id/to_home_nav">
+
+    <fragment
+        android:id="@+id/to_home_nav"
+        android:name="edu.cccdci.opal.ToHomeNav"
+        android:label="fragment_to_home_nav"
+        tools:layout="@layout/fragment_to_home_nav" />
+    <fragment
+        android:id="@+id/to_store_nav"
+        android:name="edu.cccdci.opal.ToStoreNav"
+        android:label="fragment_to_store_nav"
+        tools:layout="@layout/fragment_to_store_nav" />
+    <fragment
+        android:id="@+id/to_notification_nav"
+        android:name="edu.cccdci.opal.ToNotificationNav"
+        android:label="fragment_to_notification_nav"
+        tools:layout="@layout/fragment_to_notification_nav" />
+    <fragment
+        android:id="@+id/to_categories"
+        android:name="edu.cccdci.opal.ToCategories"
+        android:label="to_categories_nav"
+        tools:layout="@layout/fragment_to_categories_nav" />
+</navigation>
