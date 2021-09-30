@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
-    tools:context=".fragments.CategoriesFragment">
+    tools:context=".ui.fragments.CategoriesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/medium_margin"
+        android:layout_margin="@dimen/medium_mrg_pd"
         android:orientation="vertical">
 
         <!--        <RelativeLayout-->
@@ -36,8 +36,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/categories_panel_size"
-            android:layout_margin="@dimen/medium_large_margin"
-            android:background="@drawable/orangeback">
+            android:layout_margin="@dimen/medium_large_mrg_pd"
+            android:background="@drawable/panel_orange">
 
             <edu.cccdci.opal.utils.MainTextView
                 android:layout_width="wrap_content"
@@ -64,24 +64,24 @@
                 android:layout_width="@dimen/categories_image_size"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/medium_large_margin"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:contentDescription="@string/vegetables"
-                android:src="@drawable/vegetable" />
+                android:src="@drawable/ic_vegetables" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/categories_panel_size"
-            android:layout_margin="@dimen/medium_large_margin"
-            android:background="@drawable/brownback">
+            android:layout_margin="@dimen/medium_large_mrg_pd"
+            android:background="@drawable/panel_brown">
 
             <ImageView
                 android:layout_width="@dimen/categories_image_size"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/medium_large_margin"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:contentDescription="@string/fruits"
-                android:src="@drawable/fruits" />
+                android:src="@drawable/ic_fruits" />
 
             <edu.cccdci.opal.utils.MainTextView
                 android:layout_width="wrap_content"
@@ -111,16 +111,16 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/categories_panel_size"
-            android:layout_margin="@dimen/medium_large_margin"
-            android:background="@drawable/blueback">
+            android:layout_margin="@dimen/medium_large_mrg_pd"
+            android:background="@drawable/panel_blue">
 
             <ImageView
                 android:layout_width="@dimen/categories_image_size"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/medium_large_margin"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:contentDescription="@string/seafoods"
-                android:src="@drawable/seafood" />
+                android:src="@drawable/ic_seafoods" />
 
             <edu.cccdci.opal.utils.MainTextView
                 android:layout_width="wrap_content"

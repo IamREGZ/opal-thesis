@@ -3,8 +3,7 @@
     <string name="app_name">OPAL</string>
 
     <!--  Strings for Log-in  -->
-    <string name="login_username_hint">Enter Email Address</string>
-    <string name="login_password_hint">Enter Password</string>
+    <string name="sign_in_header">USER SIGN IN</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_in_btn">Sign in</string>
     <string name="no_account_lbl">Don\'t have an account?</string>
@@ -49,12 +48,15 @@
     </string>
 
     <!--  Message Prompts  -->
-    <string name="msg_register_success">Your account is successfully registered!</string>
+    <string name="msg_register_success">Your account is successfully registered.</string>
     <string name="msg_recovery_email_submitted">
         Email sent successfully. Check your email to reset your password.
     </string>
     <string name="msg_signed_out">Signed out successfully.</string>
-    <string name="msg_user_info_changed">Your user information is changed successfully.</string>
+    <string name="msg_user_info_changed">
+        Your user information is changed successfully.
+    </string>
+    <string name="msg_back_again_to_exit">Press back again to exit.</string>
 
     <!--  Dialog Progress  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
@@ -97,7 +99,7 @@
     <string name="gender_other">OTHER</string>
     <string name="save_changes_btn">Save Changes</string>
 
-    <!--  Fragment Texts  -->
+    <!--  Fragment Texts (to be removed soon)  -->
     <string name="home_fragment_text">Home Fragment</string>
     <string name="market_fragment_text">Markets Fragment</string>
 

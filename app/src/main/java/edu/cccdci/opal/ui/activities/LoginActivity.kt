@@ -1,4 +1,4 @@
-package edu.cccdci.opal.activities
+package edu.cccdci.opal.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,7 +22,7 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
             setContentView(root)
 
             //Click event for Login Button
-            btnLogin.setOnClickListener(this@LoginActivity)
+            btnSignIn.setOnClickListener(this@LoginActivity)
             //Click event for Forgot Password TextView
             tvForgotPassword.setOnClickListener(this@LoginActivity)
             //Click event for Register TextView
@@ -35,7 +35,7 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
         if (view != null) {
             when (view.id) {
                 //Logins the user and sends to home page
-                R.id.btn_login -> {
+                R.id.btn_sign_in -> {
                     loginUser()
                 }
 
@@ -65,17 +65,22 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
 
     } //end of onClick method
 
+    //Override the function to make the user double press back to exit
+    override fun onBackPressed() {
+        doubleBackToExit()
+    } //end of onBackPressed method
+
     //Function to validate login information
     private fun validateLogin(): Boolean = with(binding) {
         when {
             //If the Email field is empty
-            TextUtils.isEmpty(etEmail.text.toString().trim { it <= ' ' }) -> {
+            TextUtils.isEmpty(etLoginEmail.text.toString().trim { it <= ' ' }) -> {
                 showMessagePrompt(resources.getString(R.string.err_blank_email), true)
                 false
             }
 
             //If the Password field is empty
-            TextUtils.isEmpty(etPassword.text.toString().trim { it <= ' ' }) -> {
+            TextUtils.isEmpty(etLoginPass.text.toString().trim { it <= ' ' }) -> {
                 showMessagePrompt(resources.getString(R.string.err_blank_password), true)
                 false
             }
@@ -94,8 +99,8 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
                 //Display the loading message
                 showProgressDialog(resources.getString(R.string.msg_signing_in))
 
-                val email = etEmail.text.toString().trim { it <= ' ' }
-                val password = etPassword.text.toString().trim { it <= ' ' }
+                val email = etLoginEmail.text.toString().trim { it <= ' ' }
+                val password = etLoginPass.text.toString().trim { it <= ' ' }
 
                 //Authenticate Firebase Account using Email and Password
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
@@ -110,8 +115,8 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
                             hideProgressDialog() //Hide the loading message
 
                             //Clear the text fields
-                            etEmail.text?.clear()
-                            etPassword.text?.clear()
+                            etLoginEmail.text?.clear()
+                            etLoginPass.text?.clear()
 
                             showMessagePrompt(task.exception!!.message.toString(), true)
                         }

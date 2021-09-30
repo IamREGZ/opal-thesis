@@ -18,45 +18,46 @@
 
         <!-- Splash Screen Activity (First to open) -->
         <activity
-            android:name=".activities.SplashScreenActivity"
+            android:name="edu.cccdci.opal.ui.activities.SplashScreenActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" >
+            android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <!-- Login Activity (This is next) -->
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="edu.cccdci.opal.ui.activities.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-        
+
         <!-- Register Activity (When Register TextView is clicked) -->
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name="edu.cccdci.opal.ui.activities.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-        
+
         <!-- Forgot Password Activity (When Forgot Password TextView is clicked) -->
         <activity
-            android:name=".activities.ForgotPasswordActivity"
+            android:name="edu.cccdci.opal.ui.activities.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Template Activity (Snackbar, toast, dialogs, etc.) -->
-        <activity android:name=".activities.TemplateActivity" />
+        <activity android:name="edu.cccdci.opal.ui.activities.TemplateActivity" />
 
         <!-- (Home Page of the App) -->
         <activity
-            android:name=".activities.HomeActivity"
-            android:exported="true" />
+            android:name="edu.cccdci.opal.ui.activities.HomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
 
         <!-- User Profile Activity (Change User Information) -->
         <activity
-            android:name=".activities.UserProfileActivity"
+            android:name="edu.cccdci.opal.ui.activities.UserProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 

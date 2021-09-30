@@ -1,4 +1,4 @@
-package edu.cccdci.opal.activities
+package edu.cccdci.opal.ui.activities
 
 import android.content.Intent
 import android.os.Build
@@ -7,6 +7,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.databinding.ActivitySplashScreenBinding
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -39,31 +40,38 @@ class SplashScreenActivity : AppCompatActivity() {
 
             //Animate the splash screen logo by fading in
             ivLogo.animate().setDuration(1500).alpha(1f).withEndAction {
-                //Opens the Login Activity
+                //Opens either Log In or Home Activity
                 startActivity(
                     Intent(
                         this@SplashScreenActivity,
-                        LoginActivity::class.java
+                        checkCurrentUserSignIn() //Check for signed in user
                     )
                 )
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+
+                //Change the default transition
+                overridePendingTransition(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                )
+
                 finish() //Closes the Splash Screen
             } //end of withEndAction
 
         } //end of with(binding)
 
-//        //Non-animated Splash Screen
-//        @Suppress("DEPRECATION")
-//        Handler().postDelayed(
-//            {
-//                //Launch the Main Activity
-//                startActivity(
-//                    Intent(this@SplashScreenActivity, LoginActivity::class.java)
-//                )
-//                finish() //Closes the activity
-//            },
-//            1500 //Delay Duration
-//        )
     } //end of onCreate method
+
+    //Function to check if there's a user signed in in the application
+    private fun checkCurrentUserSignIn(): Class<*> {
+        //Get the current user signed in from Firebase Authentication
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+        //If there's a user signed in, go to the home page
+        return if (firebaseUser != null)
+            HomeActivity::class.java
+        //If none, go to log in page instead
+        else
+            LoginActivity::class.java
+    } //end of checkCurrentUserSignIn method
 
 } //end of SplashScreenActivity class

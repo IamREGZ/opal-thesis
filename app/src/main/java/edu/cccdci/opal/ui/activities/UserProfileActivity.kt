@@ -1,4 +1,4 @@
-package edu.cccdci.opal.activities
+package edu.cccdci.opal.ui.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -186,7 +186,7 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
                 e.printStackTrace()
 
                 //Display an error Toast message
-                shortToastMessage(
+                toastMessage(
                     this@UserProfileActivity,
                     resources.getString(R.string.err_image_selection_failed)
                 ).show()
@@ -283,7 +283,7 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
         hideProgressDialog() //Hide the loading message
 
         //Displays the Toast message
-        longToastMessage(
+        toastMessage(
             this@UserProfileActivity,
             resources.getString(R.string.msg_user_info_changed)
         ).show()

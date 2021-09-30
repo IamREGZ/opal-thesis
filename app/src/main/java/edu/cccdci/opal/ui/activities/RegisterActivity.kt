@@ -1,4 +1,4 @@
-package edu.cccdci.opal.activities
+package edu.cccdci.opal.ui.activities
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -179,7 +179,7 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
         hideProgressDialog() //Hide the loading message
 
         //Displays a toast message
-        shortToastMessage(
+        toastMessage(
             this@RegisterActivity,
             resources.getString(R.string.msg_register_success)
         ).show()

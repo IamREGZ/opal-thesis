@@ -5,7 +5,7 @@
     android:id="@+id/dl_home_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.HomeActivity">
+    tools:context=".ui.activities.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:background="@drawable/app_gradient_horizontal"
             app:itemIconTint="@color/app_white"
             app:itemTextColor="@color/app_white"
-            app:menu="@menu/bottom_navigation" />
+            app:menu="@menu/bottom_nav_menu" />
 
     </LinearLayout>
 

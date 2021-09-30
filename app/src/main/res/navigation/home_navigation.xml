@@ -7,26 +7,26 @@
 
     <fragment
         android:id="@+id/fragment_home"
-        android:name="edu.cccdci.opal.fragments.HomeFragment"
-        android:label="Home"
+        android:name="edu.cccdci.opal.ui.fragments.HomeFragment"
+        android:label="@string/home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/fragment_markets"
-        android:name="edu.cccdci.opal.fragments.MarketsFragment"
-        android:label="Markets"
+        android:name="edu.cccdci.opal.ui.fragments.MarketsFragment"
+        android:label="@string/markets"
         tools:layout="@layout/fragment_markets" />
 
     <fragment
         android:id="@+id/fragment_categories"
-        android:name="edu.cccdci.opal.fragments.CategoriesFragment"
-        android:label="Categories"
+        android:name="edu.cccdci.opal.ui.fragments.CategoriesFragment"
+        android:label="@string/categories"
         tools:layout="@layout/fragment_categories" />
 
     <fragment
         android:id="@+id/fragment_notifications"
-        android:name="edu.cccdci.opal.fragments.NotificationsFragment"
-        android:label="Notifications"
+        android:name="edu.cccdci.opal.ui.fragments.NotificationsFragment"
+        android:label="@string/notifications"
         tools:layout="@layout/fragment_notifications" />
 
 </navigation>

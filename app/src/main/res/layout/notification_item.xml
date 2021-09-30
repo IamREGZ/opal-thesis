@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/medium_large_margin">
+    android:padding="@dimen/medium_large_mrg_pd">
 
     <ImageView
         android:id="@+id/notification_profile"
@@ -11,14 +11,14 @@
         android:layout_height="@dimen/notif_profile_pic_size"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/notif_profile_cd"
-        android:src="@drawable/notif_icon" />
+        android:src="@drawable/ic_notif_prof" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/medium_large_margin"
-        android:layout_marginEnd="@dimen/medium_margin"
+        android:layout_marginStart="@dimen/medium_large_mrg_pd"
+        android:layout_marginEnd="@dimen/medium_mrg_pd"
         android:layout_weight="2"
         android:orientation="vertical">
 
@@ -34,7 +34,7 @@
             android:id="@+id/notification_sms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginTop="@dimen/small_mrg_pd"
             android:text="@string/notif_desc"
             android:textColor="@color/app_black"
             android:textSize="@dimen/main_text_size" />

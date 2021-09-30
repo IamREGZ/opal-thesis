@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/app_gradient_vertical"
     android:orientation="vertical"
-    android:padding="@dimen/large_margin">
+    android:padding="@dimen/large_mrg_pd">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_nav_profile_pic"
@@ -20,7 +20,7 @@
         android:id="@+id/tv_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/medium_mrg_pd"
         android:text="@string/nav_profile_full_name"
         android:textColor="@color/app_white"
         android:textSize="@dimen/header_text_size" />
@@ -29,7 +29,7 @@
         android:id="@+id/tv_profile_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginTop="@dimen/small_mrg_pd"
         android:text="@string/nav_profile_username"
         android:textColor="@color/app_white"
         android:textSize="@dimen/main_text_size" />

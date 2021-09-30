@@ -1,4 +1,4 @@
-package edu.cccdci.opal.activities
+package edu.cccdci.opal.ui.activities
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -50,8 +50,8 @@ class HomeActivity : TemplateActivity(),
                     R.id.fragment_notifications
                 )
             )
-            setupActionBarWithNavController(navController, appBarConfiguration)
 
+            setupActionBarWithNavController(navController, appBarConfiguration)
             bottomNavigationView.setupWithNavController(navController)
 
             //Adds the Hamburger Button Toggle in Action Bar
@@ -104,39 +104,39 @@ class HomeActivity : TemplateActivity(),
         FirestoreClass().getUserDetails(this@HomeActivity)
     } //end of onResume method
 
+    //Override the function to make the user double press back to exit
+    override fun onBackPressed() {
+        doubleBackToExit()
+    } //end of onBackPressed method
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             //TODO: Send to Address List
-            R.id.nav_address -> shortToastMessage(
-                this@HomeActivity,
-                "You clicked Address"
+            R.id.nav_address -> toastMessage(
+                this@HomeActivity, "You clicked Address", false
             ).show()
 
             //TODO: Send to User Order History
-            R.id.nav_order_history -> shortToastMessage(
-                this@HomeActivity,
-                "You clicked Order History"
+            R.id.nav_order_history -> toastMessage(
+                this@HomeActivity, "You clicked Order History"
             ).show()
 
             //TODO: Send to Application Settings
-            R.id.nav_settings -> shortToastMessage(
-                this@HomeActivity,
-                "You clicked Settings"
+            R.id.nav_settings -> toastMessage(
+                this@HomeActivity, "You clicked Settings"
             ).show()
 
             //Signs the user out
-            R.id.nav_signout -> signOutUser()
+            R.id.nav_sign_out -> signOutUser()
 
             //TODO: Send to About Us
-            R.id.nav_about_us -> shortToastMessage(
-                this@HomeActivity,
-                "You clicked About Us"
+            R.id.nav_about_us -> toastMessage(
+                this@HomeActivity, "You clicked About Us"
             ).show()
 
             //TODO: Send to Join Community
-            R.id.nav_join -> shortToastMessage(
-                this@HomeActivity,
-                "You clicked Join Community"
+            R.id.nav_join -> toastMessage(
+                this@HomeActivity, "You clicked Join Community"
             ).show()
         } //end of when
 
@@ -199,7 +199,7 @@ class HomeActivity : TemplateActivity(),
         //To ensure that no more activity layers are active after the user signs out
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-        shortToastMessage(
+        toastMessage(
             this@HomeActivity, resources.getString(R.string.msg_signed_out)
         ).show()
 

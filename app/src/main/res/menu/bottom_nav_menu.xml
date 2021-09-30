@@ -4,25 +4,25 @@
     <!-- Home Menu Item -->
     <item
         android:id="@+id/fragment_home"
-        android:icon="@drawable/nav_home"
+        android:icon="@drawable/ic_home"
         android:title="@string/home" />
 
     <!-- Markets Menu Item -->
     <item
         android:id="@+id/fragment_markets"
-        android:icon="@drawable/shop"
+        android:icon="@drawable/ic_markets"
         android:title="@string/markets" />
 
     <!-- Categories Menu Item -->
     <item
         android:id="@+id/fragment_categories"
-        android:icon="@drawable/categories"
+        android:icon="@drawable/ic_categories"
         android:title="@string/categories" />
 
     <!-- Notifications Menu Item -->
     <item
         android:id="@+id/fragment_notifications"
-        android:icon="@drawable/notification"
+        android:icon="@drawable/ic_notifications"
         android:title="@string/notifications" />
 
 </menu>
