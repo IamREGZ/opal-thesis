@@ -55,7 +55,8 @@
             app:boxCornerRadiusTopEnd="@dimen/et_sign_in_radius"
             app:boxCornerRadiusTopStart="@dimen/et_sign_in_radius"
             app:boxStrokeWidth="@dimen/et_stroke_width"
-            app:startIconDrawable="@drawable/ic_email">
+            app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="@color/app_black">
 
             <edu.cccdci.opal.utils.MainEditText
                 android:id="@+id/et_login_email"
@@ -81,7 +82,8 @@
             app:boxStrokeWidth="@dimen/et_stroke_width"
             app:endIconMode="password_toggle"
             app:endIconTint="@color/app_black"
-            app:startIconDrawable="@drawable/ic_password">
+            app:startIconDrawable="@drawable/ic_password"
+            app:startIconTint="@color/app_black">
 
             <edu.cccdci.opal.utils.MainEditText
                 android:id="@+id/et_login_pass"
