@@ -34,21 +34,12 @@
         android:paddingStart="@dimen/login_layout_padding"
         android:paddingEnd="@dimen/login_layout_padding">
 
-        <edu.cccdci.opal.utils.HeaderTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/large_mrg_pd"
-            android:text="@string/sign_in_header"
-            android:textColor="@color/app_black"
-            android:textSize="@dimen/sign_in_head_text_size" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_login_email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_large_mrg_pd"
+            android:layout_marginTop="@dimen/xl_mrg_pd"
             android:hint="@string/email_address"
             app:boxCornerRadiusBottomEnd="@dimen/et_sign_in_radius"
             app:boxCornerRadiusBottomStart="@dimen/et_sign_in_radius"
@@ -120,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/large_mrg_pd"
+            android:layout_marginTop="@dimen/xl_mrg_pd"
             android:orientation="horizontal">
 
             <edu.cccdci.opal.utils.MainTextView

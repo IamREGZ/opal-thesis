@@ -65,6 +65,12 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
 
     } //end of onClick method
 
+    //Operations to do when this activity is active again
+    override fun onResume() {
+        super.onResume()
+        clearLoginFields() //Clears the login fields
+    } //end of onResume method
+
     //Override the function to make the user double press back to exit
     override fun onBackPressed() {
         doubleBackToExit()
@@ -114,9 +120,7 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
 
                             hideProgressDialog() //Hide the loading message
 
-                            //Clear the text fields
-                            etLoginEmail.text?.clear()
-                            etLoginPass.text?.clear()
+                            clearLoginFields() //Clears the login fields
 
                             showMessagePrompt(task.exception!!.message.toString(), true)
                         }
@@ -134,10 +138,21 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
         hideProgressDialog() //Hide the loading message
 
         startActivity(Intent(
-            this@LoginActivity, HomeActivity::class.java)
+            this@LoginActivity, MainActivity::class.java)
         ) //Opens the home page
         finish() //Closes the current activity
 
     } //end of logInSuccessPrompt method
+
+    //Function to clear the login text fields
+    private fun clearLoginFields() {
+        with(binding) {
+            if (etLoginEmail.text!!.isNotEmpty())
+                etLoginEmail.text!!.clear()
+
+            if (etLoginPass.text!!.isNotEmpty())
+                etLoginPass.text!!.clear()
+        }
+    } //end of clearLoginFields method
 
 } //end of LoginActivity class

@@ -41,12 +41,7 @@ class SplashScreenActivity : AppCompatActivity() {
             //Animate the splash screen logo by fading in
             ivLogo.animate().setDuration(1500).alpha(1f).withEndAction {
                 //Opens either Log In or Home Activity
-                startActivity(
-                    Intent(
-                        this@SplashScreenActivity,
-                        checkCurrentUserSignIn() //Check for signed in user
-                    )
-                )
+                startActivity(checkCurrentUserSignedIn())
 
                 //Change the default transition
                 overridePendingTransition(
@@ -62,16 +57,16 @@ class SplashScreenActivity : AppCompatActivity() {
     } //end of onCreate method
 
     //Function to check if there's a user signed in in the application
-    private fun checkCurrentUserSignIn(): Class<*> {
-        //Get the current user signed in from Firebase Authentication
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
-
+    private fun checkCurrentUserSignedIn(): Intent {
         //If there's a user signed in, go to the home page
-        return if (firebaseUser != null)
-            HomeActivity::class.java
+        val targetActivity = if (FirebaseAuth.getInstance().currentUser != null)
+            MainActivity::class.java
         //If none, go to log in page instead
         else
             LoginActivity::class.java
-    } //end of checkCurrentUserSignIn method
+
+        //Returns the Intent to send user to either Log In or Home
+        return Intent(this@SplashScreenActivity, targetActivity)
+    } //end of checkCurrentUserSignedIn method
 
 } //end of SplashScreenActivity class

@@ -34,4 +34,13 @@
         android:textColor="@color/app_white"
         android:textSize="@dimen/main_text_size" />
 
+    <edu.cccdci.opal.utils.MainTextView
+        android:id="@+id/tv_role_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_mrg_pd"
+        android:text="@string/nav_profile_role"
+        android:textColor="@color/app_white"
+        android:textSize="@dimen/main_text_size" />
+
 </LinearLayout>

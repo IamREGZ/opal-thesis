@@ -13,7 +13,7 @@
     <!-- Order History Menu Item -->
     <item
         android:id="@+id/nav_order_history"
-        android:icon="@drawable/ic_order"
+        android:icon="@drawable/ic_order_history"
         android:title="@string/nav_order_history" />
 
     <!-- Settings Menu Item -->
@@ -28,6 +28,39 @@
         android:icon="@drawable/ic_sign_out"
         android:title="@string/nav_sign_out" />
 
+    <!-- For Vendors Only -->
+    <item
+        android:id="@+id/nav_vendor_only"
+        android:title="@string/nav_subhead_vendor_center">
+
+        <menu>
+            <!-- Your Market Submenu Item -->
+            <item
+                android:id="@+id/nav_your_market"
+                android:icon="@drawable/ic_your_market"
+                android:title="@string/nav_your_market" />
+
+            <!-- Products Submenu Item -->
+            <item
+                android:id="@+id/nav_products"
+                android:icon="@drawable/ic_products"
+                android:title="@string/nav_products" />
+
+            <!-- Orders Submenu Item -->
+            <item
+                android:id="@+id/nav_orders"
+                android:icon="@drawable/ic_orders"
+                android:title="@string/nav_orders" />
+
+            <!-- Insights Submenu Item -->
+            <item
+                android:id="@+id/nav_insights"
+                android:icon="@drawable/ic_insights"
+                android:title="@string/nav_insights" />
+        </menu>
+
+    </item>
+
     <!-- Contact Us Menu Item Group -->
     <item android:title="@string/nav_subhead_contact_us">
 
@@ -37,11 +70,24 @@
                 android:id="@+id/nav_about_us"
                 android:icon="@drawable/ic_about_us"
                 android:title="@string/nav_about_us" />
-            <!-- Join Community Submenu Item -->
+
+            <!-- Feedback Submenu Item -->
             <item
-                android:id="@+id/nav_join"
-                android:icon="@drawable/ic_join"
-                android:title="@string/nav_join_community" />
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_feedback"
+                android:title="@string/nav_feedback" />
+
+            <!-- Privacy Policy Submenu Item -->
+            <item
+                android:id="@+id/nav_privacy"
+                android:icon="@drawable/ic_privacy"
+                android:title="@string/nav_privacy_policy" />
+
+            <!-- Become a Vendor Submenu Item (Customers Only) -->
+            <item
+                android:id="@+id/nav_become_vendor"
+                android:icon="@drawable/ic_become_vendor"
+                android:title="@string/nav_become_vendor" />
         </menu>
 
     </item>

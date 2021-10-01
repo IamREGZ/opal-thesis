@@ -3,7 +3,6 @@
     <string name="app_name">OPAL</string>
 
     <!--  Strings for Log-in  -->
-    <string name="sign_in_header">USER SIGN IN</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_in_btn">Sign in</string>
     <string name="no_account_lbl">Don\'t have an account?</string>
@@ -63,12 +62,23 @@
     <string name="msg_saving_changes">Saving changes&#8230;</string>
     <string name="msg_signing_in">Signing in&#8230;</string>
 
+    <!--  User Roles  -->
+    <string name="role_customer">Customer</string>
+    <string name="role_vendor">Vendor</string>
+
     <!--  Toolbar Titles  -->
     <string name="tlb_title_user_profile">USER PROFILE</string>
 
-    <!--  Side Navigation  -->
+    <!--  Top App Bar  -->
+    <string name="cart">Cart</string>
+    <string name="messages">Messages</string>
+
+    <!--  Side Navigation Header  -->
     <string name="nav_profile_full_name">Name Surname</string>
     <string name="nav_profile_username">Username</string>
+    <string name="nav_profile_role">Role Indicator</string>
+
+    <!--  Side Navigation Items  -->
     <string name="nav_address">Address</string>
     <string name="nav_order_history">Order History</string>
     <string name="nav_settings">Settings</string>
@@ -76,8 +86,16 @@
     <string name="nav_subhead_contact_us">Contact Us</string>
     <string name="nav_about_us">About Us</string>
     <string name="nav_join_community">Join Community</string>
-    <string name="open">open</string>
-    <string name="close">close</string>
+    <string name="nav_feedback">Feedback</string>
+    <string name="nav_privacy_policy">Privacy Policy</string>
+    <string name="nav_become_vendor">Become a Vendor</string>
+
+    <!--  Side Nav for Vendors  -->
+    <string name="nav_subhead_vendor_center">Vendor Center</string>
+    <string name="nav_your_market">Your Market</string>
+    <string name="nav_products">Products</string>
+    <string name="nav_orders">Orders</string>
+    <string name="nav_insights">Insights</string>
 
     <!--  Bottom Navigation  -->
     <string name="home">Home</string>

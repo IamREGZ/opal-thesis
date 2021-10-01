@@ -51,7 +51,7 @@
 
         <!-- (Home Page of the App) -->
         <activity
-            android:name="edu.cccdci.opal.ui.activities.HomeActivity"
+            android:name="edu.cccdci.opal.ui.activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
