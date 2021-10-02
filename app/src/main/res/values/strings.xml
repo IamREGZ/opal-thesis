@@ -126,5 +126,8 @@
     <string name="fruits"><i>Fruits</i></string>
     <string name="seafoods"><i>Seafoods</i></string>
     <string name="expand_all"><u>Expand All</u></string>
+  
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
