@@ -25,6 +25,7 @@ object Constants {
     const val SIGNED_IN_FULL_NAME: String = "signed_in_full_name"
     const val SIGNED_IN_USERNAME: String = "signed_in_username"
     const val SIGNED_IN_PROFILE_PIC: String = "signed_in_profile_pic"
+    const val SIGNED_IN_USER_ROLE: String = "signed_in_user_role"
     const val EXTRA_USER_INFO: String = "extra_user_info"
 
     //For Requesting Permissions

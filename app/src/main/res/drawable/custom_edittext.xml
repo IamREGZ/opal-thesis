@@ -3,7 +3,7 @@
     <!--  Focused EditText  -->
     <item android:state_focused="true">
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/et_login_radius" />
+            <corners android:radius="@dimen/et_sign_in_radius" />
             <stroke android:color="@color/app_white" android:width="@dimen/et_stroke_width" />
         </shape>
     </item>
@@ -11,7 +11,7 @@
     <!--  Unfocused EditText  -->
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/et_login_radius" />
+            <corners android:radius="@dimen/et_sign_in_radius" />
             <stroke android:color="@color/et_hint_black" android:width="@dimen/et_stroke_width" />
         </shape>
     </item>

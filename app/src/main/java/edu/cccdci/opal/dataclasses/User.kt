@@ -14,7 +14,7 @@ data class User(
     val gender: String = "",
     val phoneNum: String = "",
     val profilePic: String = "",
-    val isVendor: Boolean = false
+    val vendor: Boolean = false
 ) : Parcelable
 
 /*

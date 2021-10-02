@@ -7,9 +7,13 @@
     <!--  Text Sizes  -->
     <dimen name="main_text_size">18sp</dimen>
     <dimen name="header_text_size">24sp</dimen>
-    <dimen name="login_button_text_size">22sp</dimen>
+    <dimen name="sign_in_button_text_size">22sp</dimen>
     <dimen name="register_buttons_text_size">18sp</dimen>
+    <dimen name="progress_text_size">16sp</dimen>
     <dimen name="save_changes_text_size">22sp</dimen>
+    <dimen name="notif_head_text_size">22sp</dimen>
+    <dimen name="categories_name_text_size">28sp</dimen>
+    <dimen name="categories_expand_text_size">16sp</dimen>
 
     <!--  Button Dimens  -->
     <dimen name="button_radius">15dp</dimen>
@@ -17,16 +21,16 @@
     <dimen name="radio_button_stroke">2dp</dimen>
 
     <!--  EditText Dimens  -->
-    <dimen name="et_login_radius">20dp</dimen>
+    <dimen name="et_sign_in_radius">15dp</dimen>
     <dimen name="et_radius">10dp</dimen>
     <dimen name="et_stroke_width">2dp</dimen>
 
-    <!--  General Margins  -->
-    <dimen name="small_margin">5dp</dimen>
-    <dimen name="medium_margin">10dp</dimen>
-    <dimen name="medium_large_margin">15dp</dimen>
-    <dimen name="large_margin">24dp</dimen>
-    <dimen name="xl_margin">36dp</dimen>
+    <!--  General Margins & Paddings  -->
+    <dimen name="small_mrg_pd">5dp</dimen>
+    <dimen name="medium_mrg_pd">10dp</dimen>
+    <dimen name="medium_large_mrg_pd">16dp</dimen>
+    <dimen name="large_mrg_pd">24dp</dimen>
+    <dimen name="xl_mrg_pd">36dp</dimen>
     <dimen name="tlb_title_paddingStart">-25dp</dimen>
 
     <!--  Login Dimens  -->
@@ -47,7 +51,6 @@
     <!--  Progress Dialog Dimens  -->
     <dimen name="progress_dialog_padding">8dp</dimen>
     <dimen name="progress_spinner_size">60dp</dimen>
-    <dimen name="progress_text_size">16sp</dimen>
 
     <!--  Sidebar Dimens  -->
     <dimen name="nav_profile_picture_size">120dp</dimen>
@@ -60,6 +63,13 @@
     <dimen name="profile_rb_gender_marginStartEnd">3dp</dimen>
     <dimen name="profile_save_btn_height">50dp</dimen>
 
-    <!-- <dimen name="profile_user_photo_margin">3dp</dimen> -->
+    <!--  Notification Dimens  -->
+    <dimen name="notif_profile_pic_size">50dp</dimen>
+
+    <!--  Categories Dimens  -->
+    <dimen name="categories_panel_size">150dp</dimen>
+    <dimen name="categories_image_size">120dp</dimen>
+    <dimen name="categories_margin_big">20dp</dimen>
+    <dimen name="categories_margin_small">10dp</dimen>
 
 </resources>

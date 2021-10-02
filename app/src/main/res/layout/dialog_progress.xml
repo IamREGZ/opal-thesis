@@ -22,7 +22,7 @@
         android:id="@+id/tv_progress_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_mrg_pd"
         android:text="@string/msg_please_wait"
         android:textColor="@color/app_black"
         android:textSize="@dimen/progress_text_size"

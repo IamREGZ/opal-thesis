@@ -18,7 +18,6 @@
     <color name="secondaryDarkModeColor">#FF40E0D0</color>
     <color name="app_white">#FFF8F8FF</color>
     <color name="app_black">#FF0F0F0F</color>
-    <color name="et_hint_white">#A0F8F8FF</color>
     <color name="et_hint_black">#D00F0F0F</color>
     <color name="colorErrorMessage">#FFED1C24</color>
     <color name="colorSuccessMessage">#FF009150</color>
