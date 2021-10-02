@@ -1,7 +1,9 @@
-package edu.cccdci.opal.activities
+package edu.cccdci.opal.ui.activities
 
 import android.app.Dialog
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,34 +14,31 @@ import edu.cccdci.opal.databinding.DialogProgressBinding
 
 open class TemplateActivity : AppCompatActivity() {
 
+    private var backPressedOnce = false
+
     private lateinit var contentProgDialog: Dialog
 
-    //Function to display the Message snackbar
+    //Function to display the Message SnackBar
     fun showMessagePrompt(message: String, error: Boolean) {
+        //Prepare the SnackBar
         val msgPrompt = Snackbar.make(
             findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG
         )
         val msgPromptView = msgPrompt.view
 
-        if (error) {
-            //Display a red snackbar if there's an error
-            msgPromptView.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@TemplateActivity,
-                    R.color.colorErrorMessage
-                )
-            )
+        //Decides what color of the SnackBar depending on the message
+        val snackBarColor = if (error) {
+            R.color.colorErrorMessage //Red color if error
         } else {
-            //Display a green snackbar if the task is successful
-            msgPromptView.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@TemplateActivity,
-                    R.color.colorSuccessMessage
-                )
-            )
+            R.color.colorSuccessMessage //Green color if successful
         }
 
-        msgPrompt.show() //Shows the snackbar
+        //Sets the color of the SnackBar
+        msgPromptView.setBackgroundColor(
+            ContextCompat.getColor(this@TemplateActivity, snackBarColor)
+        )
+
+        msgPrompt.show() //Shows the SnackBar
     } //end of showMessagePrompt method
 
     //Function to show the loading dialog
@@ -48,12 +47,11 @@ open class TemplateActivity : AppCompatActivity() {
         contentProgDialog = Dialog(this)
 
         with(contentProgDialog) {
+            //Prepares the progress dialog
+            setContentView(dialogBind.root)
+            dialogBind.tvProgressText.text = message
 
-            with(dialogBind) {
-                setContentView(root)
-                tvProgressText.text = message
-            } //end of with(dialogBind)
-
+            //Make the progress dialog non-cancellable
             setCancelable(false)
             setCanceledOnTouchOutside(false)
 
@@ -92,11 +90,37 @@ open class TemplateActivity : AppCompatActivity() {
 
     } //end of setupActionBar method
 
-    //Function to create a Toast Message that displays for a long time
-    fun longToastMessage(context: Context, msg: String): Toast =
-        Toast.makeText(context, msg, Toast.LENGTH_LONG)
+    //Function to create a Toast message (show for short time by default)
+    fun toastMessage(context: Context, msg: String, showLong: Boolean = false): Toast =
+        if (showLong) {
+            Toast.makeText(context, msg, Toast.LENGTH_LONG)
+        } else {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+        }
 
-    fun shortToastMessage(context: Context, msg: String): Toast =
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+    //Function to double press back to exit the application
+    fun doubleBackToExit() {
+
+        //User pressed back the second time
+        if (backPressedOnce) {
+            super.onBackPressed()
+            return //exit the function
+        }
+
+        //When the user pressed back once
+        this.backPressedOnce = true
+        //Display a Toast message
+        toastMessage(
+            this, resources.getString(R.string.msg_back_again_to_exit)
+        ).show()
+
+        /* If the user has not clicked back twice within 2 seconds,
+         * it will not exit.
+         */
+        Handler(Looper.getMainLooper()).postDelayed({
+            backPressedOnce = false
+        }, 2000)
+
+    } //end of doubleBackToExit method
 
 } //end of TemplateActivity class

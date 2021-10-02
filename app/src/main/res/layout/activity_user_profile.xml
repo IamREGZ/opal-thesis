@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_white"
     android:orientation="vertical"
-    tools:context=".activities.UserProfileActivity">
+    tools:context=".ui.activities.UserProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tlb_user_profile_activity"
@@ -38,16 +38,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="@dimen/medium_large_margin"
-            android:paddingEnd="@dimen/medium_large_margin">
+            android:paddingStart="@dimen/medium_large_mrg_pd"
+            android:paddingEnd="@dimen/medium_large_mrg_pd">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_user_profile_photo"
                 android:layout_width="@dimen/profile_user_photo_size"
                 android:layout_height="@dimen/profile_user_photo_size"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/large_margin"
-                android:layout_marginBottom="@dimen/medium_large_margin"
+                android:layout_marginTop="@dimen/large_mrg_pd"
+                android:layout_marginBottom="@dimen/medium_large_mrg_pd"
                 android:contentDescription="@string/user_profile_photo_cd"
                 android:src="@drawable/ic_prof_image_placeholder"
                 app:civ_border_color="@color/primaryAccentColor"
@@ -58,7 +58,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
                 android:hint="@string/first_name"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -82,7 +82,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
                 android:hint="@string/last_name"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -106,7 +106,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
                 android:hint="@string/email_address"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -130,7 +130,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
                 android:hint="@string/username"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -154,7 +154,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
                 android:hint="@string/phone_number"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -177,7 +177,7 @@
                 android:id="@+id/rg_profile_gender"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/profile_rg_gender_height"
-                android:layout_marginTop="@dimen/medium_large_margin"
+                android:layout_marginTop="@dimen/medium_large_mrg_pd"
                 android:orientation="horizontal">
 
                 <edu.cccdci.opal.utils.MainRadioButton
@@ -226,9 +226,8 @@
                 android:id="@+id/btn_save_profile_info"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/profile_save_btn_height"
-                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginTop="@dimen/large_mrg_pd"
                 android:background="@drawable/custom_button"
-                android:foreground="?attr/selectableItemBackground"
                 android:text="@string/save_changes_btn"
                 android:textColor="@color/app_white"
                 android:textSize="@dimen/save_changes_text_size" />
