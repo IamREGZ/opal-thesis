@@ -4,11 +4,11 @@
     android:color="@color/app_white"
     tools:showIn="navigation_view">
 
-    <!-- Address Menu Item -->
+    <!-- Addresses Menu Item -->
     <item
-        android:id="@+id/nav_address"
-        android:icon="@drawable/ic_address"
-        android:title="@string/nav_address" />
+        android:id="@+id/nav_addresses"
+        android:icon="@drawable/ic_addresses"
+        android:title="@string/nav_addresses" />
 
     <!-- Order History Menu Item -->
     <item
@@ -46,11 +46,11 @@
                 android:icon="@drawable/ic_products"
                 android:title="@string/nav_products" />
 
-            <!-- Orders Submenu Item -->
+            <!-- Customer Transactions Submenu Item -->
             <item
-                android:id="@+id/nav_orders"
-                android:icon="@drawable/ic_orders"
-                android:title="@string/nav_orders" />
+                android:id="@+id/nav_customer_transactions"
+                android:icon="@drawable/ic_customer_transactions"
+                android:title="@string/nav_customer_transactions" />
 
             <!-- Insights Submenu Item -->
             <item
@@ -62,7 +62,7 @@
     </item>
 
     <!-- Contact Us Menu Item Group -->
-    <item android:title="@string/nav_subhead_contact_us">
+    <item android:title="@string/nav_subhead_help">
 
         <menu>
             <!-- About Us Submenu Item -->

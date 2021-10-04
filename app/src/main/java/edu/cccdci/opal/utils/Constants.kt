@@ -14,6 +14,7 @@ object Constants {
     const val GENDER: String = "gender"
     const val PHONENUM: String = "phoneNum"
     const val PROFILEPIC: String = "profilePic"
+    const val VENDOR: String = "vendor"
 
     //For storing information to Firestore
     const val GENDER_MALE: String = "male"

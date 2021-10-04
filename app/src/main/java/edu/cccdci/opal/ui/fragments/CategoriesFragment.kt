@@ -18,6 +18,6 @@ class CategoriesFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentCategoriesBinding.inflate(inflater)
         return binding.root
-    }
+    } //end of onCreateView method
 
-}
+} //end of CategoriesFragment class

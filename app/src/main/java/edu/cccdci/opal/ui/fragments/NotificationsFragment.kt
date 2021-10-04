@@ -18,6 +18,6 @@ class NotificationsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentNotificationsBinding.inflate(inflater)
         return binding.root
-    }
+    } //end of onCreateView method
 
-}
+} //end of NotificationsFragment class
