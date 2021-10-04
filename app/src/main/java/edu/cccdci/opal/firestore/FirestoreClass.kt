@@ -5,16 +5,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import edu.cccdci.opal.dataclasses.User
-import edu.cccdci.opal.ui.activities.LoginActivity
-import edu.cccdci.opal.ui.activities.MainActivity
-import edu.cccdci.opal.ui.activities.RegisterActivity
-import edu.cccdci.opal.ui.activities.UserProfileActivity
+import edu.cccdci.opal.ui.activities.*
+import edu.cccdci.opal.ui.fragments.DeleteAccountFragment
 import edu.cccdci.opal.utils.Constants
 
 class FirestoreClass {
@@ -102,16 +101,14 @@ class FirestoreClass {
 
                 when (activity) {
                     //In Login Activity, it sends the user to the home page
-                    is LoginActivity -> {
-                        activity.logInSuccessPrompt()
-                    }
+                    is LoginActivity -> activity.logInSuccessPrompt()
 
                     /* In Main Activity, it sets the placeholder values in
                      * the sidebar header to the user's information.
                      */
-                    is MainActivity -> {
-                        activity.setSideNavProfileHeader(sharedPrefs, user)
-                    }
+                    is MainActivity -> activity.setSideNavProfileHeader(
+                        sharedPrefs, user
+                    )
                 }
             }
             //If failed
@@ -139,20 +136,26 @@ class FirestoreClass {
         mFSInstance.collection(Constants.USERS)
             //Access the document named by the current user id
             .document(getCurrentUserID())
-            //Update the values of the specified field. In this case, phoneNum and gender.
+            //Update the values of the specified field
             .update(userHashMap)
             //If it is successful
             .addOnSuccessListener {
-                //In User Profile Activity, it sends the user to the home page
-                if (activity is UserProfileActivity) {
-                    activity.userInfoChangedPrompt()
+                when (activity) {
+                    //In User Profile Activity, it sends the user to the home page
+                    is UserProfileActivity -> activity.userInfoChangedPrompt()
+
+                    //Same goes with Become Vendor Activity
+                    is BecomeVendorActivity -> activity.upgradedToVendorPrompt()
                 }
             }
             //If it failed
             .addOnFailureListener { e ->
-                //Closes the loading message in the User Profile Activity
-                if (activity is UserProfileActivity) {
-                    activity.hideProgressDialog()
+                /* Closes the loading message in the User Profile Activity
+                 * or Become Vendor Activity
+                 */
+                when (activity) {
+                    is UserProfileActivity -> activity.hideProgressDialog()
+                    is BecomeVendorActivity -> activity.hideProgressDialog()
                 }
 
                 //Log the error
@@ -164,6 +167,38 @@ class FirestoreClass {
             } //end of mFSInstance
 
     } //end of updateUserProfileData method
+
+    //Function to delete user data during account deletion process
+    fun deleteUserData(fragment: Fragment) {
+        //Access the collection named users
+        mFSInstance.collection(Constants.USERS)
+            //Access the document named by the current user id
+            .document(getCurrentUserID())
+            //Delete the entire document
+            .delete()
+            //If it is successful
+            .addOnSuccessListener {
+                //In Delete Account Fragment, it sends the user to Login Screen
+                if (fragment is DeleteAccountFragment) {
+                    fragment.deleteUserAccount()
+                }
+            }
+            //If it failed
+            .addOnFailureListener { e ->
+                //Closes the loading message in the Delete Account Fragment
+                if (fragment is DeleteAccountFragment) {
+                    fragment.hideProgressDialog()
+                }
+
+                //Log the error
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "There was an error deleting the user data.",
+                    e
+                )
+            } //end of mFSInstance
+
+    } //end of deleteUserData method
 
     //Function to upload the image to Cloud Storage
     fun uploadImageToCloud(activity: Activity, imageFileURI: Uri?) {

@@ -62,6 +62,22 @@ class MainActivity : TemplateActivity(),
 
             //Add functionality to the sidebar
             nvSidebar.setNavigationItemSelectedListener(this@MainActivity)
+
+            //Toggle bottom navigation visibility
+            mNavController.addOnDestinationChangedListener { _, destination, _ ->
+                /* Bottom nav is visible for home, markets, categories,
+                 * and notifications fragments
+                 */
+                when(destination.id) {
+                    R.id.fragment_home,
+                    R.id.fragment_markets,
+                    R.id.fragment_categories,
+                    R.id.fragment_notifications -> bottomNavView.visibility = View.VISIBLE
+
+                    else -> binding.bottomNavView.visibility = View.GONE
+                }
+            } // end of addOnDestinationChangedListener
+
         } //end of with(binding)
 
     } //end of onCreate method
@@ -102,94 +118,71 @@ class MainActivity : TemplateActivity(),
                     binding.dlHomeDrawer.closeDrawer(GravityCompat.START)
                 }
 
-                //TODO: Send to Item Cart
-                R.id.tab_cart -> toastMessage(
-                    this@MainActivity, "You clicked Item Cart"
-                ).show()
-
-                //TODO: Send to Messages
-                R.id.tab_messages -> toastMessage(
-                    this@MainActivity, "You clicked Messages"
-                ).show()
-
             } //end of when
 
         } //end of if
 
     } //end of onClick method
 
-    //Override the function to add two icons on top app bar (cart and messages)
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_app_bar_menu, menu)
-        return true
-    } //end of onCreateOptionsMenu method
-
     override fun onSupportNavigateUp(): Boolean =
         NavigationUI.navigateUp(mNavController, mAppBarConfiguration)
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            //TODO: Send to Address List
-            R.id.nav_address -> toastMessage(
-                this@MainActivity, "You clicked Address"
-            ).show()
+            //Sends user to Addresses List
+            R.id.nav_addresses -> navigateFragment(R.id.home_to_addresses)
 
             //TODO: Send to User Order History
             R.id.nav_order_history -> toastMessage(
                 this@MainActivity, "You clicked Order History"
             ).show()
 
-            //TODO: Send to Application Settings
-            R.id.nav_settings -> toastMessage(
-                this@MainActivity, "You clicked Settings"
-            ).show()
+            //Sends user to Application Settings
+            R.id.nav_settings -> navigateFragment(R.id.home_to_settings)
 
             //Signs the user out
             R.id.nav_sign_out -> signOutUser()
 
-            //TODO: Send to About Us
-            R.id.nav_about_us -> toastMessage(
-                this@MainActivity, "You clicked About Us"
-            ).show()
+            //Sends user to About Us Page
+            R.id.nav_about_us -> navigateFragment(R.id.home_to_about_us)
 
-            //TODO: Send to Feedback Page
-            R.id.nav_feedback -> toastMessage(
-                this@MainActivity, "You clicked Feedback"
-            ).show()
+            //Sends user to Feedback Page
+            R.id.nav_feedback -> navigateFragment(R.id.home_to_feedback)
 
             //TODO: Send to Privacy Policy Page
             R.id.nav_privacy -> toastMessage(
                 this@MainActivity, "You clicked Privacy Policy"
             ).show()
 
-            //TODO: Send to Become a Vendor (Customers)
-            R.id.nav_become_vendor -> toastMessage(
-                this@MainActivity, "You clicked Become a Vendor"
+            //Sends user (customer) to Become a Vendor
+            R.id.nav_become_vendor -> startActivity(
+                Intent(this@MainActivity, BecomeVendorActivity::class.java)
+            )
+
+            //Send to User's Market
+            R.id.nav_your_market -> navigateFragment(R.id.home_to_your_market)
+
+            //Sends user to Product Inventory
+            R.id.nav_products -> navigateFragment(R.id.home_to_products)
+
+            //TODO: Send to Customer Transaction Details
+            R.id.nav_customer_transactions -> toastMessage(
+                this@MainActivity, "You clicked Customer Transactions"
             ).show()
 
-            //TODO: Send to User's Market
-            R.id.nav_your_market -> toastMessage(
-                this@MainActivity, "You clicked Your Market"
-            ).show()
-
-            //TODO: Send to Product Inventory
-            R.id.nav_products -> toastMessage(
-                this@MainActivity, "You clicked Products"
-            ).show()
-
-            //TODO: Send to Orders List
-            R.id.nav_orders -> toastMessage(
-                this@MainActivity, "You clicked Orders"
-            ).show()
-
-            //TODO: Send to Sales Insights
-            R.id.nav_insights -> toastMessage(
-                this@MainActivity, "You clicked Insights"
-            ).show()
+            //Sends user to Sales Insights Page
+            R.id.nav_insights -> navigateFragment(R.id.home_to_insights)
         } //end of when
+
+        //Closes the drawer layout
+        binding.dlHomeDrawer.closeDrawer(GravityCompat.START)
 
         return true
     } //end of onNavigationItemSelected method
+
+    private fun navigateFragment(resId: Int) {
+        mNavController.navigate(resId)
+    }
 
     //Function to set up user information in the sidebar header
     fun setSideNavProfileHeader(sp: SharedPreferences, user: User) {
@@ -198,20 +191,16 @@ class MainActivity : TemplateActivity(),
 
         //Get user information from Shared Preferences
         val signedInName = sp.getString(
-            Constants.SIGNED_IN_FULL_NAME,
-            "undefined undefined"
+            Constants.SIGNED_IN_FULL_NAME, "undefined undefined"
         )!!
         val signedInUserName = sp.getString(
-            Constants.SIGNED_IN_USERNAME,
-            "undefined"
+            Constants.SIGNED_IN_USERNAME, "undefined"
         )!!
         val signedInProfilePic = sp.getString(
-            Constants.SIGNED_IN_PROFILE_PIC,
-            ""
+            Constants.SIGNED_IN_PROFILE_PIC, ""
         )!!
         val signedInUserRole = sp.getBoolean(
-            Constants.SIGNED_IN_USER_ROLE,
-            false
+            Constants.SIGNED_IN_USER_ROLE, false
         )
 
         //Gets the header view from sidebar
@@ -223,34 +212,41 @@ class MainActivity : TemplateActivity(),
         val navUserRole: TextView = header.findViewById(R.id.tv_role_indicator)!!
         val navProfile: ImageView = header.findViewById(R.id.iv_nav_profile_pic)!!
 
-        //Declare variables for getting menu items in sidebar
-        val menu = binding.nvSidebar.menu
-        val itemToHide: MenuItem
-
         //Set the current logged in information in the sidebar header
         navFullName.text = signedInName
         navUserName.text = signedInUserName
 
-        //Set the role indicator of the user, as well as the available menus
-        navUserRole.text = if (signedInUserRole) {
-            //If the user is a vendor, hide the menu item "Become a Vendor"
-            itemToHide = menu.findItem(R.id.nav_become_vendor)!!
-            resources.getString(R.string.role_vendor) //Displays Vendor
-        } else {
-            //If the user is a customer, hide the menu items for vendors only
-            itemToHide = menu.findItem(R.id.nav_vendor_only)!!
-            resources.getString(R.string.role_customer) //Displays Customer
-        }
-        itemToHide.isVisible = false //Hide the given menu items
+        //Set the role indicator of the user
+        navUserRole.text = if (signedInUserRole)
+            resources.getString(R.string.role_vendor)
+        else
+            resources.getString(R.string.role_customer)
 
         //Change the profile picture with the image in the Cloud Storage
         GlideLoader(this@MainActivity)
             .loadUserPicture(signedInProfilePic, navProfile)
 
+        //Hide some sidebar menu items depending on user's role
+        hideBasedOnUserRole(binding.nvSidebar.menu, signedInUserRole)
+
         //Click event for Navigation Profile Picture ImageView
         navProfile.setOnClickListener(this@MainActivity)
 
     } //end of setSideNavProfileHeader method
+
+    //Function to hide sidebar menu items based on user role
+    private fun hideBasedOnUserRole(menu: Menu, role: Boolean) {
+        if (role) {
+            //Hide only Become a Vendor
+            menu.findItem(R.id.nav_become_vendor)!!.isVisible = false
+            menu.findItem(R.id.nav_vendor_only)!!.isVisible = true
+        }
+        else {
+            //Hide Vendor Center menu group
+            menu.findItem(R.id.nav_vendor_only)!!.isVisible = false
+            menu.findItem(R.id.nav_become_vendor)!!.isVisible = true
+        }
+    }
 
     //Function to sign out the user
     private fun signOutUser() {
@@ -265,6 +261,7 @@ class MainActivity : TemplateActivity(),
         //To ensure that no more activity layers are active after the user signs out
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
+        //Display a Toast message
         toastMessage(
             this@MainActivity, resources.getString(R.string.msg_signed_out)
         ).show()

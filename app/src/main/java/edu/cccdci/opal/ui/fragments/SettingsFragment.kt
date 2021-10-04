@@ -1,0 +1,57 @@
+package edu.cccdci.opal.ui.fragments
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import edu.cccdci.opal.R
+import edu.cccdci.opal.databinding.FragmentSettingsBinding
+
+class SettingsFragment : Fragment(), View.OnClickListener {
+
+    private lateinit var binding: FragmentSettingsBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        binding = FragmentSettingsBinding.inflate(inflater)
+
+        with(binding) {
+            llNotification.setOnClickListener(this@SettingsFragment)
+            llLocation.setOnClickListener(this@SettingsFragment)
+            llChangePass.setOnClickListener(this@SettingsFragment)
+            llDeleteAcc.setOnClickListener(this@SettingsFragment)
+        }
+
+        return binding.root
+    } //end of onCreateView method
+
+    override fun onClick(view: View?) {
+        if (view != null) {
+            when (view.id) {
+                //Go to Notification Settings
+                R.id.ll_notification ->
+                    findNavController().navigate(R.id.settings_to_notif_settings)
+
+                //Go to Location Settings
+                R.id.ll_location ->
+                    findNavController().navigate(R.id.settings_to_location_settings)
+
+                //Go to Change Password
+                R.id.ll_change_pass ->
+                    findNavController().navigate(R.id.settings_to_change_password)
+
+                //Go to Delete Account
+                R.id.ll_delete_acc ->
+                    findNavController().navigate(R.id.settings_to_delete_account)
+            } //end of when
+
+        } //end of if
+
+    } //end of onClick method
+
+} //end of SettingsFragment class

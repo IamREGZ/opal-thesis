@@ -5,19 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import edu.cccdci.opal.databinding.FragmentMarketsBinding
+import edu.cccdci.opal.databinding.FragmentYourMarketBinding
 
-class MarketsFragment : Fragment() {
+class YourMarketFragment : Fragment() {
 
-    private lateinit var binding: FragmentMarketsBinding
+    private lateinit var binding: FragmentYourMarketBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentMarketsBinding.inflate(inflater)
+        binding = FragmentYourMarketBinding.inflate(inflater)
         return binding.root
     } //end of onCreateView method
 
-} //end of MarketsFragment class
+} //end of YourMarketFragment class

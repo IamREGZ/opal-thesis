@@ -27,11 +27,10 @@ open class TemplateActivity : AppCompatActivity() {
         val msgPromptView = msgPrompt.view
 
         //Decides what color of the SnackBar depending on the message
-        val snackBarColor = if (error) {
+        val snackBarColor = if (error)
             R.color.colorErrorMessage //Red color if error
-        } else {
+        else
             R.color.colorSuccessMessage //Green color if successful
-        }
 
         //Sets the color of the SnackBar
         msgPromptView.setBackgroundColor(
@@ -66,7 +65,7 @@ open class TemplateActivity : AppCompatActivity() {
     } //end of hideProgressDialog method
 
     //Function to setup the Action Bar for navigation
-    protected fun setupActionBar(tlb: Toolbar, isBlack: Boolean) {
+    protected fun setupActionBar(tlb: Toolbar, isBlack: Boolean = true) {
         setSupportActionBar(tlb)
 
         //Customize the navigation icon
@@ -92,15 +91,13 @@ open class TemplateActivity : AppCompatActivity() {
 
     //Function to create a Toast message (show for short time by default)
     fun toastMessage(context: Context, msg: String, showLong: Boolean = false): Toast =
-        if (showLong) {
+        if (showLong)
             Toast.makeText(context, msg, Toast.LENGTH_LONG)
-        } else {
+        else
             Toast.makeText(context, msg, Toast.LENGTH_SHORT)
-        }
 
     //Function to double press back to exit the application
     fun doubleBackToExit() {
-
         //User pressed back the second time
         if (backPressedOnce) {
             super.onBackPressed()

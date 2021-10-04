@@ -5,16 +5,16 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import edu.cccdci.opal.R
-import edu.cccdci.opal.databinding.FragmentHomeBinding
+import edu.cccdci.opal.databinding.FragmentProductsBinding
 
-class HomeFragment : Fragment() {
+class ProductsFragment : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
+    private lateinit var binding: FragmentProductsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //This is important to make two icons (my cart and messages) visible
+        //This is important to make add icon visible
         setHasOptionsMenu(true)
     } //end of onCreate method
 
@@ -23,30 +23,25 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentProductsBinding.inflate(inflater)
         return binding.root
     } //end of onCreateView method
 
-    //Override the function to add two icons on top app bar (my cart and messages)
+    //Override the function to add plus icon on top app bar
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.home_tab_menu, menu)
+        inflater.inflate(R.menu.plus_tab_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     } //end of onCreateOptionsMenu method
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            //TODO: Send to Item Cart
-            R.id.tab_cart -> Toast.makeText(
-                context, "You clicked Your Cart", Toast.LENGTH_SHORT
-            ).show()
-
-            //TODO: Send to Messages
-            R.id.tab_messages -> Toast.makeText(
-                context, "You clicked Messages", Toast.LENGTH_SHORT
+            //Go to Add Products
+            R.id.tab_add -> Toast.makeText(
+                context, "You clicked Add Products", Toast.LENGTH_SHORT
             ).show()
         }
 
         return super.onOptionsItemSelected(item)
     } //end of onOptionsItemSelected method
 
-} //end of HomeFragment class
+} //end of ProductsFragment class

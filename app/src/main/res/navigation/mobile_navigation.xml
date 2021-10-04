@@ -5,28 +5,210 @@
     android:id="@+id/home_navigation"
     app:startDestination="@id/fragment_home">
 
+    <!-- Home Fragment -->
     <fragment
         android:id="@+id/fragment_home"
         android:name="edu.cccdci.opal.ui.fragments.HomeFragment"
         android:label="@string/home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
 
+        <!-- TODO: Home to My Cart -->
+
+
+        <!-- TODO: Home to Messages -->
+
+
+        <!-- Home to Addresses -->
+        <action
+            android:id="@+id/home_to_addresses"
+            app:destination="@id/fragment_addresses" />
+
+        <!-- TODO: Home to Order History -->
+
+
+        <!-- Home to Settings -->
+        <action
+            android:id="@+id/home_to_settings"
+            app:destination="@id/fragment_settings" />
+
+        <!-- Home to About Us -->
+        <action
+            android:id="@+id/home_to_about_us"
+            app:destination="@id/fragment_about_us" />
+
+        <!-- Home to Feedback -->
+        <action
+            android:id="@+id/home_to_feedback"
+            app:destination="@id/fragment_feedback" />
+
+        <!-- TODO: Home to Privacy Policy -->
+
+
+        <!-- Home to Your Market -->
+        <action
+            android:id="@+id/home_to_your_market"
+            app:destination="@id/fragment_your_market" />
+
+        <!-- Home to Products -->
+        <action
+            android:id="@+id/home_to_products"
+            app:destination="@id/fragment_products" />
+
+        <!-- Home to Insights -->
+        <action
+            android:id="@+id/home_to_insights"
+            app:destination="@id/fragment_insights" />
+
+    </fragment>
+
+    <!-- Markets Fragment -->
     <fragment
         android:id="@+id/fragment_markets"
         android:name="edu.cccdci.opal.ui.fragments.MarketsFragment"
         android:label="@string/markets"
         tools:layout="@layout/fragment_markets" />
 
+    <!-- Categories Fragment -->
     <fragment
         android:id="@+id/fragment_categories"
         android:name="edu.cccdci.opal.ui.fragments.CategoriesFragment"
         android:label="@string/categories"
         tools:layout="@layout/fragment_categories" />
 
+    <!-- Notifications Fragment -->
     <fragment
         android:id="@+id/fragment_notifications"
         android:name="edu.cccdci.opal.ui.fragments.NotificationsFragment"
         android:label="@string/notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <!-- TODO: My Cart Fragment -->
+
+
+    <!-- TODO: Messages Fragment -->
+
+
+    <!-- Addresses Fragment -->
+    <fragment
+        android:id="@+id/fragment_addresses"
+        android:name="edu.cccdci.opal.ui.fragments.AddressesFragment"
+        android:label="@string/nav_addresses"
+        tools:layout="@layout/fragment_addresses">
+
+        <!-- Address to Address Info -->
+        <action
+            android:id="@+id/addresses_to_address_info"
+            app:destination="@id/fragment_address_info" />
+
+    </fragment>
+
+    <!-- Address Info Fragment (sub-fragment of Addresses) -->
+    <fragment
+        android:id="@+id/fragment_address_info"
+        android:name="edu.cccdci.opal.ui.fragments.AddressInfoFragment"
+        android:label="@string/nav_addresses"
+        tools:layout="@layout/fragment_address_info" />
+
+    <!-- TODO: Order History Fragment -->
+
+
+    <!-- Settings Fragment -->
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="edu.cccdci.opal.ui.fragments.SettingsFragment"
+        android:label="@string/nav_settings"
+        tools:layout="@layout/fragment_settings">
+
+        <!-- Settings to Notification Settings -->
+        <action
+            android:id="@+id/settings_to_notif_settings"
+            app:destination="@id/fragment_notif_settings" />
+
+        <!-- Settings to Location Settings -->
+        <action
+            android:id="@+id/settings_to_location_settings"
+            app:destination="@id/fragment_location_settings" />
+
+        <!-- Settings to Change Password -->
+        <action
+            android:id="@+id/settings_to_change_password"
+            app:destination="@id/fragment_change_password" />
+
+        <!-- Settings to Delete Account -->
+        <action
+            android:id="@+id/settings_to_delete_account"
+            app:destination="@id/fragment_delete_account" />
+
+    </fragment>
+
+    <!-- Notification Settings Fragment (sub-fragment of Settings) -->
+    <fragment
+        android:id="@+id/fragment_notif_settings"
+        android:name="edu.cccdci.opal.ui.fragments.NotifSettingsFragment"
+        android:label="@string/notification_settings"
+        tools:layout="@layout/fragment_notif_settings" />
+
+    <!-- Location Settings Fragment (sub-fragment of Settings) -->
+    <fragment
+        android:id="@+id/fragment_location_settings"
+        android:name="edu.cccdci.opal.ui.fragments.LocationSettingsFragment"
+        android:label="@string/location_settings"
+        tools:layout="@layout/fragment_location_settings" />
+
+    <!-- Change Password Fragment (sub-fragment of Settings) -->
+    <fragment
+        android:id="@+id/fragment_change_password"
+        android:name="edu.cccdci.opal.ui.fragments.ChangePasswordFragment"
+        android:label="@string/change_password"
+        tools:layout="@layout/fragment_change_password" />
+
+    <!-- Delete Account Fragment (sub-fragment of Settings) -->
+    <fragment
+        android:id="@+id/fragment_delete_account"
+        android:name="edu.cccdci.opal.ui.fragments.DeleteAccountFragment"
+        android:label="@string/delete_account"
+        tools:layout="@layout/fragment_delete_account" />
+
+    <!-- About Us Fragment -->
+    <fragment
+        android:id="@+id/fragment_about_us"
+        android:name="edu.cccdci.opal.ui.fragments.AboutUsFragment"
+        android:label="@string/nav_about_us"
+        tools:layout="@layout/fragment_about_us" />
+
+    <!-- Feedback Fragment -->
+    <fragment
+        android:id="@+id/fragment_feedback"
+        android:name="edu.cccdci.opal.ui.fragments.FeedbackFragment"
+        android:label="@string/nav_feedback"
+        tools:layout="@layout/fragment_feedback" />
+
+    <!-- TODO: Privacy Policy Fragment -->
+
+
+    <!-- Fragments for Vendors Only -->
+    <!-- Your Market Fragment -->
+    <fragment
+        android:id="@+id/fragment_your_market"
+        android:name="edu.cccdci.opal.ui.fragments.YourMarketFragment"
+        android:label="@string/nav_your_market"
+        tools:layout="@layout/fragment_your_market" />
+
+    <!-- Products Fragment -->
+    <fragment
+        android:id="@+id/fragment_products"
+        android:name="edu.cccdci.opal.ui.fragments.ProductsFragment"
+        android:label="@string/nav_products"
+        tools:layout="@layout/fragment_products" />
+
+    <!-- TODO: Customer Transactions Fragment -->
+
+
+    <!-- Insights Fragment -->
+    <fragment
+        android:id="@+id/fragment_insights"
+        android:name="edu.cccdci.opal.ui.fragments.InsightsFragment"
+        android:label="@string/nav_insights"
+        tools:layout="@layout/fragment_insights" />
 
 </navigation>
