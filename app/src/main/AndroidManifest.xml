@@ -66,6 +66,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+        <activity
+            android:name=".ui.activities.ProductEditorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <activity
+            android:name=".ui.activities.ProductDescActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <activity
+            android:name=".ui.activities.CartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
     </application>
 
 </manifest>

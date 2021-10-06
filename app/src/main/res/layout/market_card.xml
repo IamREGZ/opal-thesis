@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cv_market"
+    android:layout_width="@dimen/card_size"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/medium_mrg_pd"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/app_white"
+    app:cardCornerRadius="@dimen/card_radius"
+    app:cardElevation="@dimen/card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/market_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_size"
+            android:contentDescription="@string/market_image"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_market_placeholder" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:id="@+id/market_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/medium_mrg_pd"
+                android:layout_marginTop="@dimen/small_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_mrg_pd"
+                android:layout_marginBottom="@dimen/small_mrg_pd"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/market_name"
+                android:textColor="@color/primaryAccentColor"
+                android:textSize="@dimen/card_head_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/market_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_mrg_pd"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/market_address"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/card_desc_text_size" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

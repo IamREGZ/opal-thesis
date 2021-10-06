@@ -78,6 +78,12 @@
     <!--  Toolbar Titles  -->
     <string name="tlb_title_user_profile">USER PROFILE</string>
     <string name="tlb_title_be_vendor">BECOME A VENDOR</string>
+    <string name="tlb_title_prod_desc">DESCRIPTION</string>
+    <string name="tlb_title_add_prod">ADD PRODUCT</string>
+    <string name="tlb_title_edit_prod">EDIT PRODUCT</string>
+    <string name="tlb_title_add_address">ADD ADDRESS</string>
+    <string name="tlb_title_edit_address">EDIT ADDRESS</string>
+    <string name="tlb_title_my_cart">MY CART</string>
 
     <!--  Top App Bar  -->
     <string name="my_cart">My Cart</string>
@@ -127,17 +133,39 @@
     <string name="gender_other">OTHER</string>
     <string name="save_changes_btn">Save Changes</string>
 
+    <!--  Empty RecyclerView Messages  -->
+    <string name="empty_products">Oops! There are no products found!</string>
+    <string name="empty_markets">Oops! There are no markets found!</string>
+    <string name="empty_address">Add your addresses here.</string>
+    <string name="empty_cart">You haven\'t added products in your cart.</string>
+    <string name="empty_orders">You haven\'t placed your orders yet.</string>
+    <string name="empty_transactions">
+        Your customers haven\'t placed their orders yet.
+    </string>
+    <string name="empty_sad_icon">Empty sad icon</string>
+
+    <!--  Market Card View  -->
+    <string name="market_image">Market Image</string>
+    <string name="market_name">Market Name</string>
+    <string name="market_address">Market Address</string>
+
+    <!--  Product Card View  -->
+    <string name="product_name">Product Name</string>
+    <string name="product_price">₱12.34 / kg</string>
+    <string name="product_market">Product Market</string>
+
     <!--  Fragment Placeholder Texts (to be removed soon)  -->
-    <string name="home_fragment_text">Home Fragment</string>
-    <string name="market_fragment_text">Markets Fragment</string>
     <string name="insights_fragment_text">
         Sales graphs, trends, and reports will be placed here.
     </string>
-    <string name="products_fragment_text">
-        Product card views will be displayed here in two columns.
-    </string>
     <string name="your_market_fragment_text">
         User\'s current market information will be displayed here.
+    </string>
+    <string name="order_history_fragment_text">
+        Customer\'s orders will be listed here.
+    </string>
+    <string name="customer_transactions_fragment_text">
+        Vendor\'s transactions made will be listed here.
     </string>
 
     <!--  Categories  -->
@@ -205,7 +233,7 @@
     <string name="del_acc_confirm">Confirm Account Deletion</string>
 
     <!--  About Us Page  -->
-    <string name="head_about_opal">ABOUT O-PAL</string>
+    <string name="head_about_opal">ABOUT OPAL</string>
     <string name="head_who_we_are">WHO WE ARE</string>
     <string name="head_vision">OUR VISION</string>
     <string name="head_mission">OUR MISSION</string>
@@ -231,6 +259,34 @@
         of Calamba. They developed this application as partial fulfillment of
         requirements in Thesis. Their names are <b>Mr. Ainel Paul Bon</b>,
         <b>Ms. Marife Nobleza</b>, and <b>Mr. Reegor Santos</b>.
+    </string>
+
+    <!--  Privacy Policy Page  -->
+    <string name="pp_head_1">WHAT INFORMATION IS COLLECTED?</string>
+    <string name="pp_head_2">HOW DO WE USE YOUR INFORMATION?</string>
+    <string name="pp_head_3">HOW DO WE STORE AND PROTECT YOUR INFORMATION?</string>
+    <string name="pp_head_4">HOW CAN YOU OPT OUT OF DATA COLLECTION OR USAGE?</string>
+    <string name="pp_paragraph_1">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        In vitae sem quis nulla feugiat tempus sed eget odio. Aliquam egestas
+        nibh sed dui vehicula lacinia. Morbi in turpis sapien. Nunc.
+    </string>
+    <string name="pp_paragraph_2">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Pellentesque lacinia quam non enim iaculis, sit amet finibus nulla
+        volutpat. Pellentesque in turpis eu metus viverra accumsan vel consectetur
+        mauris. Curabitur.
+    </string>
+    <string name="pp_paragraph_3">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc blandit
+        interdum augue, id blandit arcu. Mauris dictum accumsan ligula in
+        tincidunt. Suspendisse interdum placerat fringilla. Nunc auctor felis
+        magna, vel.
+    </string>
+    <string name="pp_paragraph_4">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Sed placerat est eu ante aliquet fringilla. Fusce finibus ante dui,
+        non congue orci imperdiet vel. Ut vel neque dolor. Donec a.
     </string>
 
     <!--  Feedback Page  -->
@@ -263,5 +319,32 @@
         agreeing to our <b><u>Vendor\'s Terms and Conditions</u></b>.
     </string>
     <string name="bav_apply_now">Apply Now</string>
+
+    <!--  Product Description  -->
+    <string name="product_desc">Product Description</string>
+    <string name="product_qty">Product Quantity</string>
+    <string name="product_vendor">Product Vendor</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="go_to_cart">Go to Cart</string>
+
+    <!--  Product Editor  -->
+    <string name="add_prod_image">Add Product Image</string>
+    <string name="edit_price">Price (₱)</string>
+    <string name="edit_qty">Quantity</string>
+    <string name="delete_product">Delete Product</string>
+
+    <!--  Messages Editor  -->
+    <string name="message_name">Profile Name</string>
+    <string name="message_content">Message content here&#8230;</string>
+    <string name="message_cd">Message Profile Picture</string>
+
+    <!--  My Cart  -->
+    <string name="sub_total">Subtotal</string>
+    <string name="delivery_fee">Delivery Fee</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="total_price">Total</string>
+    <string name="cart_price">₱0.00</string>
+    <string name="cash_on_delivery">Cash on Delivery</string>
+    <string name="btn_check_out">Check Out</string>
 
 </resources>

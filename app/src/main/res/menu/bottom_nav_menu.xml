@@ -21,7 +21,7 @@
 
     <!-- Notifications Menu Item -->
     <item
-        android:id="@+id/fragment_notifications"
+        android:id="@+id/fragment_notifs"
         android:icon="@drawable/ic_notifications"
         android:title="@string/notifications" />
 

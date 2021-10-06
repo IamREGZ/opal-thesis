@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/medium_large_mrg_pd"
-    android:paddingEnd="@dimen/medium_large_mrg_pd"
+    android:orientation="vertical"
     tools:context=".ui.fragments.ProductsFragment">
 
-    <edu.cccdci.opal.utils.MainTextView
-        android:id="@+id/textView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_products"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="@string/products_fragment_text"
-        android:textSize="@dimen/main_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:scrollbars="none" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/ll_empty_products"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/empty_icon_size"
+            android:layout_height="@dimen/empty_icon_size"
+            android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+            android:contentDescription="@string/empty_sad_icon"
+            android:src="@drawable/ic_sad"
+            app:tint="@color/et_hint_black" />
+
+        <edu.cccdci.opal.utils.MainTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_large_mrg_pd"
+            android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+            android:text="@string/empty_products"
+            android:textSize="@dimen/main_text_size" />
+
+    </LinearLayout>
+
+</LinearLayout>

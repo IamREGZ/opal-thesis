@@ -1,166 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CartActivity">
+    android:orientation="vertical"
+    tools:context=".ui.activities.CartActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tlb_my_cart_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@color/primaryColorTheme">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_my_cart_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/tlb_title_paddingStart"
+            android:paddingEnd="0dp"
+            android:text="@string/tlb_title_my_cart"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/header_text_size" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="MY CART"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:textAlignment="center"
-                android:layout_marginTop="20dp"/>
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:id="@+id/rv_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:scrollbars="none" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingBottom="@dimen/xl_mrg_pd"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/sub_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sub Total:"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/settings_line_width"
+                    android:background="@color/et_hint_black" />
 
-                <TextView
-                    android:id="@+id/sub_total2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="P 0"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="@dimen/large_mrg_pd"
+                    android:layout_marginEnd="@dimen/large_mrg_pd"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    />
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/sub_total"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/sub_total"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/sub_total2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cart_price"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/settings_line_width"
+                    android:background="@color/et_hint_black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="@dimen/large_mrg_pd"
+                    android:layout_marginEnd="@dimen/large_mrg_pd"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/delivery_fee"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/delivery_fee"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/delivery_fee2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cart_price"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/settings_line_width"
+                    android:background="@color/et_hint_black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="@dimen/large_mrg_pd"
+                    android:layout_marginEnd="@dimen/large_mrg_pd"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/cod_payment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/payment_method"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/cod_payment2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cash_on_delivery"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/main_text_size" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/settings_line_width"
+                    android:background="@color/et_hint_black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="@dimen/large_mrg_pd"
+                    android:layout_marginEnd="@dimen/large_mrg_pd"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <edu.cccdci.opal.utils.HeaderTextView
+                        android:id="@+id/total"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/total_price"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/header_text_size" />
+
+                    <edu.cccdci.opal.utils.HeaderTextView
+                        android:id="@+id/total2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                        android:text="@string/cart_price"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/header_text_size" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/settings_line_width"
+                    android:background="@color/et_hint_black" />
+
+                <edu.cccdci.opal.utils.MainButton
+                    android:id="@+id/btn_submit_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_submit_height"
+                    android:layout_marginStart="@dimen/large_mrg_pd"
+                    android:layout_marginTop="@dimen/medium_large_mrg_pd"
+                    android:layout_marginEnd="@dimen/large_mrg_pd"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/submit"
+                    android:textColor="@color/app_white"
+                    android:textSize="@dimen/submit_text_size" />
+
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginEnd="14dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/delivery_fee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Deliver Fee:"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/delivery_fee2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="P 0"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/cod_payment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Payment Method:"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/cod_payment2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cash on Delivery"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Total:"
-                    android:textColor="@color/black"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/total2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="P 0"
-                    android:textColor="@color/black"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="16dp"
-                android:background="#008A7C"
-                android:gravity="center"
-                android:text="Check Out"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
 
         </LinearLayout>
+
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -1,68 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PrivacyPolicy"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.PrivacyPolicyFragment">
 
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tlb_user_profile_activity"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="top"
-        android:background="#7A9972">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/opal_logo_transparent" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="POLICY PRIVACY"
-            android:textColor="@color/black"
-            android:textSize="30dp"
-            android:textStyle="bold" />
-
-
-    </androidx.appcompat.widget.Toolbar>
-
-</RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"
-            android:layout_marginTop="200dp"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:textSize="30sp"
-            />
+            android:background="@color/primaryColorTheme"
+            android:paddingTop="@dimen/large_mrg_pd"
+            android:paddingBottom="@dimen/large_mrg_pd">
 
+            <ImageView
+                android:layout_width="@dimen/opal_logo_size"
+                android:layout_height="@dimen/opal_logo_size"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitCenter"
+                android:src="@drawable/opal_logo_transparent"
+                app:tint="@color/app_white" />
 
+        </FrameLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/medium_large_mrg_pd"
+            android:paddingTop="@dimen/large_mrg_pd"
+            android:paddingEnd="@dimen/medium_large_mrg_pd"
+            android:paddingBottom="@dimen/xl_mrg_pd">
 
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+                android:gravity="center"
+                android:text="@string/pp_head_1"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/header_text_size" />
 
+            <edu.cccdci.opal.utils.MainTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/large_mrg_pd"
+                android:gravity="center"
+                android:text="@string/pp_paragraph_1"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
 
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+                android:text="@string/pp_head_2"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/header_text_size" />
 
+            <edu.cccdci.opal.utils.MainTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/large_mrg_pd"
+                android:gravity="center"
+                android:text="@string/pp_paragraph_2"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
 
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+                android:text="@string/pp_head_3"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/header_text_size" />
 
-    </RelativeLayout>
+            <edu.cccdci.opal.utils.MainTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/large_mrg_pd"
+                android:gravity="center"
+                android:text="@string/pp_paragraph_3"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
 
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+                android:text="@string/pp_head_4"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/header_text_size" />
 
+            <edu.cccdci.opal.utils.MainTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/pp_paragraph_4"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
 
-</FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

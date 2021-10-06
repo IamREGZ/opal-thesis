@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/medium_large_mrg_pd">
+
+    <ImageView
+        android:id="@+id/notification_profile"
+        android:layout_width="@dimen/notif_profile_pic_size"
+        android:layout_height="@dimen/notif_profile_pic_size"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/message_cd"
+        android:src="@drawable/ic_notif_prof" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/medium_large_mrg_pd"
+        android:layout_marginEnd="@dimen/medium_mrg_pd"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/notification_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/message_name"
+            android:textColor="@color/primaryAccentColor"
+            android:textSize="@dimen/notif_head_text_size" />
+
+        <edu.cccdci.opal.utils.MainTextView
+            android:id="@+id/notification_sms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_mrg_pd"
+            android:text="@string/message_content"
+            android:textColor="@color/app_black"
+            android:textSize="@dimen/main_text_size" />
+
+    </LinearLayout>
+
+    <edu.cccdci.opal.utils.MainTextView
+        android:id="@+id/notification_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_weight="1"
+        android:text="@string/notif_time"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/app_black"
+        android:textSize="@dimen/main_text_size" />
+
+</LinearLayout>

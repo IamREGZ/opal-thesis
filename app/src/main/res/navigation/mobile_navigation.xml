@@ -16,15 +16,19 @@
 
 
         <!-- TODO: Home to Messages -->
-
+        <action
+            android:id="@+id/home_to_messages"
+            app:destination="@id/fragment_messages" />
 
         <!-- Home to Addresses -->
         <action
             android:id="@+id/home_to_addresses"
             app:destination="@id/fragment_addresses" />
 
-        <!-- TODO: Home to Order History -->
-
+        <!-- Home to Order History -->
+        <action
+            android:id="@+id/home_to_order_history"
+            app:destination="@+id/fragment_order_history" />
 
         <!-- Home to Settings -->
         <action
@@ -33,16 +37,18 @@
 
         <!-- Home to About Us -->
         <action
-            android:id="@+id/home_to_about_us"
-            app:destination="@id/fragment_about_us" />
+            android:id="@+id/home_to_about"
+            app:destination="@id/fragment_about" />
 
         <!-- Home to Feedback -->
         <action
             android:id="@+id/home_to_feedback"
             app:destination="@id/fragment_feedback" />
 
-        <!-- TODO: Home to Privacy Policy -->
-
+        <!-- Home to Privacy Policy -->
+        <action
+            android:id="@+id/home_to_privacy"
+            app:destination="@id/fragment_privacy" />
 
         <!-- Home to Your Market -->
         <action
@@ -53,6 +59,11 @@
         <action
             android:id="@+id/home_to_products"
             app:destination="@id/fragment_products" />
+
+        <!-- Home to Customer Transactions -->
+        <action
+            android:id="@+id/home_to_cust_trans"
+            app:destination="@id/fragment_cust_trans" />
 
         <!-- Home to Insights -->
         <action
@@ -77,7 +88,7 @@
 
     <!-- Notifications Fragment -->
     <fragment
-        android:id="@+id/fragment_notifications"
+        android:id="@+id/fragment_notifs"
         android:name="edu.cccdci.opal.ui.fragments.NotificationsFragment"
         android:label="@string/notifications"
         tools:layout="@layout/fragment_notifications" />
@@ -85,8 +96,12 @@
     <!-- TODO: My Cart Fragment -->
 
 
-    <!-- TODO: Messages Fragment -->
-
+    <!-- Messages Fragment -->
+    <fragment
+        android:id="@+id/fragment_messages"
+        android:name="edu.cccdci.opal.ui.fragments.MessagesFragment"
+        android:label="@string/messages"
+        tools:layout="@layout/fragment_messages" />
 
     <!-- Addresses Fragment -->
     <fragment
@@ -109,8 +124,12 @@
         android:label="@string/nav_addresses"
         tools:layout="@layout/fragment_address_info" />
 
-    <!-- TODO: Order History Fragment -->
-
+    <!-- Order History Fragment -->
+    <fragment
+        android:id="@+id/fragment_order_history"
+        android:name="edu.cccdci.opal.ui.fragments.OrderHistoryFragment"
+        android:label="@string/nav_order_history"
+        tools:layout="@layout/fragment_order_history" />
 
     <!-- Settings Fragment -->
     <fragment
@@ -126,18 +145,18 @@
 
         <!-- Settings to Location Settings -->
         <action
-            android:id="@+id/settings_to_location_settings"
-            app:destination="@id/fragment_location_settings" />
+            android:id="@+id/settings_to_loc_settings"
+            app:destination="@id/fragment_loc_settings" />
 
         <!-- Settings to Change Password -->
         <action
-            android:id="@+id/settings_to_change_password"
-            app:destination="@id/fragment_change_password" />
+            android:id="@+id/settings_to_change_pass"
+            app:destination="@id/fragment_change_pass" />
 
         <!-- Settings to Delete Account -->
         <action
-            android:id="@+id/settings_to_delete_account"
-            app:destination="@id/fragment_delete_account" />
+            android:id="@+id/settings_to_del_account"
+            app:destination="@id/fragment_del_acc" />
 
     </fragment>
 
@@ -150,28 +169,28 @@
 
     <!-- Location Settings Fragment (sub-fragment of Settings) -->
     <fragment
-        android:id="@+id/fragment_location_settings"
+        android:id="@+id/fragment_loc_settings"
         android:name="edu.cccdci.opal.ui.fragments.LocationSettingsFragment"
         android:label="@string/location_settings"
         tools:layout="@layout/fragment_location_settings" />
 
     <!-- Change Password Fragment (sub-fragment of Settings) -->
     <fragment
-        android:id="@+id/fragment_change_password"
+        android:id="@+id/fragment_change_pass"
         android:name="edu.cccdci.opal.ui.fragments.ChangePasswordFragment"
         android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password" />
 
     <!-- Delete Account Fragment (sub-fragment of Settings) -->
     <fragment
-        android:id="@+id/fragment_delete_account"
+        android:id="@+id/fragment_del_acc"
         android:name="edu.cccdci.opal.ui.fragments.DeleteAccountFragment"
         android:label="@string/delete_account"
         tools:layout="@layout/fragment_delete_account" />
 
     <!-- About Us Fragment -->
     <fragment
-        android:id="@+id/fragment_about_us"
+        android:id="@+id/fragment_about"
         android:name="edu.cccdci.opal.ui.fragments.AboutUsFragment"
         android:label="@string/nav_about_us"
         tools:layout="@layout/fragment_about_us" />
@@ -183,8 +202,12 @@
         android:label="@string/nav_feedback"
         tools:layout="@layout/fragment_feedback" />
 
-    <!-- TODO: Privacy Policy Fragment -->
-
+    <!-- Privacy Policy Fragment -->
+    <fragment
+        android:id="@+id/fragment_privacy"
+        android:name="edu.cccdci.opal.ui.fragments.PrivacyPolicyFragment"
+        android:label="@string/nav_privacy_policy"
+        tools:layout="@layout/fragment_privacy_policy" />
 
     <!-- Fragments for Vendors Only -->
     <!-- Your Market Fragment -->
@@ -201,8 +224,12 @@
         android:label="@string/nav_products"
         tools:layout="@layout/fragment_products" />
 
-    <!-- TODO: Customer Transactions Fragment -->
-
+    <!-- Customer Transactions Fragment -->
+    <fragment
+        android:id="@+id/fragment_cust_trans"
+        android:name="edu.cccdci.opal.ui.fragments.CustomerTransactionFragment"
+        android:label="@string/nav_customer_transactions"
+        tools:layout="@layout/fragment_customer_transaction" />
 
     <!-- Insights Fragment -->
     <fragment

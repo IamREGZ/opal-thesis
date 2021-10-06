@@ -28,6 +28,7 @@ object Constants {
     const val SIGNED_IN_PROFILE_PIC: String = "signed_in_profile_pic"
     const val SIGNED_IN_USER_ROLE: String = "signed_in_user_role"
     const val EXTRA_USER_INFO: String = "extra_user_info"
+    const val PRODUCT_DESCRIPTION: String = "product_description"
 
     //For Requesting Permissions
     const val READ_STORAGE_PERMISSION_CODE = 2

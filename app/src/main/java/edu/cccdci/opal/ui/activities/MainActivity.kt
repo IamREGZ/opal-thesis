@@ -72,7 +72,7 @@ class MainActivity : TemplateActivity(),
                     R.id.fragment_home,
                     R.id.fragment_markets,
                     R.id.fragment_categories,
-                    R.id.fragment_notifications -> bottomNavView.visibility = View.VISIBLE
+                    R.id.fragment_notifs -> bottomNavView.visibility = View.VISIBLE
 
                     else -> binding.bottomNavView.visibility = View.GONE
                 }
@@ -132,10 +132,8 @@ class MainActivity : TemplateActivity(),
             //Sends user to Addresses List
             R.id.nav_addresses -> navigateFragment(R.id.home_to_addresses)
 
-            //TODO: Send to User Order History
-            R.id.nav_order_history -> toastMessage(
-                this@MainActivity, "You clicked Order History"
-            ).show()
+            //Sends user to User Order History
+            R.id.nav_order_history -> navigateFragment(R.id.home_to_order_history)
 
             //Sends user to Application Settings
             R.id.nav_settings -> navigateFragment(R.id.home_to_settings)
@@ -144,15 +142,13 @@ class MainActivity : TemplateActivity(),
             R.id.nav_sign_out -> signOutUser()
 
             //Sends user to About Us Page
-            R.id.nav_about_us -> navigateFragment(R.id.home_to_about_us)
+            R.id.nav_about_us -> navigateFragment(R.id.home_to_about)
 
             //Sends user to Feedback Page
             R.id.nav_feedback -> navigateFragment(R.id.home_to_feedback)
 
-            //TODO: Send to Privacy Policy Page
-            R.id.nav_privacy -> toastMessage(
-                this@MainActivity, "You clicked Privacy Policy"
-            ).show()
+            //Sends user to Privacy Policy Page
+            R.id.nav_privacy -> navigateFragment(R.id.home_to_privacy)
 
             //Sends user (customer) to Become a Vendor
             R.id.nav_become_vendor -> startActivity(
@@ -165,10 +161,8 @@ class MainActivity : TemplateActivity(),
             //Sends user to Product Inventory
             R.id.nav_products -> navigateFragment(R.id.home_to_products)
 
-            //TODO: Send to Customer Transaction Details
-            R.id.nav_customer_transactions -> toastMessage(
-                this@MainActivity, "You clicked Customer Transactions"
-            ).show()
+            //Sends user to Customer Transaction Details
+            R.id.nav_customer_transactions -> navigateFragment(R.id.home_to_cust_trans)
 
             //Sends user to Sales Insights Page
             R.id.nav_insights -> navigateFragment(R.id.home_to_insights)

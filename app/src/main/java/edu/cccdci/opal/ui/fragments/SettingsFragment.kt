@@ -39,15 +39,15 @@ class SettingsFragment : Fragment(), View.OnClickListener {
 
                 //Go to Location Settings
                 R.id.ll_location ->
-                    findNavController().navigate(R.id.settings_to_location_settings)
+                    findNavController().navigate(R.id.settings_to_loc_settings)
 
                 //Go to Change Password
                 R.id.ll_change_pass ->
-                    findNavController().navigate(R.id.settings_to_change_password)
+                    findNavController().navigate(R.id.settings_to_change_pass)
 
                 //Go to Delete Account
                 R.id.ll_delete_acc ->
-                    findNavController().navigate(R.id.settings_to_delete_account)
+                    findNavController().navigate(R.id.settings_to_del_account)
             } //end of when
 
         } //end of if
