@@ -225,12 +225,12 @@
             <edu.cccdci.opal.utils.MainButton
                 android:id="@+id/btn_save_profile_info"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/profile_save_btn_height"
+                android:layout_height="@dimen/button_large_height"
                 android:layout_marginTop="@dimen/large_mrg_pd"
                 android:background="@drawable/custom_button"
                 android:text="@string/save_changes_btn"
                 android:textColor="@color/app_white"
-                android:textSize="@dimen/save_changes_text_size" />
+                android:textSize="@dimen/button_large_text_size" />
 
         </LinearLayout>
 

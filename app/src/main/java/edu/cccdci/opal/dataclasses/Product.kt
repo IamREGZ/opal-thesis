@@ -14,4 +14,4 @@ data class Product(
     val category: String = "",
     val vendorId: String = "",
     val market: String = ""
-): Parcelable
+) : Parcelable

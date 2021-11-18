@@ -18,6 +18,6 @@ class YourMarketFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentYourMarketBinding.inflate(inflater)
         return binding.root
-    } //end of onCreateView method
+    }  // end of onCreateView method
 
-} //end of YourMarketFragment class
+}  // end of YourMarketFragment class

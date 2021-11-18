@@ -18,40 +18,52 @@ class ProductDashboardAdapter(
     private val productDBDataList: MutableList<Product>
 ) : RecyclerView.Adapter<ProductDashboardAdapter.ProductDashboardViewHolder>() {
 
+    // Nested Class to hold views from the target layout
     class ProductDashboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.prod_db_name)
         val price: TextView = itemView.findViewById(R.id.prod_db_price)
         val productCard: CardView = itemView.findViewById(R.id.cv_product_db)
-    }
+    }  // end of ProductDashboardViewHolder class
 
+    // Function to inflate the layout in the RecyclerView
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
-    ): ProductDashboardViewHolder =
-        ProductDashboardViewHolder(
+    ): ProductDashboardViewHolder {
+        return ProductDashboardViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.product_dashboard_card, parent, false
             )
         )
+    }  // end of onCreateViewHolder method
 
+    // Function to implement the codes for each item in the RecyclerView
     override fun onBindViewHolder(holder: ProductDashboardViewHolder, position: Int) {
+        // Get the object from the current position of the data list
         val productData = productDBDataList[position]
 
-        holder.name.text = productData.name
-        holder.price.text = "₱${productData.price} / kg"
+        with(holder) {
+            // Store the productData values in the respective views
+            name.text = productData.name
+            price.text = "₱${productData.price} / kg"
 
-        holder.productCard.setOnClickListener {
-            //Create an Intent to launch ProductDescActivity
-            val intent = Intent(
-                context, ProductEditorActivity::class.java
-            )
-            //Add product information to intent
-            intent.putExtra(Constants.PRODUCT_DESCRIPTION, productData)
+            // Actions when the product card is clicked
+            productCard.setOnClickListener {
+                // Create an Intent to launch ProductDescActivity
+                val intent = Intent(
+                    context, ProductEditorActivity::class.java
+                )
+                // Add product information to intent (might be temporary)
+                intent.putExtra(Constants.PRODUCT_DESCRIPTION, productData)
 
-            //Opens the edit user profile
-            context.startActivity(intent)
-        }
-    }
+                // Opens the edit user profile
+                context.startActivity(intent)
+            }
 
+        }  // end of with(holder)
+
+    }  // end of onBindViewHolder method
+
+    // Function to get the number of items in the RecyclerView
     override fun getItemCount(): Int = productDBDataList.size
 
-}
+}  // end of ProductDashboardAdapter class

@@ -83,15 +83,12 @@
     <edu.cccdci.opal.utils.MainButton
         android:id="@+id/btn_submit_address"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_submit_height"
+        android:layout_height="@dimen/button_large_height"
         android:layout_marginTop="@dimen/large_mrg_pd"
         android:layout_weight="0"
         android:background="@drawable/custom_button"
         android:text="@string/submit"
         android:textColor="@color/app_white"
-        android:textSize="@dimen/submit_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textSize="@dimen/button_large_text_size" />
 
 </LinearLayout>

@@ -183,20 +183,42 @@
                 android:textSize="@dimen/main_text_size" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <edu.cccdci.opal.utils.MainCheckBox
-            android:id="@+id/cb_terms_and_conditions"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="@dimen/small_mrg_pd"
-            android:checked="false"
-            android:text="@string/terms_and_conditions"
-            android:textColor="@color/app_black"
-            android:textSize="@dimen/main_text_size" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_terms_and_conditions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-12dp"
+                android:checked="false" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_mrg_pd"
+                android:text="@string/agree_to_lbl"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_terms_and_conditions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/terms_and_conditions"
+                android:textColor="@color/primaryAccentColor"
+                android:textSize="@dimen/main_text_size" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/register_buttons_height"
+            android:layout_height="@dimen/button_small_height"
             android:layout_marginTop="@dimen/medium_mrg_pd"
             android:orientation="horizontal">
 
@@ -209,7 +231,7 @@
                 android:background="@drawable/custom_button"
                 android:text="@string/register_btn"
                 android:textColor="@color/app_white"
-                android:textSize="@dimen/register_buttons_text_size" />
+                android:textSize="@dimen/button_small_text_size" />
 
             <edu.cccdci.opal.utils.MainButton
                 android:id="@+id/btn_cancel"
@@ -220,7 +242,7 @@
                 android:background="@drawable/custom_button"
                 android:text="@string/cancel_btn"
                 android:textColor="@color/app_white"
-                android:textSize="@dimen/register_buttons_text_size" />
+                android:textSize="@dimen/button_small_text_size" />
 
         </LinearLayout>
 

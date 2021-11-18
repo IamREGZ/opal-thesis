@@ -18,6 +18,6 @@ class AboutUsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentAboutUsBinding.inflate(inflater)
         return binding.root
-    } //end of onCreateView method
+    }  // end of onCreateView method
 
-} //end of AboutUsFragment class
+}  // end of AboutUsFragment class

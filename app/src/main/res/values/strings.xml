@@ -4,9 +4,9 @@
 
     <!--  Strings for Log-in  -->
     <string name="forgot_password">Forgot Password?</string>
-    <string name="sign_in_btn">Sign in</string>
+    <string name="login_btn">Log In</string>
     <string name="no_account_lbl">Don\'t have an account?</string>
-    <string name="register_link"><b><u>REGISTER</u></b></string>
+    <string name="register_link"><b>REGISTER</b></string>
 
     <!--  Strings for Register  -->
     <string name="account_registration">ACCOUNT REGISTRATION</string>
@@ -16,9 +16,8 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="terms_and_conditions">
-        I agree to the <b><u>Terms and Conditions</u></b>
-    </string>
+    <string name="agree_to_lbl">I agree to the</string>
+    <string name="terms_and_conditions"><b>Terms and Conditions</b></string>
     <string name="register_btn">Register</string>
     <string name="cancel_btn">Cancel</string>
 
@@ -47,6 +46,10 @@
     <string name="err_image_selection_failed">
         There was an error selecting the image file.
     </string>
+    <string name="err_register_login_failed">
+        Your account is successfully registered. However, there was a problem
+        logging in to your account.
+    </string>
     <string name="err_blank_current_password">Please enter your current password.</string>
     <string name="err_blank_new_password">Please enter your new password.</string>
 
@@ -55,25 +58,19 @@
     <string name="msg_recovery_email_submitted">
         Email sent successfully. Check your email to reset your password.
     </string>
-    <string name="msg_signed_out">Signed out successfully.</string>
+    <string name="msg_logged_out">Logged out successfully.</string>
     <string name="msg_user_info_changed">
         Your user information is changed successfully.
     </string>
     <string name="msg_back_again_to_exit">Press back again to exit.</string>
     <string name="msg_pwd_change_success">Your password was changed successfully.</string>
     <string name="msg_acc_delete_success">Your account was deleted successfully.</string>
-    <string name="msg_user_now_vendor">
-        Congratulations! You\'re now a vendor!
-    </string>
+    <string name="msg_user_now_vendor">Congratulations! You\'re now a vendor!</string>
 
     <!--  Dialog Progress  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
     <string name="msg_saving_changes">Saving changes&#8230;</string>
-    <string name="msg_signing_in">Signing in&#8230;</string>
-
-    <!--  User Roles  -->
-    <string name="role_customer">Customer</string>
-    <string name="role_vendor">Vendor</string>
+    <string name="msg_logging_in">Logging in&#8230;</string>
 
     <!--  Toolbar Titles  -->
     <string name="tlb_title_user_profile">USER PROFILE</string>
@@ -95,11 +92,15 @@
     <string name="nav_profile_username">Username</string>
     <string name="nav_profile_role">Role Indicator</string>
 
+    <!--  User Roles  -->
+    <string name="role_customer">Customer</string>
+    <string name="role_vendor">Vendor</string>
+
     <!--  Side Navigation Menu Items  -->
     <string name="nav_addresses">Addresses</string>
     <string name="nav_order_history">Order History</string>
     <string name="nav_settings">Settings</string>
-    <string name="nav_sign_out">Sign Out</string>
+    <string name="nav_log_out">Log Out</string>
     <string name="nav_subhead_help">Help</string>
     <string name="nav_about_us">About Us</string>
     <string name="nav_feedback">Feedback</string>
@@ -137,7 +138,7 @@
     <string name="empty_products">Oops! There are no products found!</string>
     <string name="empty_markets">Oops! There are no markets found!</string>
     <string name="empty_address">Add your addresses here.</string>
-    <string name="empty_cart">You haven\'t added products in your cart.</string>
+    <string name="empty_cart">You haven\'t added products to your cart.</string>
     <string name="empty_orders">You haven\'t placed your orders yet.</string>
     <string name="empty_transactions">
         Your customers haven\'t placed their orders yet.
@@ -227,7 +228,7 @@
     <string name="del_acc_warning_message">
         Once you\'ve deleted your account, you\'ll no longer access your
         account anymore. All of your personal data will be deleted. To
-        proceed with account deletion, please provide your password in the
+        proceed with account deletion, please enter your password in the
         field provided below.
     </string>
     <string name="del_acc_confirm">Confirm Account Deletion</string>
@@ -241,16 +242,16 @@
     <string name="about_desc">
         <b>OPAL (Online Palengke)</b> exists to bring necessities at your doorsteps.
     </string>
-    <string name="placeholder_paragraph_1">
+    <string name="about_paragraph_1">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Nullam faucibus, odio et laoreet porttitor, sapien lectus iaculis est,
         vitae accumsan purus tortor sit amet est.
     </string>
-    <string name="placeholder_paragraph_2">
+    <string name="about_paragraph_2">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Nulla consectetur, leo nec accumsan facilisis, tellus.
     </string>
-    <string name="placeholder_paragraph_3">
+    <string name="about_paragraph_3">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Phasellus at dapibus tellus. Ut nec accumsan.
     </string>
@@ -315,8 +316,8 @@
     </string>
     <string name="bav_instructions">
         To proceed, you need to enter your password to confirm application
-        for OPAL Vendors Community. By clicking \"Apply Now,\" you\'re also
-        agreeing to our <b><u>Vendor\'s Terms and Conditions</u></b>.
+        for OPAL Vendors Community. By clicking \"Apply Now,\" you also
+        agree to our <b><u>Vendor\'s Terms and Conditions</u></b>.
     </string>
     <string name="bav_apply_now">Apply Now</string>
 

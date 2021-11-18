@@ -15,7 +15,7 @@
         <!-- TODO: Home to My Cart -->
 
 
-        <!-- TODO: Home to Messages -->
+        <!-- Home to Messages -->
         <action
             android:id="@+id/home_to_messages"
             app:destination="@id/fragment_messages" />
