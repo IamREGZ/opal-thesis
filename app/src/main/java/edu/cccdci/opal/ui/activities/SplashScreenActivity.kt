@@ -15,17 +15,16 @@ class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Force disables dark mode
+        // Force disable dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
 
-        //Animated Splash Screen
         with(binding) {
             setContentView(root)
 
-            //Makes the activity full screen
+            // Makes the activity full screen
             @Suppress("DEPRECATION")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.hide(WindowInsets.Type.statusBars())
@@ -36,37 +35,37 @@ class SplashScreenActivity : AppCompatActivity() {
                 )
             }
 
-            ivLogo.alpha = 0f //Initial alpha for logo
+            ivLogo.alpha = 0f  // Initial alpha for logo
 
-            //Animate the splash screen logo by fading in
+            // Animate the splash screen logo by fading in
             ivLogo.animate().setDuration(1500).alpha(1f).withEndAction {
-                //Opens either Log In or Home Activity
+                // Opens either Log In or Home Activity
                 startActivity(checkCurrentUserSignedIn())
 
-                //Change the default transition
+                // Change the default transition
                 overridePendingTransition(
                     android.R.anim.fade_in,
                     android.R.anim.fade_out
                 )
 
-                finish() //Closes the Splash Screen
-            } //end of withEndAction
+                finish()  // Closes the Splash Screen
+            }  // end of withEndAction
 
-        } //end of with(binding)
+        }  // end of with(binding)
 
-    } //end of onCreate method
+    }  // end of onCreate method
 
-    //Function to check if there's a user signed in in the application
+    // Function to check if there's a user signed in in the application
     private fun checkCurrentUserSignedIn(): Intent {
-        //If there's a user signed in, go to the home page
+        // If there's a user signed in, go to the home page
         val targetActivity = if (FirebaseAuth.getInstance().currentUser != null)
             MainActivity::class.java
-        //If none, go to log in page instead
+        // If none, go to log in page instead
         else
             LoginActivity::class.java
 
-        //Returns the Intent to send user to either Log In or Home
+        // Returns the Intent to send user to either Log In or Home
         return Intent(this@SplashScreenActivity, targetActivity)
-    } //end of checkCurrentUserSignedIn method
+    }  // end of checkCurrentUserSignedIn method
 
-} //end of SplashScreenActivity class
+}  // end of SplashScreenActivity class

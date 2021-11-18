@@ -174,8 +174,8 @@
     <edu.cccdci.opal.utils.MainTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
         android:layout_gravity="center"
+        android:layout_weight="0"
         android:text="@string/app_version"
         android:textColor="@color/app_black"
         android:textSize="@dimen/main_text_size" />

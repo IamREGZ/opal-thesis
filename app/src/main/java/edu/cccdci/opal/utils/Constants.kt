@@ -7,7 +7,7 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 
 object Constants {
-    //For Cloud Firestore (Collection, Documents, and Fields)
+    // For Cloud Firestore (Collection, Documents, and Fields)
     const val USERS: String = "users"
     const val FIRST_NAME: String = "firstName"
     const val LAST_NAME: String = "lastName"
@@ -16,12 +16,12 @@ object Constants {
     const val PROFILEPIC: String = "profilePic"
     const val VENDOR: String = "vendor"
 
-    //For storing information to Firestore
+    // For storing information to Firestore
     const val GENDER_MALE: String = "male"
     const val GENDER_FEMALE: String = "female"
     const val GENDER_OTHER: String = "other"
 
-    //For Shared Preferences and Parcelable
+    // For Shared Preferences and Parcelable
     const val OPAL_PREFERENCES: String = "OPALPrefs"
     const val SIGNED_IN_FULL_NAME: String = "signed_in_full_name"
     const val SIGNED_IN_USERNAME: String = "signed_in_username"
@@ -30,31 +30,31 @@ object Constants {
     const val EXTRA_USER_INFO: String = "extra_user_info"
     const val PRODUCT_DESCRIPTION: String = "product_description"
 
-    //For Requesting Permissions
+    // For Request Permissions
     const val READ_STORAGE_PERMISSION_CODE = 2
     const val SELECT_IMAGE_REQUEST_CODE = 1
 
-    //File upload naming templates
+    // File upload naming templates
     const val USER_PROFILE_IMAGE_TEMP: String = "OPAL_USRIMG_"
 
-    //Function to launch the Image Selection Activity
+    // Function to launch the Image Selection Activity
     fun showImageSelection(activity: Activity) {
-
         val galleryIntent = Intent(
             Intent.ACTION_PICK,
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         )
-        //Opens the Image Selection Activity
+        // Opens the Image Selection Activity
         activity.startActivityForResult(galleryIntent, SELECT_IMAGE_REQUEST_CODE)
-
-    } //end of showImageSelection method
+    }  // end of showImageSelection method
 
     /* Function to get the file extension of the file being uploaded
      * Example: C:\Users\username\Desktop\spider-man.jpg
      * The function will return a String value of ".jpg"
      */
-    fun getFileExtension(activity: Activity, uri: Uri?): String? =
-        MimeTypeMap.getSingleton().getExtensionFromMimeType(
+    fun getFileExtension(activity: Activity, uri: Uri?): String? {
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(
             activity.contentResolver.getType(uri!!)
         )
-}
+    }  // end of getFileExtension method
+
+}  // end of Constants object

@@ -9,4 +9,4 @@ data class Market(
     val name: String = "",
     val address: String = "",
     val profileImage: String = ""
-): Parcelable
+) : Parcelable

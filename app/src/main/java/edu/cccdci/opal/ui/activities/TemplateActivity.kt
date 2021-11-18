@@ -14,99 +14,98 @@ import edu.cccdci.opal.databinding.DialogProgressBinding
 
 open class TemplateActivity : AppCompatActivity() {
 
+    private lateinit var mDialog: Dialog
     private var backPressedOnce = false
 
-    private lateinit var contentProgDialog: Dialog
-
-    //Function to display the Message SnackBar
+    // Function to display the Message SnackBar
     fun showMessagePrompt(message: String, error: Boolean) {
-        //Prepare the SnackBar
+        // Prepare the SnackBar
         val msgPrompt = Snackbar.make(
             findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG
         )
         val msgPromptView = msgPrompt.view
 
-        //Decides what color of the SnackBar depending on the message
+        // Decides what color of the SnackBar depending on the message
         val snackBarColor = if (error)
-            R.color.colorErrorMessage //Red color if error
+            R.color.colorErrorMessage  // Red color if error
         else
-            R.color.colorSuccessMessage //Green color if successful
+            R.color.colorSuccessMessage  // Green color if successful
 
-        //Sets the color of the SnackBar
+        // Sets the color of the SnackBar
         msgPromptView.setBackgroundColor(
             ContextCompat.getColor(this@TemplateActivity, snackBarColor)
         )
 
-        msgPrompt.show() //Shows the SnackBar
-    } //end of showMessagePrompt method
+        msgPrompt.show()  // Shows the SnackBar
+    }  // end of showMessagePrompt method
 
-    //Function to show the loading dialog
+    // Function to show the loading dialog
     fun showProgressDialog(message: String) {
         val dialogBind = DialogProgressBinding.inflate(layoutInflater)
-        contentProgDialog = Dialog(this)
+        mDialog = Dialog(this)
 
-        with(contentProgDialog) {
-            //Prepares the progress dialog
+        with(mDialog) {
+            // Prepares the progress dialog
             setContentView(dialogBind.root)
             dialogBind.tvProgressText.text = message
 
-            //Make the progress dialog non-cancellable
+            // Make the progress dialog non-cancellable
             setCancelable(false)
             setCanceledOnTouchOutside(false)
 
-            show() //Displays the dialog
-        } //end of with(contentProgDialog)
+            show()  // Displays the dialog
+        }  // end of with(mDialog)
+    }  // end of showProgressDialog method
 
-    } //end of showProgressDialog method
-
-    //Function to hide the loading dialog
+    // Function to hide the loading dialog
     fun hideProgressDialog() {
-        contentProgDialog.dismiss()
-    } //end of hideProgressDialog method
+        mDialog.dismiss()
+    } // end of hideProgressDialog method
 
-    //Function to setup the Action Bar for navigation
+    // Function to setup the Action Bar for navigation
     protected fun setupActionBar(tlb: Toolbar, isBlack: Boolean = true) {
         setSupportActionBar(tlb)
 
-        //Customize the navigation icon
+        // Customize the navigation icon
         if (supportActionBar != null) {
-            //Enables button in the Action Bar
+            // Enables button in the Action Bar
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-            //If isBlack is true, use black icon. Otherwise, white.
+            // If isBlack is true, use black icon. Otherwise, white.
             val backIcon: Int = if (isBlack) {
                 R.drawable.ic_back_nav_black
             } else {
                 R.drawable.ic_back_nav_white
             }
 
-            //Sets the icon of the back button
+            // Sets the icon of the back button
             supportActionBar!!.setHomeAsUpIndicator(backIcon)
         }
 
-        //Add functionality to the button
+        // Add functionality to the button
         tlb.setNavigationOnClickListener { onBackPressed() }
+    }  // end of setupActionBar method
 
-    } //end of setupActionBar method
-
-    //Function to create a Toast message (show for short time by default)
-    fun toastMessage(context: Context, msg: String, showLong: Boolean = false): Toast =
-        if (showLong)
+    // Function to create a Toast message (show for short time by default)
+    fun toastMessage(context: Context, msg: String, showLong: Boolean = false): Toast {
+        return if (showLong)
             Toast.makeText(context, msg, Toast.LENGTH_LONG)
         else
             Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+    }  // end of toastMessage method
 
-    //Function to double press back to exit the application
+    // Function to double press back to exit the application
     fun doubleBackToExit() {
-        //User pressed back the second time
+        // User pressed back the second time
         if (backPressedOnce) {
             super.onBackPressed()
-            return //exit the function
+            return  // exit the function and application
         }
 
-        //When the user pressed back once
+        // When the user pressed back once
         this.backPressedOnce = true
-        //Display a Toast message
+
+        // Display a Toast message
         toastMessage(
             this, resources.getString(R.string.msg_back_again_to_exit)
         ).show()
@@ -117,7 +116,6 @@ open class TemplateActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             backPressedOnce = false
         }, 2000)
+    }  // end of doubleBackToExit method
 
-    } //end of doubleBackToExit method
-
-} //end of TemplateActivity class
+}  // end of TemplateActivity class

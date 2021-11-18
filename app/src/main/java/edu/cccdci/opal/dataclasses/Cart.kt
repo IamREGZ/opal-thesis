@@ -13,4 +13,4 @@ data class Cart(
     val vendor: String = "",
     val market: String = "",
     var isSelected: Boolean = false
-): Parcelable
+) : Parcelable

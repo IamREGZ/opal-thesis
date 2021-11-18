@@ -24,107 +24,96 @@ class DeleteAccountFragment : TemplateFragment() {
         binding = FragmentDeleteAccountBinding.inflate(inflater)
 
         with(binding) {
-
             btnConfAccDel.setOnClickListener {
-
+                // Get the inputted user password
                 val password: String = etDelAccPass.text.toString()
                     .trim { it <= ' ' }
 
                 if (password.isEmpty()) {
-                    //Error if password field is empty
+                    // Error if password field is empty
                     showMessagePrompt(
                         resources.getString(R.string.err_blank_password),
                         true
                     )
                 } else {
-                    //Proceed with account deletion
+                    // Proceed with account deletion
                     verifyCredentials(password)
                 }
-
-            } //end of setOnClickListener
+            }  // end of setOnClickListener
 
             return root
-        } //end of with(binding)
+        }  // end of with(binding)
 
-    } //end of onCreateView method
+    }  // end of onCreateView method
 
-    //Function to verify credentials, and then delete user account
+    // Function to verify credentials, and then delete user account
     private fun verifyCredentials(password: String) {
-        //Display the loading message
+        // Display the loading message
         showProgressDialog(resources.getString(R.string.msg_please_wait))
 
-        //Get credentials of the current user
+        // Get credentials of the current user
         val credential = EmailAuthProvider.getCredential(
             FirebaseAuth.getInstance().currentUser!!.email!!, password
         )
 
-        //Verify credentials
+        // Verify credentials
         FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential)
             .addOnCompleteListener { task ->
-
-                //Correct credentials
+                // Correct credentials
                 if (task.isSuccessful) {
-                    //Delete data from Firestore Database
+                    // Delete data from Firestore Database
                     FirestoreClass().deleteUserData(this@DeleteAccountFragment)
                 } else {
-                    //Wrong credentials
+                    // Wrong credentials
+                    hideProgressDialog()  // Hide the loading message
 
-                    hideProgressDialog() //Hide the loading message
-
-                    //Clear the password field
+                    // Clear the password field
                     binding.etDelAccPass.text!!.clear()
 
-                    //Display the error message
+                    // Display the error message
                     showMessagePrompt(
                         task.exception!!.message.toString(), true
                     )
                 }
+            } // end of reauthenticate
 
-            } //end of reauthenticate
+    }  // end of verifyCredentials method
 
-    } //end of verifyCredentials method
-
-    //Function to delete account from Firebase
+    // Function to delete account from Firebase
     fun deleteUserAccount() {
-        //Delete the current user's account
+        // Delete the current user's account
         FirebaseAuth.getInstance().currentUser!!.delete()
             .addOnCompleteListener { task ->
-
-                //Successful task
+                // Successful task
                 if (task.isSuccessful) {
-
-                    //Create an Intent to launch LoginActivity
+                    // Create an Intent to launch LoginActivity
                     val intent = Intent(
                         context, LoginActivity::class.java
                     )
-
                     /* To ensure that no more activity layers are active
                      * after the account was deleted
                      */
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                             Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-                    //Display a Toast message
+                    // Display a Toast message
                     toastMessage(
                         resources.getString(R.string.msg_acc_delete_success)
                     ).show()
 
-                    startActivity(intent) //Opens the login page
-                    requireActivity().finish() //Closes the current activity
-
+                    startActivity(intent)  // Opens the login page
+                    requireActivity().finish()  // Closes the current activity
                 } else {
-                    //If it is not successful
+                    // If it is not successful
+                    hideProgressDialog()  // Hide the loading message
 
-                    hideProgressDialog() //Hide the loading message
-
-                    //Display the error message
+                    // Display the error message
                     showMessagePrompt(
                         task.exception!!.message.toString(), true
                     )
                 }
+            }  // end of delete
 
-        } //end of delete
+    }  // end of deleteUserAccount method
 
-    } //end of deleteUserAccount method
-
-} //end of DeleteAccountFragment class
+}  // end of DeleteAccountFragment class

@@ -18,6 +18,6 @@ class FeedbackFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentFeedbackBinding.inflate(inflater)
         return binding.root
-    } //end of onCreateView method
+    }  // end of onCreateView method
 
-} //end of FeedbackFragment class
+}  // end of FeedbackFragment class

@@ -18,6 +18,6 @@ class NotifSettingsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentNotifSettingsBinding.inflate(inflater)
         return binding.root
-    } //end of onCreateView method
+    }  // end of onCreateView method
 
-} //end of NotifSettingsFragment class
+}  // end of NotifSettingsFragment class

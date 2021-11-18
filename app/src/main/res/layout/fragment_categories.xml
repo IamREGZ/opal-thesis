@@ -12,27 +12,6 @@
         android:layout_margin="@dimen/medium_mrg_pd"
         android:orientation="vertical">
 
-        <!--        <RelativeLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="?actionBarSize">-->
-
-        <!--            <ImageView-->
-        <!--                android:layout_width="50dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                android:padding="15dp"-->
-        <!--                android:src="@drawable/back_icon" />-->
-
-        <!--            <ImageView-->
-        <!--                android:layout_width="50dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_alignParentEnd="true"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                android:padding="15dp"-->
-        <!--                android:src="@drawable/search" />-->
-
-        <!--        </RelativeLayout>-->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/categories_panel_size"

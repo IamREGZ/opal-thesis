@@ -22,9 +22,9 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //This is important to make two icons (my cart and messages) visible
+        // This is important to make two icons (my cart and messages) visible
         setHasOptionsMenu(true)
-    } //end of onCreate method
+    }  // end of onCreate method
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +33,8 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater)
 
+        // Temporary data list
         val dataList = mutableListOf<Product>()
-
         var i = 1
         while (i <= 10) {
             dataList.add(
@@ -47,48 +47,58 @@ class HomeFragment : Fragment() {
             i++
         }
 
+        // Create an object of Product Adapter
         productAdapter = ProductAdapter(requireContext(), dataList)
 
         with(binding) {
+            // Sets the adapter of Home RecyclerView
             rvHome.adapter = productAdapter
+            // Sets the layout type of the RecyclerView
             rvHome.layoutManager = GridLayoutManager(context, 2)
 
+            /* If there are no products in the database, display
+             * the empty products message
+             */
             if (productAdapter.itemCount == 0) {
                 rvHome.visibility = View.GONE
                 llEmptyHome.visibility = View.VISIBLE
-            } else {
+            }
+            // Display the products if there are existing products
+            else {
                 rvHome.visibility = View.VISIBLE
                 llEmptyHome.visibility = View.GONE
             }
 
             return root
-        }
-    } //end of onCreateView method
+        }  // end of with(binding)
 
-    //Override the function to add two icons on top app bar (my cart and messages)
+    }  // end of onCreateView method
+
+    // Override the function to add two icons on top app bar (my cart and messages)
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.home_tab_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
-    } //end of onCreateOptionsMenu method
+    }  // end of onCreateOptionsMenu method
 
+    // onOptionsItemSelected events are declared here
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            //Send to Item Cart
+            // Send to Item Cart
             R.id.tab_cart -> {
                 val user = User()
 
                 val intent = Intent(requireContext(), CartActivity::class.java)
-                //Add product information to intent
+                // Add product information to intent
                 intent.putExtra(Constants.EXTRA_USER_INFO, user)
 
                 requireContext().startActivity(intent)
             }
 
-            //Send to Messages
+            // Send to Messages
             R.id.tab_messages -> findNavController().navigate(R.id.home_to_messages)
         }
 
         return super.onOptionsItemSelected(item)
-    } //end of onOptionsItemSelected method
+    }  // end of onOptionsItemSelected method
 
-} //end of HomeFragment class
+}  // end of HomeFragment class

@@ -21,25 +21,26 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
         with(binding) {
             setContentView(root)
 
-            //Click event for Login Button
-            btnSignIn.setOnClickListener(this@LoginActivity)
-            //Click event for Forgot Password TextView
+            // Click event for Login Button
+            btnLogIn.setOnClickListener(this@LoginActivity)
+            // Click event for Forgot Password TextView
             tvForgotPassword.setOnClickListener(this@LoginActivity)
-            //Click event for Register TextView
+            // Click event for Register TextView
             tvRegister.setOnClickListener(this@LoginActivity)
-        } //end of with(binding)
+        }  // end of with(binding)
 
-    } //end of onCreate method
+    }  // end of onCreate method
 
+    // onClick events are declared here
     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
-                //Logins the user and sends to home page
-                R.id.btn_sign_in -> {
+                // Logins the user and sends to home page
+                R.id.btn_log_in -> {
                     loginUser()
                 }
 
-                //Open the Forgot Password Activity
+                // Open the Forgot Password Activity
                 R.id.tv_forgot_password -> {
                     startActivity(
                         Intent(
@@ -49,7 +50,7 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
                     )
                 }
 
-                //Open the Register Activity
+                // Open the Register Activity
                 R.id.tv_register -> {
                     startActivity(
                         Intent(
@@ -58,93 +59,96 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
                         )
                     )
                 }
+            }  // end of when
 
-            } //end of when
+        }  // end of if
 
-        } //end of if
+    }  // end of onClick method
 
-    } //end of onClick method
-
-    //Operations to do when this activity is active again
+    // Operations to do when this activity is active again
     override fun onResume() {
         super.onResume()
-        clearLoginFields() //Clears the login fields
-    } //end of onResume method
+        clearLoginFields()  // Clears the login fields for security purposes
+    }  // end of onResume method
 
-    //Override the function to make the user double press back to exit
+    // Override the function to make the user double press back to exit
     override fun onBackPressed() {
         doubleBackToExit()
-    } //end of onBackPressed method
+    }  // end of onBackPressed method
 
-    //Function to validate login information
-    private fun validateLogin(): Boolean = with(binding) {
-        when {
-            //If the Email field is empty
-            TextUtils.isEmpty(etLoginEmail.text.toString().trim { it <= ' ' }) -> {
-                showMessagePrompt(resources.getString(R.string.err_blank_email), true)
-                false
-            }
+    // Function to validate login information
+    private fun validateLogin(): Boolean {
+        with(binding) {
+            return when {
+                // If the Email field is empty
+                TextUtils.isEmpty(etLoginEmail.text.toString().trim { it <= ' ' }) -> {
+                    // Display an error message
+                    showMessagePrompt(resources.getString(R.string.err_blank_email), true)
+                    false  // return false
+                }
 
-            //If the Password field is empty
-            TextUtils.isEmpty(etLoginPass.text.toString().trim { it <= ' ' }) -> {
-                showMessagePrompt(resources.getString(R.string.err_blank_password), true)
-                false
-            }
+                // If the Password field is empty
+                TextUtils.isEmpty(etLoginPass.text.toString().trim { it <= ' ' }) -> {
+                    // Display an error message
+                    showMessagePrompt(resources.getString(R.string.err_blank_password), true)
+                    false  // return false
+                }
 
-            else -> true //If all inputs are valid
-        } //end of when
+                else -> true  // If all inputs are valid
+            }  // end of when
+        }  // end of with(binding)
 
-    } //end of with(binding) and validateLogin method
+    }  // end of validateLogin method
 
-    //Function to login user
+    // Function to login user
     private fun loginUser() {
         with(binding) {
-            //Validate first the login inputs
+            // Validate first the login inputs
             if (validateLogin()) {
+                // Display the loading message
+                showProgressDialog(resources.getString(R.string.msg_logging_in))
 
-                //Display the loading message
-                showProgressDialog(resources.getString(R.string.msg_signing_in))
-
+                // Get the inputted email and password
                 val email = etLoginEmail.text.toString().trim { it <= ' ' }
                 val password = etLoginPass.text.toString().trim { it <= ' ' }
 
-                //Authenticate Firebase Account using Email and Password
+                // Authenticate Firebase Account using Email and Password
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
-
-                        //Successful task
+                        // Successful task
                         if (task.isSuccessful) {
+                            // Gets the user details
                             FirestoreClass().getUserDetails(this@LoginActivity)
                         } else {
-                            //If it is not successful
+                            // If it is not successful
+                            hideProgressDialog()  // Hide the loading message
 
-                            hideProgressDialog() //Hide the loading message
+                            clearLoginFields()  // Clears the login fields
 
-                            clearLoginFields() //Clears the login fields
-
+                            // Display an error message
                             showMessagePrompt(task.exception!!.message.toString(), true)
                         }
-                    } //end of signInWithEmailAndPassword
+                    }  // end of signInWithEmailAndPassword
 
-            } //end of if
+            }  // end of if
+        }  // end of with(binding)
 
-        } //end of with(binding)
+    }  // end of loginUser method
 
-    } //end of loginUser method
-
-    //Function to prompt that he/she is logged in
+    // Function to prompt that he/she is logged in
     fun logInSuccessPrompt() {
+        hideProgressDialog()  // Hide the loading message
 
-        hideProgressDialog() //Hide the loading message
+        // Opens the home page
+        startActivity(
+            Intent(
+                this@LoginActivity, MainActivity::class.java
+            )
+        )
+        finish()  // Closes the current activity
+    }  // end of logInSuccessPrompt method
 
-        startActivity(Intent(
-            this@LoginActivity, MainActivity::class.java)
-        ) //Opens the home page
-        finish() //Closes the current activity
-
-    } //end of logInSuccessPrompt method
-
-    //Function to clear the login text fields
+    // Function to clear the login text fields
     private fun clearLoginFields() {
         with(binding) {
             if (etLoginEmail.text!!.isNotEmpty())
@@ -153,6 +157,6 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
             if (etLoginPass.text!!.isNotEmpty())
                 etLoginPass.text!!.clear()
         }
-    } //end of clearLoginFields method
+    }  // end of clearLoginFields method
 
-} //end of LoginActivity class
+}  // end of LoginActivity class

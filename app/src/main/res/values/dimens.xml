@@ -7,11 +7,9 @@
     <!--  Text Sizes  -->
     <dimen name="main_text_size">18sp</dimen>
     <dimen name="header_text_size">24sp</dimen>
-    <dimen name="sign_in_button_text_size">22sp</dimen>
-    <dimen name="register_buttons_text_size">18sp</dimen>
+    <dimen name="button_large_text_size">22sp</dimen>
+    <dimen name="button_small_text_size">18sp</dimen>
     <dimen name="progress_text_size">16sp</dimen>
-    <dimen name="save_changes_text_size">22sp</dimen>
-    <dimen name="submit_text_size">22sp</dimen>
     <dimen name="notif_head_text_size">22sp</dimen>
     <dimen name="categories_name_text_size">28sp</dimen>
     <dimen name="categories_expand_text_size">16sp</dimen>
@@ -20,12 +18,13 @@
 
     <!--  Button Dimens  -->
     <dimen name="button_radius">15dp</dimen>
+    <dimen name="button_large_height">50dp</dimen>
+    <dimen name="button_small_height">40dp</dimen>
     <dimen name="radio_button_radius">10dp</dimen>
     <dimen name="radio_button_stroke">2dp</dimen>
-    <dimen name="btn_submit_height">50dp</dimen>
 
     <!--  EditText Dimens  -->
-    <dimen name="et_sign_in_radius">15dp</dimen>
+    <dimen name="et_login_radius">15dp</dimen>
     <dimen name="et_radius">10dp</dimen>
     <dimen name="et_stroke_width">2dp</dimen>
     <dimen name="et_feedback_msg_height">180dp</dimen>
@@ -41,18 +40,9 @@
 
     <!--  Login Dimens  -->
     <dimen name="login_layout_padding">30dp</dimen>
-    <dimen name="login_edittext_height">50dp</dimen>
-    <dimen name="login_icon_padding">10dp</dimen>
-    <dimen name="login_edittext_padding">15dp</dimen>
-    <dimen name="login_button_height">50dp</dimen>
 
     <!--  Register Dimens  -->
-    <dimen name="register_layout_padding">15dp</dimen>
-    <dimen name="register_buttons_height">40dp</dimen>
-
-    <!--  Forgot Password Dimens  -->
-    <dimen name="forgot_pw_layout_padding">30dp</dimen>
-    <dimen name="forgot_pw_desc_padding">10dp</dimen>
+    <dimen name="register_layout_padding">16dp</dimen>
 
     <!--  Progress Dialog Dimens  -->
     <dimen name="progress_dialog_padding">8dp</dimen>
@@ -67,7 +57,6 @@
     <dimen name="profile_user_photo_size">160dp</dimen>
     <dimen name="profile_rg_gender_height">50dp</dimen>
     <dimen name="profile_rb_gender_marginStartEnd">3dp</dimen>
-    <dimen name="profile_save_btn_height">50dp</dimen>
 
     <!--  Notification Dimens  -->
     <dimen name="notif_profile_pic_size">50dp</dimen>
@@ -85,7 +74,6 @@
 
     <!--  Product Description Dimens  -->
     <dimen name="product_image_height">300dp</dimen>
-    <dimen name="btn_atc_height">50dp</dimen>
 
     <!--  RecyclerView Dimens  -->
     <dimen name="empty_icon_size">100dp</dimen>

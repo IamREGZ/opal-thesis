@@ -18,6 +18,6 @@ class AddressInfoFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentAddressInfoBinding.inflate(inflater)
         return binding.root
-    } //end of onCreateView method
+    }  // end of onCreateView method
 
-} //end of AddressInfoFragment class
+}  // end of AddressInfoFragment class

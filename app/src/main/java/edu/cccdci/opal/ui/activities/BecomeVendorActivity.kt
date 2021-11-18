@@ -19,16 +19,16 @@ class BecomeVendorActivity : TemplateActivity() {
 
         with(binding) {
             setContentView(root)
-            //Setups the Action Bar of the current activity
+            // Setups the Action Bar of the current activity
             setupActionBar(tlbBecomeVendorActivity, false)
 
             btnApplyNow.setOnClickListener {
-                //Get the text from password field
+                // Get the text from password field
                 val password: String = etVendorPass.text.toString()
                     .trim { it <= ' ' }
 
                 if (password.isEmpty()) {
-                    //Error if password field is empty
+                    // Error if password field is empty
                     showMessagePrompt(
                         resources.getString(R.string.err_blank_password), true
                     )
@@ -36,65 +36,59 @@ class BecomeVendorActivity : TemplateActivity() {
                     //Proceed with account deletion
                     verifyCredentials(password)
                 }
+            }  // end of setOnClickListener
 
-            } //end of setOnClickListener
+        }  // end of with(binding)
 
-        } //end of with(binding)
+    }  // end of onCreate method
 
-    } //end of onCreate method
-
-    //Function to verify credentials, and then upgrade user to vendor
+    // Function to verify credentials, and then upgrade user to vendor
     private fun verifyCredentials(password: String) {
-        //Display the loading message
+        // Display the loading message
         showProgressDialog(resources.getString(R.string.msg_please_wait))
 
-        //Get credentials of the current user
+        // Get credentials of the current user
         val credential = EmailAuthProvider.getCredential(
             FirebaseAuth.getInstance().currentUser!!.email!!, password
         )
 
-        //Verify credentials
+        // Verify credentials
         FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential)
             .addOnCompleteListener { task ->
-
-                //Correct credentials
+                // Correct credentials
                 if (task.isSuccessful) {
-                    //Proceed to update vendor field in the current user document
+                    // Proceed to update vendor field in the current user document
                     FirestoreClass().updateUserProfileData(
                         this@BecomeVendorActivity,
                         hashMapOf(Constants.VENDOR to true)
                     )
                 } else {
-                    //Wrong credentials
+                    // Wrong credentials
+                    hideProgressDialog()  // Hide the loading message
 
-                    hideProgressDialog() //Hide the loading message
-
-                    //Clear the password field
+                    // Clear the password field
                     binding.etVendorPass.text!!.clear()
 
-                    //Display the error message
+                    // Display the error message
                     showMessagePrompt(
                         task.exception!!.message.toString(), true
                     )
                 }
+            }  // end of reauthenticate
 
-            } //end of reauthenticate
+    }  // end of validateCredentials method
 
-    } //end of validateCredentials method
-
-    //Function to prompt that the user was upgraded to vendor
+    // Function to prompt that the user was upgraded to vendor
     fun upgradedToVendorPrompt() {
+        hideProgressDialog()  // Hide the loading message
 
-        hideProgressDialog() //Hide the loading message
-
-        //Displays the Toast message
+        // Displays the Toast message
         toastMessage(
             this@BecomeVendorActivity,
             resources.getString(R.string.msg_user_now_vendor)
         ).show()
 
-        finish() //Closes the current activity
+        finish()  // Closes the current activity
+    }  // end of upgradedToVendorPrompt method
 
-    } //end of upgradedToVendorPrompt method
-
-} //end of BecomeVendorActivity class
+}  // end of BecomeVendorActivity class

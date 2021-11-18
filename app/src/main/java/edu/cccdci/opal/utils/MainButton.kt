@@ -9,7 +9,7 @@ class MainButton(
 ) : AppCompatButton(context, attrs), FontImplementation {
 
     init {
-        //Initiates the custom font change
+        // Initiates the custom font change
         typeface = applyBoldFont(context, attrs)
     }
 

@@ -18,7 +18,6 @@ data class User(
     val cartItems: MutableList<Cart> = mutableListOf()
 ) : Parcelable
 
-/*
- * gender, phoneNum, profilePic and isVendor variables
+/* gender, phoneNum, profilePic and vendor variables
  * will be used later on upon account registration.
  */

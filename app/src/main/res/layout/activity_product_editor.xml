@@ -176,22 +176,22 @@
                 <edu.cccdci.opal.utils.MainButton
                     android:id="@+id/btn_submit_product"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_submit_height"
+                    android:layout_height="@dimen/button_large_height"
                     android:layout_marginTop="@dimen/large_mrg_pd"
                     android:background="@drawable/custom_button"
                     android:text="@string/submit"
                     android:textColor="@color/app_white"
-                    android:textSize="@dimen/submit_text_size" />
+                    android:textSize="@dimen/button_large_text_size" />
 
                 <edu.cccdci.opal.utils.MainButton
                     android:id="@+id/btn_delete_product"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_submit_height"
+                    android:layout_height="@dimen/button_large_height"
                     android:layout_marginTop="@dimen/large_mrg_pd"
                     android:background="@drawable/custom_button"
                     android:text="@string/delete_product"
                     android:textColor="@color/app_white"
-                    android:textSize="@dimen/submit_text_size"
+                    android:textSize="@dimen/button_large_text_size"
                     android:visibility="gone" />
 
             </LinearLayout>

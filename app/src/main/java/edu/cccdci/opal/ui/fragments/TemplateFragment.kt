@@ -8,13 +8,13 @@ import com.google.android.material.snackbar.Snackbar
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.DialogProgressBinding
 
-open class TemplateFragment: Fragment() {
+open class TemplateFragment : Fragment() {
 
-    private lateinit var contentProgDialog: Dialog
+    private lateinit var mDialog: Dialog
 
-    //Function to display the Message SnackBar
+    // Function to display the Message SnackBar
     fun showMessagePrompt(message: String, error: Boolean) {
-        //Prepare the SnackBar
+        // Prepare the SnackBar
         val msgPrompt = Snackbar.make(
             requireActivity().findViewById(android.R.id.content),
             message,
@@ -22,49 +22,50 @@ open class TemplateFragment: Fragment() {
         )
         val msgPromptView = msgPrompt.view
 
-        //Decides what color of the SnackBar depending on the message
+        // Decides what color of the SnackBar depending on the message
         val snackBarColor = if (error)
-            R.color.colorErrorMessage //Red color if error
+            R.color.colorErrorMessage  // Red color if error
         else
-            R.color.colorSuccessMessage //Green color if successful
+            R.color.colorSuccessMessage  // Green color if successful
 
-        //Sets the color of the SnackBar
+        // Sets the color of the SnackBar
         msgPromptView.setBackgroundColor(
             ContextCompat.getColor(requireContext(), snackBarColor)
         )
 
-        msgPrompt.show() //Shows the SnackBar
-    } //end of showMessagePrompt method
+        msgPrompt.show()  // Shows the SnackBar
+    }  // end of showMessagePrompt method
 
-    //Function to show the loading dialog
+    // Function to show the loading dialog
     fun showProgressDialog(message: String) {
         val dialogBind = DialogProgressBinding.inflate(layoutInflater)
-        contentProgDialog = Dialog(requireContext())
+        mDialog = Dialog(requireContext())
 
-        with(contentProgDialog) {
-            //Prepares the progress dialog
+        with(mDialog) {
+            // Prepares the progress dialog
             setContentView(dialogBind.root)
             dialogBind.tvProgressText.text = message
 
-            //Make the progress dialog non-cancellable
+            // Make the progress dialog non-cancellable
             setCancelable(false)
             setCanceledOnTouchOutside(false)
 
-            show() //Displays the dialog
-        } //end of with(contentProgDialog)
+            show()  // Displays the dialog
+        }  // end of with(mDialog)
 
-    } //end of showProgressDialog method
+    }  // end of showProgressDialog method
 
-    //Function to hide the loading dialog
+    // Function to hide the loading dialog
     fun hideProgressDialog() {
-        contentProgDialog.dismiss()
-    } //end of hideProgressDialog method
+        mDialog.dismiss()
+    }  // end of hideProgressDialog method
 
-    //Function to create a Toast message (show for short time by default)
-    fun toastMessage(msg: String, showLong: Boolean = false): Toast =
-        if (showLong)
+    // Function to create a Toast message (show for short time by default)
+    fun toastMessage(msg: String, showLong: Boolean = false): Toast {
+        return if (showLong)
             Toast.makeText(context, msg, Toast.LENGTH_LONG)
         else
             Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+    }  // end of toastMessage method
 
-}
+}  // end of TemplateFragment class

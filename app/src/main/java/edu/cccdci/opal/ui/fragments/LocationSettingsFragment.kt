@@ -18,6 +18,6 @@ class LocationSettingsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentLocationSettingsBinding.inflate(inflater)
         return binding.root
-    } //end of onCreateView method
+    }  // end of onCreateView method
 
-} //end of LocationSettingsFragment class
+}  // end of LocationSettingsFragment class
