@@ -7,8 +7,9 @@ import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityBecomeVendorBinding
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.UtilityClass
 
-class BecomeVendorActivity : TemplateActivity() {
+class BecomeVendorActivity : UtilityClass() {
 
     private lateinit var binding: ActivityBecomeVendorBinding
 
@@ -29,8 +30,10 @@ class BecomeVendorActivity : TemplateActivity() {
 
                 if (password.isEmpty()) {
                     // Error if password field is empty
-                    showMessagePrompt(
-                        resources.getString(R.string.err_blank_password), true
+                    showSnackBar(
+                        this@BecomeVendorActivity,
+                        resources.getString(R.string.err_blank_password),
+                        true
                     )
                 } else {
                     //Proceed with account deletion
@@ -45,7 +48,11 @@ class BecomeVendorActivity : TemplateActivity() {
     // Function to verify credentials, and then upgrade user to vendor
     private fun verifyCredentials(password: String) {
         // Display the loading message
-        showProgressDialog(resources.getString(R.string.msg_please_wait))
+        showProgressDialog(
+            this@BecomeVendorActivity,
+            this@BecomeVendorActivity,
+            resources.getString(R.string.msg_please_wait)
+        )
 
         // Get credentials of the current user
         val credential = EmailAuthProvider.getCredential(
@@ -64,14 +71,17 @@ class BecomeVendorActivity : TemplateActivity() {
                     )
                 } else {
                     // Wrong credentials
-                    hideProgressDialog()  // Hide the loading message
+                    // Hide the loading message
+                    hideProgressDialog()
 
                     // Clear the password field
                     binding.etVendorPass.text!!.clear()
 
                     // Display the error message
-                    showMessagePrompt(
-                        task.exception!!.message.toString(), true
+                    showSnackBar(
+                        this@BecomeVendorActivity,
+                        task.exception!!.message.toString(),
+                        true
                     )
                 }
             }  // end of reauthenticate
@@ -86,7 +96,7 @@ class BecomeVendorActivity : TemplateActivity() {
         toastMessage(
             this@BecomeVendorActivity,
             resources.getString(R.string.msg_user_now_vendor)
-        ).show()
+        )
 
         finish()  // Closes the current activity
     }  // end of upgradedToVendorPrompt method

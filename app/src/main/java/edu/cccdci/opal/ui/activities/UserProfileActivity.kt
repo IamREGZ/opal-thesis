@@ -15,14 +15,16 @@ import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.GlideLoader
+import edu.cccdci.opal.utils.UtilityClass
 import java.io.IOException
 
-class UserProfileActivity : TemplateActivity(), View.OnClickListener {
+class UserProfileActivity : UtilityClass(), View.OnClickListener {
 
     private lateinit var binding: ActivityUserProfileBinding
     private lateinit var mUserInfo: User
     private var mSelectedImageFileURI: Uri? = null
     private var mUserProfileImageURL: String = ""
+    private var mUserHashMap: HashMap<String, Any> = hashMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -36,37 +38,38 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
 
             // Check if there's an existing parcelable extra info
             if (intent.hasExtra(Constants.EXTRA_USER_INFO)) {
+                // Get data from the parcelable class
                 mUserInfo = intent.getParcelableExtra(Constants.EXTRA_USER_INFO)!!
-            }
 
-            // Fill up the available fields
-            with(mUserInfo) {
-                // Full Name
-                etProfileFname.setText(firstName)
-                etProfileLname.setText(lastName)
+                // Fill up the available fields
+                with(mUserInfo) {
+                    // Full Name
+                    etProfileFname.setText(firstName)
+                    etProfileLname.setText(lastName)
 
-                // Email (Disabled)
-                etProfileEmail.isEnabled = false
-                etProfileEmail.setText(emailAdd)
+                    // Email (Disabled)
+                    etProfileEmail.isEnabled = false
+                    etProfileEmail.setText(emailAdd)
 
-                // Username (Disabled)
-                etProfileUsername.isEnabled = false
-                etProfileUsername.setText(userName)
+                    // Username (Disabled)
+                    etProfileUsername.isEnabled = false
+                    etProfileUsername.setText(userName)
 
-                etProfilePhone.setText(phoneNum)  // Phone Number
+                    etProfilePhone.setText(phoneNum)  // Phone Number
 
-                // Check one of the radio buttons depending on the selected gender
-                when (gender) {
-                    Constants.GENDER_MALE -> rbProfileMale.isChecked = true
-                    Constants.GENDER_FEMALE -> rbProfileFemale.isChecked = true
-                    Constants.GENDER_OTHER -> rbProfileOther.isChecked = true
-                }
+                    // Check one of the radio buttons depending on the selected gender
+                    when (gender) {
+                        Constants.GENDER_MALE -> rbProfileMale.isChecked = true
+                        Constants.GENDER_FEMALE -> rbProfileFemale.isChecked = true
+                        Constants.GENDER_OTHER -> rbProfileOther.isChecked = true
+                    }
 
-                // Load the current profile picture
-                GlideLoader(this@UserProfileActivity)
-                    .loadUserPicture(profilePic, ivUserProfilePhoto)
+                    // Load the current profile picture
+                    GlideLoader(this@UserProfileActivity)
+                        .loadUserPicture(profilePic, ivUserProfilePhoto)
 
-            }  // end of with(userInfo)
+                }  // end of with(userInfo)
+            }  // end of if
 
             // Click event for User Profile Photo ImageView
             ivUserProfilePhoto.setOnClickListener(this@UserProfileActivity)
@@ -76,6 +79,25 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
         }  // end of with(binding)
 
     }  // end of onCreate method
+
+    // Override the back function
+    override fun onBackPressed() {
+        storeUserInfoChanges()  // Stores modified information (if any)
+
+        // If there are any changes to the user profile information
+        if (mUserHashMap.isNotEmpty()) {
+            showAlertDialog(
+                this@UserProfileActivity,
+                resources.getString(R.string.dialog_edit_user_title),
+                resources.getString(R.string.dialog_edit_user_message),
+                true,
+                resources.getString(R.string.dialog_save),
+                resources.getString(R.string.dialog_dont_save)
+            )
+        } else {
+            super.onBackPressed()
+        }
+    }  // end of onBackPressed method
 
     // onClick events are declared here
     override fun onClick(view: View?) {
@@ -103,25 +125,26 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
 
                 // Saves information changes made by user
                 R.id.btn_save_profile_info -> {
-                    // Validate user inputs
-                    if (userProfileValidation()) {
-                        // Display the loading message (Saving Changes...)
-                        showProgressDialog(
-                            resources.getString(R.string.msg_saving_changes)
+                    // Stores modified information (if any)
+                    storeUserInfoChanges()
+
+                    // If there are any changes made, save user info
+                    if (mUserHashMap.isNotEmpty()) {
+                        saveUserInfoChanges()
+                    } else {
+                        /* Exit the activity if there are no changes made.
+                         * This is to prevent unnecessary reads and writes
+                         * in Cloud Firestore.
+                         */
+
+                        // Displays the Toast message
+                        toastMessage(
+                            this@UserProfileActivity,
+                            resources.getString(R.string.msg_no_user_info_changed)
                         )
 
-                        // If the user uploaded the image
-                        if (mSelectedImageFileURI != null) {
-                            // Proceed to upload image to Cloud Storage
-                            FirestoreClass().uploadImageToCloud(
-                                this@UserProfileActivity, mSelectedImageFileURI
-                            )
-                        } else {
-                            // If the user didn't upload the image
-                            saveUserInfoChanges()
-                        }  // end of if-else
-
-                    }  // end of if
+                        finish()  // Closes the current activity
+                    }  // end of if-else
                 }
 
             }  // end of when
@@ -147,8 +170,10 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
                 Constants.showImageSelection(this@UserProfileActivity)
             } else {
                 // If the user denies the permission access
-                showMessagePrompt(
-                    resources.getString(R.string.err_permission_denied), true
+                showSnackBar(
+                    this@UserProfileActivity,
+                    resources.getString(R.string.err_permission_denied),
+                    true
                 )
             }  // end of if-else
 
@@ -182,7 +207,7 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
                 toastMessage(
                     this@UserProfileActivity,
                     resources.getString(R.string.err_image_selection_failed)
-                ).show()
+                )
             } // end of try-catch
 
         } // end of if
@@ -190,34 +215,50 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
     } // end of onActivityResult method
 
     // Function to validate user profile information changes
-    private fun userProfileValidation(): Boolean {
+    private fun validateProfChanges(): Boolean {
         with(binding) {
             return when {
                 // If the First Name field is empty
                 TextUtils.isEmpty(etProfileFname.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(resources.getString(R.string.err_blank_fname), true)
+                    showSnackBar(
+                        this@UserProfileActivity,
+                        resources.getString(R.string.err_blank_fname),
+                        true
+                    )
                     false  // return false
                 }
 
                 // If the Last Name field is empty
                 TextUtils.isEmpty(etProfileLname.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(resources.getString(R.string.err_blank_lname), true)
+                    showSnackBar(
+                        this@UserProfileActivity,
+                        resources.getString(R.string.err_blank_lname),
+                        true
+                    )
                     false  // return false
                 }
 
                 // If the Phone Number field is empty
                 TextUtils.isEmpty(etProfilePhone.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(resources.getString(R.string.err_blank_phone), true)
+                    showSnackBar(
+                        this@UserProfileActivity,
+                        resources.getString(R.string.err_blank_phone),
+                        true
+                    )
                     false  // return false
                 }
 
                 // If no gender is selected
                 rgProfileGender.checkedRadioButtonId == -1 -> {
                     // Display an error message
-                    showMessagePrompt(resources.getString(R.string.err_no_gender_selected), true)
+                    showSnackBar(
+                        this@UserProfileActivity,
+                        resources.getString(R.string.err_no_gender_selected),
+                        true
+                    )
                     false  // return false
                 }
 
@@ -226,61 +267,93 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
 
         }  // end of with(binding)
 
-    }  // end of userProfileValidation method
+    }  // end of validateProfChanges method
 
-    /* Function to prompt that the user successfully uploaded the image.
-     * And then saves the user information changes.
+    // Function to proceed with saving user information
+    fun saveUserInfoChanges() {
+        // Validate user inputs
+        if (validateProfChanges()) {
+            // Display the loading message (Saving Changes...)
+            showProgressDialog(
+                this@UserProfileActivity,
+                this@UserProfileActivity,
+                resources.getString(R.string.msg_saving_changes)
+            )
+
+            // If the user uploaded the image
+            if (mSelectedImageFileURI != null) {
+                // Proceed to upload image to Cloud Storage
+                FirestoreClass().uploadImageToCloud(
+                    this@UserProfileActivity, mSelectedImageFileURI
+                )
+            } else {
+                // If the user didn't upload the image
+                updateUserInfo()
+            }  // end of if-else
+
+        }  // end of if
+    }  // end of saveUserInfoChanges method
+
+    /* Function to prompt that the user has successfully uploaded the image.
+     * And then updates the user information.
      */
     fun imageUploadSuccess(imageURL: String) {
         // Store the image URL of User Profile Picture
         mUserProfileImageURL = imageURL
 
         // Proceed to update the rest of the user information
-        saveUserInfoChanges()
+        updateUserInfo()
     }  // end of imageUploadSuccess method
 
-    // Function to save user info changes made by user
-    private fun saveUserInfoChanges() {
-        with(binding) {
-            // Create a HashMap to store values to update multiple fields
-            val userHashMap = HashMap<String, Any>()
+    // Function to store modified user profile information
+    private fun storeUserInfoChanges() {
+        // Clear the HashMap first for a new batch of modified information
+        mUserHashMap.clear()
 
+        with(binding) {
             val firstName = etProfileFname.text.toString().trim { it <= ' ' }
             // Save the new first name if it is different from previous first name
             if (firstName != mUserInfo.firstName)
-                userHashMap[Constants.FIRST_NAME] = firstName
+                mUserHashMap[Constants.FIRST_NAME] = firstName
 
             val lastName = etProfileLname.text.toString().trim { it <= ' ' }
             // Save the new last name if it is different from previous last name
             if (lastName != mUserInfo.lastName)
-                userHashMap[Constants.LAST_NAME] = lastName
+                mUserHashMap[Constants.LAST_NAME] = lastName
 
             val phoneNumber = etProfilePhone.text.toString().trim { it <= ' ' }
             // Save the new phone number if it is different from previous phone number
             if (phoneNumber != mUserInfo.phoneNum)
-                userHashMap[Constants.PHONENUM] = phoneNumber
+                mUserHashMap[Constants.PHONENUM] = phoneNumber
 
             // Stores gender value, depending on the selected radio button
             val gender = when {
                 rbProfileMale.isChecked -> Constants.GENDER_MALE
                 rbProfileFemale.isChecked -> Constants.GENDER_FEMALE
-                else -> Constants.GENDER_OTHER
+                rbProfileOther.isChecked -> Constants.GENDER_OTHER
+                else -> ""
             }
             // Save the new gender if it is different from previous phone number
             if (gender != mUserInfo.gender)
-                userHashMap[Constants.GENDER] = gender
+                mUserHashMap[Constants.GENDER] = gender
 
-            // Stores user profile image URL, if the user uploaded the image
-            if (mUserProfileImageURL.isNotEmpty())
-                userHashMap[Constants.PROFILEPIC] = mUserProfileImageURL
+            // Check if a user has uploaded a new image
+            if (mSelectedImageFileURI != null)
+                mUserHashMap[Constants.PROFILEPIC] = "0"
+        }  // end of with(binding)
+    }  // end of storeUserInfoChanges method
 
-            // Proceed to update fields in the Cloud Firestore
-            FirestoreClass().updateUserProfileData(
-                this@UserProfileActivity, userHashMap
-            )
-        } // end of with(binding)
+    // Function to store modified information to Firestore (if any)
+    private fun updateUserInfo() {
+        // Overwrite user profile image URL, if the user uploaded the image
+        if (mUserProfileImageURL.isNotEmpty())
+            mUserHashMap[Constants.PROFILEPIC] = mUserProfileImageURL
 
-    } // end of saveUserInfoChanges method
+        // Proceed to update fields in the Cloud Firestore
+        FirestoreClass().updateUserProfileData(
+            this@UserProfileActivity, mUserHashMap
+        )
+    } // end of updateUserInfo method
 
     // Function to prompt that the user changes was made
     fun userInfoChangedPrompt() {
@@ -290,7 +363,7 @@ class UserProfileActivity : TemplateActivity(), View.OnClickListener {
         toastMessage(
             this@UserProfileActivity,
             resources.getString(R.string.msg_user_info_changed)
-        ).show()
+        )
 
         finish()  // Closes the current activity
     }  // end of userInfoChangedPrompt()

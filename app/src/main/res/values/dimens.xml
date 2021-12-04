@@ -48,6 +48,9 @@
     <dimen name="progress_dialog_padding">8dp</dimen>
     <dimen name="progress_spinner_size">60dp</dimen>
 
+    <!--  Alert Dialog Dimens  -->
+    <dimen name="alert_dialog_padding">15dp</dimen>
+
     <!--  Sidebar Dimens  -->
     <dimen name="nav_profile_picture_size">120dp</dimen>
     <dimen name="nav_profile_picture_stroke">3dp</dimen>

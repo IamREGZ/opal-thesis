@@ -1,5 +1,7 @@
-package edu.cccdci.opal.ui.activities
+package edu.cccdci.opal.utils
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Handler
@@ -11,17 +13,24 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.DialogProgressBinding
+import edu.cccdci.opal.ui.activities.MainActivity
+import edu.cccdci.opal.ui.activities.UserProfileActivity
 
-open class TemplateActivity : AppCompatActivity() {
+/**
+ * A class where widgets, dialogs, and other Android utilities are stored.
+ */
+open class UtilityClass : AppCompatActivity() {
 
-    private lateinit var mDialog: Dialog
+    private lateinit var mProgDialog: Dialog
     private var backPressedOnce = false
 
     // Function to display the Message SnackBar
-    fun showMessagePrompt(message: String, error: Boolean) {
+    fun showSnackBar(activity: Activity, message: String, error: Boolean) {
         // Prepare the SnackBar
         val msgPrompt = Snackbar.make(
-            findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG
+            activity.findViewById(android.R.id.content),
+            message,
+            Snackbar.LENGTH_LONG
         )
         val msgPromptView = msgPrompt.view
 
@@ -33,18 +42,19 @@ open class TemplateActivity : AppCompatActivity() {
 
         // Sets the color of the SnackBar
         msgPromptView.setBackgroundColor(
-            ContextCompat.getColor(this@TemplateActivity, snackBarColor)
+            ContextCompat.getColor(activity.applicationContext, snackBarColor)
         )
 
         msgPrompt.show()  // Shows the SnackBar
     }  // end of showMessagePrompt method
 
     // Function to show the loading dialog
-    fun showProgressDialog(message: String) {
-        val dialogBind = DialogProgressBinding.inflate(layoutInflater)
-        mDialog = Dialog(this)
+    fun showProgressDialog(context: Context, activity: Activity, message: String) {
+        // Inflate the Dialog Progress Layout
+        val dialogBind = DialogProgressBinding.inflate(activity.layoutInflater)
+        mProgDialog = Dialog(context)  // Create the Dialog object
 
-        with(mDialog) {
+        with(mProgDialog) {
             // Prepares the progress dialog
             setContentView(dialogBind.root)
             dialogBind.tvProgressText.text = message
@@ -59,8 +69,54 @@ open class TemplateActivity : AppCompatActivity() {
 
     // Function to hide the loading dialog
     fun hideProgressDialog() {
-        mDialog.dismiss()
+        mProgDialog.dismiss()
     } // end of hideProgressDialog method
+
+    // Function to show the alert dialog
+    fun showAlertDialog(
+        context: Context, title: String, message: String,
+        withCancel: Boolean = false, yesVal: String = "Yes", noVal: String = "No"
+    ) {
+        // Create a builder object for constructing dialogs
+        val builder = AlertDialog.Builder(context)
+
+        builder.setTitle(title)  // Set the title of a dialog
+        builder.setMessage(message)  // Set the message of a dialog
+
+        // Sets the actions for positive (yes) value
+        builder.setPositiveButton(yesVal) { dialogInterface, _ ->
+            when (context) {
+                is MainActivity -> context.signOutUser()
+                is UserProfileActivity -> context.saveUserInfoChanges()
+            }
+            dialogInterface.dismiss()
+        }
+
+        // Sets the actions for negative (no) value
+        builder.setNegativeButton(noVal) { dialogInterface, _ ->
+            when (context) {
+                is UserProfileActivity -> super.onBackPressed()
+            }
+            dialogInterface.dismiss()
+        }
+
+        // Enable neutral (cancel) button if withCancel parameter is true
+        if (withCancel) {
+            // Sets the actions for neutral (cancel) value
+            builder.setNeutralButton(
+                resources.getString(R.string.dialog_cancel)
+            ) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+        }
+
+        // Creates the alert dialog
+        val alertDialog: AlertDialog = builder.create()
+
+        // To ensure that the dialog will not disappear when clicked outside the dialog
+        alertDialog.setCancelable(false)
+        alertDialog.show()  // Displays the dialog
+    }  // end of showAlertDialog method
 
     // Function to setup the Action Bar for navigation
     protected fun setupActionBar(tlb: Toolbar, isBlack: Boolean = true) {
@@ -87,11 +143,13 @@ open class TemplateActivity : AppCompatActivity() {
     }  // end of setupActionBar method
 
     // Function to create a Toast message (show for short time by default)
-    fun toastMessage(context: Context, msg: String, showLong: Boolean = false): Toast {
-        return if (showLong)
-            Toast.makeText(context, msg, Toast.LENGTH_LONG)
+    fun toastMessage(context: Context, msg: String, showLong: Boolean = false) {
+        val length = if (showLong)
+            Toast.LENGTH_LONG
         else
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+            Toast.LENGTH_SHORT
+
+        Toast.makeText(context, msg, length).show()
     }  // end of toastMessage method
 
     // Function to double press back to exit the application
@@ -107,8 +165,9 @@ open class TemplateActivity : AppCompatActivity() {
 
         // Display a Toast message
         toastMessage(
-            this, resources.getString(R.string.msg_back_again_to_exit)
-        ).show()
+            this,
+            resources.getString(R.string.msg_back_again_to_exit)
+        )
 
         /* If the user has not clicked back twice within 2 seconds,
          * it will not exit.
@@ -118,4 +177,4 @@ open class TemplateActivity : AppCompatActivity() {
         }, 2000)
     }  // end of doubleBackToExit method
 
-}  // end of TemplateActivity class
+}  // end of UtilityClass

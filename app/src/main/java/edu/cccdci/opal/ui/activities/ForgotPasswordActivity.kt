@@ -4,8 +4,9 @@ import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityForgotPasswordBinding
+import edu.cccdci.opal.utils.UtilityClass
 
-class ForgotPasswordActivity : TemplateActivity() {
+class ForgotPasswordActivity : UtilityClass() {
 
     private lateinit var binding: ActivityForgotPasswordBinding
 
@@ -28,8 +29,10 @@ class ForgotPasswordActivity : TemplateActivity() {
 
                 if (email.isEmpty()) {
                     // Error if email field is empty
-                    showMessagePrompt(
-                        resources.getString(R.string.err_blank_email), true
+                    showSnackBar(
+                        this@ForgotPasswordActivity,
+                        resources.getString(R.string.err_blank_email),
+                        true
                     )
                 } else {
                     // Proceed with recovery email submission
@@ -43,7 +46,11 @@ class ForgotPasswordActivity : TemplateActivity() {
     // Function to initiate email recovery process
     private fun submitRecoveryEmail(email: String) {
         // Display the loading message
-        showProgressDialog(resources.getString(R.string.msg_please_wait))
+        showProgressDialog(
+            this@ForgotPasswordActivity,
+            this@ForgotPasswordActivity,
+            resources.getString(R.string.msg_please_wait)
+        )
 
         // Firebase Authentication to send reset password email
         FirebaseAuth.getInstance().sendPasswordResetEmail(email)
@@ -57,11 +64,15 @@ class ForgotPasswordActivity : TemplateActivity() {
                         this@ForgotPasswordActivity,
                         resources.getString(R.string.msg_recovery_email_submitted),
                         true
-                    ).show()
+                    )
                     finish()  // Closes the activity
                 } else {
                     // If it is not successful
-                    showMessagePrompt(task.exception!!.message.toString(), true)
+                    showSnackBar(
+                        this@ForgotPasswordActivity,
+                        task.exception!!.message.toString(),
+                        true
+                    )
                 }
             }  // end of sendPasswordResetEmail
 

@@ -40,6 +40,12 @@
     <string name="err_unchecked_tac">Please agree to our T&amp;C.</string>
     <string name="err_blank_phone">Please enter your phone number.</string>
     <string name="err_no_gender_selected">Please select your gender.</string>
+    <string name="err_blank_fullname">Please enter your full name.</string>
+    <string name="err_blank_province">Please select your province.</string>
+    <string name="err_blank_city">Please select your city/municipality.</string>
+    <string name="err_blank_brgy">Please select your barangay.</string>
+    <string name="err_blank_postal">Please enter your postal code.</string>
+    <string name="err_blank_detailed">Please enter your detailed address.</string>
     <string name="err_permission_denied">
         Storage permission denied. You can also allow it from your device\'s settings.
     </string>
@@ -60,17 +66,35 @@
     </string>
     <string name="msg_logged_out">Logged out successfully.</string>
     <string name="msg_user_info_changed">
-        Your user information is changed successfully.
+        Your user profile information was changed successfully.
+    </string>
+    <string name="msg_no_user_info_changed">
+        User profile information not saved. No changes were made.
     </string>
     <string name="msg_back_again_to_exit">Press back again to exit.</string>
     <string name="msg_pwd_change_success">Your password was changed successfully.</string>
     <string name="msg_acc_delete_success">Your account was deleted successfully.</string>
     <string name="msg_user_now_vendor">Congratulations! You\'re now a vendor!</string>
 
-    <!--  Dialog Progress  -->
+    <!--  Progress Dialog  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
     <string name="msg_saving_changes">Saving changes&#8230;</string>
     <string name="msg_logging_in">Logging in&#8230;</string>
+
+    <!--  Alert Dialog  -->
+    <string name="dialog_title_template">Alert Title</string>
+    <string name="dialog_message_template">Alert Message Here&#8230;</string>
+    <string name="dialog_log_out_title">Log Out</string>
+    <string name="dialog_log_out_message">Are you sure you want to log out?</string>
+    <string name="dialog_edit_user_title">Edit User Profile</string>
+    <string name="dialog_edit_user_message">
+        User profile information has been changed. Do you want to save changes?
+    </string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_save">Save</string>
+    <string name="dialog_dont_save">Don\'t Save</string>
 
     <!--  Toolbar Titles  -->
     <string name="tlb_title_user_profile">USER PROFILE</string>
@@ -180,7 +204,7 @@
     <string name="edit_address_head">EDIT ADDRESS</string>
     <string name="full_name">Full Name</string>
     <string name="province">Province</string>
-    <string name="city">City</string>
+    <string name="city_municipality">City/Municipality</string>
     <string name="barangay">Barangay</string>
     <string name="postal_code">Postal Code</string>
     <string name="detailed_address">Detailed Address</string>

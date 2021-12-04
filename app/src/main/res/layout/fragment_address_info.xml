@@ -74,7 +74,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_addr_province"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_mrg_pd"
@@ -84,37 +84,43 @@
             app:boxCornerRadiusBottomStart="@dimen/et_radius"
             app:boxCornerRadiusTopEnd="@dimen/et_radius"
             app:boxCornerRadiusTopStart="@dimen/et_radius"
-            app:boxStrokeWidth="@dimen/et_stroke_width">
+            app:boxStrokeWidth="@dimen/et_stroke_width"
+            app:endIconTint="@color/app_black">
 
-            <edu.cccdci.opal.utils.MainEditText
-                android:id="@+id/et_addr_province"
+            <edu.cccdci.opal.utils.CustomACTV
+                android:id="@+id/actv_addr_province"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:focusable="false"
+                android:inputType="none"
                 android:textColor="@color/app_black"
                 android:textSize="@dimen/main_text_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_addr_city"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/til_addr_ctm"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_mrg_pd"
-            android:hint="@string/city"
+            android:hint="@string/city_municipality"
             android:textColorHint="@color/et_hint_black"
             app:boxCornerRadiusBottomEnd="@dimen/et_radius"
             app:boxCornerRadiusBottomStart="@dimen/et_radius"
             app:boxCornerRadiusTopEnd="@dimen/et_radius"
             app:boxCornerRadiusTopStart="@dimen/et_radius"
-            app:boxStrokeWidth="@dimen/et_stroke_width">
+            app:boxStrokeWidth="@dimen/et_stroke_width"
+            app:endIconMode="none"
+            app:endIconTint="@color/app_black">
 
-            <edu.cccdci.opal.utils.MainEditText
-                android:id="@+id/et_addr_city"
+            <edu.cccdci.opal.utils.CustomACTV
+                android:id="@+id/actv_addr_ctm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:enabled="false"
+                android:focusable="false"
+                android:inputType="none"
                 android:textColor="@color/app_black"
                 android:textSize="@dimen/main_text_size" />
 
@@ -122,7 +128,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_addr_brgy"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_mrg_pd"
@@ -132,13 +138,17 @@
             app:boxCornerRadiusBottomStart="@dimen/et_radius"
             app:boxCornerRadiusTopEnd="@dimen/et_radius"
             app:boxCornerRadiusTopStart="@dimen/et_radius"
-            app:boxStrokeWidth="@dimen/et_stroke_width">
+            app:boxStrokeWidth="@dimen/et_stroke_width"
+            app:endIconMode="none"
+            app:endIconTint="@color/app_black">
 
-            <edu.cccdci.opal.utils.MainEditText
-                android:id="@+id/et_addr_brgy"
+            <edu.cccdci.opal.utils.CustomACTV
+                android:id="@+id/actv_addr_brgy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:enabled="false"
+                android:focusable="false"
+                android:inputType="none"
                 android:textColor="@color/app_black"
                 android:textSize="@dimen/main_text_size" />
 
@@ -162,7 +172,7 @@
                 android:id="@+id/et_addr_postal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
+                android:inputType="number"
                 android:textColor="@color/app_black"
                 android:textSize="@dimen/main_text_size" />
 

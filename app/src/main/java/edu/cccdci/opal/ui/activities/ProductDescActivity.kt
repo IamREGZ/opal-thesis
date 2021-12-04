@@ -7,8 +7,9 @@ import edu.cccdci.opal.dataclasses.Cart
 import edu.cccdci.opal.dataclasses.Product
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.UtilityClass
 
-class ProductDescActivity : TemplateActivity() {
+class ProductDescActivity : UtilityClass() {
 
     private lateinit var binding: ActivityProductDescBinding
     private lateinit var mUserInfo: User

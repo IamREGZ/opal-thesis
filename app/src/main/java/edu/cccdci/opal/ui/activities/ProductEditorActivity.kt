@@ -6,8 +6,9 @@ import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityProductEditorBinding
 import edu.cccdci.opal.dataclasses.Product
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.UtilityClass
 
-class ProductEditorActivity : TemplateActivity() {
+class ProductEditorActivity : UtilityClass() {
 
     private lateinit var binding: ActivityProductEditorBinding
 

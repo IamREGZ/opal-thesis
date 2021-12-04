@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edu.cccdci.opal.utils.MainTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:padding="@dimen/medium_large_mrg_pd"
+    android:textAppearance="?attr/textAppearanceSubtitle1"
+    android:textSize="@dimen/main_text_size">
+
+</edu.cccdci.opal.utils.MainTextView>

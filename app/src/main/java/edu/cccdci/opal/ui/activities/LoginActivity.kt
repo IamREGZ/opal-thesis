@@ -8,8 +8,9 @@ import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityLoginBinding
 import edu.cccdci.opal.firestore.FirestoreClass
+import edu.cccdci.opal.utils.UtilityClass
 
-class LoginActivity : TemplateActivity(), View.OnClickListener {
+class LoginActivity : UtilityClass(), View.OnClickListener {
 
     private lateinit var binding: ActivityLoginBinding
 
@@ -83,14 +84,22 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
                 // If the Email field is empty
                 TextUtils.isEmpty(etLoginEmail.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(resources.getString(R.string.err_blank_email), true)
+                    showSnackBar(
+                        this@LoginActivity,
+                        resources.getString(R.string.err_blank_email),
+                        true
+                    )
                     false  // return false
                 }
 
                 // If the Password field is empty
                 TextUtils.isEmpty(etLoginPass.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(resources.getString(R.string.err_blank_password), true)
+                    showSnackBar(
+                        this@LoginActivity,
+                        resources.getString(R.string.err_blank_password),
+                        true
+                    )
                     false  // return false
                 }
 
@@ -106,7 +115,11 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
             // Validate first the login inputs
             if (validateLogin()) {
                 // Display the loading message
-                showProgressDialog(resources.getString(R.string.msg_logging_in))
+                showProgressDialog(
+                    this@LoginActivity,
+                    this@LoginActivity,
+                    resources.getString(R.string.msg_logging_in)
+                )
 
                 // Get the inputted email and password
                 val email = etLoginEmail.text.toString().trim { it <= ' ' }
@@ -126,7 +139,11 @@ class LoginActivity : TemplateActivity(), View.OnClickListener {
                             clearLoginFields()  // Clears the login fields
 
                             // Display an error message
-                            showMessagePrompt(task.exception!!.message.toString(), true)
+                            showSnackBar(
+                                this@LoginActivity,
+                                task.exception!!.message.toString(),
+                                true
+                            )
                         }
                     }  // end of signInWithEmailAndPassword
 

@@ -22,8 +22,9 @@ import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.GlideLoader
+import edu.cccdci.opal.utils.UtilityClass
 
-class MainActivity : TemplateActivity(),
+class MainActivity : UtilityClass(),
     NavigationView.OnNavigationItemSelectedListener,
     View.OnClickListener {
 
@@ -138,8 +139,12 @@ class MainActivity : TemplateActivity(),
             // Sends user to Application Settings
             R.id.nav_settings -> navigateFragment(R.id.home_to_settings)
 
-            // Signs the user out
-            R.id.nav_sign_out -> signOutUser()
+            // Logs the user out
+            R.id.nav_log_out -> showAlertDialog(
+                this@MainActivity,
+                resources.getString(R.string.dialog_log_out_title),
+                resources.getString(R.string.dialog_log_out_message)
+            )
 
             // Sends user to About Us Page
             R.id.nav_about_us -> navigateFragment(R.id.home_to_about)
@@ -242,7 +247,7 @@ class MainActivity : TemplateActivity(),
     }  // end of hideBasedOnUserRole method
 
     // Function to sign out the user
-    private fun signOutUser() {
+    fun signOutUser() {
         // Sign out the current Firebase Authentication
         FirebaseAuth.getInstance().signOut()
 
@@ -253,8 +258,9 @@ class MainActivity : TemplateActivity(),
 
         // Display a Toast message
         toastMessage(
-            this@MainActivity, resources.getString(R.string.msg_logged_out)
-        ).show()
+            this@MainActivity,
+            resources.getString(R.string.msg_logged_out)
+        )
 
         startActivity(intent)  // Opens the log in activity
         finish()  // Closes the current activity

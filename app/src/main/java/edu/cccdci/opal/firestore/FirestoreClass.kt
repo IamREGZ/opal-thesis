@@ -11,10 +11,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import edu.cccdci.opal.dataclasses.City
+import edu.cccdci.opal.dataclasses.CityBarangay
+import edu.cccdci.opal.dataclasses.Province
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.ui.activities.*
+import edu.cccdci.opal.ui.fragments.AddressInfoFragment
 import edu.cccdci.opal.ui.fragments.DeleteAccountFragment
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.UtilityClass
 
 class FirestoreClass {
 
@@ -59,7 +64,7 @@ class FirestoreClass {
         mFSInstance.collection(Constants.USERS)
             // Access the document named by the current user id
             .document(getCurrentUserID())
-            // Get the field values in the current document
+            // Get the selected document
             .get()
             // If it is successful
             .addOnSuccessListener { document ->
@@ -116,9 +121,12 @@ class FirestoreClass {
             }
             // If failed
             .addOnFailureListener { e ->
-                // Closes the loading message in the Login Activity
-                if (activity is LoginActivity) {
-                    activity.hideProgressDialog()
+                /* Closes the loading message in the Login Activity
+                 * or Register Activity
+                 */
+                when (activity) {
+                    is LoginActivity -> activity.hideProgressDialog()
+                    is RegisterActivity -> activity.hideProgressDialog()
                 }
 
                 // Log the error
@@ -170,7 +178,7 @@ class FirestoreClass {
     }  // end of updateUserProfileData method
 
     // Function to delete user data during account deletion process
-    fun deleteUserData(fragment: Fragment) {
+    fun deleteUserData(fragment: Fragment, util: UtilityClass) {
         // Access the collection named users
         mFSInstance.collection(Constants.USERS)
             // Access the document named by the current user id
@@ -188,7 +196,7 @@ class FirestoreClass {
             .addOnFailureListener { e ->
                 // Closes the loading message in the Delete Account Fragment
                 if (fragment is DeleteAccountFragment) {
-                    fragment.hideProgressDialog()
+                    util.hideProgressDialog()
                 }
 
                 // Log the error
@@ -234,7 +242,7 @@ class FirestoreClass {
                         }
                     }
             }
-            // If it failed
+            // If failed
             .addOnFailureListener { exception ->
                 // Closes the loading message in the User Profile Activity
                 if (activity is UserProfileActivity) {
@@ -250,5 +258,130 @@ class FirestoreClass {
             } // end of sRef
 
     }  // end of uploadImageToCloud method
+
+    // Function to retrieve province list data from Cloud Firestore
+    fun getProvinces(fragment: Fragment) {
+        // Access the collection named provinces
+        mFSInstance.collection(Constants.PROVINCES)
+            // Access the document that serves as container for province data (DOC-PRV)
+            .document(Constants.PRV_DOC)
+            // Get the selected document
+            .get()
+            // If it is successful
+            .addOnSuccessListener { document ->
+                // Log the province list data
+                Log.i(fragment.javaClass.simpleName, document.toString())
+
+                // Retrieve the result. If the document is null, return an empty list.
+                val provinces = if (document != null)
+                    document.toObject(Province::class.java)!!.provinceList
+                else
+                    listOf()
+
+                when (fragment) {
+                    /* In Address Info Fragment, it stores the retrieved
+                     * list of Province Data to its respective Spinner
+                     */
+                    is AddressInfoFragment -> fragment.retrieveProvinces(
+                        provinces
+                    )
+                }
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                // Log the error
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "There was an error retrieving province data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of getProvinces method
+
+    // Function to retrieve city/municipality list data from Cloud Firestore
+    fun getCities(fragment: Fragment, provID: String) {
+        // Access the collection named provinces
+        mFSInstance.collection(Constants.PROVINCES)
+            // Access the document named by selected province data
+            .document(provID)
+            // Access the collection named cities
+            .collection(Constants.CITY_COL)
+            // Access the document that serves as container for city data (DOC-CT)
+            .document(Constants.CT_DOC)
+            // Get the selected document
+            .get()
+            // If it is successful
+            .addOnSuccessListener { document ->
+                // Log the city/municipality list data
+                Log.i(fragment.javaClass.simpleName, document.toString())
+
+                // Retrieve the result. If the document is null, return an empty list.
+                val cities = if (document != null)
+                    document.toObject(City::class.java)!!.cityList
+                else
+                    listOf()
+
+                when (fragment) {
+                    /* In Address Info Fragment, it stores the retrieved
+                     * list of City/Municipality Data to its respective
+                     * Spinner
+                     */
+                    is AddressInfoFragment -> fragment.retrieveCities(
+                        cities
+                    )
+                }
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                // Log the error
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "There was an error retrieving city data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of getCities
+
+    // Function to retrieve barangay list data from Cloud Firestore
+    fun getBarangays(
+        context: Context, provID: String, cityID: String
+    ): List<String> {
+        // A return variable that stores list of barangay data
+        val barangays: MutableList<String> = mutableListOf()
+
+        // Access the collection named provinces
+        mFSInstance.collection(Constants.PROVINCES)
+            // Access the document named by selected province data
+            .document(provID)
+            // Access the collection named cities
+            .collection(Constants.CITY_COL)
+            // Access the document named by selected city/municipality data
+            .document(cityID)
+            // Get the selected document
+            .get()
+            // If it is successful
+            .addOnSuccessListener { document ->
+                // Log the retrieved documents
+                Log.i(context.javaClass.simpleName, document.toString())
+
+                // Store the barangay list if the result is not null
+                if (document != null) {
+                    barangays.addAll(
+                        document.toObject(CityBarangay::class.java)!!.barangays
+                    )
+                }
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                // Log the error
+                Log.e(
+                    context.javaClass.simpleName,
+                    "There was an error retrieving barangay data.",
+                    e
+                )
+            }  // end of mFSInstance
+
+        return barangays  // The list value will be returned
+    }  // end of getBarangays method
 
 }  // end of FirestoreClass

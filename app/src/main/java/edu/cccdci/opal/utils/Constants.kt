@@ -16,6 +16,16 @@ object Constants {
     const val PROFILEPIC: String = "profilePic"
     const val VENDOR: String = "vendor"
 
+    // Cloud Firestore constants for Addresses
+    const val PRV_DOC: String = "DOC-PRV"
+    const val PROVINCES: String = "provinces"
+    const val PROVINCE_ID: String = "provinceID"
+    const val PROVINCE_NAME: String = "provinceName"
+    const val CT_DOC: String = "DOC-CT"
+    const val CITY_COL: String = "cities"
+    const val CITY_ID: String = "cityID"
+    const val CITY_NAME: String = "cityName"
+
     // For storing information to Firestore
     const val GENDER_MALE: String = "male"
     const val GENDER_FEMALE: String = "female"

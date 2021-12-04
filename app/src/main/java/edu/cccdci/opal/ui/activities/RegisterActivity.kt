@@ -10,8 +10,9 @@ import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityRegisterBinding
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
+import edu.cccdci.opal.utils.UtilityClass
 
-class RegisterActivity : TemplateActivity(), View.OnClickListener {
+class RegisterActivity : UtilityClass(), View.OnClickListener {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var mUserEmail: String
@@ -59,8 +60,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 // If the First Name field is empty
                 TextUtils.isEmpty(etRegisterFname.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(
-                        resources.getString(R.string.err_blank_fname), true
+                    showSnackBar(
+                        this@RegisterActivity,
+                        resources.getString(R.string.err_blank_fname),
+                        true
                     )
                     false  // return false
                 }
@@ -68,8 +71,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 // If the Last Name field is empty
                 TextUtils.isEmpty(etRegisterLname.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(
-                        resources.getString(R.string.err_blank_lname), true
+                    showSnackBar(
+                        this@RegisterActivity,
+                        resources.getString(R.string.err_blank_lname),
+                        true
                     )
                     false  // return false
                 }
@@ -77,8 +82,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 // If the Email field is empty
                 TextUtils.isEmpty(etRegisterEmail.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(
-                        resources.getString(R.string.err_blank_email), true
+                    showSnackBar(
+                        this@RegisterActivity,
+                        resources.getString(R.string.err_blank_email),
+                        true
                     )
                     false  // return false
                 }
@@ -86,8 +93,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 // If the Username field is empty
                 TextUtils.isEmpty(etRegisterUser.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(
-                        resources.getString(R.string.err_blank_username), true
+                    showSnackBar(
+                        this@RegisterActivity,
+                        resources.getString(R.string.err_blank_username),
+                        true
                     )
                     false  // return false
                 }
@@ -95,8 +104,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 // If the Password field is empty
                 TextUtils.isEmpty(etRegisterPass.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(
-                        resources.getString(R.string.err_blank_password), true
+                    showSnackBar(
+                        this@RegisterActivity,
+                        resources.getString(R.string.err_blank_password),
+                        true
                     )
                     false  // return false
                 }
@@ -104,8 +115,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 // If the Confirm Password field is empty
                 TextUtils.isEmpty(etRegisterConfPass.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
-                    showMessagePrompt(
-                        resources.getString(R.string.err_blank_confirm_password), true
+                    showSnackBar(
+                        this@RegisterActivity,
+                        resources.getString(R.string.err_blank_confirm_password),
+                        true
                     )
                     false  // return false
                 }
@@ -114,8 +127,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 etRegisterPass.text.toString().trim { it <= ' ' } !=
                         etRegisterConfPass.text.toString().trim { it <= ' ' } -> {
                     //Display an error message
-                    showMessagePrompt(
-                        resources.getString(R.string.err_passwords_not_match), true
+                    showSnackBar(
+                        this@RegisterActivity,
+                        resources.getString(R.string.err_passwords_not_match),
+                        true
                     )
                     false  // return false
                 }
@@ -123,8 +138,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                 // If the T&C checkbox is not checked
                 !cbTermsAndConditions.isChecked -> {
                     // Display an error message
-                    showMessagePrompt(
-                        resources.getString(R.string.err_unchecked_tac), true
+                    showSnackBar(
+                        this@RegisterActivity,
+                        resources.getString(R.string.err_unchecked_tac),
+                        true
                     )
                     false  // return false
                 }
@@ -141,7 +158,11 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
             // Validate first the registration inputs
             if (registerValidation()) {
                 // Display the loading message
-                showProgressDialog(resources.getString(R.string.msg_please_wait))
+                showProgressDialog(
+                    this@RegisterActivity,
+                    this@RegisterActivity,
+                    resources.getString(R.string.msg_please_wait)
+                )
 
                 // Get the inputted email and password
                 mUserEmail = etRegisterEmail.text.toString().trim { it <= ' ' }
@@ -173,8 +194,10 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                             hideProgressDialog()  // Hide the loading message
 
                             // Display an error message
-                            showMessagePrompt(
-                                task.exception!!.message.toString(), true
+                            showSnackBar(
+                                this@RegisterActivity,
+                                task.exception!!.message.toString(),
+                                true
                             )
                         }
                     }  // end of createUserWithEmailAndPassword
@@ -200,7 +223,7 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
                     toastMessage(
                         this@RegisterActivity,
                         resources.getString(R.string.err_register_login_failed)
-                    ).show()
+                    )
                     finish()  // Closes the activity
                 }
             }  // end of signInWithEmailAndPassword
@@ -225,7 +248,7 @@ class RegisterActivity : TemplateActivity(), View.OnClickListener {
             this@RegisterActivity,
             resources.getString(R.string.msg_register_success),
             false
-        ).show()
+        )
 
         startActivity(intent)  // Opens the main activity
         finish()  // Closes the activity

@@ -46,7 +46,7 @@
             android:theme="@style/NoActionBar" />
 
         <!-- Template Activity (Snackbar, toast, dialogs, etc.) -->
-        <activity android:name=".ui.activities.TemplateActivity" />
+        <activity android:name=".utils.UtilityClass" />
 
         <!-- Home Page of the App -->
         <activity

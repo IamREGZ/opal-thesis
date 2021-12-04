@@ -5,8 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import edu.cccdci.opal.adapters.CartAdapter
 import edu.cccdci.opal.databinding.ActivityCartBinding
 import edu.cccdci.opal.dataclasses.Cart
+import edu.cccdci.opal.utils.UtilityClass
 
-class CartActivity : TemplateActivity() {
+class CartActivity : UtilityClass() {
 
     private lateinit var binding: ActivityCartBinding
     private lateinit var cartAdapter: CartAdapter
