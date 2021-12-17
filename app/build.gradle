@@ -61,6 +61,9 @@ dependencies {
     // Declare the dependency for the Cloud Storage library
     implementation 'com.google.firebase:firebase-storage-ktx'
 
+    // Declare the dependency for the FirebaseUI for Cloud Firestore
+    implementation 'com.firebaseui:firebase-ui-firestore:8.0.0'
+
     // Declare the dependency for Material Components
     implementation 'com.google.android.material:material:1.4.0'
 

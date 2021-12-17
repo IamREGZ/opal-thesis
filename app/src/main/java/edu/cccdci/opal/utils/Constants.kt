@@ -15,6 +15,16 @@ object Constants {
     const val PHONENUM: String = "phoneNum"
     const val PROFILEPIC: String = "profilePic"
     const val VENDOR: String = "vendor"
+    const val ADDRESSES: String = "addresses"
+    const val ADDRESS_ID_TEMP: String = "ADD-"
+    const val FULL_NAME: String = "fullName"
+    const val PROVINCE: String = "province"
+    const val CITY: String = "city"
+    const val BARANGAY: String = "barangay"
+    const val POSTAL: String = "postal"
+    const val DETAIL_ADDR: String = "detailAdd"
+    const val DEFAULT_ADDR: String = "default"
+    const val PICKUP_ADDR: String = "pickup"
 
     // Cloud Firestore constants for Addresses
     const val PRV_DOC: String = "DOC-PRV"
@@ -39,6 +49,7 @@ object Constants {
     const val SIGNED_IN_USER_ROLE: String = "signed_in_user_role"
     const val EXTRA_USER_INFO: String = "extra_user_info"
     const val PRODUCT_DESCRIPTION: String = "product_description"
+    const val USER_ADDRESS: String = "user_address"
 
     // For Request Permissions
     const val READ_STORAGE_PERMISSION_CODE = 2

@@ -22,6 +22,7 @@
     <dimen name="button_small_height">40dp</dimen>
     <dimen name="radio_button_radius">10dp</dimen>
     <dimen name="radio_button_stroke">2dp</dimen>
+    <dimen name="icon_button_size">36dp</dimen>
 
     <!--  EditText Dimens  -->
     <dimen name="et_login_radius">15dp</dimen>
@@ -69,6 +70,12 @@
     <dimen name="categories_image_size">120dp</dimen>
     <dimen name="categories_margin_big">20dp</dimen>
     <dimen name="categories_margin_small">10dp</dimen>
+
+    <!--  Address Dimens  -->
+    <dimen name="addr_label_stroke_width">2dp</dimen>
+    <dimen name="addr_label_stroke_radius">20dp</dimen>
+    <dimen name="addr_label_size_x">7dp</dimen>
+    <dimen name="addr_label_size_y">3dp</dimen>
 
     <!--  Settings Dimens  -->
     <dimen name="ic_forward_size">24dp</dimen>

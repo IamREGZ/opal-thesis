@@ -1,22 +1,24 @@
 package edu.cccdci.opal.ui.fragments
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.R
+import edu.cccdci.opal.adapters.AddressAdapter
 import edu.cccdci.opal.databinding.FragmentAddressesBinding
+import edu.cccdci.opal.dataclasses.Address
+import edu.cccdci.opal.firestore.FirestoreClass
+import edu.cccdci.opal.layoutwrapper.WrapAddressLinearLayoutManager
 
 class AddressesFragment : Fragment() {
 
     private lateinit var binding: FragmentAddressesBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // This is important to make add icon visible
-        setHasOptionsMenu(true)
-    }  // end of onCreate method
+    private var addressAdapter: AddressAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,23 +26,51 @@ class AddressesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentAddressesBinding.inflate(inflater)
-        return binding.root
+
+        // Create a Builder for FirestoreRecyclerOptions
+        val options = FirestoreRecyclerOptions.Builder<Address>()
+            // Gets all the documents from address collection
+            .setQuery(FirestoreClass().getAddressQuery(), Address::class.java)
+            .build()
+
+        with(binding) {
+            // Sets the layout type of the RecyclerView
+            rvAddresses.layoutManager = WrapAddressLinearLayoutManager(
+                requireContext(), LinearLayoutManager.VERTICAL, false
+            )
+
+            // Create an object of Address Adapter
+            addressAdapter = AddressAdapter(
+                this@AddressesFragment, requireContext(), options
+            )
+            // Sets the adapter of Address RecyclerView
+            rvAddresses.adapter = addressAdapter
+
+            // Actions when the Add Address button is clicked
+            btnAddAddress.setOnClickListener {
+                // Sends user to the Address Editor
+                findNavController().navigate(R.id.addresses_to_address_info)
+            }
+
+            return root
+        }
     }  // end of onCreateView method
 
-    // Override the function to add plus icon on top app bar
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.plus_tab_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }  // end of onCreateOptionsMenu method
+    // Operations to do when the fragment is visible
+    override fun onStart() {
+        super.onStart()
 
-    // onOptionsItemSelected events are declared here
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            // Go to Add Address
-            R.id.tab_add -> findNavController().navigate(R.id.addresses_to_address_info)
-        }
+        // Starts listening to Firestore operations on addresses
+        addressAdapter!!.startListening()
+    }  // end of onStart method
 
-        return super.onOptionsItemSelected(item)
-    }  // end of onOptionsItemSelected method
+    // Operations to do when the fragment is no longer visible
+    override fun onStop() {
+        super.onStop()
+
+        // Stops listening to Firestore operations on addresses
+        if (addressAdapter != null)
+            addressAdapter!!.stopListening()
+    }  // end of onStop method
 
 }  // end of AddressesFragment class

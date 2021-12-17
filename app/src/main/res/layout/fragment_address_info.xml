@@ -16,6 +16,7 @@
         android:paddingBottom="@dimen/xl_mrg_pd">
 
         <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_addr_info_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -235,7 +236,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_mrg_pd"
             android:orientation="horizontal">
 
             <edu.cccdci.opal.utils.MainTextView
@@ -254,6 +254,17 @@
                 android:checked="false" />
 
         </LinearLayout>
+
+        <edu.cccdci.opal.utils.MainButton
+            android:id="@+id/btn_delete_address"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_large_height"
+            android:layout_marginTop="@dimen/medium_large_mrg_pd"
+            android:background="@drawable/custom_button"
+            android:text="@string/delete_address"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/button_large_text_size"
+            android:visibility="gone" />
 
         <edu.cccdci.opal.utils.MainButton
             android:id="@+id/btn_submit_address"

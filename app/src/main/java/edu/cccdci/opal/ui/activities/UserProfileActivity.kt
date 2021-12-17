@@ -333,7 +333,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener {
                 rbProfileOther.isChecked -> Constants.GENDER_OTHER
                 else -> ""
             }
-            // Save the new gender if it is different from previous phone number
+            // Save the new gender if it is different from previous gender
             if (gender != mUserInfo.gender)
                 mUserHashMap[Constants.GENDER] = gender
 

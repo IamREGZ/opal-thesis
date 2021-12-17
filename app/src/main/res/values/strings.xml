@@ -71,6 +71,8 @@
     <string name="msg_no_user_info_changed">
         User profile information not saved. No changes were made.
     </string>
+    <string name="msg_address_saved">Your address was saved successfully.</string>
+    <string name="msg_address_deleted">Your address was deleted successfully.</string>
     <string name="msg_back_again_to_exit">Press back again to exit.</string>
     <string name="msg_pwd_change_success">Your password was changed successfully.</string>
     <string name="msg_acc_delete_success">Your account was deleted successfully.</string>
@@ -199,6 +201,16 @@
     <string name="seafoods"><i>Seafoods</i></string>
     <string name="expand_all"><u>Expand All</u></string>
 
+    <!--  Address Menu  -->
+    <string name="add_new_address">Add New Address</string>
+    <string name="addr_person_name">Person/Business Name</string>
+    <string name="addr_phone_number">09*********/+639*********</string>
+    <string name="addr_line_1">Detailed Address</string>
+    <string name="addr_line_2">%1$s, %2$s, %3$s %4$s</string>
+    <string name="addr_default">Default</string>
+    <string name="addr_pickup">Pickup</string>
+    <string name="addr_edit">Edit Address</string>
+
     <!--  Add/Edit Address  -->
     <string name="add_address_head">NEW ADDRESS</string>
     <string name="edit_address_head">EDIT ADDRESS</string>
@@ -213,6 +225,7 @@
     </string>
     <string name="set_default_addr">Set as Default Address</string>
     <string name="set_pickup_addr">Set as Pickup Address</string>
+    <string name="delete_address">Delete Address</string>
 
     <!--  Settings Page  -->
     <string name="app_settings_head">Application Settings</string>

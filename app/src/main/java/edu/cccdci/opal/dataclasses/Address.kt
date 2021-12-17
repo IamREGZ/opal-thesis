@@ -13,6 +13,6 @@ data class Address(
     val barangay: String = "",
     val postal: Int = 0,
     val detailAdd: String = "",
-    val delivery: Boolean = false,
+    val default: Boolean = false,
     val pickup: Boolean = false
 ) : Parcelable

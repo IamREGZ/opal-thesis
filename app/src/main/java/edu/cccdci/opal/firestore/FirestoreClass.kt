@@ -8,13 +8,11 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import edu.cccdci.opal.dataclasses.City
-import edu.cccdci.opal.dataclasses.CityBarangay
-import edu.cccdci.opal.dataclasses.Province
-import edu.cccdci.opal.dataclasses.User
+import edu.cccdci.opal.dataclasses.*
 import edu.cccdci.opal.ui.activities.*
 import edu.cccdci.opal.ui.fragments.AddressInfoFragment
 import edu.cccdci.opal.ui.fragments.DeleteAccountFragment
@@ -32,7 +30,7 @@ class FirestoreClass {
         mFSInstance.collection(Constants.USERS)
             // Access the document named by user id. If none, Firestore will create it for you.
             .document(userInfo.id)
-            // Sets the values in the user id document and merge with the current object
+            // Sets the values in the user document and merge with the current object
             .set(userInfo, SetOptions.merge())
             // If it is successful
             .addOnSuccessListener {
@@ -41,7 +39,7 @@ class FirestoreClass {
             }
             // If it failed
             .addOnFailureListener { e ->
-                activity.hideProgressDialog() // Hide the loading message
+                activity.hideProgressDialog()  // Hide the loading message
 
                 // Log the error
                 Log.e(
@@ -383,5 +381,128 @@ class FirestoreClass {
 
         return barangays  // The list value will be returned
     }  // end of getBarangays method
+
+    // Function to add user address data to Cloud Firestore
+    fun addUserAddress(
+        fragment: AddressInfoFragment, addressInfo: Address, util: UtilityClass
+    ) {
+        // Access the collection named users.
+        mFSInstance.collection(Constants.USERS)
+            // Access the document named by the current user id
+            .document(getCurrentUserID())
+            // Access the collection named addresses. If none, Firestore will create it for you.
+            .collection(Constants.ADDRESSES)
+            // Access the document named by address id. If none, Firestore will create it for you.
+            .document(addressInfo.addressID)
+            // Sets the values in the address document and merge with the current object
+            .set(addressInfo, SetOptions.merge())
+            // If it is successful
+            .addOnSuccessListener {
+                // Prompt the user that the address was saved
+                fragment.addressSavedPrompt()
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                util.hideProgressDialog()  // Hide the loading message
+
+                // Log the error
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "There was an error saving the address data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of addUserAddress method
+
+    // Function to get the query statement for address collection
+    fun getAddressQuery(): Query {
+        // Access the collection named users
+        return mFSInstance.collection(Constants.USERS)
+            // Access the document named by the current user id
+            .document(getCurrentUserID())
+            // Access the collection named addresses
+            .collection(Constants.ADDRESSES)
+            // First, order the documents by default first, descending (true first)
+            .orderBy(Constants.DEFAULT_ADDR, Query.Direction.DESCENDING)
+            // Next, order the documents by pickup field, descending (true first)
+            .orderBy(Constants.PICKUP_ADDR, Query.Direction.DESCENDING)
+    }  // end of getAddressQuery method
+
+    // Function to update user address data from Cloud Firestore
+    fun updateAddress(
+        fragment: Fragment, addressID: String,
+        addrHashMap: HashMap<String, Any>, util: UtilityClass
+    ) {
+        // Access the collection named users
+        mFSInstance.collection(Constants.USERS)
+            // Access the document named by the current user id
+            .document(getCurrentUserID())
+            // Access the collection named addresses
+            .collection(Constants.ADDRESSES)
+            // Access the document named by the selected address id
+            .document(addressID)
+            // Update the values of the specified field
+            .update(addrHashMap)
+            // If it is successful
+            .addOnSuccessListener {
+                /* In Address Info Fragment, it sends the user back
+                 * to the previous fragment
+                 */
+                if (fragment is AddressInfoFragment) {
+                    fragment.addressSavedPrompt()
+                }
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                // Closes the loading message in the Address Info Fragment
+                if (fragment is AddressInfoFragment) {
+                    util.hideProgressDialog()
+                }
+
+                // Log the error
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "There was an error updating the address data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of updateAddress method
+
+    // Function to delete user address data from Cloud Firestore
+    fun deleteAddress(fragment: Fragment, addressID: String, util: UtilityClass) {
+        // Access the collection named users
+        mFSInstance.collection(Constants.USERS)
+            // Access the document named by the current user id
+            .document(getCurrentUserID())
+            // Access the collection named addresses
+            .collection(Constants.ADDRESSES)
+            // Access the document named by the selected address id
+            .document(addressID)
+            // Delete the entire document
+            .delete()
+            // If it is successful
+            .addOnSuccessListener {
+                /* In Address Info Fragment, it sends the user back
+                 * to the previous fragment
+                 */
+                if (fragment is AddressInfoFragment) {
+                    fragment.addressDeletedPrompt()
+                }
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                // Closes the loading message in the Address Info Fragment
+                if (fragment is AddressInfoFragment) {
+                    util.hideProgressDialog()
+                }
+
+                // Log the error
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "There was an error deleting the address data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of deleteAddress method
 
 }  // end of FirestoreClass
