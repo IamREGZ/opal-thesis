@@ -43,7 +43,7 @@
                 android:layout_height="@dimen/product_image_height">
 
                 <ImageView
-                    android:id="@+id/iv_prod_edit_image"
+                    android:id="@+id/iv_product_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -53,6 +53,7 @@
                     android:src="@drawable/ic_product_placeholder" />
 
                 <ImageView
+                    android:id="@+id/iv_select_product_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
@@ -60,6 +61,7 @@
                     android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                     android:layout_marginBottom="@dimen/medium_mrg_pd"
                     android:contentDescription="@string/add_prod_image"
+                    android:foreground="?attr/selectableItemBackground"
                     android:src="@drawable/ic_add_product_image" />
 
             </RelativeLayout>
@@ -69,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/large_mrg_pd"
-                android:paddingTop="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
                 android:paddingEnd="@dimen/large_mrg_pd"
                 android:paddingBottom="@dimen/xl_mrg_pd">
 
@@ -92,54 +94,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
-                        android:textColor="@color/app_black"
-                        android:textSize="@dimen/main_text_size" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_prod_edit_price"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/medium_mrg_pd"
-                    android:hint="@string/edit_price"
-                    android:textColorHint="@color/et_hint_black"
-                    app:boxCornerRadiusBottomEnd="@dimen/et_radius"
-                    app:boxCornerRadiusBottomStart="@dimen/et_radius"
-                    app:boxCornerRadiusTopEnd="@dimen/et_radius"
-                    app:boxCornerRadiusTopStart="@dimen/et_radius"
-                    app:boxStrokeWidth="@dimen/et_stroke_width">
-
-                    <edu.cccdci.opal.utils.MainEditText
-                        android:id="@+id/et_prod_edit_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:textColor="@color/app_black"
-                        android:textSize="@dimen/main_text_size" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_prod_edit_qty"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/medium_mrg_pd"
-                    android:hint="@string/edit_qty"
-                    android:textColorHint="@color/et_hint_black"
-                    app:boxCornerRadiusBottomEnd="@dimen/et_radius"
-                    app:boxCornerRadiusBottomStart="@dimen/et_radius"
-                    app:boxCornerRadiusTopEnd="@dimen/et_radius"
-                    app:boxCornerRadiusTopStart="@dimen/et_radius"
-                    app:boxStrokeWidth="@dimen/et_stroke_width">
-
-                    <edu.cccdci.opal.utils.MainEditText
-                        android:id="@+id/et_prod_edit_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
                         android:textColor="@color/app_black"
                         android:textSize="@dimen/main_text_size" />
 
@@ -173,26 +127,151 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_mrg_pd"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_prod_edit_price"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/small_mrg_pd"
+                        android:layout_weight="1"
+                        android:hint="@string/edit_price"
+                        android:textColorHint="@color/et_hint_black"
+                        app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/et_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/et_radius"
+                        app:boxCornerRadiusTopStart="@dimen/et_radius"
+                        app:boxStrokeWidth="@dimen/et_stroke_width">
+
+                        <edu.cccdci.opal.utils.MainEditText
+                            android:id="@+id/et_prod_edit_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_prod_edit_unit"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/small_mrg_pd"
+                        android:layout_weight="1"
+                        android:hint="@string/edit_unit"
+                        android:textColorHint="@color/et_hint_black"
+                        app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/et_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/et_radius"
+                        app:boxCornerRadiusTopStart="@dimen/et_radius"
+                        app:boxStrokeWidth="@dimen/et_stroke_width"
+                        app:endIconTint="@color/app_black">
+
+                        <edu.cccdci.opal.utils.CustomACTV
+                            android:id="@+id/actv_prod_edit_unit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_prod_edit_custom_unit"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_mrg_pd"
+                    android:hint="@string/edit_custom_unit"
+                    android:textColorHint="@color/et_hint_black"
+                    android:visibility="gone"
+                    app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/et_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/et_radius"
+                    app:boxCornerRadiusTopStart="@dimen/et_radius"
+                    app:boxStrokeWidth="@dimen/et_stroke_width"
+                    app:helperText="@string/edit_custom_unit_helper"
+                    app:helperTextEnabled="true">
+
+                    <edu.cccdci.opal.utils.MainEditText
+                        android:id="@+id/et_prod_edit_custom_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_prod_edit_weight"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_mrg_pd"
+                    android:hint="@string/edit_weight"
+                    android:textColorHint="@color/et_hint_black"
+                    app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/et_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/et_radius"
+                    app:boxCornerRadiusTopStart="@dimen/et_radius"
+                    app:boxStrokeWidth="@dimen/et_stroke_width">
+
+                    <edu.cccdci.opal.utils.MainEditText
+                        android:id="@+id/et_prod_edit_weight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_prod_edit_stock"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_mrg_pd"
+                    android:hint="@string/edit_stock"
+                    android:textColorHint="@color/et_hint_black"
+                    app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/et_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/et_radius"
+                    app:boxCornerRadiusTopStart="@dimen/et_radius"
+                    app:boxStrokeWidth="@dimen/et_stroke_width">
+
+                    <edu.cccdci.opal.utils.MainEditText
+                        android:id="@+id/et_prod_edit_stock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <edu.cccdci.opal.utils.MainButton
                     android:id="@+id/btn_submit_product"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_large_height"
-                    android:layout_marginTop="@dimen/large_mrg_pd"
+                    android:layout_marginTop="@dimen/medium_large_mrg_pd"
                     android:background="@drawable/custom_button"
                     android:text="@string/submit"
                     android:textColor="@color/app_white"
                     android:textSize="@dimen/button_large_text_size" />
-
-                <edu.cccdci.opal.utils.MainButton
-                    android:id="@+id/btn_delete_product"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/button_large_height"
-                    android:layout_marginTop="@dimen/large_mrg_pd"
-                    android:background="@drawable/custom_button"
-                    android:text="@string/delete_product"
-                    android:textColor="@color/app_white"
-                    android:textSize="@dimen/button_large_text_size"
-                    android:visibility="gone" />
 
             </LinearLayout>
 

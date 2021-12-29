@@ -45,7 +45,9 @@ class ProductAdapter(
         with(holder) {
             // Store the productData values in the respective views
             name.text = productData.name
-            price.text = "₱${productData.price} / kg"
+            price.text = context.getString(
+                R.string.product_price, productData.price
+            )
             market.text = productData.market
 
             // Actions when the product card is clicked

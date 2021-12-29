@@ -66,7 +66,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener {
 
                     // Load the current profile picture
                     GlideLoader(this@UserProfileActivity)
-                        .loadUserPicture(profilePic, ivUserProfilePhoto)
+                        .loadPicture(profilePic, ivUserProfilePhoto)
 
                 }  // end of with(userInfo)
             }  // end of if
@@ -196,7 +196,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener {
 
                 // Sets the ImageView to the selected image file
                 GlideLoader(this@UserProfileActivity)
-                    .loadUserPicture(
+                    .loadPicture(
                         mSelectedImageFileURI!!,
                         binding.ivUserProfilePhoto
                     )
@@ -337,7 +337,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener {
             if (gender != mUserInfo.gender)
                 mUserHashMap[Constants.GENDER] = gender
 
-            // Check if a user has uploaded a new image
+            // Check if a user has uploaded a new image, add a temporary value
             if (mSelectedImageFileURI != null)
                 mUserHashMap[Constants.PROFILEPIC] = "0"
         }  // end of with(binding)

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class WrapAddressLinearLayoutManager(
+class WrapperLinearLayoutManager(
     context: Context, orientation: Int, reverseLayout: Boolean
 ): LinearLayoutManager(context, orientation, reverseLayout) {
 
@@ -18,4 +18,4 @@ class WrapAddressLinearLayoutManager(
         }
     }  // end of onLayoutChildren method
 
-}  // end of WrapAddressLinearLayoutManager class
+}  // end of WrapperLinearLayoutManager class

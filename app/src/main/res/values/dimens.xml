@@ -15,6 +15,7 @@
     <dimen name="categories_expand_text_size">16sp</dimen>
     <dimen name="card_head_text_size">18sp</dimen>
     <dimen name="card_desc_text_size">14sp</dimen>
+    <dimen name="pd_inv_info_text_size">14sp</dimen>
 
     <!--  Button Dimens  -->
     <dimen name="button_radius">15dp</dimen>
@@ -28,7 +29,7 @@
     <dimen name="et_login_radius">15dp</dimen>
     <dimen name="et_radius">10dp</dimen>
     <dimen name="et_stroke_width">2dp</dimen>
-    <dimen name="et_feedback_msg_height">180dp</dimen>
+    <dimen name="et_feedback_msg_height">150dp</dimen>
     <dimen name="et_detailed_addr_height">80dp</dimen>
 
     <!--  General Margins & Paddings  -->
@@ -91,4 +92,6 @@
     <dimen name="card_radius">5dp</dimen>
     <dimen name="card_elevation">8dp</dimen>
 
+    <!--  Product Inventory Dimens  -->
+    <dimen name="product_inv_image_size">100dp</dimen>
 </resources>

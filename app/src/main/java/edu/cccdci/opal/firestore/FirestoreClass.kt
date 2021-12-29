@@ -5,17 +5,19 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.*
 import edu.cccdci.opal.ui.activities.*
-import edu.cccdci.opal.ui.fragments.AddressInfoFragment
-import edu.cccdci.opal.ui.fragments.DeleteAccountFragment
+import edu.cccdci.opal.ui.fragments.*
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.UtilityClass
 
@@ -209,11 +211,17 @@ class FirestoreClass {
 
     // Function to upload the image to Cloud Storage
     fun uploadImageToCloud(activity: Activity, imageFileURI: Uri?) {
+        val template: String = when (activity) {
+            is UserProfileActivity -> Constants.USER_PROFILE_IMAGE_TEMP
+            is ProductEditorActivity -> Constants.PRODUCT_IMAGE_TEMP
+            else -> ""
+        }
+
         // Create a file name for the image being uploaded to Cloud Storage
         val sRef: StorageReference = FirebaseStorage.getInstance().reference
             .child(
-                Constants.USER_PROFILE_IMAGE_TEMP + System.currentTimeMillis()
-                        + "." + Constants.getFileExtension(activity, imageFileURI)
+                template + System.currentTimeMillis() + "."
+                        + Constants.getFileExtension(activity, imageFileURI)
             )
 
         // Attempts to upload the image file
@@ -232,19 +240,29 @@ class FirestoreClass {
                         // Log the URL if it is successful
                         Log.e("Downloadable Image URL", uri.toString())
 
-                        /* In the User Profile Activity, the URI of the image
-                         * will be stored in the variable mUserProfileImageURL.
-                         */
-                        if (activity is UserProfileActivity) {
-                            activity.imageUploadSuccess(uri.toString())
+                        when (activity) {
+                            /* In the User Profile Activity, the URI of the image
+                             * will be stored in the variable mUserProfileImageURL.
+                             */
+                            is UserProfileActivity -> activity
+                                .imageUploadSuccess(uri.toString())
+
+                            /* In the Product Editor Activity, it will be stored
+                             * in mProductImageURL
+                             */
+                            is ProductEditorActivity -> activity
+                                .imageUploadSuccess(uri.toString())
                         }
                     }
             }
             // If failed
             .addOnFailureListener { exception ->
-                // Closes the loading message in the User Profile Activity
-                if (activity is UserProfileActivity) {
-                    activity.hideProgressDialog()
+                /* Closes the loading message in the User Profile Activity
+                 * or Product Editor Activity
+                 */
+                when (activity) {
+                    is UserProfileActivity -> activity.hideProgressDialog()
+                    is ProductEditorActivity -> activity.hideProgressDialog()
                 }
 
                 // Log the error
@@ -300,7 +318,7 @@ class FirestoreClass {
     fun getCities(fragment: Fragment, provID: String) {
         // Access the collection named provinces
         mFSInstance.collection(Constants.PROVINCES)
-            // Access the document named by selected province data
+            // Access the document named by selected province ID
             .document(provID)
             // Access the collection named cities
             .collection(Constants.CITY_COL)
@@ -349,11 +367,11 @@ class FirestoreClass {
 
         // Access the collection named provinces
         mFSInstance.collection(Constants.PROVINCES)
-            // Access the document named by selected province data
+            // Access the document named by selected province ID
             .document(provID)
             // Access the collection named cities
             .collection(Constants.CITY_COL)
-            // Access the document named by selected city/municipality data
+            // Access the document named by selected city/municipality ID
             .document(cityID)
             // Get the selected document
             .get()
@@ -381,6 +399,14 @@ class FirestoreClass {
 
         return barangays  // The list value will be returned
     }  // end of getBarangays method
+
+    // Function to get the document reference of user address for ID generation
+    fun getUserAddressReference(): DocumentReference {
+        return mFSInstance.collection(Constants.USERS)
+            .document(getCurrentUserID())
+            .collection(Constants.ADDRESSES)
+            .document()
+    }  // end of getUserAddressReference method
 
     // Function to add user address data to Cloud Firestore
     fun addUserAddress(
@@ -504,5 +530,178 @@ class FirestoreClass {
                 )
             }  // end of mFSInstance
     }  // end of deleteAddress method
+
+    // Function to get the document reference of product for ID generation
+    fun getProductReference(): DocumentReference {
+        return mFSInstance.collection(Constants.PRODUCTS).document()
+    }  // end of getProductReference method
+
+    // Function to add product data to Cloud Firestore
+    fun addProduct(activity: ProductEditorActivity, product: Product) {
+        // Access the collection named products. If none, Firestore will create it for you.
+        mFSInstance.collection(Constants.PRODUCTS)
+            // Access the document named by product ID. If none, Firestore will create it for you.
+            .document(product.id)
+            // Sets the values in the product document and merge with the current object
+            .set(product, SetOptions.merge())
+            // If it is successful
+            .addOnSuccessListener {
+                // Prompt the user that the product was savec
+                activity.productSavedPrompt()
+            }
+            // If it failed
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()  // Hide the loading message
+
+                // Log the error
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "There was an error saving the product data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of addProduct method
+
+    // Function to get the query statement for Product Inventory (In Stock)
+    fun getProductQuery(fragment: Fragment): Query {
+        // Access the collection named Products
+        val productRef = mFSInstance.collection(Constants.PRODUCTS)
+
+        return with(productRef) {
+            // Returns the query, depending on the tab of Product Inventory fragment
+            when (fragment) {
+                /* To get all products that are in stock, get all the documents
+                 * where vendor ID is equal to the current user ID, the status
+                 * code is equal to 1 (In Stock), and the stock is greater than
+                 * 0.
+                 */
+                is ProductInStockFragment -> whereEqualTo(
+                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
+                    .whereGreaterThan(Constants.STOCK, 0)
+
+                /* To get all products that are sold out, get all the documents
+                 * where vendor ID is equal to the current user ID, and the
+                 * stock is equal to 0.
+                 */
+                is ProductSoldOutFragment -> whereEqualTo(
+                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                ).whereEqualTo(Constants.STOCK, 0)
+
+                /* To get all products that are violated, get all the documents
+                 * where vendor ID is equal to the current user ID, and the
+                 * status code is equal to 2 (Violation).
+                 */
+                is ProductViolationFragment -> whereEqualTo(
+                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_VIOLATION)
+
+                /* To get all products that are violated, get all the documents
+                 * where vendor ID is equal to the current user ID, and the
+                 * status code is equal to 0 (Unlisted).
+                 */
+                is ProductUnlistedFragment -> whereEqualTo(
+                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_UNLISTED)
+
+                /* The default query, get all the documents where vendor ID is
+                 * equal to the current user ID.
+                 */
+                else -> whereEqualTo(
+                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                )
+            }  // end of when
+
+        }  // end of with(productRef)
+
+    }  // end of getProductInStockQuery method
+
+    // Function to update product data from Cloud Firestore
+    fun updateProduct(
+        activity: Activity, productID: String, productHashMap: HashMap<String, Any>,
+        fragment: Fragment? = null
+    ) {
+        // Access the collection named products
+        mFSInstance.collection(Constants.PRODUCTS)
+            // Access the document named by the selected product id
+            .document(productID)
+            // Update the values of the specified field
+            .update(productHashMap)
+            // If it is successful
+            .addOnSuccessListener {
+                when (activity) {
+                    /* In Product Editor Activity, it sends the user to the
+                     * Product Inventory Activity
+                     */
+                    is ProductEditorActivity -> activity.productSavedPrompt()
+                }
+
+                // For fragments only
+                if (fragment != null) {
+                    when (fragment) {
+                        // Show the prompt message that the product is unlisted
+                        is ProductInStockFragment,
+                        is ProductSoldOutFragment -> Toast.makeText(
+                            fragment.requireContext(),
+                            fragment.resources.getString(R.string.msg_product_unlisted),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        // Show the prompt message that the product is relisted
+                        is ProductUnlistedFragment -> {
+                            Toast.makeText(
+                                fragment.requireContext(),
+                                fragment.resources.getString(R.string.msg_product_relisted),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }  // end of when
+                }  // end of if
+            }
+            // If it failed
+            .addOnFailureListener { e ->
+                // Closes the loading message in the Product Editor Activity
+                when (activity) {
+                    is ProductEditorActivity -> activity.hideProgressDialog()
+                }
+
+                // Log the error
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "There was an error updating the product data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of updateProduct method
+
+    // Function to delete product data from Cloud Firestore
+    fun deleteProduct(context: Context, productID: String, util: UtilityClass) {
+        // Access the collection named products
+        mFSInstance.collection(Constants.PRODUCTS)
+            // Access the document named by the selected product id
+            .document(productID)
+            // Delete the entire document
+            .delete()
+            // If it is successful
+            .addOnSuccessListener {
+                util.hideProgressDialog()  // Hide the loading message
+
+                // Displays the Toast message
+                util.toastMessage(
+                    context, context.resources.getString(R.string.msg_product_deleted)
+                )
+            }
+            // If it failed
+            .addOnFailureListener { e ->
+                util.hideProgressDialog()  // Hide the loading message
+
+                // Log the error
+                Log.e(
+                    context.javaClass.simpleName,
+                    "There was an error deleting the product data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of deleteProduct method
 
 }  // end of FirestoreClass

@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.FragmentAddressInfoBinding
 import edu.cccdci.opal.dataclasses.Address
@@ -224,78 +221,85 @@ class AddressInfoFragment : Fragment() {
                 // If the Full Name field is empty
                 TextUtils.isEmpty(etAddrFullName.text.toString()
                     .trim { it <= ' ' }) -> {
+                    // Display an error message
                     mUtility.showSnackBar(
                         requireActivity(),
                         resources.getString(R.string.err_blank_fullname),
                         true
                     )
-                    false
+                    false  // return false
                 }
 
                 // If the Phone Number field is empty
                 TextUtils.isEmpty(etAddrPhone.text.toString()
                     .trim { it <= ' ' }) -> {
+                    // Display an error message
                     mUtility.showSnackBar(
                         requireActivity(),
                         resources.getString(R.string.err_blank_phone),
                         true
                     )
-                    false
+                    false  // return false
                 }
 
                 // If no province is selected
                 TextUtils.isEmpty(actvAddrProvince.text.toString()
                     .trim { it <= ' ' }) -> {
+                    // Display an error message
                     mUtility.showSnackBar(
                         requireActivity(),
                         resources.getString(R.string.err_blank_province),
                         true
                     )
-                    false
+                    false  // return false
                 }
 
                 // If no city/municipality is selected
                 TextUtils.isEmpty(actvAddrCtm.text.toString()
                     .trim { it <= ' ' }) -> {
+                    // Display an error message
                     mUtility.showSnackBar(
                         requireActivity(),
                         resources.getString(R.string.err_blank_city),
                         true
                     )
-                    false
+                    false  // return false
                 }
 
                 // If no barangay is selected
                 TextUtils.isEmpty(actvAddrBrgy.text.toString()
                     .trim { it <= ' ' }) -> {
+                    // Display an error message
                     mUtility.showSnackBar(
                         requireActivity(),
                         resources.getString(R.string.err_blank_brgy),
                         true
                     )
-                    false
+                    false  // return false
                 }
 
                 // If the Postal Code field is empty
                 TextUtils.isEmpty(etAddrPostal.text.toString()
                     .trim { it <= ' ' }) -> {
+                    // Display an error message
                     mUtility.showSnackBar(
                         requireActivity(),
                         resources.getString(R.string.err_blank_postal),
                         true
                     )
-                    false
+                    false  // return false
                 }
 
                 // If the Detailed Address field is empty
                 TextUtils.isEmpty(etAddrDetails.text.toString()
                     .trim { it <= ' ' }) -> {
+                    // Display an error message
                     mUtility.showSnackBar(
                         requireActivity(),
                         resources.getString(R.string.err_blank_detailed),
                         true
                     )
-                    false
+                    false  // return false
                 }
 
                 else -> true  // If all inputs are valid
@@ -318,13 +322,8 @@ class AddressInfoFragment : Fragment() {
                 if (mAddress == null) {
                     // If mAddress object is null, add a new address
 
-                    // Get the user id of the current user
-                    val userID = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-
                     // Get the document reference for the new address
-                    val addressRef: DocumentReference = FirebaseFirestore.getInstance()
-                        .collection(Constants.USERS).document(userID)
-                        .collection(Constants.ADDRESSES).document()
+                    val addressRef = FirestoreClass().getUserAddressReference()
 
                     // Object to store user address data
                     mAddress = Address(
@@ -346,7 +345,6 @@ class AddressInfoFragment : Fragment() {
                     )
                 } else {
                     // If mAddress has a value, update the current address
-
                     storeUserAddressChanges()  // Stores modified information, if any
 
                     // Proceed to update fields in the Cloud Firestore

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Unlist Menu Item -->
+    <item android:id="@+id/popup_pd_unlist"
+        android:title="@string/pd_inv_unlist" />
+
+    <!-- Relist Menu Item -->
+    <item android:id="@+id/popup_pd_relist"
+        android:title="@string/pd_inv_relist"
+        android:visible="false" />
+
+    <!-- Edit Menu Item -->
+    <item android:id="@+id/popup_pd_edit"
+        android:title="@string/pd_inv_edit" />
+
+    <!-- Delete Menu Item -->
+    <item android:id="@+id/popup_pd_delete"
+        android:title="@string/pd_inv_delete" />
+
+</menu>

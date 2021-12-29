@@ -45,9 +45,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <!-- Template Activity (Snackbar, toast, dialogs, etc.) -->
-        <activity android:name=".utils.UtilityClass" />
-
         <!-- Home Page of the App -->
         <activity
             android:name=".ui.activities.MainActivity"
@@ -66,16 +63,25 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+        <!-- Product Inventory Activity (For Vendors Only) -->
+        <activity
+            android:name=".ui.activities.ProductActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- Product Editor Activity (For Vendors Only) -->
         <activity
             android:name=".ui.activities.ProductEditorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+        <!-- Product Description Activity (View Product Details) -->
         <activity
             android:name=".ui.activities.ProductDescActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+        <!-- Cart Activity (User's Cart Menu) -->
         <activity
             android:name=".ui.activities.CartActivity"
             android:screenOrientation="portrait"

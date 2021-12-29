@@ -58,6 +58,17 @@
     </string>
     <string name="err_blank_current_password">Please enter your current password.</string>
     <string name="err_blank_new_password">Please enter your new password.</string>
+    <string name="err_no_product_image_selected">Please select the product image.</string>
+    <string name="err_blank_product_name">Please enter the product name.</string>
+    <string name="err_blank_product_desc">Please enter the product description.</string>
+    <string name="err_blank_product_price">Please enter the product price.</string>
+    <string name="err_zero_or_negative_price">Product price must be greater than 0.</string>
+    <string name="err_no_unit_selected">Please select the product\'s measurement unit.</string>
+    <string name="err_blank_custom_unit">Please specify the custom unit.</string>
+    <string name="err_blank_product_weight">Please enter the product weight.</string>
+    <string name="err_zero_or_negative_weight">Product weight must be greater than 0.</string>
+    <string name="err_blank_product_stock">Please enter the product stock.</string>
+    <string name="err_negative_stock">Product stock must not be a negative number.</string>
 
     <!--  Message Prompts  -->
     <string name="msg_register_success">Your account is successfully registered.</string>
@@ -77,6 +88,10 @@
     <string name="msg_pwd_change_success">Your password was changed successfully.</string>
     <string name="msg_acc_delete_success">Your account was deleted successfully.</string>
     <string name="msg_user_now_vendor">Congratulations! You\'re now a vendor!</string>
+    <string name="msg_product_saved">Your product was saved successfully.</string>
+    <string name="msg_product_deleted">Your product was deleted successfully.</string>
+    <string name="msg_product_unlisted">Product unlisted successfully.</string>
+    <string name="msg_product_relisted">Product relisted in stocks successfully.</string>
 
     <!--  Progress Dialog  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
@@ -102,6 +117,7 @@
     <string name="tlb_title_user_profile">USER PROFILE</string>
     <string name="tlb_title_be_vendor">BECOME A VENDOR</string>
     <string name="tlb_title_prod_desc">DESCRIPTION</string>
+    <string name="tlb_title_your_products">YOUR PRODUCTS</string>
     <string name="tlb_title_add_prod">ADD PRODUCT</string>
     <string name="tlb_title_edit_prod">EDIT PRODUCT</string>
     <string name="tlb_title_add_address">ADD ADDRESS</string>
@@ -178,7 +194,7 @@
 
     <!--  Product Card View  -->
     <string name="product_name">Product Name</string>
-    <string name="product_price">₱12.34 / kg</string>
+    <string name="product_price">₱%1$.2f / kg</string>
     <string name="product_market">Product Market</string>
 
     <!--  Fragment Placeholder Texts (to be removed soon)  -->
@@ -204,7 +220,7 @@
     <!--  Address Menu  -->
     <string name="add_new_address">Add New Address</string>
     <string name="addr_person_name">Person/Business Name</string>
-    <string name="addr_phone_number">09*********/+639*********</string>
+    <string name="addr_phone_number">09XXXXXXXXX/+639XXXXXXXXX</string>
     <string name="addr_line_1">Detailed Address</string>
     <string name="addr_line_2">%1$s, %2$s, %3$s %4$s</string>
     <string name="addr_default">Default</string>
@@ -365,11 +381,45 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="go_to_cart">Go to Cart</string>
 
+    <!--  Product Tabs  -->
+    <string-array name="product_tabs">
+        <item>In Stock</item>
+        <item>Sold Out</item>
+        <item>Violation</item>
+        <item>Unlisted</item>
+    </string-array>
+
+    <!--  Product Menu  -->
+    <string name="pd_add_new_product">Add New Product</string>
+    <string name="pd_inv_image">Product Inventory Image</string>
+    <string name="pd_inv_price_unit">₱%1$.2f / %2$s</string>
+    <string name="pd_inv_stock">Stock: %1$d</string>
+    <string name="pd_inv_sales">Sales: %1$d</string>
+    <string name="pd_inv_views">Views: %1$d</string>
+    <string name="pd_inv_more_menu">More</string>
+    <string name="pd_inv_unlist">Unlist</string>
+    <string name="pd_inv_edit">Edit</string>
+    <string name="pd_inv_delete">Delete</string>
+    <string name="pd_inv_relist">Relist</string>
+
     <!--  Product Editor  -->
     <string name="add_prod_image">Add Product Image</string>
     <string name="edit_price">Price (₱)</string>
-    <string name="edit_qty">Quantity</string>
+    <string name="edit_unit">Unit</string>
+    <string name="edit_custom_unit">Specify Custom Unit</string>
+    <string name="edit_custom_unit_helper">Examples: 350 oz, 1 L, bundle, etc.</string>
+    <string name="edit_weight">Weight (in kg)</string>
+    <string name="edit_stock">Stock</string>
     <string name="delete_product">Delete Product</string>
+    <string-array name="measurement_units">
+        <item>250 g</item>
+        <item>500 g</item>
+        <item>kg</item>
+        <item>2 kg</item>
+        <item>pc</item>
+        <item>pack</item>
+        <item>Others</item>
+    </string-array>
 
     <!--  Messages Editor  -->
     <string name="message_name">Profile Name</string>

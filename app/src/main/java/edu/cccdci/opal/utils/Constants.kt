@@ -25,6 +25,14 @@ object Constants {
     const val DETAIL_ADDR: String = "detailAdd"
     const val DEFAULT_ADDR: String = "default"
     const val PICKUP_ADDR: String = "pickup"
+    const val NAME: String = "name"
+    const val IMAGE: String = "image"
+    const val DESCRIPTION: String = "description"
+    const val PRICE: String = "price"
+    const val UNIT: String = "unit"
+    const val WEIGHT: String = "weight"
+    const val STOCK: String = "stock"
+    const val STATUS: String = "status"
 
     // Cloud Firestore constants for Addresses
     const val PRV_DOC: String = "DOC-PRV"
@@ -35,6 +43,15 @@ object Constants {
     const val CITY_COL: String = "cities"
     const val CITY_ID: String = "cityID"
     const val CITY_NAME: String = "cityName"
+
+    // Cloud Firestore constants for Products
+    const val PRODUCTS: String = "products"
+    const val PRODUCT_ID_TEMP: String = "PD-"
+    const val PRODUCT_VENDOR_ID: String = "vendorID"
+    const val PRODUCT_UNIT_OTHERS: String = "Others"
+    const val PRODUCT_IN_STOCK: Int = 1
+    const val PRODUCT_VIOLATION: Int = 2
+    const val PRODUCT_UNLISTED: Int = 0
 
     // For storing information to Firestore
     const val GENDER_MALE: String = "male"
@@ -57,6 +74,7 @@ object Constants {
 
     // File upload naming templates
     const val USER_PROFILE_IMAGE_TEMP: String = "OPAL_USRIMG_"
+    const val PRODUCT_IMAGE_TEMP: String = "OPAL_PDT_"
 
     // Function to launch the Image Selection Activity
     fun showImageSelection(activity: Activity) {

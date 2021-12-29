@@ -3,6 +3,7 @@ package edu.cccdci.opal.dataclasses
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+// Data class to store Address information
 @Parcelize
 data class Address(
     val addressID: String = "",

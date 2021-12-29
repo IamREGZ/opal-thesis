@@ -2,6 +2,7 @@ package edu.cccdci.opal.ui.activities
 
 import android.os.Bundle
 import android.widget.Toast
+import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityProductDescBinding
 import edu.cccdci.opal.dataclasses.Cart
 import edu.cccdci.opal.dataclasses.Product
@@ -38,7 +39,9 @@ class ProductDescActivity : UtilityClass() {
             with(mProdInfo) {
                 // Stores the details of product
                 tvPdName.text = name
-                tvPdPrice.text = "₱$price / kg"
+                tvPdPrice.text = getString(
+                    R.string.product_price, price
+                )
                 tvPdMarket.text = market
 
                 btnAddToCart.setOnClickListener {

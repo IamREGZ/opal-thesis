@@ -164,7 +164,9 @@ class MainActivity : UtilityClass(),
             R.id.nav_your_market -> navigateFragment(R.id.home_to_your_market)
 
             // Sends user to Product Inventory
-            R.id.nav_products -> navigateFragment(R.id.home_to_products)
+            R.id.nav_products -> startActivity(
+                Intent(this@MainActivity, ProductActivity::class.java)
+            )
 
             // Sends user to Customer Transaction Details
             R.id.nav_customer_transactions -> navigateFragment(R.id.home_to_cust_trans)
@@ -223,7 +225,7 @@ class MainActivity : UtilityClass(),
 
         // Change the profile picture with the image in the Cloud Storage
         GlideLoader(this@MainActivity)
-            .loadUserPicture(signedInProfilePic, navProfile)
+            .loadPicture(signedInProfilePic, navProfile)
 
         // Hide some sidebar menu items depending on user's role
         hideBasedOnUserRole(binding.nvSidebar.menu, signedInUserRole)

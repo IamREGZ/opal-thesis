@@ -12,9 +12,6 @@
         android:label="@string/home"
         tools:layout="@layout/fragment_home">
 
-        <!-- TODO: Home to My Cart -->
-
-
         <!-- Home to Messages -->
         <action
             android:id="@+id/home_to_messages"
@@ -55,11 +52,6 @@
             android:id="@+id/home_to_your_market"
             app:destination="@id/fragment_your_market" />
 
-        <!-- Home to Products -->
-        <action
-            android:id="@+id/home_to_products"
-            app:destination="@id/fragment_products" />
-
         <!-- Home to Customer Transactions -->
         <action
             android:id="@+id/home_to_cust_trans"
@@ -92,9 +84,6 @@
         android:name="edu.cccdci.opal.ui.fragments.NotificationsFragment"
         android:label="@string/notifications"
         tools:layout="@layout/fragment_notifications" />
-
-    <!-- TODO: My Cart Fragment -->
-
 
     <!-- Messages Fragment -->
     <fragment
@@ -216,13 +205,6 @@
         android:name="edu.cccdci.opal.ui.fragments.YourMarketFragment"
         android:label="@string/nav_your_market"
         tools:layout="@layout/fragment_your_market" />
-
-    <!-- Products Fragment -->
-    <fragment
-        android:id="@+id/fragment_products"
-        android:name="edu.cccdci.opal.ui.fragments.ProductsFragment"
-        android:label="@string/nav_products"
-        tools:layout="@layout/fragment_products" />
 
     <!-- Customer Transactions Fragment -->
     <fragment

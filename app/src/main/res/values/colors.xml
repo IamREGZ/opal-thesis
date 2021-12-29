@@ -22,4 +22,5 @@
     <color name="colorErrorMessage">#FFED1C24</color>
     <color name="colorSuccessMessage">#FF009150</color>
     <color name="uncheckedRadioButton">#FF808080</color>
+    <color name="productImageSelector">#EEB8B8B8</color>
 </resources>

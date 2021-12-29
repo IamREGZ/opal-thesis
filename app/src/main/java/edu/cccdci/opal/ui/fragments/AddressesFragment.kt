@@ -13,7 +13,7 @@ import edu.cccdci.opal.adapters.AddressAdapter
 import edu.cccdci.opal.databinding.FragmentAddressesBinding
 import edu.cccdci.opal.dataclasses.Address
 import edu.cccdci.opal.firestore.FirestoreClass
-import edu.cccdci.opal.layoutwrapper.WrapAddressLinearLayoutManager
+import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 
 class AddressesFragment : Fragment() {
 
@@ -29,13 +29,13 @@ class AddressesFragment : Fragment() {
 
         // Create a Builder for FirestoreRecyclerOptions
         val options = FirestoreRecyclerOptions.Builder<Address>()
-            // Gets all the documents from address collection
+            // Gets all the documents from addresses collection
             .setQuery(FirestoreClass().getAddressQuery(), Address::class.java)
             .build()
 
         with(binding) {
             // Sets the layout type of the RecyclerView
-            rvAddresses.layoutManager = WrapAddressLinearLayoutManager(
+            rvAddresses.layoutManager = WrapperLinearLayoutManager(
                 requireContext(), LinearLayoutManager.VERTICAL, false
             )
 

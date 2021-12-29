@@ -4,19 +4,31 @@ import android.content.Context
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import edu.cccdci.opal.R
+import edu.cccdci.opal.ui.activities.ProductEditorActivity
 import java.io.IOException
 
-class GlideLoader(val context: Context) {
+class GlideLoader(private val context: Context) {
 
-    // Function to load the user image using Glide
-    fun loadUserPicture(image: Any, imageView: ImageView) {
+    // Function to load the image using Glide
+    fun loadPicture(image: Any, imageView: ImageView) {
+        // Set the default image depending on the context
+        val defImage = when (context) {
+            is ProductEditorActivity -> R.drawable.ic_product_placeholder
+            else -> R.drawable.ic_prof_image_placeholder
+        }
+
         try {
             Glide
-                .with(context)  // Using the current context
-                .load(image)  // Load the image URI
-                .centerCrop()  // How should the image be scaled
-                .placeholder(R.drawable.ic_prof_image_placeholder)  // Default placeholder
-                .into(imageView)  // View that will load the user image
+                // Using the current context
+                .with(context)
+                // Load the image URI
+                .load(image)
+                // How should the image be scaled
+                .centerCrop()
+                // Default placeholder
+                .placeholder(defImage)
+                // View that will load the user image
+                .into(imageView)
         } catch (e: IOException) {
             // Log the error if loading the image fails
             e.printStackTrace()
