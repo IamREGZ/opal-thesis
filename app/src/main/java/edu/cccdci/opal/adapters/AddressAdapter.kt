@@ -1,24 +1,21 @@
 package edu.cccdci.opal.adapters
 
 import android.content.Context
-import android.os.Bundle
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.Address
-import edu.cccdci.opal.ui.fragments.AddressInfoFragment
+import edu.cccdci.opal.ui.activities.AddressEditActivity
 import edu.cccdci.opal.utils.Constants
 
 class AddressAdapter(
-    private val fragment: Fragment,
     private val context: Context,
     options: FirestoreRecyclerOptions<Address>
 ): FirestoreRecyclerAdapter<Address, AddressAdapter.AddressViewHolder>(options) {
@@ -42,7 +39,7 @@ class AddressAdapter(
             addrLine1.text = address.detailAdd
             addrLine2.text = context.getString(
                 R.string.addr_line_2, address.barangay, address.city,
-                address.province, address.postal.toString()
+                address.province, address.postal
             )
 
             // Set the visibility of address labels depending on the assigned label
@@ -51,17 +48,14 @@ class AddressAdapter(
 
             // Actions when the Edit icon is clicked
             editAddr.setOnClickListener {
-                val bundle = Bundle()  // Bundle object to store parcelable
+                // Create an Intent to launch AddressEditActivity
+                val intent = Intent(context, AddressEditActivity::class.java)
 
-                // Stores the parcelable class in the Bundle
-                bundle.putParcelable(Constants.USER_ADDRESS, address)
-                // Sets the arguments for AddressInfoFragment
-                AddressInfoFragment().arguments = bundle
+                // Stores the parcelable class
+                intent.putExtra(Constants.USER_ADDRESS, address)
 
-                // Sends user to the Address Editor, with address data values
-                fragment.findNavController().navigate(
-                    R.id.addresses_to_address_info, bundle
-                )
+                // Opens the address editor
+                context.startActivity(intent)
             }
         }  // end of setAddressData method
 

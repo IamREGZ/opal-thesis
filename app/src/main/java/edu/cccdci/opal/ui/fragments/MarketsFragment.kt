@@ -5,15 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.adapters.MarketAdapter
 import edu.cccdci.opal.databinding.FragmentMarketsBinding
 import edu.cccdci.opal.dataclasses.Market
+import edu.cccdci.opal.firestore.FirestoreClass
+import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 
 class MarketsFragment : Fragment() {
 
     private lateinit var binding: FragmentMarketsBinding
-    private lateinit var marketAdapter: MarketAdapter
+    private var marketAdapter: MarketAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,39 +25,44 @@ class MarketsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentMarketsBinding.inflate(inflater)
 
-        // Temporary data list
-        val dataList = mutableListOf<Market>()
-        var i = 1
-        while (i <= 10) {
-            dataList.add(Market(name = "Market $i", address = "Address $i"))
-            i++
-        }
-
-        // Create an object of Market Adapter
-        marketAdapter = MarketAdapter(dataList)
+        // Create a Builder for FirestoreRecyclerOptions
+        val options = FirestoreRecyclerOptions.Builder<Market>()
+            // Gets all the documents from markets collection
+            .setQuery(FirestoreClass().getMarketQuery(), Market::class.java)
+            .build()
 
         with(binding) {
+            // Sets the layout type of the RecyclerView
+            rvMarkets.layoutManager = WrapperLinearLayoutManager(
+                requireContext(), LinearLayoutManager.VERTICAL, false
+            )
+
+            // Create an object of Market Adapter
+            marketAdapter = MarketAdapter(requireContext(), options)
+
             // Sets the adapter of Markets RecyclerView
             rvMarkets.adapter = marketAdapter
-            // Sets the layout type of the RecyclerView
-            rvMarkets.layoutManager = GridLayoutManager(context, 2)
-
-            /* If there are no markets in the database, display
-             * the empty markets message
-             */
-            if (marketAdapter.itemCount == 0) {
-                rvMarkets.visibility = View.GONE
-                llEmptyMarkets.visibility = View.VISIBLE
-            }
-            // Display the markets if there are existing markets
-            else {
-                rvMarkets.visibility = View.VISIBLE
-                llEmptyMarkets.visibility = View.GONE
-            }
 
             return root
         }  // end of with(binding)
 
     }  // end of onCreateView method
+
+    // Operations to do when the fragment is visible
+    override fun onStart() {
+        super.onStart()
+
+        // Starts listening to Firestore operations on markets
+        marketAdapter!!.startListening()
+    }  // end of onStart method
+
+    // Operations to do when the fragment is no longer visible
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        // Stops listening to Firestore operations on markets
+        if (marketAdapter != null)
+            marketAdapter!!.stopListening()
+    }  // end of onDestroyView method
 
 }  // end of MarketsFragment class

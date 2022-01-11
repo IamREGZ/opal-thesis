@@ -40,8 +40,8 @@
 
             <ImageView
                 android:id="@+id/iv_edit_addr_btn"
-                android:layout_width="@dimen/icon_button_size"
-                android:layout_height="@dimen/icon_button_size"
+                android:layout_width="@dimen/medium_icon_size"
+                android:layout_height="@dimen/medium_icon_size"
                 android:contentDescription="@string/addr_edit"
                 android:foreground="?attr/selectableItemBackground"
                 android:src="@drawable/ic_edit"

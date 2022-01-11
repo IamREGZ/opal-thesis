@@ -92,6 +92,7 @@
     <string name="msg_product_deleted">Your product was deleted successfully.</string>
     <string name="msg_product_unlisted">Product unlisted successfully.</string>
     <string name="msg_product_relisted">Product relisted in stocks successfully.</string>
+    <string name="msg_added_to_cart">Added to cart successfully.</string>
 
     <!--  Progress Dialog  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
@@ -117,10 +118,11 @@
     <string name="tlb_title_user_profile">USER PROFILE</string>
     <string name="tlb_title_be_vendor">BECOME A VENDOR</string>
     <string name="tlb_title_prod_desc">DESCRIPTION</string>
+    <string name="tlb_title_addresses">YOUR ADDRESSES</string>
     <string name="tlb_title_your_products">YOUR PRODUCTS</string>
     <string name="tlb_title_add_prod">ADD PRODUCT</string>
     <string name="tlb_title_edit_prod">EDIT PRODUCT</string>
-    <string name="tlb_title_add_address">ADD ADDRESS</string>
+    <string name="tlb_title_new_address">NEW ADDRESS</string>
     <string name="tlb_title_edit_address">EDIT ADDRESS</string>
     <string name="tlb_title_my_cart">MY CART</string>
 
@@ -190,11 +192,12 @@
     <!--  Market Card View  -->
     <string name="market_image">Market Image</string>
     <string name="market_name">Market Name</string>
-    <string name="market_address">Market Address</string>
+    <string name="market_address">%1$s, %2$s, %3$s, %4$s</string>
+    <string name="market_location">Market Location</string>
 
     <!--  Product Card View  -->
     <string name="product_name">Product Name</string>
-    <string name="product_price">₱%1$.2f / kg</string>
+    <string name="product_price">₱%1$.2f / %2$s</string>
     <string name="product_market">Product Market</string>
 
     <!--  Fragment Placeholder Texts (to be removed soon)  -->
@@ -222,14 +225,12 @@
     <string name="addr_person_name">Person/Business Name</string>
     <string name="addr_phone_number">09XXXXXXXXX/+639XXXXXXXXX</string>
     <string name="addr_line_1">Detailed Address</string>
-    <string name="addr_line_2">%1$s, %2$s, %3$s %4$s</string>
+    <string name="addr_line_2">%1$s, %2$s, %3$s %4$d</string>
     <string name="addr_default">Default</string>
     <string name="addr_pickup">Pickup</string>
     <string name="addr_edit">Edit Address</string>
 
     <!--  Add/Edit Address  -->
-    <string name="add_address_head">NEW ADDRESS</string>
-    <string name="edit_address_head">EDIT ADDRESS</string>
     <string name="full_name">Full Name</string>
     <string name="province">Province</string>
     <string name="city_municipality">City/Municipality</string>
@@ -392,7 +393,6 @@
     <!--  Product Menu  -->
     <string name="pd_add_new_product">Add New Product</string>
     <string name="pd_inv_image">Product Inventory Image</string>
-    <string name="pd_inv_price_unit">₱%1$.2f / %2$s</string>
     <string name="pd_inv_stock">Stock: %1$d</string>
     <string name="pd_inv_sales">Sales: %1$d</string>
     <string name="pd_inv_views">Views: %1$d</string>
@@ -427,11 +427,17 @@
     <string name="message_cd">Message Profile Picture</string>
 
     <!--  My Cart  -->
+    <string name="market_icon">Market Icon</string>
+    <string name="product_image">Product Image</string>
+    <string name="cart_product_weight">%1$.2f kg</string>
+    <string name="cart_qty_minus">-</string>
+    <string name="cart_qty_counter">0</string>
+    <string name="cart_qty_plus">+</string>
     <string name="sub_total">Subtotal</string>
     <string name="delivery_fee">Delivery Fee</string>
     <string name="payment_method">Payment Method</string>
     <string name="total_price">Total</string>
-    <string name="cart_price">₱0.00</string>
+    <string name="cart_price">₱%1$.2f</string>
     <string name="cash_on_delivery">Cash on Delivery</string>
     <string name="btn_check_out">Check Out</string>
 

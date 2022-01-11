@@ -6,18 +6,22 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.ProductAdapter
 import edu.cccdci.opal.databinding.FragmentHomeBinding
 import edu.cccdci.opal.dataclasses.Product
 import edu.cccdci.opal.dataclasses.User
+import edu.cccdci.opal.firestore.FirestoreClass
+import edu.cccdci.opal.layoutwrapper.WrapperGridLayoutManager
 import edu.cccdci.opal.ui.activities.CartActivity
 import edu.cccdci.opal.utils.Constants
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var productAdapter: ProductAdapter
+    private var mUserInfo: User? = null
+    private var productAdapter: ProductAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,46 +37,57 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater)
 
-        // Temporary data list
-        val dataList = mutableListOf<Product>()
-        var i = 1
-        while (i <= 10) {
-            dataList.add(
-                Product(
-                    name = "Product $i",
-                    price = i.toDouble(),
-                    market = "Market $i"
-                )
+        // Create a Builder for FirestoreRecyclerOptions
+        val options = FirestoreRecyclerOptions.Builder<Product>()
+            // Gets all the documents from products collection
+            .setQuery(
+                FirestoreClass().getProductQuery(this@HomeFragment),
+                Product::class.java
             )
-            i++
-        }
-
-        // Create an object of Product Adapter
-        productAdapter = ProductAdapter(requireContext(), dataList)
+            .build()
 
         with(binding) {
+            // Sets the layout type of the RecyclerView
+            rvHome.layoutManager = WrapperGridLayoutManager(
+                requireContext(), 2, GridLayoutManager.VERTICAL, false
+            )
+
+            // Create an object of Product Adapter
+            productAdapter = ProductAdapter(requireContext(), options)
+
             // Sets the adapter of Home RecyclerView
             rvHome.adapter = productAdapter
-            // Sets the layout type of the RecyclerView
-            rvHome.layoutManager = GridLayoutManager(context, 2)
-
-            /* If there are no products in the database, display
-             * the empty products message
-             */
-            if (productAdapter.itemCount == 0) {
-                rvHome.visibility = View.GONE
-                llEmptyHome.visibility = View.VISIBLE
-            }
-            // Display the products if there are existing products
-            else {
-                rvHome.visibility = View.VISIBLE
-                llEmptyHome.visibility = View.GONE
-            }
 
             return root
         }  // end of with(binding)
 
     }  // end of onCreateView method
+
+    // Operations to do when the fragment is visible
+    override fun onStart() {
+        super.onStart()
+
+        // Get the argument from the parent activity (MainActivity)
+        val bundle = this.arguments
+
+        /* Get the parcelable class (User) from the parent activity
+         * (MainActivity)
+         */
+        if (bundle != null)
+            mUserInfo = bundle.getParcelable(Constants.EXTRA_USER_INFO)
+
+        // Starts listening to Firestore operations on products
+        productAdapter!!.startListening()
+    }  // end of onStart method
+
+    // Operations to do when the fragment is no longer visible
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        // Stops listening to Firestore operations on products
+        if (productAdapter != null)
+            productAdapter!!.stopListening()
+    }  // end of onDestroyView method
 
     // Override the function to add two icons on top app bar (my cart and messages)
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -85,12 +100,12 @@ class HomeFragment : Fragment() {
         when (item.itemId) {
             // Send to Item Cart
             R.id.tab_cart -> {
-                val user = User()
-
+                // Create an Intent to launch CartActivity
                 val intent = Intent(requireContext(), CartActivity::class.java)
                 // Add product information to intent
-                intent.putExtra(Constants.EXTRA_USER_INFO, user)
+                intent.putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
 
+                // Opens the user cart activity
                 requireContext().startActivity(intent)
             }
 

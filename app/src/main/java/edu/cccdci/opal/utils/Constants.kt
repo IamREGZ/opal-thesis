@@ -9,6 +9,7 @@ import android.webkit.MimeTypeMap
 object Constants {
     // For Cloud Firestore (Collection, Documents, and Fields)
     const val USERS: String = "users"
+    const val ID: String = "id"
     const val FIRST_NAME: String = "firstName"
     const val LAST_NAME: String = "lastName"
     const val GENDER: String = "gender"
@@ -33,6 +34,8 @@ object Constants {
     const val WEIGHT: String = "weight"
     const val STOCK: String = "stock"
     const val STATUS: String = "status"
+    const val CART: String = "cart"
+    const val CART_ITEMS: String = "cartItems"
 
     // Cloud Firestore constants for Addresses
     const val PRV_DOC: String = "DOC-PRV"
@@ -53,6 +56,10 @@ object Constants {
     const val PRODUCT_VIOLATION: Int = 2
     const val PRODUCT_UNLISTED: Int = 0
 
+    // Cloud Firestore constants for Markets
+    const val MARKETS: String = "markets"
+    const val MARKET_ID: String = "marketID"
+
     // For storing information to Firestore
     const val GENDER_MALE: String = "male"
     const val GENDER_FEMALE: String = "female"
@@ -67,10 +74,12 @@ object Constants {
     const val EXTRA_USER_INFO: String = "extra_user_info"
     const val PRODUCT_DESCRIPTION: String = "product_description"
     const val USER_ADDRESS: String = "user_address"
+    const val SELECTABLE_ADDRESS: String = "selectable_address"
 
-    // For Request Permissions
+    // Request Permission Codes
     const val READ_STORAGE_PERMISSION_CODE = 2
     const val SELECT_IMAGE_REQUEST_CODE = 1
+    const val SELECT_ADDRESS_REQUEST_CODE = 3
 
     // File upload naming templates
     const val USER_PROFILE_IMAGE_TEMP: String = "OPAL_USRIMG_"

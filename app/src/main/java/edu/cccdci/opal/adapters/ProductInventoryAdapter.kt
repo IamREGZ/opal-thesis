@@ -49,7 +49,7 @@ class ProductInventoryAdapter(
             // Store the product inventory object values in the respective views
             pdInvName.text = product.name
             pdInvPriceUnit.text = context.getString(
-                R.string.pd_inv_price_unit, product.price, product.unit
+                R.string.product_price, product.price, product.unit
             )
             pdInvStock.text = context.getString(
                 R.string.pd_inv_stock, product.stock

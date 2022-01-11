@@ -22,7 +22,6 @@
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -57,6 +56,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+        <!-- Addresses Activity (User Address List) -->
+        <activity
+            android:name=".ui.activities.AddressesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- Address Editor Activity (Change Address Information) -->
+        <activity
+            android:name=".ui.activities.AddressEditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
         <!-- Become Vendor Activity (For Customers Only) -->
         <activity
             android:name=".ui.activities.BecomeVendorActivity"
@@ -86,7 +97,6 @@
             android:name=".ui.activities.CartActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-
     </application>
 
 </manifest>

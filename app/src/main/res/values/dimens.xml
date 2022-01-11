@@ -23,7 +23,7 @@
     <dimen name="button_small_height">40dp</dimen>
     <dimen name="radio_button_radius">10dp</dimen>
     <dimen name="radio_button_stroke">2dp</dimen>
-    <dimen name="icon_button_size">36dp</dimen>
+    <dimen name="medium_icon_size">36dp</dimen>
 
     <!--  EditText Dimens  -->
     <dimen name="et_login_radius">15dp</dimen>
@@ -92,6 +92,14 @@
     <dimen name="card_radius">5dp</dimen>
     <dimen name="card_elevation">8dp</dimen>
 
+    <!--  Market Dimens  -->
+    <dimen name="market_image_size">80dp</dimen>
+    <dimen name="small_icon_size">20dp</dimen>
+
     <!--  Product Inventory Dimens  -->
     <dimen name="product_inv_image_size">100dp</dimen>
+
+    <!--  Cart Dimens  -->
+    <dimen name="cart_prod_image_size">80dp</dimen>
+
 </resources>

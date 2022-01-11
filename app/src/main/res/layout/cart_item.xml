@@ -1,68 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="#00FFFFFF"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/medium_mrg_pd"
+    android:paddingBottom="@dimen/medium_mrg_pd">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/medium_large_mrg_pd">
-
-        <CheckBox
-            android:id="@+id/cb_select_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false" />
+        android:padding="@dimen/medium_mrg_pd">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="@dimen/small_mrg_pd"
-            android:contentDescription="@string/product_name"
+            android:id="@+id/iv_cart_prod_image"
+            android:layout_width="@dimen/cart_prod_image_size"
+            android:layout_height="@dimen/cart_prod_image_size"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/product_image"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_product_placeholder" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/medium_mrg_pd"
+            android:layout_marginEnd="@dimen/medium_mrg_pd"
+            android:layout_weight="2"
             android:orientation="vertical">
 
             <edu.cccdci.opal.utils.HeaderTextView
-                android:id="@+id/cart_prod_name"
+                android:id="@+id/tv_cart_prod_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@string/product_name"
                 android:textColor="@color/primaryAccentColor"
-                android:textSize="@dimen/header_text_size" />
+                android:textSize="@dimen/main_text_size" />
 
             <edu.cccdci.opal.utils.MainTextView
-                android:id="@+id/cart_prod_price"
+                android:id="@+id/tv_cart_prod_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_mrg_pd"
                 android:text="@string/product_price"
+                android:textColor="@color/app_black"
                 android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_cart_prod_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_mrg_pd"
+                android:text="@string/cart_product_weight"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
+                android:orientation="horizontal">
+
+                <edu.cccdci.opal.utils.MainButton
+                    android:id="@+id/btn_cart_qty_minus"
+                    android:layout_width="@dimen/medium_icon_size"
+                    android:layout_height="@dimen/medium_icon_size"
+                    android:background="@drawable/qty_buttons"
+                    android:text="@string/cart_qty_minus"
+                    android:textColor="@color/app_white"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_cart_qty_counter"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/cart_qty_counter"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.MainButton
+                    android:id="@+id/btn_cart_qty_plus"
+                    android:layout_width="@dimen/medium_icon_size"
+                    android:layout_height="@dimen/medium_icon_size"
+                    android:background="@drawable/qty_buttons"
+                    android:text="@string/cart_qty_plus"
+                    android:textColor="@color/app_white"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/del_button"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:contentDescription="@string/delete_product"
-            android:src="@drawable/ic_delete"
-            android:visibility="gone" />
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_cart_prod_total_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="@string/cart_price"
+            android:textColor="@color/app_black"
+            android:textSize="@dimen/main_text_size" />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_line_width"
-        android:background="@color/et_hint_black" />
 
 </LinearLayout>

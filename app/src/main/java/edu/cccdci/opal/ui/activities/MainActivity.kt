@@ -9,7 +9,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.GravityCompat
+import androidx.navigation.NavArgument
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -29,9 +31,10 @@ class MainActivity : UtilityClass(),
     View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mUserInfo: User
     private lateinit var mNavController: NavController
+    private lateinit var mNavGraph: NavGraph
     private lateinit var mAppBarConfiguration: AppBarConfiguration
+    private var mUserInfo: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -46,6 +49,12 @@ class MainActivity : UtilityClass(),
                 .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
             mNavController = navHostFragment.navController
 
+            // Get the navigation graph of bottom and drawer navigation
+            mNavGraph = mNavController.navInflater
+                .inflate(R.navigation.mobile_navigation)
+            // Set the graph of navigation controller
+            mNavController.graph = mNavGraph
+
             // Setup Bottom Navigation
             bottomNavView.setupWithNavController(mNavController)
 
@@ -53,7 +62,6 @@ class MainActivity : UtilityClass(),
             mAppBarConfiguration = AppBarConfiguration(
                 mNavController.graph, dlHomeDrawer
             )
-
             // Setup Drawer Navigation
             NavigationUI.setupActionBarWithNavController(
                 this@MainActivity, mNavController, dlHomeDrawer
@@ -78,17 +86,24 @@ class MainActivity : UtilityClass(),
                     else -> binding.bottomNavView.visibility = View.GONE
                 }
             }  // end of addOnDestinationChangedListener
+
         }  // end of with(binding)
 
     }  // end of onCreate method
 
-    // Operations to do when this activity is active again
-    override fun onResume() {
-        super.onResume()
+    // Operations to do when this activity is visible
+    override fun onStart() {
+        super.onStart()
+
+        // Display the loading message
+        showProgressDialog(
+            this@MainActivity, this@MainActivity,
+            resources.getString(R.string.msg_please_wait)
+        )
 
         // Gets the user profile data
         FirestoreClass().getUserDetails(this@MainActivity)
-    }  // end of onResume method
+    }  // end of onStart method
 
     // Override the function to make the user double press back to exit
     override fun onBackPressed() {
@@ -111,7 +126,7 @@ class MainActivity : UtilityClass(),
                         UserProfileActivity::class.java
                     )
                     // Add extra user information to intent
-                    intent.putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
+                    intent.putExtra(Constants.EXTRA_USER_INFO, mUserInfo!!)
 
                     // Opens the edit user profile
                     startActivity(intent)
@@ -131,7 +146,9 @@ class MainActivity : UtilityClass(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             // Sends user to Addresses List
-            R.id.nav_addresses -> navigateFragment(R.id.home_to_addresses)
+            R.id.nav_addresses -> startActivity(
+                Intent(this@MainActivity, AddressesActivity::class.java)
+            )
 
             // Sends user to User Order History
             R.id.nav_order_history -> navigateFragment(R.id.home_to_order_history)
@@ -187,7 +204,7 @@ class MainActivity : UtilityClass(),
     }  // end of navigateFragment method
 
     // Function to set up user information in the sidebar header
-    fun setSideNavProfileHeader(sp: SharedPreferences, user: User) {
+    fun setNavigationAttributes(sp: SharedPreferences, user: User) {
         mUserInfo = user  // To be used for Parcelable
 
         // Get user information from Shared Preferences
@@ -233,11 +250,18 @@ class MainActivity : UtilityClass(),
         // Click event for Navigation Profile Picture ImageView
         navProfile.setOnClickListener(this@MainActivity)
 
-    }  // end of setSideNavProfileHeader method
+        // Create an argument to store user data for Home Fragment
+        val navArg = NavArgument.Builder().setDefaultValue(mUserInfo!!).build()
+        // Adds the parcelable argument for Home Fragment
+        mNavGraph.addArgument(Constants.EXTRA_USER_INFO, navArg)
+        mNavController.graph = mNavGraph  // Update the navigation graph
+
+        hideProgressDialog()  // Hide the loading message
+    }  // end of setNavigationAttributes method
 
     // Function to hide sidebar menu items based on user role
-    private fun hideBasedOnUserRole(menu: Menu, role: Boolean) {
-        if (role) {
+    private fun hideBasedOnUserRole(menu: Menu, isVendor: Boolean) {
+        if (isVendor) {
             // Hide only Become a Vendor
             menu.findItem(R.id.nav_become_vendor)!!.isVisible = false
             menu.findItem(R.id.nav_vendor_only)!!.isVisible = true

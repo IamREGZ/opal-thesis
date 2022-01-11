@@ -15,6 +15,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import edu.cccdci.opal.R
+import edu.cccdci.opal.adapters.CartAdapter
 import edu.cccdci.opal.dataclasses.*
 import edu.cccdci.opal.ui.activities.*
 import edu.cccdci.opal.ui.fragments.*
@@ -114,19 +115,26 @@ class FirestoreClass {
                     /* In Main Activity, it sets the placeholder values in
                      * the sidebar header to the user's information.
                      */
-                    is MainActivity -> activity.setSideNavProfileHeader(
+                    is MainActivity -> activity.setNavigationAttributes(
                         sharedPrefs, user
                     )
+
+                    /* In Product Description Activity, it sets the current
+                     * user details to check if the product is in the user's
+                     * cart.
+                     */
+                    is ProductDescActivity -> activity.setCurrentUserDetails(user)
                 }
             }
             // If failed
             .addOnFailureListener { e ->
-                /* Closes the loading message in the Login Activity
-                 * or Register Activity
+                /* Closes the loading message in the Login, Register
+                 * or Main Activity
                  */
                 when (activity) {
                     is LoginActivity -> activity.hideProgressDialog()
                     is RegisterActivity -> activity.hideProgressDialog()
+                    is MainActivity -> activity.hideProgressDialog()
                 }
 
                 // Log the error
@@ -276,7 +284,7 @@ class FirestoreClass {
     }  // end of uploadImageToCloud method
 
     // Function to retrieve province list data from Cloud Firestore
-    fun getProvinces(fragment: Fragment) {
+    fun getProvinces(activity: AddressEditActivity) {
         // Access the collection named provinces
         mFSInstance.collection(Constants.PROVINCES)
             // Access the document that serves as container for province data (DOC-PRV)
@@ -286,7 +294,7 @@ class FirestoreClass {
             // If it is successful
             .addOnSuccessListener { document ->
                 // Log the province list data
-                Log.i(fragment.javaClass.simpleName, document.toString())
+                Log.i(activity.javaClass.simpleName, document.toString())
 
                 // Retrieve the result. If the document is null, return an empty list.
                 val provinces = if (document != null)
@@ -294,20 +302,14 @@ class FirestoreClass {
                 else
                     listOf()
 
-                when (fragment) {
-                    /* In Address Info Fragment, it stores the retrieved
-                     * list of Province Data to its respective Spinner
-                     */
-                    is AddressInfoFragment -> fragment.retrieveProvinces(
-                        provinces
-                    )
-                }
+                // Proceed to store the retrieved list of provinces
+                activity.retrieveProvinces(provinces)
             }
             // If failed
             .addOnFailureListener { e ->
                 // Log the error
                 Log.e(
-                    fragment.javaClass.simpleName,
+                    activity.javaClass.simpleName,
                     "There was an error retrieving province data.",
                     e
                 )
@@ -315,7 +317,7 @@ class FirestoreClass {
     }  // end of getProvinces method
 
     // Function to retrieve city/municipality list data from Cloud Firestore
-    fun getCities(fragment: Fragment, provID: String) {
+    fun getCities(activity: AddressEditActivity, provID: String) {
         // Access the collection named provinces
         mFSInstance.collection(Constants.PROVINCES)
             // Access the document named by selected province ID
@@ -329,7 +331,7 @@ class FirestoreClass {
             // If it is successful
             .addOnSuccessListener { document ->
                 // Log the city/municipality list data
-                Log.i(fragment.javaClass.simpleName, document.toString())
+                Log.i(activity.javaClass.simpleName, document.toString())
 
                 // Retrieve the result. If the document is null, return an empty list.
                 val cities = if (document != null)
@@ -337,21 +339,14 @@ class FirestoreClass {
                 else
                     listOf()
 
-                when (fragment) {
-                    /* In Address Info Fragment, it stores the retrieved
-                     * list of City/Municipality Data to its respective
-                     * Spinner
-                     */
-                    is AddressInfoFragment -> fragment.retrieveCities(
-                        cities
-                    )
-                }
+                // Proceed to store the retrieved list of cities/municipalities
+                activity.retrieveCities(cities)
             }
             // If failed
             .addOnFailureListener { e ->
                 // Log the error
                 Log.e(
-                    fragment.javaClass.simpleName,
+                    activity.javaClass.simpleName,
                     "There was an error retrieving city data.",
                     e
                 )
@@ -359,9 +354,7 @@ class FirestoreClass {
     }  // end of getCities
 
     // Function to retrieve barangay list data from Cloud Firestore
-    fun getBarangays(
-        context: Context, provID: String, cityID: String
-    ): List<String> {
+    fun getBarangays(context: Context, provID: String, cityID: String): List<String> {
         // A return variable that stores list of barangay data
         val barangays: MutableList<String> = mutableListOf()
 
@@ -409,9 +402,7 @@ class FirestoreClass {
     }  // end of getUserAddressReference method
 
     // Function to add user address data to Cloud Firestore
-    fun addUserAddress(
-        fragment: AddressInfoFragment, addressInfo: Address, util: UtilityClass
-    ) {
+    fun addUserAddress(activity: AddressEditActivity, addressInfo: Address) {
         // Access the collection named users.
         mFSInstance.collection(Constants.USERS)
             // Access the document named by the current user id
@@ -425,15 +416,15 @@ class FirestoreClass {
             // If it is successful
             .addOnSuccessListener {
                 // Prompt the user that the address was saved
-                fragment.addressSavedPrompt()
+                activity.addressSavedPrompt()
             }
             // If failed
             .addOnFailureListener { e ->
-                util.hideProgressDialog()  // Hide the loading message
+                activity.hideProgressDialog()  // Hide the loading message
 
                 // Log the error
                 Log.e(
-                    fragment.javaClass.simpleName,
+                    activity.javaClass.simpleName,
                     "There was an error saving the address data.",
                     e
                 )
@@ -456,8 +447,8 @@ class FirestoreClass {
 
     // Function to update user address data from Cloud Firestore
     fun updateAddress(
-        fragment: Fragment, addressID: String,
-        addrHashMap: HashMap<String, Any>, util: UtilityClass
+        activity: AddressEditActivity, addressID: String,
+        addrHashMap: HashMap<String, Any>
     ) {
         // Access the collection named users
         mFSInstance.collection(Constants.USERS)
@@ -471,23 +462,16 @@ class FirestoreClass {
             .update(addrHashMap)
             // If it is successful
             .addOnSuccessListener {
-                /* In Address Info Fragment, it sends the user back
-                 * to the previous fragment
-                 */
-                if (fragment is AddressInfoFragment) {
-                    fragment.addressSavedPrompt()
-                }
+                // Prompt that the address was saved in the Firestore
+                activity.addressSavedPrompt()
             }
             // If failed
             .addOnFailureListener { e ->
-                // Closes the loading message in the Address Info Fragment
-                if (fragment is AddressInfoFragment) {
-                    util.hideProgressDialog()
-                }
+                activity.hideProgressDialog()  // Hide the loading message
 
                 // Log the error
                 Log.e(
-                    fragment.javaClass.simpleName,
+                    activity.javaClass.simpleName,
                     "There was an error updating the address data.",
                     e
                 )
@@ -495,7 +479,7 @@ class FirestoreClass {
     }  // end of updateAddress method
 
     // Function to delete user address data from Cloud Firestore
-    fun deleteAddress(fragment: Fragment, addressID: String, util: UtilityClass) {
+    fun deleteAddress(activity: AddressEditActivity, addressID: String) {
         // Access the collection named users
         mFSInstance.collection(Constants.USERS)
             // Access the document named by the current user id
@@ -508,23 +492,16 @@ class FirestoreClass {
             .delete()
             // If it is successful
             .addOnSuccessListener {
-                /* In Address Info Fragment, it sends the user back
-                 * to the previous fragment
-                 */
-                if (fragment is AddressInfoFragment) {
-                    fragment.addressDeletedPrompt()
-                }
+                // Prompt that the address was deleted from Firestore
+                activity.addressDeletedPrompt()
             }
             // If failed
             .addOnFailureListener { e ->
-                // Closes the loading message in the Address Info Fragment
-                if (fragment is AddressInfoFragment) {
-                    util.hideProgressDialog()
-                }
+                activity.hideProgressDialog()  // Hide the loading message
 
                 // Log the error
                 Log.e(
-                    fragment.javaClass.simpleName,
+                    activity.javaClass.simpleName,
                     "There was an error deleting the address data.",
                     e
                 )
@@ -562,7 +539,7 @@ class FirestoreClass {
             }  // end of mFSInstance
     }  // end of addProduct method
 
-    // Function to get the query statement for Product Inventory (In Stock)
+    // Function to get the query statement for Products
     fun getProductQuery(fragment: Fragment): Query {
         // Access the collection named Products
         val productRef = mFSInstance.collection(Constants.PRODUCTS)
@@ -604,17 +581,49 @@ class FirestoreClass {
                     Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
                 ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_UNLISTED)
 
-                /* The default query, get all the documents where vendor ID is
-                 * equal to the current user ID.
+                /* The default query, get all the documents where the status
+                 * code is equal to 1 (In Stock) and limit the number of
+                 * document retrievals to 20.
                  */
-                else -> whereEqualTo(
-                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
-                )
+                else -> whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
+                    .limit(20)
             }  // end of when
 
         }  // end of with(productRef)
 
     }  // end of getProductInStockQuery method
+
+    // Function to retrieve a specific product for cart item data
+    fun retrieveProductItem(
+        context: Context, cartViewHolder: CartAdapter.CartViewHolder,
+        position: Int, productID: String
+    ) {
+        // Access the collection named products
+        mFSInstance.collection(Constants.PRODUCTS)
+            // Access the document named by the provided product ID
+            .document(productID)
+            // Get the selected document
+            .get()
+            // If it is successful
+            .addOnSuccessListener { document ->
+                // Convert the retrieved document to object
+                val product = document.toObject(Product::class.java)!!
+
+                /* In the RecyclerView Holder of Cart RecyclerView, it
+                 * supplies the data for the cart item.
+                 */
+                cartViewHolder.setProductDetails(product, position)
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                // Log the error
+                Log.e(
+                    context.javaClass.simpleName,
+                    "There was an error retrieving the product data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of retrieveProductData method
 
     // Function to update product data from Cloud Firestore
     fun updateProduct(
@@ -658,7 +667,7 @@ class FirestoreClass {
                     }  // end of when
                 }  // end of if
             }
-            // If it failed
+            // If failed
             .addOnFailureListener { e ->
                 // Closes the loading message in the Product Editor Activity
                 when (activity) {
@@ -691,7 +700,7 @@ class FirestoreClass {
                     context, context.resources.getString(R.string.msg_product_deleted)
                 )
             }
-            // If it failed
+            // If failed
             .addOnFailureListener { e ->
                 util.hideProgressDialog()  // Hide the loading message
 
@@ -703,5 +712,116 @@ class FirestoreClass {
                 )
             }  // end of mFSInstance
     }  // end of deleteProduct method
+
+    // Function to get the query statement for market collection
+    fun getMarketQuery(): Query {
+        // Access the collection named markets
+        return mFSInstance.collection(Constants.MARKETS)
+            // Limit the number of document retrievals to 10
+            .limit(10)
+    }  // end of getMarketQuery method
+
+    // Function to retrieve a single market data for Cart Activity
+    fun retrieveMarket(activity: Activity, marketID: String) {
+        // Access the collection named markets
+        mFSInstance.collection(Constants.MARKETS)
+            // Access the document named by the provided market ID
+            .document(marketID)
+            // Get the selected document
+            .get()
+            // If it is successful
+            .addOnSuccessListener { document ->
+                // Convert the retrieved document to object
+                val market = document.toObject(Market::class.java)!!
+
+                /* In Cart Activity, it supplies the market name and delivery fee
+                 * output data.
+                 */
+                if (activity is CartActivity) {
+                    activity.setMarketData(market)
+                }
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                // Hide the loading message and exit the Cart Activity
+                if (activity is CartActivity) {
+                    activity.hideProgressDialog()
+                    activity.finish()
+                }
+
+                // Log the error
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "There was an error retrieving the market data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of retrieveMarket method
+
+    // Function to update user's cart in Firestore Database
+    fun updateCart(
+        activity: Activity, user: User, marketID: String,
+        items: List<CartItem>, toAdd: Boolean = false
+    ) {
+        // Variable to store user's cart data
+        val cartItemMap: HashMap<String, Any> = hashMapOf()
+
+        // If the cart field exists
+        if (user.cart != null) {
+            // Get the current cart items
+            val currentCartItems = user.cart.cartItems
+
+            // If the item is not from the same market, change the market ID
+            if (user.cart.marketID != marketID)
+                cartItemMap[Constants.MARKET_ID] = marketID
+
+            /* Add the item on the list if the user adds to cart.
+             * In the cart menu, when the user changes items, it
+             * will be overwritten instead.
+             */
+            cartItemMap[Constants.CART_ITEMS] = if (toAdd) {
+                currentCartItems.addAll(items)
+                currentCartItems
+            } else {
+                items
+            }
+            // If it doesn't, just add the specified fields in the map
+        } else {
+            cartItemMap[Constants.MARKET_ID] = marketID
+            cartItemMap[Constants.CART_ITEMS] = items
+        }  // end of if-else
+
+        // Access the collection named users
+        mFSInstance.collection(Constants.USERS)
+            // Access the document named by the current user id
+            .document(getCurrentUserID())
+            // Create or overwrite the cart field with the selected product
+            .set(
+                hashMapOf(Constants.CART to cartItemMap), SetOptions.merge()
+            )
+            // If it is successful
+            .addOnSuccessListener {
+                when (activity) {
+                    /* In Product Description Activity, it prompts the user
+                     * that the product is added to cart.
+                     */
+                    is ProductDescActivity -> activity.itemAddedPrompt()
+                }
+            }
+            // If failed
+            .addOnFailureListener { e ->
+                when (activity) {
+                    // Closes the loading message in the Product Description Activity
+                    is ProductDescActivity -> activity.hideProgressDialog()
+                }
+
+                // Log the error
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "There was an error updating the user cart data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of updateCart method
 
 }  // end of FirestoreClass

@@ -8,6 +8,11 @@ import kotlinx.parcelize.Parcelize
 data class Market(
     val id: String = "",
     val name: String = "",
-    val address: String = "",
-    val image: String = ""
+    val image: String = "",
+    val detailAdd: String = "",
+    val barangay: String = "",
+    val city: String = "",
+    val province: String = "",
+    val vendorID: String = "",
+    val deliveryFee: Double = 0.0
 ) : Parcelable
