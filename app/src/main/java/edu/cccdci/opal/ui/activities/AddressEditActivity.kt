@@ -1,24 +1,20 @@
-package edu.cccdci.opal.ui.fragments
+package edu.cccdci.opal.ui.activities
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 import edu.cccdci.opal.R
-import edu.cccdci.opal.databinding.FragmentAddressInfoBinding
+import edu.cccdci.opal.databinding.ActivityAddressEditBinding
 import edu.cccdci.opal.dataclasses.Address
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.UtilityClass
 
-class AddressInfoFragment : Fragment() {
+class AddressEditActivity : UtilityClass() {
 
-    private lateinit var binding: FragmentAddressInfoBinding
-    private lateinit var mUtility: UtilityClass
+    private lateinit var binding: ActivityAddressEditBinding
     private val mProvinces: MutableList<HashMap<String, String>> = mutableListOf()
     private val mProvNames: MutableList<String> = mutableListOf()
     private val mCities: MutableList<HashMap<String, String>> = mutableListOf()
@@ -27,36 +23,33 @@ class AddressInfoFragment : Fragment() {
     private var mAddress: Address? = null
     private var mAddrHashMap: HashMap<String, Any> = hashMapOf()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
         // Inflate the layout for this fragment
-        binding = FragmentAddressInfoBinding.inflate(inflater)
+        binding = ActivityAddressEditBinding.inflate(layoutInflater)
 
-        // To access Android utilities (e.g., Toast, Dialogs, etc.)
-        mUtility = UtilityClass()
+        // Check if there's an existing parcelable extra info
+        if (intent.hasExtra(Constants.USER_ADDRESS)) {
+            // Get data from the parcelable class
+            mAddress = intent.getParcelableExtra(Constants.USER_ADDRESS)
 
-        // Get the bundle from the previous fragment (AddressesFragment)
-        val bundle = this.arguments
-
-        /* Get the parcelable class (Address) from the previous
-         * fragment (Addresses Fragment)
-         */
-        if (bundle != null)
-            mAddress = bundle.getParcelable(Constants.USER_ADDRESS)
-
-        with(binding) {
-            // Store the address data values if it has parcelable class
+            // Store the address data values if it is not null (prevents NPE)
             if (mAddress != null)
                 setSelectedAddressValues()
+        }
+
+        with(binding) {
+            setContentView(root)
+            // Setups the Action Bar of the current activity
+            setupActionBar(tlbAddressEditActivity, false)
 
             // Call the Firestore Function to retrieve province data
-            FirestoreClass().getProvinces(this@AddressInfoFragment)
+            FirestoreClass().getProvinces(this@AddressEditActivity)
 
             // Prepare the drop down values for provinces
             val provinceAdapter = ArrayAdapter(
-                requireContext(), R.layout.spinner_item, mProvNames
+                this@AddressEditActivity, R.layout.spinner_item, mProvNames
             )
             actvAddrProvince.setAdapter(provinceAdapter)
 
@@ -81,10 +74,9 @@ class AddressInfoFragment : Fragment() {
             btnDeleteAddress.setOnClickListener {
                 deleteUserAddress()
             }
-
-            return root
         }  // end of with(binding)
-    }  // end of onCreateView method
+
+    }  // end of onCreate method
 
     // Function to store existing address data in the respective fields
     private fun setSelectedAddressValues() {
@@ -101,7 +93,7 @@ class AddressInfoFragment : Fragment() {
             smPickupAddress.isChecked = mAddress!!.pickup
 
             // Change the interface of Address Info
-            tvAddrInfoHead.setText(R.string.edit_address_head)
+            tvAddressEditTitle.setText(R.string.tlb_title_edit_address)
             btnDeleteAddress.visibility = View.VISIBLE
         }  // end of with(binding)
     }  // end of setSelectedAddressValues method
@@ -155,12 +147,12 @@ class AddressInfoFragment : Fragment() {
 
             // Call the Firestore function to retrieve city data
             FirestoreClass().getCities(
-                this@AddressInfoFragment, mSelectedProvince
+                this@AddressEditActivity, mSelectedProvince
             )
 
             // Prepare the drop down values for cities
             val cityAdapter = ArrayAdapter(
-                requireContext(), R.layout.spinner_item, mCTNames
+                this@AddressEditActivity, R.layout.spinner_item, mCTNames
             )
             actvAddrCtm.setAdapter(cityAdapter)
 
@@ -195,14 +187,13 @@ class AddressInfoFragment : Fragment() {
 
             // Call the Firestore function to retrieve barangay data
             val brgyResult = FirestoreClass().getBarangays(
-                requireContext(),
-                mSelectedProvince,
+                this@AddressEditActivity, mSelectedProvince,
                 mCities[position][Constants.CITY_ID]!!
             )
 
             // Prepare the drop down values for barangays
             val brgyAdapter = ArrayAdapter(
-                requireContext(), R.layout.spinner_item, brgyResult
+                this@AddressEditActivity, R.layout.spinner_item, brgyResult
             )
             actvAddrBrgy.setAdapter(brgyAdapter)
 
@@ -222,8 +213,8 @@ class AddressInfoFragment : Fragment() {
                 TextUtils.isEmpty(etAddrFullName.text.toString()
                     .trim { it <= ' ' }) -> {
                     // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(),
+                    showSnackBar(
+                        this@AddressEditActivity,
                         resources.getString(R.string.err_blank_fullname),
                         true
                     )
@@ -234,8 +225,8 @@ class AddressInfoFragment : Fragment() {
                 TextUtils.isEmpty(etAddrPhone.text.toString()
                     .trim { it <= ' ' }) -> {
                     // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(),
+                    showSnackBar(
+                        this@AddressEditActivity,
                         resources.getString(R.string.err_blank_phone),
                         true
                     )
@@ -246,8 +237,8 @@ class AddressInfoFragment : Fragment() {
                 TextUtils.isEmpty(actvAddrProvince.text.toString()
                     .trim { it <= ' ' }) -> {
                     // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(),
+                    showSnackBar(
+                        this@AddressEditActivity,
                         resources.getString(R.string.err_blank_province),
                         true
                     )
@@ -258,8 +249,8 @@ class AddressInfoFragment : Fragment() {
                 TextUtils.isEmpty(actvAddrCtm.text.toString()
                     .trim { it <= ' ' }) -> {
                     // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(),
+                    showSnackBar(
+                        this@AddressEditActivity,
                         resources.getString(R.string.err_blank_city),
                         true
                     )
@@ -270,8 +261,8 @@ class AddressInfoFragment : Fragment() {
                 TextUtils.isEmpty(actvAddrBrgy.text.toString()
                     .trim { it <= ' ' }) -> {
                     // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(),
+                    showSnackBar(
+                        this@AddressEditActivity,
                         resources.getString(R.string.err_blank_brgy),
                         true
                     )
@@ -282,8 +273,8 @@ class AddressInfoFragment : Fragment() {
                 TextUtils.isEmpty(etAddrPostal.text.toString()
                     .trim { it <= ' ' }) -> {
                     // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(),
+                    showSnackBar(
+                        this@AddressEditActivity,
                         resources.getString(R.string.err_blank_postal),
                         true
                     )
@@ -294,8 +285,8 @@ class AddressInfoFragment : Fragment() {
                 TextUtils.isEmpty(etAddrDetails.text.toString()
                     .trim { it <= ' ' }) -> {
                     // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(),
+                    showSnackBar(
+                        this@AddressEditActivity,
                         resources.getString(R.string.err_blank_detailed),
                         true
                     )
@@ -310,54 +301,61 @@ class AddressInfoFragment : Fragment() {
 
     // Function to save user's address
     private fun saveUserAddress() {
-        with(binding) {
-            // Validate first the address fields
-            if (addressValidation()) {
-                // Display the loading message
-                mUtility.showProgressDialog(
-                    requireContext(), requireActivity(),
-                    resources.getString(R.string.msg_please_wait)
-                )
+        // Validate first the address fields
+        if (addressValidation()) {
+            // Display the loading message
+            showProgressDialog(
+                this@AddressEditActivity, this@AddressEditActivity,
+                resources.getString(R.string.msg_please_wait)
+            )
 
-                if (mAddress == null) {
-                    // If mAddress object is null, add a new address
-
-                    // Get the document reference for the new address
-                    val addressRef = FirestoreClass().getUserAddressReference()
-
-                    // Object to store user address data
-                    mAddress = Address(
-                        Constants.ADDRESS_ID_TEMP + addressRef.id,
-                        etAddrFullName.text.toString().trim { it <= ' ' },
-                        etAddrPhone.text.toString().trim { it <= ' ' },
-                        actvAddrProvince.text.toString().trim { it <= ' ' },
-                        actvAddrCtm.text.toString().trim { it <= ' ' },
-                        actvAddrBrgy.text.toString().trim { it <= ' ' },
-                        etAddrPostal.text.toString().trim { it <= ' ' }.toInt(),
-                        etAddrDetails.text.toString().trim { it <= ' ' },
-                        smDefaultAddress.isChecked,
-                        smPickupAddress.isChecked
-                    )
-
-                    // Adds the user address data in the Firestore Database
-                    FirestoreClass().addUserAddress(
-                        this@AddressInfoFragment, mAddress!!, mUtility
-                    )
-                } else {
-                    // If mAddress has a value, update the current address
-                    storeUserAddressChanges()  // Stores modified information, if any
-
-                    // Proceed to update fields in the Cloud Firestore
-                    FirestoreClass().updateAddress(
-                        this@AddressInfoFragment, mAddress!!.addressID,
-                        mAddrHashMap, mUtility
-                    )
-                }  // end of if-else
-            }  // end of if
-
-        }  // end of with(binding)
-
+            if (mAddress == null) {
+                // If mAddress object is null, add a new address
+                addNewUserAddress()
+            } else {
+                // If mAddress has a value, update the current address
+                updateUserAddress()
+            }  // end of if-else
+        }  // end of if
     }  // end of saveUserAddress method
+
+    // Function to add user address to Firestore (if mAddress is null)
+    private fun addNewUserAddress() {
+        // Get the document reference for the new address
+        val addressRef = FirestoreClass().getUserAddressReference()
+
+        with(binding) {
+            // Object to store user address data
+            mAddress = Address(
+                Constants.ADDRESS_ID_TEMP + addressRef.id,
+                etAddrFullName.text.toString().trim { it <= ' ' },
+                etAddrPhone.text.toString().trim { it <= ' ' },
+                actvAddrProvince.text.toString().trim { it <= ' ' },
+                actvAddrCtm.text.toString().trim { it <= ' ' },
+                actvAddrBrgy.text.toString().trim { it <= ' ' },
+                etAddrPostal.text.toString().trim { it <= ' ' }.toInt(),
+                etAddrDetails.text.toString().trim { it <= ' ' },
+                smDefaultAddress.isChecked,
+                smPickupAddress.isChecked
+            )
+        }
+
+        // Adds the user address data in the Firestore Database
+        FirestoreClass().addUserAddress(
+            this@AddressEditActivity, mAddress!!
+        )
+    }  // end of addNewUserAddress method
+
+    // Function to update existing user address (if mAddress is not null)
+    private fun updateUserAddress() {
+        storeUserAddressChanges()  // Stores modified information, if any
+
+        // Proceed to update fields in the Cloud Firestore
+        FirestoreClass().updateAddress(
+            this@AddressEditActivity, mAddress!!.addressID,
+            mAddrHashMap
+        )
+    }  // end of updateUserAddress method
 
     // Function to store modified user address information
     private fun storeUserAddressChanges() {
@@ -422,16 +420,16 @@ class AddressInfoFragment : Fragment() {
 
     // Function to prompt user that the address is saved
     fun addressSavedPrompt() {
-        mUtility.hideProgressDialog()  // Hide the loading message
+        hideProgressDialog()  // Hide the loading message
 
         // Display a Toast message
-        mUtility.toastMessage(
-            requireContext(),
+        toastMessage(
+            this@AddressEditActivity,
             resources.getString(R.string.msg_address_saved)
         )
 
-        // Sends the user back to the previous fragment
-        requireActivity().onBackPressed()
+        finish()  // Closes the activity
+
     }  // end of addressSavedPrompt method
 
     // Function to delete user's address
@@ -439,30 +437,28 @@ class AddressInfoFragment : Fragment() {
         // Check if the mSelectedAddress object is not null
         if (mAddress != null) {
             // Display the loading message
-            mUtility.showProgressDialog(
-                requireContext(), requireActivity(),
+            showProgressDialog(
+                this@AddressEditActivity, this@AddressEditActivity,
                 resources.getString(R.string.msg_please_wait)
             )
 
             // Deletes the user address data in the Firestore Database
             FirestoreClass().deleteAddress(
-                this@AddressInfoFragment, mAddress!!.addressID,
-                mUtility
+                this@AddressEditActivity, mAddress!!.addressID
             )
         }  // end of if
     }  // end of deleteUserAddress method
 
     // Function to prompt user that the address was deleted
     fun addressDeletedPrompt() {
-        mUtility.hideProgressDialog()  // Hide the loading message
+        hideProgressDialog()  // Hide the loading message
 
         // Display a Toast message
-        mUtility.toastMessage(
-            requireContext(), resources.getString(R.string.msg_address_deleted)
+        toastMessage(
+            this@AddressEditActivity, resources.getString(R.string.msg_address_deleted)
         )
 
-        // Sends the user back to the previous fragment
-        requireActivity().onBackPressed()
+        finish()  // Closes the activity
     }  // end of addressDeletedPrompt method
 
-}  // end of AddressInfoFragment class
+}  // end of AddressEditActivity class

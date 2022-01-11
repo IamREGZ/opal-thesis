@@ -1,31 +1,26 @@
-package edu.cccdci.opal.ui.fragments
+package edu.cccdci.opal.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.AddressAdapter
-import edu.cccdci.opal.databinding.FragmentAddressesBinding
+import edu.cccdci.opal.databinding.ActivityAddressesBinding
 import edu.cccdci.opal.dataclasses.Address
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
+import edu.cccdci.opal.utils.UtilityClass
 
-class AddressesFragment : Fragment() {
+class AddressesActivity : UtilityClass() {
 
-    private lateinit var binding: FragmentAddressesBinding
+    private lateinit var binding: ActivityAddressesBinding
     private var addressAdapter: AddressAdapter? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
         // Inflate the layout for this fragment
-        binding = FragmentAddressesBinding.inflate(inflater)
+        binding = ActivityAddressesBinding.inflate(layoutInflater)
 
         // Create a Builder for FirestoreRecyclerOptions
         val options = FirestoreRecyclerOptions.Builder<Address>()
@@ -34,29 +29,34 @@ class AddressesFragment : Fragment() {
             .build()
 
         with(binding) {
+            setContentView(root)
+            // Setups the Action Bar of the current activity
+            setupActionBar(tlbAddressesActivity, false)
+
             // Sets the layout type of the RecyclerView
             rvAddresses.layoutManager = WrapperLinearLayoutManager(
-                requireContext(), LinearLayoutManager.VERTICAL, false
+                this@AddressesActivity, LinearLayoutManager.VERTICAL, false
             )
 
             // Create an object of Address Adapter
-            addressAdapter = AddressAdapter(
-                this@AddressesFragment, requireContext(), options
-            )
+            addressAdapter = AddressAdapter(this@AddressesActivity, options)
             // Sets the adapter of Address RecyclerView
             rvAddresses.adapter = addressAdapter
 
             // Actions when the Add Address button is clicked
             btnAddAddress.setOnClickListener {
                 // Sends user to the Address Editor
-                findNavController().navigate(R.id.addresses_to_address_info)
+                startActivity(
+                    Intent(
+                        this@AddressesActivity, AddressEditActivity::class.java
+                    )
+                )
             }
+        }  // end of with(binding)
 
-            return root
-        }
-    }  // end of onCreateView method
+    }  // end of onCreate method
 
-    // Operations to do when the fragment is visible
+    // Operations to do when this activity is visible
     override fun onStart() {
         super.onStart()
 
@@ -64,7 +64,7 @@ class AddressesFragment : Fragment() {
         addressAdapter!!.startListening()
     }  // end of onStart method
 
-    // Operations to do when the fragment is no longer visible
+    // Operations to do when this activity is no longer visible
     override fun onStop() {
         super.onStop()
 
@@ -73,4 +73,4 @@ class AddressesFragment : Fragment() {
             addressAdapter!!.stopListening()
     }  // end of onStop method
 
-}  // end of AddressesFragment class
+}  // end of AddressesActivity class
