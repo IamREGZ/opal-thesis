@@ -22,6 +22,7 @@
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -95,6 +96,18 @@
         <!-- Cart Activity (User's Cart Menu) -->
         <activity
             android:name=".ui.activities.CartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- Checkout Activity (Review Cart Details) -->
+        <activity
+            android:name=".ui.activities.CheckoutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- Payment Activity (Select Payment Method) -->
+        <activity
+            android:name=".ui.activities.PaymentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
     </application>

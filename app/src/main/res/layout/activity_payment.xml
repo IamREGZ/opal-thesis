@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activities.PaymentActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tlb_payment_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@color/primaryColorTheme">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_payment_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/tlb_title_paddingStart"
+            android:paddingEnd="0dp"
+            android:text="@string/tlb_title_payment"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/header_text_size" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_payments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

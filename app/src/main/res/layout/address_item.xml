@@ -9,10 +9,12 @@
     android:paddingBottom="@dimen/medium_mrg_pd">
 
     <LinearLayout
+        android:id="@+id/ll_address_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/white"
+        android:foreground="?attr/selectableItemBackground"
         android:paddingStart="@dimen/medium_large_mrg_pd"
         android:paddingTop="@dimen/small_mrg_pd"
         android:paddingEnd="@dimen/medium_large_mrg_pd"

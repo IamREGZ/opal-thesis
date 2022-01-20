@@ -127,10 +127,10 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
         if (mUserInfo != null && mProdInfo != null) {
             // Update user's cart in the Firestore database
             FirestoreClass().updateCart(
-                this@ProductDescActivity, mUserInfo!!,
-                mProdInfo!!.market[Constants.ID]!!,
+                this@ProductDescActivity,
                 listOf(CartItem(mProdInfo!!.id, 1, mProdInfo!!.price)),
-                true
+                mProdInfo!!.market[Constants.ID]!!,
+                mUserInfo!!
             )
         }
     }  // end of addToCart method

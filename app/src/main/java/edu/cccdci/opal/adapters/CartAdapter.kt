@@ -22,10 +22,21 @@ class CartAdapter(
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     // Get the subtotal of all cart item prices
-    private var cartSubtotal: Double = cartDataList.sumOf { it.prodPrice }
+    private var cartSubtotal: Double = if (cartDataList.isNotEmpty())
+        cartDataList.sumOf { it.prodPrice }
+    else
+        0.0
+
+    // Initialize a list for storing product details, to be used later on checkout
+    private val cartItemDetails = if (itemCount > 0)
+        arrayOfNulls<Product?>(itemCount).toMutableList()
+    else
+        mutableListOf()
 
     // Nested Class to hold views from the target layout
-    inner class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CartViewHolder(
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         // Get all the ids of views from cart item layout
         private val cartProdName: TextView = itemView
             .findViewById(R.id.tv_cart_prod_name)
@@ -49,6 +60,9 @@ class CartAdapter(
 
         // Function to provide the product details in the current cart item
         internal fun setProductDetails(product: Product, position: Int) {
+            // Put the retrieved product information in the list
+            cartItemDetails[position] = product
+
             price = product.price  // Set the product price value
 
             // Supply the following text views
@@ -57,7 +71,7 @@ class CartAdapter(
                 R.string.product_price, price, product.unit
             )
             cartProdWeight.text = context.getString(
-                R.string.cart_product_weight, product.weight
+                R.string.product_weight, product.weight
             )
 
             // Add also the product image
@@ -72,7 +86,7 @@ class CartAdapter(
             // Supply the following text view
             cartProdQty.text = cartItem.prodQTY.toString()
             cartTotalPrice.text = context.getString(
-                R.string.cart_price, price * cartItem.prodQTY
+                R.string.item_price, price * cartItem.prodQTY
             )
 
             // Add decrease QTY button functionality
@@ -121,15 +135,19 @@ class CartAdapter(
         // Change the current total price of the cart item
         cartDataList[position].prodPrice = price * cartDataList[position].prodQTY
 
-        // Change the texts of QTY and total price (price on the right side of the screen)
+        /* Change the texts of QTY and total price (prices on the right
+         * side of the screen)
+         */
         qty.text = cartDataList[position].prodQTY.toString()
         totalPrice.text = context.getString(
-            R.string.cart_price, cartDataList[position].prodPrice
+            R.string.item_price, cartDataList[position].prodPrice
         )
 
         // If the quantity reaches 0, remove the item from the cart
-        if (cartDataList[position].prodQTY == 0)
+        if (cartDataList[position].prodQTY == 0) {
             cartDataList.removeAt(position)
+            cartItemDetails.removeAt(position)
+        }
 
         // To reflect changes made in the underlying dataset
         notifyDataSetChanged()
@@ -137,14 +155,23 @@ class CartAdapter(
         // Update the current subtotal of all cart items
         cartSubtotal = cartDataList.sumOf { it.prodPrice }
 
-        // Change the subtotal text outside the RecyclerView
-        activity.setSubtotalValues(cartSubtotal)
+        // Exit Cart Activity if all items are cleared
+        if (cartDataList.isEmpty()) {
+            activity.updateCart()
+            activity.finish()
+        } else {
+            // Change the subtotal text outside the RecyclerView
+            activity.setSubtotalValues(cartSubtotal)
+        }  // end of if-else
     }  // end of changeQTY method
 
     // Function to get the subtotal of all cart items
     fun getSubtotal(): Double = cartSubtotal
 
     // Function to get the most recent cart items once the user exits the cart activity
-    fun getCartItems(): List<CartItem> = cartDataList
+    fun getCartItems(): MutableList<CartItem> = cartDataList
+
+    // Function to get the list of product details in the cart for checkout
+    fun getProductDetails(): Array<Product?> = cartItemDetails.toTypedArray()
 
 }  // end of CartAdapter class

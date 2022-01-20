@@ -17,7 +17,6 @@ object Constants {
     const val PROFILEPIC: String = "profilePic"
     const val VENDOR: String = "vendor"
     const val ADDRESSES: String = "addresses"
-    const val ADDRESS_ID_TEMP: String = "ADD-"
     const val FULL_NAME: String = "fullName"
     const val PROVINCE: String = "province"
     const val CITY: String = "city"
@@ -36,6 +35,20 @@ object Constants {
     const val STATUS: String = "status"
     const val CART: String = "cart"
     const val CART_ITEMS: String = "cartItems"
+    const val DATES: String = "dates"
+    const val ORDER_DATE_AND_TIME: String = "orderDate"
+    const val PAYMENT_DATE_AND_TIME: String = "paymentDate"
+    const val COMPLETE_DATE_AND_TIME: String = "completeDate"
+    const val RETURN_DATE_AND_TIME: String = "returnDate"
+    const val ORDER_PAYMENT: String = "payment"
+    const val CUSTOMER_ID: String = "customerID"
+    const val ADDRESS: String = "address"
+    const val ORDER_ITEMS: String = "orderItems"
+    const val TOTAL_PRICE: String = "totalPrice"
+    const val SUB_TOTAL: String = "subtotal"
+    const val DELIVERY_FEE_PRICE: String = "deliveryFee"
+    const val ORDER_ACTION: String = "orderAction"
+    const val SPECIAL_INSTRUCTIONS: String = "special"
 
     // Cloud Firestore constants for Addresses
     const val PRV_DOC: String = "DOC-PRV"
@@ -49,21 +62,36 @@ object Constants {
 
     // Cloud Firestore constants for Products
     const val PRODUCTS: String = "products"
-    const val PRODUCT_ID_TEMP: String = "PD-"
     const val PRODUCT_VENDOR_ID: String = "vendorID"
-    const val PRODUCT_UNIT_OTHERS: String = "Others"
-    const val PRODUCT_IN_STOCK: Int = 1
-    const val PRODUCT_VIOLATION: Int = 2
-    const val PRODUCT_UNLISTED: Int = 0
 
     // Cloud Firestore constants for Markets
     const val MARKETS: String = "markets"
     const val MARKET_ID: String = "marketID"
+    const val MARKET_NAME: String = "marketName"
+
+    // Cloud Firestore constants for Orders
+    const val CUSTOMER_ORDERS: String = "orders"
+
+    // Payment Information constants
+    const val PAYMENT_METHOD: String = "payment_method"
+    const val IS_SELECTED: String = "is_selected"
 
     // For storing information to Firestore
     const val GENDER_MALE: String = "male"
     const val GENDER_FEMALE: String = "female"
     const val GENDER_OTHER: String = "other"
+    const val ADDRESS_ID_TEMP: String = "ADD-"
+    const val PRODUCT_ID_TEMP: String = "PD-"
+    const val ORDER_ID_TEMP: String = "OPL"
+    const val PRODUCT_UNIT_OTHERS: String = "Others"
+    const val ACTION_REMOVE_ITEM: String = "Remove the item(s) from my order"
+    const val ACTION_CANCEL_ENTIRE_ORDER: String = "Cancel the entire order"
+    const val PRODUCT_IN_STOCK: Int = 1
+    const val PRODUCT_VIOLATION: Int = 2
+    const val PRODUCT_UNLISTED: Int = 0
+    const val ORDER_PENDING_CODE: Int = 0
+    const val ORDER_PENDING_TITLE: String = "Pending"
+    const val ORDER_PENDING_DESC: String = "Awaiting confirmation from the market vendor."
 
     // For Shared Preferences and Parcelable
     const val OPAL_PREFERENCES: String = "OPALPrefs"
@@ -74,12 +102,15 @@ object Constants {
     const val EXTRA_USER_INFO: String = "extra_user_info"
     const val PRODUCT_DESCRIPTION: String = "product_description"
     const val USER_ADDRESS: String = "user_address"
-    const val SELECTABLE_ADDRESS: String = "selectable_address"
+    const val SELECTED_ADDRESS: String = "selected_address"
+    const val MARKET_INFO: String = "market_info"
+    const val CART_PRODUCT_DETAILS: String = "cart_product_details"
+    const val SELECTABLE_ENABLED: String = "selectable_enabled"
+    const val SELECTED_PAYMENT_METHOD: String = "selected_payment_method"
 
     // Request Permission Codes
     const val READ_STORAGE_PERMISSION_CODE = 2
     const val SELECT_IMAGE_REQUEST_CODE = 1
-    const val SELECT_ADDRESS_REQUEST_CODE = 3
 
     // File upload naming templates
     const val USER_PROFILE_IMAGE_TEMP: String = "OPAL_USRIMG_"

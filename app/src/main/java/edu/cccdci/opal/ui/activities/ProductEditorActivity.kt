@@ -112,7 +112,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                 }
 
                 // Saves product information
-                R.id.btn_submit_product -> saveProductChanges()
+                R.id.btn_checkout -> saveProductChanges()
             }  // end of when
 
         }  // end of if

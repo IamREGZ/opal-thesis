@@ -4,17 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.AddressAdapter
 import edu.cccdci.opal.databinding.ActivityAddressesBinding
 import edu.cccdci.opal.dataclasses.Address
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
+import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.UtilityClass
 
 class AddressesActivity : UtilityClass() {
 
     private lateinit var binding: ActivityAddressesBinding
     private var addressAdapter: AddressAdapter? = null
+    // Enables selection of address when it is true
+    private var mSelectableAddress: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,13 +37,27 @@ class AddressesActivity : UtilityClass() {
             // Setups the Action Bar of the current activity
             setupActionBar(tlbAddressesActivity, false)
 
+            // Check if there's an existing boolean info
+            if (intent.hasExtra(Constants.SELECTABLE_ENABLED)) {
+                // Get the Boolean value (default value is false)
+                mSelectableAddress = intent.getBooleanExtra(
+                    Constants.SELECTABLE_ENABLED, false
+                )
+                // Change the toolbar title
+                tvAddressesTitle.text = resources.getString(
+                    R.string.tlb_title_select_address
+                )
+            }
+
             // Sets the layout type of the RecyclerView
             rvAddresses.layoutManager = WrapperLinearLayoutManager(
                 this@AddressesActivity, LinearLayoutManager.VERTICAL, false
             )
 
             // Create an object of Address Adapter
-            addressAdapter = AddressAdapter(this@AddressesActivity, options)
+            addressAdapter = AddressAdapter(
+                this@AddressesActivity, mSelectableAddress, options
+            )
             // Sets the adapter of Address RecyclerView
             rvAddresses.adapter = addressAdapter
 
@@ -48,7 +66,8 @@ class AddressesActivity : UtilityClass() {
                 // Sends user to the Address Editor
                 startActivity(
                     Intent(
-                        this@AddressesActivity, AddressEditActivity::class.java
+                        this@AddressesActivity,
+                        AddressEditActivity::class.java
                     )
                 )
             }

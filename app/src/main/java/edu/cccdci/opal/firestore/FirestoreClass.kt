@@ -445,6 +445,42 @@ class FirestoreClass {
             .orderBy(Constants.PICKUP_ADDR, Query.Direction.DESCENDING)
     }  // end of getAddressQuery method
 
+    fun selectDefaultAddress(activity: CheckoutActivity) {
+        // Access the collection named users
+        mFSInstance.collection(Constants.USERS)
+            // Access the document named by the current user id
+            .document(getCurrentUserID())
+            // Access the collection named addresses
+            .collection(Constants.ADDRESSES)
+            // Get the document where the default field is true
+            .whereEqualTo(Constants.DEFAULT_ADDR, true)
+            .get()
+            // If it is successful
+            .addOnSuccessListener { documents ->
+                /* If a document is found, get the found document and convert
+                 * to an object (Address). Otherwise, null.
+                 */
+                val address: Address? = if (documents != null && !documents.isEmpty)
+                    documents.documents[0].toObject(Address::class.java)
+                else
+                    null
+
+                // Proceed to store the result in the Checkout Activity
+                activity.storeSelectedAddress(address)
+            }
+            // If it failed
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()  // Hide the loading message
+
+                // Log the error
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "There was an error retrieving the address data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of selectDefaultAddress method
+
     // Function to update user address data from Cloud Firestore
     fun updateAddress(
         activity: AddressEditActivity, addressID: String,
@@ -731,8 +767,13 @@ class FirestoreClass {
             .get()
             // If it is successful
             .addOnSuccessListener { document ->
-                // Convert the retrieved document to object
-                val market = document.toObject(Market::class.java)!!
+                /* If the document exists, convert the retrieved document
+                 * to object. Otherwise, null.
+                 */
+                val market = if (document.exists())
+                    document.toObject(Market::class.java)!!
+                else
+                    null
 
                 /* In Cart Activity, it supplies the market name and delivery fee
                  * output data.
@@ -760,34 +801,49 @@ class FirestoreClass {
 
     // Function to update user's cart in Firestore Database
     fun updateCart(
-        activity: Activity, user: User, marketID: String,
-        items: List<CartItem>, toAdd: Boolean = false
+        activity: Activity, items: List<CartItem>, marketID: String = "",
+        user: User? = null, toClear: Boolean = false
     ) {
         // Variable to store user's cart data
         val cartItemMap: HashMap<String, Any> = hashMapOf()
 
-        // If the cart field exists
-        if (user.cart != null) {
-            // Get the current cart items
-            val currentCartItems = user.cart.cartItems
+        // If the user is not null (for adding items only)
+        if (user != null) {
+            // Get the current cart items. Default value is empty list if cart is null.
+            val currentCartItems: MutableList<CartItem> = if (user.cart != null)
+                user.cart.cartItems
+            else
+                mutableListOf()
+
+            // Get the current market ID. Default value is empty string if cart is null.
+            val currentMarketID = if (user.cart != null)
+                user.cart.marketID
+            else
+                ""
 
             // If the item is not from the same market, change the market ID
-            if (user.cart.marketID != marketID)
+            if (currentMarketID != marketID) {
                 cartItemMap[Constants.MARKET_ID] = marketID
 
-            /* Add the item on the list if the user adds to cart.
-             * In the cart menu, when the user changes items, it
-             * will be overwritten instead.
-             */
-            cartItemMap[Constants.CART_ITEMS] = if (toAdd) {
-                currentCartItems.addAll(items)
-                currentCartItems
-            } else {
-                items
+                // Also, empty the current cart items if it is not empty
+                if (currentCartItems.isNotEmpty())
+                    currentCartItems.clear()
             }
-            // If it doesn't, just add the specified fields in the map
-        } else {
-            cartItemMap[Constants.MARKET_ID] = marketID
+
+            // Add the item on the list
+            currentCartItems.addAll(items)
+            // Store the cart items with the added product
+            cartItemMap[Constants.CART_ITEMS] = currentCartItems
+        }
+        // If it's null, just add the specified fields in the map
+        else {
+            /* Change the market ID only if the user places order or the
+             * cart is emptied (toClear = true)
+             */
+            if (toClear)
+                cartItemMap[Constants.MARKET_ID] = marketID
+
+            // Overwrite the cart items (for both updating and clearing)
             cartItemMap[Constants.CART_ITEMS] = items
         }  // end of if-else
 
@@ -806,13 +862,21 @@ class FirestoreClass {
                      * that the product is added to cart.
                      */
                     is ProductDescActivity -> activity.itemAddedPrompt()
+
+                    /* In Checkout Activity, it prompts the user that the
+                     * cart data is cleared, and then sends to home page.
+                     */
+                    is CheckoutActivity -> activity.cartClearedPrompt()
                 }
             }
-            // If failed
+            // If it failed
             .addOnFailureListener { e ->
                 when (activity) {
-                    // Closes the loading message in the Product Description Activity
+                    /* Closes the loading message in the Product Description
+                     * Activity and Checkout Activity
+                     */
                     is ProductDescActivity -> activity.hideProgressDialog()
+                    is CheckoutActivity -> activity.hideProgressDialog()
                 }
 
                 // Log the error
@@ -823,5 +887,33 @@ class FirestoreClass {
                 )
             }  // end of mFSInstance
     }  // end of updateCart method
+
+    // Function to add Customer Order Data in Firestore Database
+    fun addCustomerOrder(
+        activity: CheckoutActivity, orderMap: HashMap<String, Any>
+    ) {
+        // Access the collection named orders. If none, Firestore will create it for you.
+        mFSInstance.collection(Constants.CUSTOMER_ORDERS)
+            // Access the document named by order ID. If none, Firestore will create it for you.
+            .document(orderMap[Constants.ID].toString())
+            // Sets the values in the order document and merge with the current map
+            .set(orderMap, SetOptions.merge())
+            // If it is successful
+            .addOnSuccessListener {
+                // Proceed to update the user cart data
+                activity.orderPlacedPrompt()
+            }
+            // If it failed
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()  // Hide the loading message
+
+                // Log the error
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "There was an error saving the customer order data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of addCustomerOrder method
 
 }  // end of FirestoreClass

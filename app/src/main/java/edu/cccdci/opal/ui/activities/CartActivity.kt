@@ -1,6 +1,8 @@
 package edu.cccdci.opal.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.CartAdapter
@@ -12,12 +14,12 @@ import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.UtilityClass
 
-class CartActivity : UtilityClass() {
+class CartActivity : UtilityClass(), View.OnClickListener {
 
     private lateinit var binding: ActivityCartBinding
     private lateinit var cartAdapter: CartAdapter
-    private var mCartItems: MutableList<CartItem> = mutableListOf()
     private var mUserInfo: User? = null
+    private var mMarket: Market? = null
     private var mSubtotal: Double = 0.0
     private var mDelivery: Double = 0.0
     private var mTotal: Double = 0.0
@@ -37,35 +39,31 @@ class CartActivity : UtilityClass() {
                 // Get data from the parcelable class
                 mUserInfo = intent.getParcelableExtra(Constants.EXTRA_USER_INFO)
 
-                // Check if mUserInfo and its cart property are not null to prevent NPE
-                if (mUserInfo != null && mUserInfo!!.cart != null) {
+                /* Check if mUserInfo and its cart property are not null
+                 * to prevent NPE. Also, execute the retrieval process if
+                 * market ID is set.
+                 */
+                if (mUserInfo != null && mUserInfo!!.cart != null &&
+                    mUserInfo!!.cart!!.marketID.isNotEmpty()
+                ) {
                     // Display the loading message
                     showProgressDialog(
                         this@CartActivity, this@CartActivity,
                         resources.getString(R.string.msg_please_wait)
                     )
 
-                    // Get the user's cart data from Firestore
-                    mCartItems = mUserInfo!!.cart!!.cartItems
-
                     // Retrieve the market information from Firestore
                     FirestoreClass().retrieveMarket(
                         this@CartActivity, mUserInfo!!.cart!!.marketID
                     )
-                }
+                }  // end of if
+
             }  // end of if
 
-            // Sets the layout type of the RecyclerView
-            rvCart.layoutManager = object : LinearLayoutManager(this@CartActivity) {
-                // Disable vertical scroll functionality of the RecyclerView
-                override fun canScrollVertically(): Boolean = false
-            }
-            // Create an object of Cart Adapter
-            cartAdapter = CartAdapter(
-                this@CartActivity, this@CartActivity, mCartItems
-            )
-            // Sets the adapter of Cart RecyclerView
-            rvCart.adapter = cartAdapter
+            // Click event for Checkout Button
+            btnCheckout.setOnClickListener(this@CartActivity)
+            // Click event for Continue Browsing Button
+            btnContBrowse.setOnClickListener(this@CartActivity)
         }  // end of with(binding)
 
     }  // end of onCreate method
@@ -74,43 +72,122 @@ class CartActivity : UtilityClass() {
     override fun onBackPressed() {
         super.onBackPressed()
 
-        // Check if mUserInfo and its cart property are not null to prevent NPE
-        if (mUserInfo != null && mUserInfo!!.cart != null) {
-            // Update the cart data in Firestore once the user exits the cart activity
-            FirestoreClass().updateCart(
-                this@CartActivity, mUserInfo!!,
-                mUserInfo!!.cart!!.marketID, cartAdapter.getCartItems()
-            )
-        }  // end of if
+        updateCart()  // Update the cart items before exiting
     }  // end of onBackPressed method
 
+    // onClick events are declared here
+    override fun onClick(view: View?) {
+        if (view != null) {
+            when (view.id) {
+                // Sends user to Items Checkout
+                R.id.btn_checkout -> {
+                    updateCart()  // Update the cart items before going to checkout
+
+                    // Check if mUserInfo and its cart property are not null
+                    if (mUserInfo != null && mUserInfo!!.cart != null) {
+                        // Update the cart in mUserInfo object
+                        mUserInfo!!.cart!!.cartItems = cartAdapter.getCartItems()
+
+                        // Create an intent to go to Checkout Activity
+                        val intent = Intent(
+                            this@CartActivity, CheckoutActivity::class.java
+                        )
+                        // Add the required information to intent
+                        intent.putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
+                        intent.putExtra(Constants.MARKET_INFO, mMarket)
+                        intent.putExtra(
+                            Constants.CART_PRODUCT_DETAILS,
+                            cartAdapter.getProductDetails()
+                        )
+
+                        startActivity(intent)  // Opens the activity
+                    }  // end of if
+                }
+
+                // Sends user back to the previous activity
+                R.id.btn_cont_browse -> { finish() }
+            }  // end of when
+
+        }  // end of if
+
+    }  // end of onClick method
+
     // Function to store market name and its delivery fee in the market activity
-    fun setMarketData(market: Market) {
-        with(binding) {
+    fun setMarketData(market: Market?) {
+        // Prevents NullPointerException
+        if (market != null) {
+            mMarket = market  // Store the object for parcelable
+
             // Change the market name text view
-            tvCartMarketName.text = market.name
+            binding.tvCartMarketName.text = mMarket!!.name
+        }
 
-            // Set the market's delivery fee data
-            mDelivery = market.deliveryFee
-            tvDeliveryFee.text = getString(R.string.cart_price, mDelivery)
-        }  // end of with
+        // Store the delivery fee value. Default is 0.0 if mMarket is null.
+        mDelivery = if (mMarket != null) mMarket!!.deliveryFee else 0.0
 
-        // Update the subtotal and total values
-        setSubtotalValues(cartAdapter.getSubtotal())
+        // Change the delivery fee text view
+        binding.tvDeliveryFee.text = getString(R.string.item_price, mDelivery)
 
-        hideProgressDialog()  // Hide the loading message
+        setupCartAdapter()  // Setup the Cart RecyclerView Adapter
     }  // end of setMarketData method
 
     // Function to change the subtotal and total text views once there are changes made
     fun setSubtotalValues(sbt: Double) {
         mSubtotal = sbt  // Store the new subtotal value
-        mTotal = mSubtotal + mDelivery  // Get the sum of subtotal and delivery fee
+        // Get the sum of subtotal and delivery fee
+        mTotal = mSubtotal + mDelivery
 
-        with(binding) {
-            // Change the subtotal and total text views
-            tvSubTotal.text = getString(R.string.cart_price, mSubtotal)
-            tvTotal.text = getString(R.string.cart_price, mTotal)
-        }  // end of with(binding)
+        // Change the subtotal and total text views
+        binding.tvSubTotal.text = getString(R.string.item_price, mSubtotal)
+        binding.tvTotal.text = getString(R.string.item_price, mTotal)
     }  // end of setSubtotalValues method
+
+    // Function to setup the RecyclerView adapter for cart
+    private fun setupCartAdapter() {
+        with(binding) {
+            // Sets the layout type of the RecyclerView
+            rvCart.layoutManager = object : LinearLayoutManager(
+                this@CartActivity
+            ) {
+                // Disable vertical scroll functionality of the RecyclerView
+                override fun canScrollVertically(): Boolean = false
+            }
+            // Create an object of Cart Adapter
+            cartAdapter = CartAdapter(
+                this@CartActivity, this@CartActivity,
+                mUserInfo!!.cart!!.cartItems.toMutableList()
+            )
+            // Sets the adapter of Cart RecyclerView
+            rvCart.adapter = cartAdapter
+
+            // Update the subtotal and total values
+            setSubtotalValues(cartAdapter.getSubtotal())
+
+            if (mUserInfo!!.cart!!.cartItems.isNotEmpty()) {
+                svCartLayout.visibility = View.VISIBLE
+                llEmptyCart.visibility = View.GONE
+            }
+
+            hideProgressDialog()  // Hide the loading message
+        }  // end of with(binding)
+    }  // end of setupCartAdapter method
+
+    // Function to update cart items upon activity exit
+    fun updateCart() {
+        // Variable to get the latest cart items
+        val cartItems: List<CartItem> = cartAdapter.getCartItems()
+        /* To determine if the market ID needs to be cleared depending
+         * on the capacity of the list. True if cart items is empty.
+         */
+        val clearCart: Boolean = cartItems.isEmpty()
+
+        // Check if mUserInfo and its cart property are not null to prevent NPE
+        if (mUserInfo != null && mUserInfo!!.cart != null) {
+            // Update the cart data in Firestore once the user exits the cart activity
+            FirestoreClass().updateCart(
+                this@CartActivity, cartItems, toClear = clearCart
+            )
+        }  // end of if
+    }  // end of updateCart method
 
 }  // end of CartActivity class

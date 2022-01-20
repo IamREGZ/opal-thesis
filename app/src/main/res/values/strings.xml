@@ -69,6 +69,12 @@
     <string name="err_zero_or_negative_weight">Product weight must be greater than 0.</string>
     <string name="err_blank_product_stock">Please enter the product stock.</string>
     <string name="err_negative_stock">Product stock must not be a negative number.</string>
+    <string name="err_no_selected_address">Please select your delivery address.</string>
+    <string name="err_no_selected_order_action">
+        Please select an action when one (or more) item(s) in your order
+        is/are unavailable.
+    </string>
+    <string name="err_no_selected_payment">Please select your payment method.</string>
 
     <!--  Message Prompts  -->
     <string name="msg_register_success">Your account is successfully registered.</string>
@@ -93,6 +99,9 @@
     <string name="msg_product_unlisted">Product unlisted successfully.</string>
     <string name="msg_product_relisted">Product relisted in stocks successfully.</string>
     <string name="msg_added_to_cart">Added to cart successfully.</string>
+    <string name="msg_order_placed_success">
+        Your order was placed successfully. Thank you for choosing OPAL!
+    </string>
 
     <!--  Progress Dialog  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
@@ -119,12 +128,15 @@
     <string name="tlb_title_be_vendor">BECOME A VENDOR</string>
     <string name="tlb_title_prod_desc">DESCRIPTION</string>
     <string name="tlb_title_addresses">YOUR ADDRESSES</string>
+    <string name="tlb_title_select_address">SELECT ADDRESS</string>
     <string name="tlb_title_your_products">YOUR PRODUCTS</string>
     <string name="tlb_title_add_prod">ADD PRODUCT</string>
     <string name="tlb_title_edit_prod">EDIT PRODUCT</string>
     <string name="tlb_title_new_address">NEW ADDRESS</string>
     <string name="tlb_title_edit_address">EDIT ADDRESS</string>
     <string name="tlb_title_my_cart">MY CART</string>
+    <string name="tlb_title_checkout">CHECKOUT</string>
+    <string name="tlb_title_payment">PAYMENT METHODS</string>
 
     <!--  Top App Bar  -->
     <string name="my_cart">My Cart</string>
@@ -187,7 +199,8 @@
     <string name="empty_transactions">
         Your customers haven\'t placed their orders yet.
     </string>
-    <string name="empty_sad_icon">Empty sad icon</string>
+    <string name="empty_sad_icon">Empty Sad Icon</string>
+    <string name="empty_cart_icon">Empty Cart Icon</string>
 
     <!--  Market Card View  -->
     <string name="market_image">Market Image</string>
@@ -429,16 +442,47 @@
     <!--  My Cart  -->
     <string name="market_icon">Market Icon</string>
     <string name="product_image">Product Image</string>
-    <string name="cart_product_weight">%1$.2f kg</string>
+    <string name="product_weight">%1$.2f kg</string>
     <string name="cart_qty_minus">-</string>
     <string name="cart_qty_counter">0</string>
     <string name="cart_qty_plus">+</string>
     <string name="sub_total">Subtotal</string>
     <string name="delivery_fee">Delivery Fee</string>
-    <string name="payment_method">Payment Method</string>
     <string name="total_price">Total</string>
-    <string name="cart_price">₱%1$.2f</string>
-    <string name="cash_on_delivery">Cash on Delivery</string>
-    <string name="btn_check_out">Check Out</string>
+    <string name="item_price">₱%1$.2f</string>
+    <string name="btn_checkout">Checkout</string>
+
+    <!--  Checkout  -->
+    <string name="continue_browsing">Continue Browsing</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="select_address">Select Address</string>
+    <string name="no_selected_address">
+        Your selected address will be displayed here.
+    </string>
+    <string name="chkout_contact">%1$s | %2$s</string>
+    <string name="chkout_prod_qty">QTY: %1$d</string>
+    <string name="order_instructions_icon">Order Instructions Icon</string>
+    <string name="order_instructions">Order Instructions</string>
+    <string name="order_not_available">
+        If one (or more) product(s) is/are not available
+    </string>
+    <string name="order_unavailable_select_action">Please select action</string>
+    <string name="special_instructions">Special Instructions (Optional)</string>
+    <string name="special_instructions_helper">
+        Examples: Chop the whole chicken, cut pork loin into chops, etc.
+    </string>
+    <string name="payment_method_icon">Payment Method Icon</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="select_payment">Select Payment Method</string>
+    <string-array name="payment_methods">
+        <item>Cash on Delivery</item>
+        <item>Credit Card</item>
+        <item>Electronic Payment</item>
+    </string-array>
+    <string name="payment_selection">Payment Selection Status</string>
+    <string name="items_receipt_icon">Items Receipt Icon</string>
+    <string name="items_receipt">Items Receipt</string>
+    <string name="chkout_total_payment">Total Payment</string>
+    <string name="chkout_place_order">Place Order</string>
 
 </resources>

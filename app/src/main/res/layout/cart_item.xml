@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_mrg_pd"
-                android:text="@string/cart_product_weight"
+                android:text="@string/product_weight"
                 android:textColor="@color/app_black"
                 android:textSize="@dimen/main_text_size" />
 
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="@string/cart_price"
+            android:text="@string/item_price"
             android:textColor="@color/app_black"
             android:textSize="@dimen/main_text_size" />
 

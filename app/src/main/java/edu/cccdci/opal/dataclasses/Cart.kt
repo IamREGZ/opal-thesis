@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Cart(
     val marketID: String = "",
-    val cartItems: MutableList<CartItem> = mutableListOf()
+    var cartItems: MutableList<CartItem> = mutableListOf()
 ) : Parcelable

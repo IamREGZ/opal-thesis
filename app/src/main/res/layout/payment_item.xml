@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_payment_method_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/medium_large_mrg_pd">
+
+    <ImageView
+        android:layout_width="@dimen/medium_icon_size"
+        android:layout_height="@dimen/medium_icon_size"
+        android:contentDescription="@string/payment_method_icon"
+        android:src="@drawable/ic_payment" />
+
+    <edu.cccdci.opal.utils.MainTextView
+        android:id="@+id/tv_payment_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_large_mrg_pd"
+        android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="@string/payment_method"
+        android:textColor="@color/app_black"
+        android:textSize="@dimen/main_text_size" />
+
+    <ImageView
+        android:id="@+id/iv_payment_selection"
+        android:layout_width="@dimen/medium_icon_size"
+        android:layout_height="@dimen/medium_icon_size"
+        android:contentDescription="@string/payment_selection"
+        android:src="@drawable/ic_radio_button_unchecked" />
+
+</LinearLayout>
