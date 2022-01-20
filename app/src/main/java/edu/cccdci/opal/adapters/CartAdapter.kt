@@ -157,19 +157,17 @@ class CartAdapter(
 
         // Exit Cart Activity if all items are cleared
         if (cartDataList.isEmpty()) {
-            activity.updateCart()
-            activity.finish()
+            activity.updateCart()  // Proceed to clear the cart data
+            activity.finish()  // Close the Cart Activity
         } else {
             // Change the subtotal text outside the RecyclerView
             activity.setSubtotalValues(cartSubtotal)
         }  // end of if-else
+
     }  // end of changeQTY method
 
     // Function to get the subtotal of all cart items
     fun getSubtotal(): Double = cartSubtotal
-
-    // Function to get the most recent cart items once the user exits the cart activity
-    fun getCartItems(): MutableList<CartItem> = cartDataList
 
     // Function to get the list of product details in the cart for checkout
     fun getProductDetails(): Array<Product?> = cartItemDetails.toTypedArray()

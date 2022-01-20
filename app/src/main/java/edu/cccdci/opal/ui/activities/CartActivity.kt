@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.CartAdapter
 import edu.cccdci.opal.databinding.ActivityCartBinding
-import edu.cccdci.opal.dataclasses.CartItem
 import edu.cccdci.opal.dataclasses.Market
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
@@ -57,7 +56,6 @@ class CartActivity : UtilityClass(), View.OnClickListener {
                         this@CartActivity, mUserInfo!!.cart!!.marketID
                     )
                 }  // end of if
-
             }  // end of if
 
             // Click event for Checkout Button
@@ -85,9 +83,6 @@ class CartActivity : UtilityClass(), View.OnClickListener {
 
                     // Check if mUserInfo and its cart property are not null
                     if (mUserInfo != null && mUserInfo!!.cart != null) {
-                        // Update the cart in mUserInfo object
-                        mUserInfo!!.cart!!.cartItems = cartAdapter.getCartItems()
-
                         // Create an intent to go to Checkout Activity
                         val intent = Intent(
                             this@CartActivity, CheckoutActivity::class.java
@@ -105,7 +100,7 @@ class CartActivity : UtilityClass(), View.OnClickListener {
                 }
 
                 // Sends user back to the previous activity
-                R.id.btn_cont_browse -> { finish() }
+                R.id.btn_cont_browse -> finish()
             }  // end of when
 
         }  // end of if
@@ -129,6 +124,9 @@ class CartActivity : UtilityClass(), View.OnClickListener {
         binding.tvDeliveryFee.text = getString(R.string.item_price, mDelivery)
 
         setupCartAdapter()  // Setup the Cart RecyclerView Adapter
+
+        // Update the subtotal and total values
+        setSubtotalValues(cartAdapter.getSubtotal())
     }  // end of setMarketData method
 
     // Function to change the subtotal and total text views once there are changes made
@@ -155,14 +153,12 @@ class CartActivity : UtilityClass(), View.OnClickListener {
             // Create an object of Cart Adapter
             cartAdapter = CartAdapter(
                 this@CartActivity, this@CartActivity,
-                mUserInfo!!.cart!!.cartItems.toMutableList()
+                mUserInfo!!.cart!!.cartItems
             )
             // Sets the adapter of Cart RecyclerView
             rvCart.adapter = cartAdapter
 
-            // Update the subtotal and total values
-            setSubtotalValues(cartAdapter.getSubtotal())
-
+            // Make the Cart Layout visible if cartItems is not empty
             if (mUserInfo!!.cart!!.cartItems.isNotEmpty()) {
                 svCartLayout.visibility = View.VISIBLE
                 llEmptyCart.visibility = View.GONE
@@ -170,22 +166,22 @@ class CartActivity : UtilityClass(), View.OnClickListener {
 
             hideProgressDialog()  // Hide the loading message
         }  // end of with(binding)
+
     }  // end of setupCartAdapter method
 
     // Function to update cart items upon activity exit
     fun updateCart() {
-        // Variable to get the latest cart items
-        val cartItems: List<CartItem> = cartAdapter.getCartItems()
-        /* To determine if the market ID needs to be cleared depending
-         * on the capacity of the list. True if cart items is empty.
-         */
-        val clearCart: Boolean = cartItems.isEmpty()
-
         // Check if mUserInfo and its cart property are not null to prevent NPE
         if (mUserInfo != null && mUserInfo!!.cart != null) {
+            /* To determine if the market ID needs to be cleared depending
+             * on the capacity of the list. True if cartItems is empty.
+             */
+            val clearCart: Boolean = mUserInfo!!.cart!!.cartItems.isEmpty()
+
             // Update the cart data in Firestore once the user exits the cart activity
             FirestoreClass().updateCart(
-                this@CartActivity, cartItems, toClear = clearCart
+                this@CartActivity, mUserInfo!!.cart!!.cartItems,
+                toClear = clearCart
             )
         }  // end of if
     }  // end of updateCart method

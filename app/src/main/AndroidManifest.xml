@@ -18,6 +18,7 @@
         <!-- Splash Screen Activity (First to open) -->
         <activity
             android:name=".ui.activities.SplashScreenActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
@@ -30,84 +31,98 @@
         <!-- Login Activity (This is next) -->
         <activity
             android:name=".ui.activities.LoginActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Register Activity (When Register TextView is clicked) -->
         <activity
             android:name=".ui.activities.RegisterActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Forgot Password Activity (When Forgot Password TextView is clicked) -->
         <activity
             android:name=".ui.activities.ForgotPasswordActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Home Page of the App -->
         <activity
             android:name=".ui.activities.MainActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
         <!-- User Profile Activity (Change User Information) -->
         <activity
             android:name=".ui.activities.UserProfileActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Addresses Activity (User Address List) -->
         <activity
             android:name=".ui.activities.AddressesActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Address Editor Activity (Change Address Information) -->
         <activity
             android:name=".ui.activities.AddressEditActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Become Vendor Activity (For Customers Only) -->
         <activity
             android:name=".ui.activities.BecomeVendorActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Product Inventory Activity (For Vendors Only) -->
         <activity
             android:name=".ui.activities.ProductActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Product Editor Activity (For Vendors Only) -->
         <activity
             android:name=".ui.activities.ProductEditorActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Product Description Activity (View Product Details) -->
         <activity
             android:name=".ui.activities.ProductDescActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Cart Activity (User's Cart Menu) -->
         <activity
             android:name=".ui.activities.CartActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Checkout Activity (Review Cart Details) -->
         <activity
             android:name=".ui.activities.CheckoutActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <!-- Payment Activity (Select Payment Method) -->
         <activity
             android:name=".ui.activities.PaymentActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
     </application>
