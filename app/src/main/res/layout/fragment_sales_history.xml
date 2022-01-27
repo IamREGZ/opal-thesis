@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.fragments.OrderHistoryFragment">
+    tools:context=".ui.fragments.SalesHistoryFragment">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tbly_order_tabs"
+        android:id="@+id/tbly_sales_tabs"
         style="@style/Widget.MaterialComponents.TabLayout.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabMode="scrollable" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_order_list"
+        android:id="@+id/vp_sales_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

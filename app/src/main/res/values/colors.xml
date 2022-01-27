@@ -23,4 +23,8 @@
     <color name="colorSuccessMessage">#FF009150</color>
     <color name="uncheckedRadioButton">#FF808080</color>
     <color name="productImageSelector">#EEB8B8B8</color>
+    <color name="dark_red">#FFA40000</color>
+    <color name="medium_orange">#FFF28500</color>
+    <color name="mid_light_gray">#FFACACAC</color>
+    <color name="dim_gray">#FF696969</color>
 </resources>

@@ -10,7 +10,7 @@
     <!-- Markets Menu Item -->
     <item
         android:id="@+id/fragment_markets"
-        android:icon="@drawable/ic_markets"
+        android:icon="@drawable/ic_market"
         android:title="@string/markets" />
 
     <!-- Categories Menu Item -->

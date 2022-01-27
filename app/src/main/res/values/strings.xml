@@ -165,9 +165,9 @@
 
     <!--  Side Nav Menu Items for Vendors  -->
     <string name="nav_subhead_vendor_center">Vendor Center</string>
-    <string name="nav_your_market">Your Market</string>
+    <string name="nav_my_market">My Market</string>
     <string name="nav_products">Products</string>
-    <string name="nav_customer_transactions">Customer Transactions</string>
+    <string name="nav_sales_history">Sales History</string>
     <string name="nav_insights">Insights</string>
 
     <!--  Bottom Navigation  -->
@@ -175,6 +175,22 @@
     <string name="markets">Markets</string>
     <string name="categories">Categories</string>
     <string name="notifications">Notifications</string>
+
+    <!--  Tabs  -->
+    <string-array name="product_tabs">
+        <item>In Stock</item>
+        <item>Sold Out</item>
+        <item>Violation</item>
+        <item>Unlisted</item>
+    </string-array>
+    <string-array name="order_sales_tabs">
+        <item>Pending</item>
+        <item>To Deliver</item>
+        <item>Completed</item>
+        <item>Cancelled</item>
+        <item>Return/Refund</item>
+        <item>Failed</item>
+    </string-array>
 
     <!--  Notification Item  -->
     <string name="notif_head">Notification Head</string>
@@ -217,14 +233,8 @@
     <string name="insights_fragment_text">
         Sales graphs, trends, and reports will be placed here.
     </string>
-    <string name="your_market_fragment_text">
+    <string name="my_market_fragment_text">
         User\'s current market information will be displayed here.
-    </string>
-    <string name="order_history_fragment_text">
-        Customer\'s orders will be listed here.
-    </string>
-    <string name="customer_transactions_fragment_text">
-        Vendor\'s transactions made will be listed here.
     </string>
 
     <!--  Categories  -->
@@ -390,25 +400,15 @@
 
     <!--  Product Description  -->
     <string name="product_desc">Product Description</string>
-    <string name="product_qty">Product Quantity</string>
-    <string name="product_vendor">Product Vendor</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="go_to_cart">Go to Cart</string>
-
-    <!--  Product Tabs  -->
-    <string-array name="product_tabs">
-        <item>In Stock</item>
-        <item>Sold Out</item>
-        <item>Violation</item>
-        <item>Unlisted</item>
-    </string-array>
 
     <!--  Product Menu  -->
     <string name="pd_add_new_product">Add New Product</string>
     <string name="pd_inv_image">Product Inventory Image</string>
-    <string name="pd_inv_stock">Stock: %1$d</string>
-    <string name="pd_inv_sales">Sales: %1$d</string>
-    <string name="pd_inv_views">Views: %1$d</string>
+    <string name="pd_inv_stock">Stock: %d</string>
+    <string name="pd_inv_sales">Sales: %d</string>
+    <string name="pd_inv_views">Views: %d</string>
     <string name="pd_inv_more_menu">More</string>
     <string name="pd_inv_unlist">Unlist</string>
     <string name="pd_inv_edit">Edit</string>
@@ -442,25 +442,26 @@
     <!--  My Cart  -->
     <string name="market_icon">Market Icon</string>
     <string name="product_image">Product Image</string>
-    <string name="product_weight">%1$.2f kg</string>
+    <string name="product_weight">%.2f kg</string>
     <string name="cart_qty_minus">-</string>
     <string name="cart_qty_counter">0</string>
     <string name="cart_qty_plus">+</string>
     <string name="sub_total">Subtotal</string>
     <string name="delivery_fee">Delivery Fee</string>
     <string name="total_price">Total</string>
-    <string name="item_price">₱%1$.2f</string>
+    <string name="item_price">₱%.2f</string>
     <string name="btn_checkout">Checkout</string>
+    <string name="continue_browsing">Continue Browsing</string>
 
     <!--  Checkout  -->
-    <string name="continue_browsing">Continue Browsing</string>
     <string name="delivery_address">Delivery Address</string>
+    <string name="delivery_address_icon">Delivery Address Icon</string>
     <string name="select_address">Select Address</string>
     <string name="no_selected_address">
         Your selected address will be displayed here.
     </string>
-    <string name="chkout_contact">%1$s | %2$s</string>
-    <string name="chkout_prod_qty">QTY: %1$d</string>
+    <string name="address_contact_info">%1$s | %2$s</string>
+    <string name="product_qty">QTY: %d</string>
     <string name="order_instructions_icon">Order Instructions Icon</string>
     <string name="order_instructions">Order Instructions</string>
     <string name="order_not_available">
@@ -484,5 +485,43 @@
     <string name="items_receipt">Items Receipt</string>
     <string name="chkout_total_payment">Total Payment</string>
     <string name="chkout_place_order">Place Order</string>
+
+    <!--  Order/Sales History  -->
+    <string name="market_customer_icon">Market/Customer Icon</string>
+    <string name="market_customer_name">Market/Customer Name</string>
+    <string name="order_id">Order ID</string>
+    <string name="order_date">Order Date</string>
+    <string name="order_items">Order Items</string>
+    <string name="empty_order_items">
+        No items found. A retrieval error might be the cause of this problem.
+    </string>
+    <string name="order_item_qty_default">Total (n items):</string>
+    <plurals name="items_quantity">
+        <item quantity="one">Total (%d item):</item>
+        <item quantity="other">Total (%d items):</item>
+    </plurals>
+    <string name="order_status_icon">Order Status Icon</string>
+    <string name="order_status">Status</string>
+
+    <!--  Order Details  -->
+    <string name="order_details">Order Details</string>
+    <string name="od_det_status_title">Status Title</string>
+    <string name="od_det_status_desc">Status Description</string>
+    <string name="od_det_status_icon">Order Status Icon (Large)</string>
+    <string name="od_det_subtotal_default">Subtotal (n items)</string>
+    <plurals name="subtotal_order_items">
+        <item quantity="one">Subtotal (%d item)</item>
+        <item quantity="other">Subtotal (%d items)</item>
+    </plurals>
+    <string name="od_det_information_icon">Order Information Icon</string>
+    <string name="od_det_information">Order Information</string>
+    <string name="order_id_placeholder">OPLXXXXXXXXXXXXX</string>
+    <string name="payment_date">Payment Date</string>
+    <string name="completed_date">Completed Date</string>
+    <string name="return_date">Return Date</string>
+    <string name="order_date_placeholder">yyyy-MM-dd HH:mm:ss</string>
+    <string name="od_det_other_info">Other Information</string>
+    <string name="order_unavailable_action">Order Unavailable Action</string>
+    <string name="od_det_special_instructions">Special Instructions</string>
 
 </resources>

@@ -18,13 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:defaultNavHost="true" />
+            app:defaultNavHost="true"
+            tools:layout="@layout/fragment_home" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_gradient_horizontal"
+            android:background="@color/primaryColorTheme"
             app:itemIconTint="@color/app_white"
             app:itemTextColor="@color/app_white"
             app:menu="@menu/bottom_nav_menu" />

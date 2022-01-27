@@ -214,7 +214,7 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
         with(binding) {
             // Change all the respective views with address information
             tvChkoutAddrContact.text = getString(
-                R.string.chkout_contact, mSelectedAddress!!.fullName,
+                R.string.address_contact_info, mSelectedAddress!!.fullName,
                 mSelectedAddress!!.phoneNum
             )
             tvChkoutAddrLine1.text = mSelectedAddress!!.detailAdd
@@ -411,6 +411,8 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
             mOrderHashMap[Constants.MARKET_ID] = mMarket!!.id
             // Store the Market name
             mOrderHashMap[Constants.MARKET_NAME] = mMarket!!.name
+            // Store the Vendor ID
+            mOrderHashMap[Constants.VENDOR_ID] = mMarket!!.vendorID
         }  // end of if
 
         // Store the Subtotal of all order item prices
@@ -436,13 +438,14 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
         if (mUserInfo != null) {
             // Store the user's ID as Customer ID
             mOrderHashMap[Constants.CUSTOMER_ID] = mUserInfo!!.id
+            // Store the user's username
+            mOrderHashMap[Constants.CUSTOMER_USERNAME] = mUserInfo!!.userName
 
             // A variable to store all Order Items' information
             val orderItems: MutableList<OrderItem> = mutableListOf()
 
             // Loop through mCartDetails using index
             for (i in mCartDetails.indices) {
-
                 // Prevents NullPointerException
                 if (mUserInfo!!.cart != null && mCartDetails[i] != null) {
                     // For each item, add the required information in the list
@@ -492,7 +495,8 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
         // Displays a Toast message
         toastMessage(
             this@CheckoutActivity,
-            resources.getString(R.string.msg_order_placed_success)
+            resources.getString(R.string.msg_order_placed_success),
+            true
         )
 
         startActivity(intent)  // Opens the home page

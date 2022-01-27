@@ -24,7 +24,7 @@ class ProductActivity : UtilityClass() {
             setupActionBar(tlbProductActivity, false)
 
             // Get the string array of product tabs
-            val productTitles = resources.getStringArray(R.array.product_tabs).toList()
+            val productTitles = resources.getStringArray(R.array.product_tabs)
 
             // Create an object of Product Pager Adapter
             mProductPager = ProductPagerAdapter(

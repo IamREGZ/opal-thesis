@@ -68,7 +68,7 @@
                         <ImageView
                             android:layout_width="@dimen/medium_icon_size"
                             android:layout_height="@dimen/medium_icon_size"
-                            android:contentDescription="@string/delivery_address"
+                            android:contentDescription="@string/delivery_address_icon"
                             android:src="@drawable/ic_location" />
 
                         <edu.cccdci.opal.utils.HeaderTextView
@@ -106,7 +106,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/small_mrg_pd"
-                            android:text="@string/chkout_contact"
+                            android:text="@string/address_contact_info"
                             android:textColor="@color/app_black"
                             android:textSize="@dimen/main_text_size" />
 
@@ -172,14 +172,14 @@
                             android:layout_height="@dimen/medium_icon_size"
                             android:layout_marginEnd="@dimen/medium_mrg_pd"
                             android:contentDescription="@string/market_icon"
-                            android:src="@drawable/ic_markets" />
+                            android:src="@drawable/ic_market" />
 
                         <edu.cccdci.opal.utils.HeaderTextView
                             android:id="@+id/tv_chkout_market"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:maxLines="2"
+                            android:maxLines="1"
                             android:text="@string/market_name"
                             android:textColor="@color/app_black"
                             android:textSize="@dimen/main_text_size" />
@@ -355,7 +355,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/small_mrg_pd"
-                        android:background="@drawable/outlined_payment_method"
+                        android:background="@drawable/outlined_text_layout_large"
                         android:clipToPadding="false"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
@@ -410,7 +410,7 @@
                             android:layout_height="@dimen/medium_icon_size"
                             android:layout_marginEnd="@dimen/medium_mrg_pd"
                             android:contentDescription="@string/items_receipt_icon"
-                            android:src="@drawable/ic_order_summary" />
+                            android:src="@drawable/ic_items_receipt" />
 
                         <edu.cccdci.opal.utils.HeaderTextView
                             android:layout_width="wrap_content"
@@ -426,6 +426,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:padding="@dimen/medium_mrg_pd">
 
@@ -451,6 +452,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:padding="@dimen/medium_mrg_pd">
 
@@ -476,6 +478,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:padding="@dimen/medium_mrg_pd">
 

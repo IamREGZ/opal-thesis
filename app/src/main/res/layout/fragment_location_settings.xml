@@ -9,7 +9,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_line_width"
+        android:layout_height="@dimen/border_line_width"
         android:background="@color/et_hint_black" />
 
     <LinearLayout
@@ -39,7 +39,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_line_width"
+        android:layout_height="@dimen/border_line_width"
         android:background="@color/et_hint_black" />
 
     <edu.cccdci.opal.utils.MainTextView

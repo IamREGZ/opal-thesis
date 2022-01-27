@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Constants {
     // For Cloud Firestore (Collection, Documents, and Fields)
@@ -12,6 +14,7 @@ object Constants {
     const val ID: String = "id"
     const val FIRST_NAME: String = "firstName"
     const val LAST_NAME: String = "lastName"
+    const val CUSTOMER_USERNAME: String = "custUser"
     const val GENDER: String = "gender"
     const val PHONENUM: String = "phoneNum"
     const val PROFILEPIC: String = "profilePic"
@@ -33,6 +36,7 @@ object Constants {
     const val WEIGHT: String = "weight"
     const val STOCK: String = "stock"
     const val STATUS: String = "status"
+    const val VENDOR_ID: String = "vendorID"
     const val CART: String = "cart"
     const val CART_ITEMS: String = "cartItems"
     const val DATES: String = "dates"
@@ -40,6 +44,7 @@ object Constants {
     const val PAYMENT_DATE_AND_TIME: String = "paymentDate"
     const val COMPLETE_DATE_AND_TIME: String = "completeDate"
     const val RETURN_DATE_AND_TIME: String = "returnDate"
+    const val CODE: String = "code"
     const val ORDER_PAYMENT: String = "payment"
     const val CUSTOMER_ID: String = "customerID"
     const val ADDRESS: String = "address"
@@ -62,7 +67,6 @@ object Constants {
 
     // Cloud Firestore constants for Products
     const val PRODUCTS: String = "products"
-    const val PRODUCT_VENDOR_ID: String = "vendorID"
 
     // Cloud Firestore constants for Markets
     const val MARKETS: String = "markets"
@@ -71,6 +75,7 @@ object Constants {
 
     // Cloud Firestore constants for Orders
     const val CUSTOMER_ORDERS: String = "orders"
+    const val UNKNOWN_STATUS: String = "Unknown"
 
     // Payment Information constants
     const val PAYMENT_METHOD: String = "payment_method"
@@ -84,7 +89,7 @@ object Constants {
     const val PRODUCT_ID_TEMP: String = "PD-"
     const val ORDER_ID_TEMP: String = "OPL"
     const val PRODUCT_UNIT_OTHERS: String = "Others"
-    const val ACTION_REMOVE_ITEM: String = "Remove the item(s) from my order"
+    const val ACTION_REMOVE_ITEM: String = "Remove the item(s) from the order"
     const val ACTION_CANCEL_ENTIRE_ORDER: String = "Cancel the entire order"
     const val PRODUCT_IN_STOCK: Int = 1
     const val PRODUCT_VIOLATION: Int = 2
@@ -107,6 +112,8 @@ object Constants {
     const val CART_PRODUCT_DETAILS: String = "cart_product_details"
     const val SELECTABLE_ENABLED: String = "selectable_enabled"
     const val SELECTED_PAYMENT_METHOD: String = "selected_payment_method"
+    const val ORDER_DETAILS: String = "order_details"
+    const val IS_VENDOR: String = "is_vendor"
 
     // Request Permission Codes
     const val READ_STORAGE_PERMISSION_CODE = 2
@@ -115,6 +122,18 @@ object Constants {
     // File upload naming templates
     const val USER_PROFILE_IMAGE_TEMP: String = "OPAL_USRIMG_"
     const val PRODUCT_IMAGE_TEMP: String = "OPAL_PDT_"
+
+    // Date formatting constants
+    const val MDY_HM12_DATE_FORMAT: String = "MM/dd/yyyy hh:mm a"
+    const val YMD_HMS24_DATE_FORMAT: String = "yyyy-MM-dd HH:mm:ss"
+
+    // Hex Color constants
+    const val APP_DARK_GREEN: String = "#FF014421"
+    const val APP_DARK_TEAL: String = "#FF006666"
+    const val APP_BLACK: String = "#FF0F0F0F"
+    const val DARK_RED: String = "#FFA40000"
+    const val MEDIUM_ORANGE: String = "#FFF28500"
+    const val DIM_GRAY: String = "#FF696969"
 
     // Function to launch the Image Selection Activity
     fun showImageSelection(activity: Activity) {
@@ -135,5 +154,10 @@ object Constants {
             activity.contentResolver.getType(uri!!)
         )
     }  // end of getFileExtension method
+
+    // Function to get the formatted date according to the pattern
+    fun formatDate(pattern: String, date: Date): String {
+        return SimpleDateFormat(pattern, Locale.ENGLISH).format(date)
+    }  // end of formatDate method
 
 }  // end of Constants object

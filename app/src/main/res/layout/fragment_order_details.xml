@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    tools:context=".ui.fragments.OrderDetailsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primaryColorTheme"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/large_mrg_pd">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:id="@+id/tv_od_det_status_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/medium_mrg_pd"
+                    android:text="@string/od_det_status_title"
+                    android:textColor="@color/app_white"
+                    android:textSize="@dimen/header_text_size" />
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_status_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/od_det_status_desc"
+                    android:textColor="@color/app_white"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_od_det_status_icon"
+                android:layout_width="@dimen/large_icon_size"
+                android:layout_height="@dimen/large_icon_size"
+                android:contentDescription="@string/od_det_status_icon"
+                android:src="@drawable/ic_order_pending"
+                app:tint="@color/app_white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/medium_large_mrg_pd">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/medium_icon_size"
+                    android:layout_height="@dimen/medium_icon_size"
+                    android:layout_marginEnd="@dimen/medium_mrg_pd"
+                    android:contentDescription="@string/delivery_address_icon"
+                    android:src="@drawable/ic_location" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/delivery_address"
+                    android:textColor="@color/primaryAccentColor"
+                    android:textSize="@dimen/header_text_size" />
+
+            </LinearLayout>
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_od_det_addr_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_mrg_pd"
+                android:layout_marginBottom="@dimen/small_mrg_pd"
+                android:text="@string/address_contact_info"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_od_det_addr_line_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_mrg_pd"
+                android:layout_marginBottom="@dimen/small_mrg_pd"
+                android:text="@string/addr_line_1"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_od_det_addr_line_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_mrg_pd"
+                android:text="@string/addr_line_2"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/medium_mrg_pd"
+            android:paddingBottom="@dimen/medium_mrg_pd">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd">
+
+                <ImageView
+                    android:id="@+id/iv_od_det_mkt_cust_icon"
+                    android:layout_width="@dimen/medium_icon_size"
+                    android:layout_height="@dimen/medium_icon_size"
+                    android:layout_marginEnd="@dimen/medium_mrg_pd"
+                    android:contentDescription="@string/market_customer_icon"
+                    android:src="@drawable/ic_market" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:id="@+id/tv_od_det_mkt_cust_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/market_customer_name"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/border_line_width"
+                android:background="@color/mid_light_gray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_od_det_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd">
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_subtotal_lbl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/od_det_subtotal_default"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_subtotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_price"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd">
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/delivery_fee"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_delivery_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_price"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd">
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/total_price"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:id="@+id/tv_od_det_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_price"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/medium_large_mrg_pd">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/medium_icon_size"
+                    android:layout_height="@dimen/medium_icon_size"
+                    android:layout_marginEnd="@dimen/medium_mrg_pd"
+                    android:contentDescription="@string/payment_method_icon"
+                    android:src="@drawable/ic_payment" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/payment_method"
+                    android:textColor="@color/primaryAccentColor"
+                    android:textSize="@dimen/header_text_size" />
+
+            </LinearLayout>
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_od_det_payment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/outlined_text_layout_large"
+                android:backgroundTint="@color/app_white"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd"
+                android:text="@string/payment_method"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/medium_large_mrg_pd"
+            android:paddingBottom="@dimen/medium_large_mrg_pd">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_mrg_pd"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd">
+
+                <ImageView
+                    android:layout_width="@dimen/medium_icon_size"
+                    android:layout_height="@dimen/medium_icon_size"
+                    android:layout_marginEnd="@dimen/medium_mrg_pd"
+                    android:contentDescription="@string/od_det_information_icon"
+                    android:src="@drawable/ic_order_instructions" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/od_det_information"
+                    android:textColor="@color/primaryAccentColor"
+                    android:textSize="@dimen/header_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd">
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/order_id"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:id="@+id/tv_od_det_order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_id_placeholder"
+                    android:textColor="@color/secondaryAccentColor"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_order_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd"
+                android:visibility="gone">
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/order_date"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_order_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_date_placeholder"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_payment_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd"
+                android:visibility="gone">
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/payment_date"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_payment_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_date_placeholder"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_completed_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd"
+                android:visibility="gone">
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/completed_date"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_completed_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_date_placeholder"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_return_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd"
+                android:visibility="gone">
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/return_date"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_return_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_date_placeholder"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/border_line_width"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
+                android:background="@color/mid_light_gray" />
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_large_mrg_pd"
+                android:text="@string/od_det_other_info"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:text="@string/order_unavailable_action"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_od_det_oua"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:background="@drawable/outlined_text_layout_large"
+                android:backgroundTint="@color/app_white"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd"
+                android:text="@string/order_unavailable_action"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_od_det_spec_ins_lbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                android:layout_marginTop="@dimen/medium_large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:text="@string/od_det_special_instructions"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size"
+                android:visibility="gone" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_od_det_spec_ins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:background="@drawable/outlined_text_layout_large"
+                android:backgroundTint="@color/app_white"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
+                android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
+                android:paddingBottom="@dimen/medium_mrg_pd"
+                android:text="@string/od_det_special_instructions"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

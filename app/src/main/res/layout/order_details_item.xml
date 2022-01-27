@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/medium_large_mrg_pd"
+        android:paddingTop="@dimen/medium_mrg_pd"
+        android:paddingEnd="@dimen/medium_large_mrg_pd"
+        android:paddingBottom="@dimen/medium_mrg_pd">
+
+        <ImageView
+            android:id="@+id/iv_od_det_prod_image"
+            android:layout_width="@dimen/product_inv_image_size"
+            android:layout_height="@dimen/product_inv_image_size"
+            android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+            android:contentDescription="@string/product_image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_product_placeholder" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:id="@+id/tv_od_det_prod_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/product_name"
+                android:textColor="@color/primaryAccentColor"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_od_det_prod_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_mrg_pd"
+                android:text="@string/product_price"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
+                android:columnCount="2">
+
+                <edu.cccdci.opal.utils.MainTextView
+                    android:id="@+id/tv_od_det_prod_qty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="@string/product_qty"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:id="@+id/tv_od_det_prod_total_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="end"
+                    android:text="@string/item_price"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </GridLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/border_line_width"
+        android:background="@color/mid_light_gray" />
+
+</LinearLayout>

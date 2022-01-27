@@ -178,15 +178,15 @@ class MainActivity : UtilityClass(),
             )
 
             // Send to User's Market
-            R.id.nav_your_market -> navigateFragment(R.id.home_to_your_market)
+            R.id.nav_my_market -> navigateFragment(R.id.home_to_my_market)
 
             // Sends user to Product Inventory
             R.id.nav_products -> startActivity(
                 Intent(this@MainActivity, ProductActivity::class.java)
             )
 
-            // Sends user to Customer Transaction Details
-            R.id.nav_customer_transactions -> navigateFragment(R.id.home_to_cust_trans)
+            // Sends user to Sales History
+            R.id.nav_sales_history -> navigateFragment(R.id.home_to_sales_history)
 
             // Sends user to Sales Insights Page
             R.id.nav_insights -> navigateFragment(R.id.home_to_insights)

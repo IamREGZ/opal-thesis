@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     android:paddingStart="@dimen/medium_large_mrg_pd"
     android:paddingEnd="@dimen/medium_large_mrg_pd"
-    tools:context=".ui.fragments.CustomerTransactionFragment">
+    tools:context=".ui.fragments.MyMarketFragment">
 
     <edu.cccdci.opal.utils.MainTextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="@string/customer_transactions_fragment_text"
+        android:text="@string/my_market_fragment_text"
         android:textSize="@dimen/main_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

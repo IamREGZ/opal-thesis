@@ -44,13 +44,13 @@
 
         <!-- Home to Your Market -->
         <action
-            android:id="@+id/home_to_your_market"
-            app:destination="@id/fragment_your_market" />
+            android:id="@+id/home_to_my_market"
+            app:destination="@id/fragment_my_market" />
 
         <!-- Home to Customer Transactions -->
         <action
-            android:id="@+id/home_to_cust_trans"
-            app:destination="@id/fragment_cust_trans" />
+            android:id="@+id/home_to_sales_history"
+            app:destination="@id/fragment_sales_history" />
 
         <!-- Home to Insights -->
         <action
@@ -92,7 +92,21 @@
         android:id="@+id/fragment_order_history"
         android:name="edu.cccdci.opal.ui.fragments.OrderHistoryFragment"
         android:label="@string/nav_order_history"
-        tools:layout="@layout/fragment_order_history" />
+        tools:layout="@layout/fragment_order_history">
+
+        <!-- Order History to Order Details -->
+        <action
+            android:id="@+id/order_to_order_details"
+            app:destination="@+id/fragment_order_details" />
+
+    </fragment>
+
+    <!-- Order/Sales Details Fragment -->
+    <fragment
+        android:id="@+id/fragment_order_details"
+        android:name="edu.cccdci.opal.ui.fragments.OrderDetailsFragment"
+        android:label="@string/order_details"
+        tools:layout="@layout/fragment_order_details" />
 
     <!-- Settings Fragment -->
     <fragment
@@ -173,19 +187,26 @@
         tools:layout="@layout/fragment_privacy_policy" />
 
     <!-- Fragments for Vendors Only -->
-    <!-- Your Market Fragment -->
+    <!-- My Market Fragment -->
     <fragment
-        android:id="@+id/fragment_your_market"
-        android:name="edu.cccdci.opal.ui.fragments.YourMarketFragment"
-        android:label="@string/nav_your_market"
-        tools:layout="@layout/fragment_your_market" />
+        android:id="@+id/fragment_my_market"
+        android:name="edu.cccdci.opal.ui.fragments.MyMarketFragment"
+        android:label="@string/nav_my_market"
+        tools:layout="@layout/fragment_my_market" />
 
-    <!-- Customer Transactions Fragment -->
+    <!-- Sales History Fragment -->
     <fragment
-        android:id="@+id/fragment_cust_trans"
-        android:name="edu.cccdci.opal.ui.fragments.CustomerTransactionFragment"
-        android:label="@string/nav_customer_transactions"
-        tools:layout="@layout/fragment_customer_transaction" />
+        android:id="@+id/fragment_sales_history"
+        android:name="edu.cccdci.opal.ui.fragments.SalesHistoryFragment"
+        android:label="@string/nav_sales_history"
+        tools:layout="@layout/fragment_sales_history">
+
+        <!-- Sales History to Order Details -->
+        <action
+            android:id="@+id/order_to_order_details"
+            app:destination="@id/fragment_order_details" />
+
+    </fragment>
 
     <!-- Insights Fragment -->
     <fragment

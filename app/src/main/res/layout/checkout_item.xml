@@ -39,23 +39,33 @@
             android:textColor="@color/app_black"
             android:textSize="@dimen/main_text_size" />
 
-        <edu.cccdci.opal.utils.MainTextView
-            android:id="@+id/tv_chkout_prod_qty"
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_mrg_pd"
-            android:text="@string/chkout_prod_qty"
-            android:textColor="@color/app_black"
-            android:textSize="@dimen/main_text_size" />
-
-        <edu.cccdci.opal.utils.HeaderTextView
-            android:id="@+id/tv_chkout_prod_total_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/medium_mrg_pd"
-            android:text="@string/item_price"
-            android:textColor="@color/app_black"
-            android:textSize="@dimen/main_text_size" />
+            android:columnCount="2">
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_chkout_prod_qty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:text="@string/product_qty"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:id="@+id/tv_chkout_prod_total_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:gravity="end"
+                android:text="@string/item_price"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </GridLayout>
 
     </LinearLayout>
 

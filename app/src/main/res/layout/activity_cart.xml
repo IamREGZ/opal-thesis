@@ -53,7 +53,7 @@
                     android:layout_height="@dimen/medium_icon_size"
                     android:layout_marginEnd="@dimen/medium_mrg_pd"
                     android:contentDescription="@string/market_icon"
-                    android:src="@drawable/ic_markets" />
+                    android:src="@drawable/ic_market" />
 
                 <edu.cccdci.opal.utils.HeaderTextView
                     android:id="@+id/tv_cart_market_name"

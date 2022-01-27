@@ -28,21 +28,28 @@ class ProductInventoryAdapter(
     private val context: Context,
     private val activity: Activity,
     options: FirestoreRecyclerOptions<Product>
-) : FirestoreRecyclerAdapter<
-        Product, ProductInventoryAdapter.ProductInventoryViewHolder>(options) {
+) : FirestoreRecyclerAdapter<Product,
+        ProductInventoryAdapter.ProductInventoryViewHolder>(options) {
 
     // Nested Class to hold views from the target layout
     inner class ProductInventoryViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         // Get all the ids of views from product inventory item layout
-        private val pdInvImage: ImageView = itemView.findViewById(R.id.iv_pd_inv_image)
-        private val pdInvName: TextView = itemView.findViewById(R.id.tv_pd_inv_name)
-        private val pdInvPriceUnit: TextView = itemView.findViewById(R.id.tv_pd_inv_price_unit)
-        private val pdInvStock: TextView = itemView.findViewById(R.id.tv_pd_inv_stock)
-        private val pdInvSales: TextView = itemView.findViewById(R.id.tv_pd_inv_sales)
-        private val pdInvViews: TextView = itemView.findViewById(R.id.tv_pd_inv_views)
-        private val pdInvMoreBtn: ImageView = itemView.findViewById(R.id.iv_more_menu_btn)
+        private val pdInvImage: ImageView = itemView
+            .findViewById(R.id.iv_pd_inv_image)
+        private val pdInvName: TextView = itemView
+            .findViewById(R.id.tv_pd_inv_name)
+        private val pdInvPriceUnit: TextView = itemView
+            .findViewById(R.id.tv_pd_inv_price_unit)
+        private val pdInvStock: TextView = itemView
+            .findViewById(R.id.tv_pd_inv_stock)
+        private val pdInvSales: TextView = itemView
+            .findViewById(R.id.tv_pd_inv_sales)
+        private val pdInvViews: TextView = itemView
+            .findViewById(R.id.tv_pd_inv_views)
+        private val pdInvMoreBtn: ImageView = itemView
+            .findViewById(R.id.iv_more_menu_btn)
 
         // Function to set values to the specified views from product inventory item
         internal fun setProductInvData(product: Product) {

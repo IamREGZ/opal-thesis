@@ -575,9 +575,9 @@ class FirestoreClass {
             }  // end of mFSInstance
     }  // end of addProduct method
 
-    // Function to get the query statement for Products
+    // Function to get the query statement for products
     fun getProductQuery(fragment: Fragment): Query {
-        // Access the collection named Products
+        // Access the collection named products
         val productRef = mFSInstance.collection(Constants.PRODUCTS)
 
         return with(productRef) {
@@ -589,7 +589,7 @@ class FirestoreClass {
                  * 0.
                  */
                 is ProductInStockFragment -> whereEqualTo(
-                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                    Constants.VENDOR_ID, getCurrentUserID()
                 ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
                     .whereGreaterThan(Constants.STOCK, 0)
 
@@ -598,7 +598,7 @@ class FirestoreClass {
                  * stock is equal to 0.
                  */
                 is ProductSoldOutFragment -> whereEqualTo(
-                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                    Constants.VENDOR_ID, getCurrentUserID()
                 ).whereEqualTo(Constants.STOCK, 0)
 
                 /* To get all products that are violated, get all the documents
@@ -606,15 +606,15 @@ class FirestoreClass {
                  * status code is equal to 2 (Violation).
                  */
                 is ProductViolationFragment -> whereEqualTo(
-                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                    Constants.VENDOR_ID, getCurrentUserID()
                 ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_VIOLATION)
 
-                /* To get all products that are violated, get all the documents
+                /* To get all products that are unlisted, get all the documents
                  * where vendor ID is equal to the current user ID, and the
                  * status code is equal to 0 (Unlisted).
                  */
                 is ProductUnlistedFragment -> whereEqualTo(
-                    Constants.PRODUCT_VENDOR_ID, getCurrentUserID()
+                    Constants.VENDOR_ID, getCurrentUserID()
                 ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_UNLISTED)
 
                 /* The default query, get all the documents where the status
@@ -915,5 +915,78 @@ class FirestoreClass {
                 )
             }  // end of mFSInstance
     }  // end of addCustomerOrder method
+
+    // Function to get the query statement for orders
+    fun getOrderQuery(fragment: Fragment, isRoleVendor: Boolean): Query {
+        // Access the collection named orders
+        val orderRef = mFSInstance.collection(Constants.CUSTOMER_ORDERS)
+        // Use vendor ID if it is from Sales History, customer ID for Order History
+        val roleKey = if (isRoleVendor) Constants.VENDOR_ID else Constants.CUSTOMER_ID
+
+        // Set the query, depending on the tab of Order/Sales fragment
+        val orderQuery = when (fragment) {
+            /* To get all orders that are pending, get all the documents
+             * where the status code is equal to 0 (Pending), and the
+             * customer ID is equal to the current user ID.
+             */
+            is OrderPendingFragment -> orderRef.whereEqualTo(
+                "${Constants.STATUS}.${Constants.CODE}",
+                Constants.ORDER_PENDING_CODE
+            ).whereEqualTo(roleKey, getCurrentUserID())
+
+            /* To get all the orders that are on delivery, get all the
+             * documents where the status code is equal to 1 (To Deliver),
+             * and the customer ID is equal to the current user ID.
+             */
+            is OrderDeliverFragment -> orderRef.whereEqualTo(
+                "${Constants.STATUS}.${Constants.CODE}", 1
+            ).whereEqualTo(roleKey, getCurrentUserID())
+
+            /* To get all the orders that are completed, get all the
+             * documents where the status code is equal to 2 (Completed),
+             * and the customer ID is equal to the current user ID.
+             */
+            is OrderCompletedFragment -> orderRef.whereEqualTo(
+                "${Constants.STATUS}.${Constants.CODE}", 2
+            ).whereEqualTo(roleKey, getCurrentUserID())
+
+            /* To get all the orders that are cancelled, get all the
+             * documents where the status code is equal to 3 (Cancelled),
+             * and the customer ID is equal to the current user ID.
+             */
+            is OrderCancelledFragment -> orderRef.whereEqualTo(
+                "${Constants.STATUS}.${Constants.CODE}", 3
+            ).whereEqualTo(roleKey, getCurrentUserID())
+
+            /* To get all the orders that are returned, get all the
+             * documents where the status code is equal to 4 (Return/Refund),
+             * and the customer ID is equal to the current user ID.
+             */
+            is OrderReturnFragment -> orderRef.whereEqualTo(
+                "${Constants.STATUS}.${Constants.CODE}", 4
+            ).whereEqualTo(roleKey, getCurrentUserID())
+
+            /* To get all the orders that are failed, get all the
+             * documents where the status code is equal to 5 (Failed),
+             * and the customer ID is equal to the current user ID.
+             */
+            is OrderFailedFragment -> orderRef.whereEqualTo(
+                "${Constants.STATUS}.${Constants.CODE}", 5
+            ).whereEqualTo(roleKey, getCurrentUserID())
+
+            /* The default query, get all the documents where the customer
+             * ID is equal to the current user ID.
+             */
+            else -> orderRef.whereEqualTo(
+                roleKey, getCurrentUserID()
+            )
+        }
+
+        // Return the query, ordered by the order date, descending
+        return orderQuery.orderBy(
+            "${Constants.DATES}.${Constants.ORDER_DATE_AND_TIME}",
+            Query.Direction.DESCENDING
+        )
+    }  // end of getOrderQuery method
 
 }  // end of FirestoreClass

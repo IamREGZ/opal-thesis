@@ -42,7 +42,7 @@ class CheckoutAdapter(
                 R.string.product_price, product.price, product.unit
             )
             chkProdQTY.text = context.getString(
-                R.string.chkout_prod_qty, cartItem.prodQTY
+                R.string.product_qty, cartItem.prodQTY
             )
             chkTotalPrice.text = context.getString(
                 R.string.item_price, cartItem.prodPrice

@@ -36,9 +36,9 @@
         <menu>
             <!-- Your Market Submenu Item -->
             <item
-                android:id="@+id/nav_your_market"
-                android:icon="@drawable/ic_your_market"
-                android:title="@string/nav_your_market" />
+                android:id="@+id/nav_my_market"
+                android:icon="@drawable/ic_market"
+                android:title="@string/nav_my_market" />
 
             <!-- Products Submenu Item -->
             <item
@@ -48,9 +48,9 @@
 
             <!-- Customer Transactions Submenu Item -->
             <item
-                android:id="@+id/nav_customer_transactions"
-                android:icon="@drawable/ic_customer_transactions"
-                android:title="@string/nav_customer_transactions" />
+                android:id="@+id/nav_sales_history"
+                android:icon="@drawable/ic_sales_history"
+                android:title="@string/nav_sales_history" />
 
             <!-- Insights Submenu Item -->
             <item

@@ -11,9 +11,11 @@ data class Order(
     val status: OrderStatus? = null,  // Dynamic
     val payment: String = "",
     val customerID: String = "",
+    val custUser: String = "",
     val address: OrderAddress? = null,
     val marketID: String = "",
     val marketName: String = "",
+    val vendorID: String = "",
     val orderItems: List<OrderItem> = listOf(),  // Dynamic
     val subtotal: Double = 0.0,  // Dynamic
     val deliveryFee: Double = 0.0,
