@@ -165,8 +165,7 @@ open class UtilityClass : AppCompatActivity() {
 
         // Display a Toast message
         toastMessage(
-            this,
-            resources.getString(R.string.msg_back_again_to_exit)
+            this, getString(R.string.msg_back_again_to_exit)
         )
 
         /* If the user has not clicked back twice within 2 seconds,

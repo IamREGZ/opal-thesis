@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class Order(
     val id: String = "",
     val dates: OrderDates? = null,  // Dynamic
-    val status: OrderStatus? = null,  // Dynamic
+    val status: Int = 0,  // Dynamic
     val payment: String = "",
     val customerID: String = "",
     val custUser: String = "",
@@ -20,6 +20,7 @@ data class Order(
     val subtotal: Double = 0.0,  // Dynamic
     val deliveryFee: Double = 0.0,
     val totalPrice: Double = 0.0,  // Dynamic
-    val orderAction: String = "",
-    val special: String = ""
+    val orderAction: Int = 0,
+    val special: String = "",
+    val reason: String? = null  // Dynamic
 ) : Parcelable

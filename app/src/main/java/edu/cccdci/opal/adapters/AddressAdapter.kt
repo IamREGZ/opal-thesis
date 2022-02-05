@@ -40,8 +40,6 @@ class AddressAdapter(
             .findViewById(R.id.tv_addr_line_2)
         private val defaultAddr: TextView = itemView
             .findViewById(R.id.tv_default_lbl)
-        private val pickupAddr: TextView = itemView
-            .findViewById(R.id.tv_pickup_lbl)
         private val editAddr: ImageView = itemView
             .findViewById(R.id.iv_edit_addr_btn)
         private val userAddrPanel: LinearLayout = itemView
@@ -60,7 +58,6 @@ class AddressAdapter(
 
             // Set the visibility of address labels depending on the assigned label
             defaultAddr.visibility = if (address.default) View.VISIBLE else View.GONE
-            pickupAddr.visibility = if (address.pickup) View.VISIBLE else View.GONE
 
             // Actions when the Edit icon is clicked
             editAddr.setOnClickListener {

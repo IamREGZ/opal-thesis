@@ -1,12 +1,11 @@
 package edu.cccdci.opal.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityBecomeVendorBinding
-import edu.cccdci.opal.firestore.FirestoreClass
-import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.UtilityClass
 
 class BecomeVendorActivity : UtilityClass() {
@@ -36,7 +35,7 @@ class BecomeVendorActivity : UtilityClass() {
                         true
                     )
                 } else {
-                    //Proceed with account deletion
+                    // Proceed with account verification
                     verifyCredentials(password)
                 }
             }  // end of setOnClickListener
@@ -45,12 +44,19 @@ class BecomeVendorActivity : UtilityClass() {
 
     }  // end of onCreate method
 
+    // Operations to do when this activity is visible again
+    override fun onRestart() {
+        super.onRestart()
+
+        // Clear the password field for security purposes
+        binding.etVendorPass.text!!.clear()
+    }  // end of onRestart method
+
     // Function to verify credentials, and then upgrade user to vendor
     private fun verifyCredentials(password: String) {
         // Display the loading message
         showProgressDialog(
-            this@BecomeVendorActivity,
-            this@BecomeVendorActivity,
+            this@BecomeVendorActivity, this@BecomeVendorActivity,
             resources.getString(R.string.msg_please_wait)
         )
 
@@ -62,19 +68,22 @@ class BecomeVendorActivity : UtilityClass() {
         // Verify credentials
         FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential)
             .addOnCompleteListener { task ->
+                hideProgressDialog()  // Hide the loading message
+
                 // Correct credentials
                 if (task.isSuccessful) {
-                    // Proceed to update vendor field in the current user document
-                    FirestoreClass().updateUserProfileData(
-                        this@BecomeVendorActivity,
-                        hashMapOf(Constants.VENDOR to true)
+                    // Open the Vendor Registration Activity
+                    startActivity(
+                        Intent(
+                            this@BecomeVendorActivity,
+                            MarketEditorActivity::class.java
+                        )
                     )
-                } else {
-                    // Wrong credentials
-                    // Hide the loading message
-                    hideProgressDialog()
-
-                    // Clear the password field
+                    finish()  // Closes the activity
+                }
+                // Wrong credentials
+                else {
+                    // Clear the password field for security purposes
                     binding.etVendorPass.text!!.clear()
 
                     // Display the error message
@@ -86,19 +95,6 @@ class BecomeVendorActivity : UtilityClass() {
                 }
             }  // end of reauthenticate
 
-    }  // end of validateCredentials method
-
-    // Function to prompt that the user was upgraded to vendor
-    fun upgradedToVendorPrompt() {
-        hideProgressDialog()  // Hide the loading message
-
-        // Displays the Toast message
-        toastMessage(
-            this@BecomeVendorActivity,
-            resources.getString(R.string.msg_user_now_vendor)
-        )
-
-        finish()  // Closes the current activity
-    }  // end of upgradedToVendorPrompt method
+    }  // end of verifyCredentials method
 
 }  // end of BecomeVendorActivity class

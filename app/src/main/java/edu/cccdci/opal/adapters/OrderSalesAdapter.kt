@@ -18,7 +18,6 @@ import com.google.firebase.Timestamp
 import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.Order
 import edu.cccdci.opal.dataclasses.OrderItem
-import edu.cccdci.opal.dataclasses.OrderStatus
 import edu.cccdci.opal.utils.Constants
 
 class OrderSalesAdapter(
@@ -95,12 +94,6 @@ class OrderSalesAdapter(
             else
                 Constants.MDY_HM12_DATE_FORMAT
 
-            // Store the current status of the order/sale. Default is Unknown.
-            odsStatus.text = if (order.status != null)
-                order.status.title
-            else
-                Constants.UNKNOWN_STATUS
-
             // Set the icon and color of order's status
             setStatusAttributes(order.status)
 
@@ -109,34 +102,60 @@ class OrderSalesAdapter(
         }  // end of setOrderData method
 
         // Function to set the icons and colors of order's status
-        private fun setStatusAttributes(orderStatus: OrderStatus?) {
-            // Prevents NullPointerException
-            if (orderStatus != null) {
-                // Store the icon ID depending on the Order's Status Code
-                val iconID = when (orderStatus.code) {
-                    0, 1 -> R.drawable.ic_status_in_progress
-                    2 -> R.drawable.ic_status_success
-                    3 -> R.drawable.ic_status_cancelled
-                    4 -> R.drawable.ic_status_return
-                    5 -> R.drawable.ic_status_failed
-                    else -> R.drawable.ic_status_info
-                }
-                // Store the text color depending on the Order's Status Code
-                val statusColor = when (orderStatus.code) {
-                    0, 1 -> Constants.MEDIUM_ORANGE  // #FFF28500
-                    2 -> Constants.APP_DARK_GREEN  // #FF014421
-                    3 -> Constants.DIM_GRAY  // #FF696969
-                    4 -> Constants.APP_DARK_TEAL  // #FF006666
-                    5 -> Constants.DARK_RED  // #FFA40000
-                    else -> Constants.APP_BLACK  // #FF0F0F0F
-                }
+        private fun setStatusAttributes(orderStatus: Int) {
+            // Store the icon ID depending on the Order's Status Code
+            val iconID = when (orderStatus) {
+                // 0, 1, 2
+                Constants.ORDER_PENDING_CODE,
+                Constants.ORDER_TO_DELIVER_CODE,
+                Constants.ORDER_OFD_CODE -> R.drawable.ic_status_in_progress
+                // 3
+                Constants.ORDER_DELIVERED_CODE -> R.drawable.ic_status_success
+                // 4
+                Constants.ORDER_CANCELLED_CODE -> R.drawable.ic_status_cancelled
+                // 5, 6, 7
+                Constants.ORDER_RETURN_REQUEST_CODE,
+                Constants.ORDER_TO_RETURN_CODE,
+                Constants.ORDER_RETURNED_CODE -> R.drawable.ic_status_return
+                else -> R.drawable.ic_status_info
+            }
 
-                // Change the icon of Order's Status
-                odsStatusIcon.setImageResource(iconID)
-                // Change the text color of Order's Status
-                odsStatus.setTextColor(Color.parseColor(statusColor))
-            }  // end of if
+            // Store the text color depending on the Order's Status Code
+            val statusColor = when (orderStatus) {
+                // 0, 1, 2
+                Constants.ORDER_PENDING_CODE,
+                Constants.ORDER_TO_DELIVER_CODE,
+                Constants.ORDER_OFD_CODE -> Constants.MEDIUM_ORANGE  // #FFF28500
+                // 3
+                Constants.ORDER_DELIVERED_CODE -> Constants.APP_DARK_GREEN  // #FF014421
+                // 4
+                Constants.ORDER_CANCELLED_CODE -> Constants.DIM_GRAY  // #FF696969
+                // 5, 6, 7
+                Constants.ORDER_RETURN_REQUEST_CODE,
+                Constants.ORDER_TO_RETURN_CODE,
+                Constants.ORDER_RETURNED_CODE -> Constants.APP_DARK_TEAL  // #FF006666
+                else -> Constants.APP_BLACK  // #FF0F0F0F
+            }
 
+            // Store the status name depending on the Order's Status Code
+            val statusName = when (orderStatus) {
+                Constants.ORDER_PENDING_CODE -> R.string.order_pending  // 0
+                Constants.ORDER_TO_DELIVER_CODE -> R.string.order_to_deliver  // 1
+                Constants.ORDER_OFD_CODE -> R.string.order_out_for_delivery  // 2
+                Constants.ORDER_DELIVERED_CODE -> R.string.order_delivered  // 3
+                Constants.ORDER_CANCELLED_CODE -> R.string.order_cancelled  // 4
+                Constants.ORDER_RETURN_REQUEST_CODE -> R.string.order_return_request  // 5
+                Constants.ORDER_TO_RETURN_CODE -> R.string.order_to_return  // 6
+                Constants.ORDER_RETURNED_CODE -> R.string.order_returned  // 7
+                else -> R.string.order_unknown
+            }
+
+            // Change the icon of Order's Status
+            odsStatusIcon.setImageResource(iconID)
+            // Change the text color of Order's Status
+            odsStatus.setTextColor(Color.parseColor(statusColor))
+            // Store the current status of the order/sale. Default is Unknown.
+            odsStatus.text = context.resources.getString(statusName)
         }  // end of setStatusAttributes method
 
         // Function to get the formatted order date as String

@@ -3,10 +3,10 @@
     <string name="app_name">OPAL</string>
 
     <!--  Strings for Log-in  -->
-    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_password_link">FORGOT PASSWORD?</string>
     <string name="login_btn">Log In</string>
     <string name="no_account_lbl">Don\'t have an account?</string>
-    <string name="register_link"><b>REGISTER</b></string>
+    <string name="register_link">REGISTER</string>
 
     <!--  Strings for Register  -->
     <string name="account_registration">ACCOUNT REGISTRATION</string>
@@ -17,7 +17,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="agree_to_lbl">I agree to the</string>
-    <string name="terms_and_conditions"><b>Terms and Conditions</b></string>
+    <string name="terms_and_conditions_link">TERMS &amp; CONDITIONS</string>
     <string name="register_btn">Register</string>
     <string name="cancel_btn">Cancel</string>
 
@@ -75,6 +75,20 @@
         is/are unavailable.
     </string>
     <string name="err_no_selected_payment">Please select your payment method.</string>
+    <string name="err_blank_market_name">Please enter the market name.</string>
+    <string name="err_blank_wet_market">
+        Please enter the name of parent wet market.
+    </string>
+    <string name="err_no_mkt_category_selected">
+        Please select the market\'s category.
+    </string>
+    <string name="err_blank_custom_category">Please specify the custom category.</string>
+    <string name="err_blank_mkt_province">Please select the market\'s province.</string>
+    <string name="err_blank_mkt_city">Please select the market\'s city/municipality.</string>
+    <string name="err_blank_mkt_brgy">Please select the market\'s barangay.</string>
+    <string name="err_blank_mkt_postal">Please enter the market\'s postal code.</string>
+    <string name="err_blank_mkt_detailed">Please enter the market\'s detailed address.</string>
+    <string name="err_unchecked_vendor_tac">Please agree to the Vendor\'s T&amp;C.</string>
 
     <!--  Message Prompts  -->
     <string name="msg_register_success">Your account is successfully registered.</string>
@@ -101,6 +115,9 @@
     <string name="msg_added_to_cart">Added to cart successfully.</string>
     <string name="msg_order_placed_success">
         Your order was placed successfully. Thank you for choosing OPAL!
+    </string>
+    <string name="msg_market_saved">
+        Your market information was changed successfully.
     </string>
 
     <!--  Progress Dialog  -->
@@ -137,6 +154,7 @@
     <string name="tlb_title_my_cart">MY CART</string>
     <string name="tlb_title_checkout">CHECKOUT</string>
     <string name="tlb_title_payment">PAYMENT METHODS</string>
+    <string name="tlb_title_vendor_reg">VENDOR REGISTRATION</string>
 
     <!--  Top App Bar  -->
     <string name="my_cart">My Cart</string>
@@ -186,10 +204,9 @@
     <string-array name="order_sales_tabs">
         <item>Pending</item>
         <item>To Deliver</item>
-        <item>Completed</item>
+        <item>Delivered</item>
         <item>Cancelled</item>
         <item>Return/Refund</item>
-        <item>Failed</item>
     </string-array>
 
     <!--  Notification Item  -->
@@ -250,7 +267,6 @@
     <string name="addr_line_1">Detailed Address</string>
     <string name="addr_line_2">%1$s, %2$s, %3$s %4$d</string>
     <string name="addr_default">Default</string>
-    <string name="addr_pickup">Pickup</string>
     <string name="addr_edit">Edit Address</string>
 
     <!--  Add/Edit Address  -->
@@ -263,8 +279,7 @@
     <string name="detailed_helper">
         House Number, Building Number, Street Name, etc.
     </string>
-    <string name="set_default_addr">Set as Default Address</string>
-    <string name="set_pickup_addr">Set as Pickup Address</string>
+    <string name="default_addr_lbl">Default Delivery Address</string>
     <string name="delete_address">Delete Address</string>
 
     <!--  Settings Page  -->
@@ -391,12 +406,38 @@
         Mauris feugiat condimentum lacus, in laoreet justo dictum quis.
         Nunc diam mi, faucibus vitae neque eu, auctor.
     </string>
-    <string name="bav_instructions">
-        To proceed, you need to enter your password to confirm application
-        for OPAL Vendors Community. By clicking \"Apply Now,\" you also
-        agree to our <b><u>Vendor\'s Terms and Conditions</u></b>.
+    <string name="bav_enter_password_lbl">
+        Please enter your password to proceed with application for OPAL
+        Vendors Community.
     </string>
     <string name="bav_apply_now">Apply Now</string>
+
+    <!--  Vendor Registration Activity  -->
+    <string name="market_name_helper">Name of Market Stall (Puwesto)</string>
+    <string name="wet_market_name">Parent Wet Market (Palengke)</string>
+    <string name="wet_market_helper">
+        Examples: Mercado de Calamba, Calamba Trade Center, etc.
+    </string>
+    <string name="market_profile_pic_text">Market Profile Picture (Optional)</string>
+    <string name="market_profile_pic_example">
+        Examples: Market Logo, Front of Market Stall, etc.
+    </string>
+    <string name="market_category">Market Category</string>
+    <string-array name="market_categories_list">
+        <item>Meat</item>
+        <item>Seafood</item>
+        <item>Poultry</item>
+        <item>Fruits</item>
+        <item>Vegetables</item>
+        <item>Rice</item>
+        <item>Others</item>
+    </string-array>
+    <string name="other_cat_specify">Specify Category</string>
+    <string name="market_address_head">MARKET ADDRESS</string>
+    <string name="detailed_vendor_helper">
+        Stall Number, Building Number, Street Name, etc.
+    </string>
+    <string name="vendor_t_and_c_link">VENDOR\'S TERMS &amp; CONDITIONS</string>
 
     <!--  Product Description  -->
     <string name="product_desc">Product Description</string>
@@ -464,9 +505,13 @@
     <string name="product_qty">QTY: %d</string>
     <string name="order_instructions_icon">Order Instructions Icon</string>
     <string name="order_instructions">Order Instructions</string>
-    <string name="order_not_available">
+    <string name="order_not_available_lbl">
         If one (or more) product(s) is/are not available
     </string>
+    <string-array name="order_unavailable_actions">
+        <item>Remove the item(s) from the order</item>
+        <item>Cancel the entire order</item>
+    </string-array>
     <string name="order_unavailable_select_action">Please select action</string>
     <string name="special_instructions">Special Instructions (Optional)</string>
     <string name="special_instructions_helper">
@@ -508,6 +553,7 @@
     <string name="od_det_status_title">Status Title</string>
     <string name="od_det_status_desc">Status Description</string>
     <string name="od_det_status_icon">Order Status Icon (Large)</string>
+    <string name="od_det_payment_info">Payment Information</string>
     <string name="od_det_subtotal_default">Subtotal (n items)</string>
     <plurals name="subtotal_order_items">
         <item quantity="one">Subtotal (%d item)</item>
@@ -517,11 +563,104 @@
     <string name="od_det_information">Order Information</string>
     <string name="order_id_placeholder">OPLXXXXXXXXXXXXX</string>
     <string name="payment_date">Payment Date</string>
-    <string name="completed_date">Completed Date</string>
+    <string name="delivery_date">Delivery Date</string>
     <string name="return_date">Return Date</string>
     <string name="order_date_placeholder">yyyy-MM-dd HH:mm:ss</string>
     <string name="od_det_other_info">Other Information</string>
     <string name="order_unavailable_action">Order Unavailable Action</string>
     <string name="od_det_special_instructions">Special Instructions</string>
+
+    <!--  Order Statuses  -->
+    <string name="order_pending">Pending</string>
+    <string name="order_to_deliver">To Deliver</string>
+    <string name="order_out_for_delivery">Out for Delivery</string>
+    <string name="order_delivered">Delivered</string>
+    <string name="order_cancelled">Cancelled</string>
+    <string name="order_return_request">Return/Refund Requested</string>
+    <string name="order_to_return">To Return/Refund</string>
+    <string name="order_returned">Returned/Refunded</string>
+    <string name="order_unknown">Unknown</string>
+
+    <!--  Order Status Description (Generic)  -->
+    <string name="order_fail_reason">Reason: %s.</string>
+    <string name="order_unknown_desc">
+        Unable to determine the status due to unexpected error or other reasons.
+    </string>
+    <plurals name="order_item_quantifier">
+        <item quantity="one">item</item>
+        <item quantity="other">items</item>
+    </plurals>
+    <plurals name="is_are">
+        <item quantity="one">is</item>
+        <item quantity="other">are</item>
+    </plurals>
+    <plurals name="its_their">
+        <item quantity="one">its</item>
+        <item quantity="other">their</item>
+    </plurals>
+    <plurals name="has_have">
+        <item quantity="one">has</item>
+        <item quantity="other">have</item>
+    </plurals>
+
+    <!--  Order Status Description for Customers  -->
+    <string name="cs_od_pending_desc">Awaiting confirmation from your market vendor.</string>
+    <string name="cs_od_to_deliver_desc">
+        Your %1$s %2$s being prepared by your market vendor.
+    </string>
+    <string name="cs_od_ofd_desc">Your %1$s %2$s on %3$s way to your doorsteps.</string>
+    <string name="cs_od_delivered_desc">
+        Your %1$s %2$s successfully delivered. Thank you for choosing OPAL!
+    </string>
+    <string name="cs_od_return_req_desc">Awaiting approval from your market vendor.</string>
+    <string name="cs_od_return_acc_desc">
+        Please wait for your %s to return to market vendor.
+    </string>
+    <string name="cs_od_returned_desc">
+        Your %1$s %2$s successfully returned to your market vendor. %3$s
+    </string>
+
+    <!--  Order Status Description for Vendors  -->
+    <string name="vd_od_pending_desc">
+        Confirm customer\'s order to begin the delivery process.
+    </string>
+    <string name="vd_od_to_deliver_desc">
+        Prepare the %s specified before handing over to your designated rider.
+    </string>
+    <string name="vd_od_ofd_desc">
+        Customer\'s %1$s %2$s on %3$s way to its delivery address.
+    </string>
+    <string name="vd_od_delivered_desc">
+        Customer\'s %1$s %2$s successfully delivered.
+    </string>
+    <string name="vd_od_return_req_desc">
+        Please respond to customer\'s return/refund request. %s
+    </string>
+    <string name="vd_od_return_acc_desc">
+        Please wait for the customer\'s %s to arrive back at your market.
+    </string>
+    <string name="vd_od_returned_desc">
+        Customer\'s %1$s %2$s successfully returned. %3$s
+    </string>
+
+    <!--  Order Details Call to Action Buttons  -->
+    <string name="contact_customer_vendor">Contact %s</string>
+    <string name="default_cta_1">CTA 1</string>
+    <string name="default_cta_2">CTA 2</string>
+    <string name="cancel_order_btn">Cancel Order</string>
+    <string name="confirm_order_btn">Confirm Order</string>
+    <string name="start_delivery_btn">Start Delivery</string>
+    <string name="return_refund_btn">Return/Refund</string>
+    <string name="mark_as_paid_btn">Mark as Paid</string>
+    <string name="order_delivered_btn">Delivered</string>
+    <string name="order_not_delivered_btn">Not Delivered</string>
+    <string name="rate_market_btn">Rate Market</string>
+    <string name="view_rating_btn">View Rating</string>
+    <string name="buy_again_btn">Buy Again</string>
+    <string name="view_cust_rating_btn">View Customer\'s Rating</string>
+    <string name="cancel_request_btn">Cancel Request</string>
+    <string name="accept_request_btn">Accept Request</string>
+    <string name="reject_request_btn">Reject Request</string>
+    <string name="order_returned_btn">Order Returned/Refunded</string>
 
 </resources>

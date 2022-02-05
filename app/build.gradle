@@ -84,6 +84,9 @@ dependencies {
     // Declare the dependency for RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
+    // Declare the dependency for Flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
     // Declare the dependency for GSON
     implementation 'com.google.code.gson:gson:2.8.9'
 

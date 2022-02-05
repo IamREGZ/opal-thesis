@@ -32,6 +32,7 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
     private var mCartDetails: List<Product?> = listOf()
     private var mSubtotal: Double = 0.0
     private var mDelivery: Double = 0.0
+    private var mOrderActionPos: Int = 0
     private val mOrderHashMap: HashMap<String, Any> = hashMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -255,15 +256,19 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
     // Function to set drop down data of order unavailable actions
     private fun setOrderUnavailableActions() {
         // Create a list of order unavailable actions
-        val orderActions = listOf(
-            Constants.ACTION_REMOVE_ITEM, Constants.ACTION_CANCEL_ENTIRE_ORDER
-        )
+        val orderActions = resources.getStringArray(R.array.order_unavailable_actions)
 
         // Prepare the drop down values for order unavailable actions
         val ordActionsAdapter = ArrayAdapter(
             this@CheckoutActivity, R.layout.spinner_item, orderActions
         )
         binding.actvChkoutOrderAction.setAdapter(ordActionsAdapter)
+
+        // Actions when one of the order unavailable action items was selected
+        binding.actvChkoutOrderAction.setOnItemClickListener { _, _, position, _ ->
+            // Store the current position of selected order unavailable action item
+            mOrderActionPos = position
+        }
     }  // end of setOrderUnavailableActions
 
     // Function to store the values of items receipt and market information
@@ -376,17 +381,14 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
 
         // Store the Order Dates, with a defined Order Date value
         mOrderHashMap[Constants.DATES] = hashMapOf<String, Any?>(
-            Constants.ORDER_DATE_AND_TIME to FieldValue.serverTimestamp(),
-            Constants.PAYMENT_DATE_AND_TIME to null,
-            Constants.COMPLETE_DATE_AND_TIME to null,
-            Constants.RETURN_DATE_AND_TIME to null
+            Constants.ORDER_DATE to FieldValue.serverTimestamp(),
+            Constants.PAYMENT_DATE to null,
+            Constants.DELIVER_DATE to null,
+            Constants.RETURN_DATE to null
         )
 
-        // Store the Order Status, with Pending as the initial value
-        mOrderHashMap[Constants.STATUS] = OrderStatus(
-            Constants.ORDER_PENDING_CODE, Constants.ORDER_PENDING_TITLE,
-            Constants.ORDER_PENDING_DESC
-        )
+        // Store the Order Status Code, with 0 (Pending) as initial code
+        mOrderHashMap[Constants.STATUS] = Constants.ORDER_PENDING_CODE
 
         // Store the Payment Method
         mOrderHashMap[Constants.ORDER_PAYMENT] = mSelectedPayment
@@ -425,8 +427,7 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
         mOrderHashMap[Constants.TOTAL_PRICE] = mSubtotal + mDelivery
 
         // Store the selected value in the Order Unavailable Action Spinner
-        mOrderHashMap[Constants.ORDER_ACTION] = binding
-            .actvChkoutOrderAction.text.toString().trim { it <= ' ' }
+        mOrderHashMap[Constants.ORDER_ACTION] = mOrderActionPos
 
         /* Store the inputted value in the Special Instructions Text Area
          * (blank input is accepted since it is optional).

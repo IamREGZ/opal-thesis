@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class OrderDates(
     val orderDate: Timestamp? = null,
-    val paymentDate: Timestamp? = null,
-    val completeDate: Timestamp? = null,
+    var paymentDate: Timestamp? = null,
+    val deliverDate: Timestamp? = null,
     val returnDate: Timestamp? = null
 ) : Parcelable

@@ -2,9 +2,13 @@ package edu.cccdci.opal.utils
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import com.google.android.material.button.MaterialButton
+import edu.cccdci.opal.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,7 +31,6 @@ object Constants {
     const val POSTAL: String = "postal"
     const val DETAIL_ADDR: String = "detailAdd"
     const val DEFAULT_ADDR: String = "default"
-    const val PICKUP_ADDR: String = "pickup"
     const val NAME: String = "name"
     const val IMAGE: String = "image"
     const val DESCRIPTION: String = "description"
@@ -40,11 +43,10 @@ object Constants {
     const val CART: String = "cart"
     const val CART_ITEMS: String = "cartItems"
     const val DATES: String = "dates"
-    const val ORDER_DATE_AND_TIME: String = "orderDate"
-    const val PAYMENT_DATE_AND_TIME: String = "paymentDate"
-    const val COMPLETE_DATE_AND_TIME: String = "completeDate"
-    const val RETURN_DATE_AND_TIME: String = "returnDate"
-    const val CODE: String = "code"
+    const val ORDER_DATE: String = "orderDate"
+    const val PAYMENT_DATE: String = "paymentDate"
+    const val DELIVER_DATE: String = "deliverDate"
+    const val RETURN_DATE: String = "returnDate"
     const val ORDER_PAYMENT: String = "payment"
     const val CUSTOMER_ID: String = "customerID"
     const val ADDRESS: String = "address"
@@ -54,6 +56,9 @@ object Constants {
     const val DELIVERY_FEE_PRICE: String = "deliveryFee"
     const val ORDER_ACTION: String = "orderAction"
     const val SPECIAL_INSTRUCTIONS: String = "special"
+    const val WET_MARKET: String = "wetMarket"
+    const val CATEGORY: String = "category"
+    const val OTHER_CATEGORY: String = "otherCat"
 
     // Cloud Firestore constants for Addresses
     const val PRV_DOC: String = "DOC-PRV"
@@ -75,7 +80,6 @@ object Constants {
 
     // Cloud Firestore constants for Orders
     const val CUSTOMER_ORDERS: String = "orders"
-    const val UNKNOWN_STATUS: String = "Unknown"
 
     // Payment Information constants
     const val PAYMENT_METHOD: String = "payment_method"
@@ -87,16 +91,24 @@ object Constants {
     const val GENDER_OTHER: String = "other"
     const val ADDRESS_ID_TEMP: String = "ADD-"
     const val PRODUCT_ID_TEMP: String = "PD-"
+    const val MARKET_ID_TEMP: String = "MK-"
     const val ORDER_ID_TEMP: String = "OPL"
-    const val PRODUCT_UNIT_OTHERS: String = "Others"
-    const val ACTION_REMOVE_ITEM: String = "Remove the item(s) from the order"
-    const val ACTION_CANCEL_ENTIRE_ORDER: String = "Cancel the entire order"
+    const val ITEM_OTHERS: String = "Others"
+
+    // Product Status Codes
     const val PRODUCT_IN_STOCK: Int = 1
     const val PRODUCT_VIOLATION: Int = 2
     const val PRODUCT_UNLISTED: Int = 0
+
+    // Order Status Codes
     const val ORDER_PENDING_CODE: Int = 0
-    const val ORDER_PENDING_TITLE: String = "Pending"
-    const val ORDER_PENDING_DESC: String = "Awaiting confirmation from the market vendor."
+    const val ORDER_TO_DELIVER_CODE: Int = 1
+    const val ORDER_OFD_CODE: Int = 2
+    const val ORDER_DELIVERED_CODE: Int = 3
+    const val ORDER_CANCELLED_CODE: Int = 4
+    const val ORDER_RETURN_REQUEST_CODE: Int = 5
+    const val ORDER_TO_RETURN_CODE: Int = 6
+    const val ORDER_RETURNED_CODE: Int = 7
 
     // For Shared Preferences and Parcelable
     const val OPAL_PREFERENCES: String = "OPALPrefs"
@@ -122,6 +134,7 @@ object Constants {
     // File upload naming templates
     const val USER_PROFILE_IMAGE_TEMP: String = "OPAL_USRIMG_"
     const val PRODUCT_IMAGE_TEMP: String = "OPAL_PDT_"
+    const val MARKET_IMAGE_TEMP: String = "OPAL_MKT_"
 
     // Date formatting constants
     const val MDY_HM12_DATE_FORMAT: String = "MM/dd/yyyy hh:mm a"
@@ -131,7 +144,6 @@ object Constants {
     const val APP_DARK_GREEN: String = "#FF014421"
     const val APP_DARK_TEAL: String = "#FF006666"
     const val APP_BLACK: String = "#FF0F0F0F"
-    const val DARK_RED: String = "#FFA40000"
     const val MEDIUM_ORANGE: String = "#FFF28500"
     const val DIM_GRAY: String = "#FF696969"
 
@@ -159,5 +171,30 @@ object Constants {
     fun formatDate(pattern: String, date: Date): String {
         return SimpleDateFormat(pattern, Locale.ENGLISH).format(date)
     }  // end of formatDate method
+
+    /* Function to change the appearance of button to secondary style (green
+     * outline & text)
+     */
+    fun toSecondaryButton(button: MaterialButton) {
+        // Object to toggle colors depending on the button's state
+        val cslBtn2 = ColorStateList(
+            // Array of states: Enabled and Disabled
+            arrayOf(
+                intArrayOf(android.R.attr.state_enabled),
+                intArrayOf(-android.R.attr.state_enabled)
+            ),
+            // Enabled = Dark Green; Disabled = Dim Gray
+            intArrayOf(
+                Color.parseColor(APP_DARK_GREEN), Color.parseColor(DIM_GRAY)
+            )
+        )
+
+        // Change the button's background
+        button.setBackgroundResource(R.drawable.button_secondary)
+        // Change the button's text color
+        button.setTextColor(cslBtn2)
+        // Change the button's icon tint
+        button.iconTint = cslBtn2
+    }  // end of toSecondaryButton method
 
 }  // end of Constants object

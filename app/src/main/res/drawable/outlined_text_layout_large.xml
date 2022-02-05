@@ -4,7 +4,6 @@
     <stroke
         android:width="@dimen/checkout_payment_stroke"
         android:color="@color/app_black" />
-
     <corners android:radius="@dimen/checkout_payment_corners" />
 
 </shape>

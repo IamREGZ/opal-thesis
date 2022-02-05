@@ -75,7 +75,7 @@ class CartAdapter(
             )
 
             // Add also the product image
-            GlideLoader(context).loadPicture(product.image, cartProdImage)
+            GlideLoader(context).loadImage(product.image, cartProdImage)
 
             // Then set the dynamic cart data values
             setCartData(cartDataList[position], position)

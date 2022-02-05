@@ -8,16 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.adapters.OrderSalesAdapter
-import edu.cccdci.opal.databinding.FragmentOrderFailedBinding
+import edu.cccdci.opal.databinding.FragmentOrderToDeliverBinding
 import edu.cccdci.opal.dataclasses.Order
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 
-class OrderFailedFragment(
+class OrderToDeliverFragment(
     private val isVendor: Boolean
 ) : Fragment() {
 
-    private lateinit var binding: FragmentOrderFailedBinding
+    private lateinit var binding: FragmentOrderToDeliverBinding
     private var orderSalesAdapter: OrderSalesAdapter? = null
 
     override fun onCreateView(
@@ -25,31 +25,31 @@ class OrderFailedFragment(
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentOrderFailedBinding.inflate(inflater)
+        binding = FragmentOrderToDeliverBinding.inflate(inflater)
 
         // Create a Builder for FirestoreRecyclerOptions
         val options = FirestoreRecyclerOptions.Builder<Order>()
             // Gets all the documents from orders collection
             .setQuery(
                 FirestoreClass().getOrderQuery(
-                    this@OrderFailedFragment, isVendor
+                    this@OrderToDeliverFragment, isVendor
                 ),
                 Order::class.java
             ).build()
 
         with(binding) {
             // Sets the layout type of the RecyclerView
-            rvOrderFailed.layoutManager = WrapperLinearLayoutManager(
+            rvOrderToDeliver.layoutManager = WrapperLinearLayoutManager(
                 requireContext(), LinearLayoutManager.VERTICAL, false
             )
 
             // Create an object of Order/Sales History Adapter
             orderSalesAdapter = OrderSalesAdapter(
-                this@OrderFailedFragment, requireContext(), isVendor,
+                this@OrderToDeliverFragment, requireContext(), isVendor,
                 options
             )
-            // Sets the adapter of Order/Sales History (Failed) RecyclerView
-            rvOrderFailed.adapter = orderSalesAdapter
+            // Sets the adapter of Order/Sales History (To Deliver) RecyclerView
+            rvOrderToDeliver.adapter = orderSalesAdapter
 
             return root
         }  // end of with(binding)
@@ -73,4 +73,4 @@ class OrderFailedFragment(
             orderSalesAdapter!!.stopListening()
     }  // end of onDestroyView method
 
-}  // end of OrderFailedFragment class
+}  // end of OrderToDeliverFragment class

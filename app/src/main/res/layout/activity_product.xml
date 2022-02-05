@@ -47,10 +47,13 @@
         android:layout_marginStart="@dimen/large_mrg_pd"
         android:layout_marginTop="@dimen/medium_mrg_pd"
         android:layout_marginEnd="@dimen/large_mrg_pd"
-        android:layout_marginBottom="@dimen/medium_large_mrg_pd"
-        android:background="@drawable/custom_button"
+        android:layout_marginBottom="@dimen/medium_mrg_pd"
+        android:background="@drawable/button_primary"
+        android:letterSpacing="0.0"
+        android:padding="@dimen/button_padding"
         android:text="@string/pd_add_new_product"
         android:textColor="@color/white"
-        android:textSize="@dimen/button_large_text_size" />
+        android:textSize="@dimen/button_large_text_size"
+        app:backgroundTint="@null" />
 
 </LinearLayout>

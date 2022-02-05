@@ -47,7 +47,7 @@ class OrderDetailsAdapter(
             )
 
             // Add also the product image
-            GlideLoader(context).loadPicture(item.image, odProdImage)
+            GlideLoader(context).loadImage(item.image, odProdImage)
         }  // end of setOrderItemData method
 
     }  // end of OrderDetailsViewHolder class

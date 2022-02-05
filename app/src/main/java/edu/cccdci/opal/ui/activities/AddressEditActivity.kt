@@ -90,7 +90,6 @@ class AddressEditActivity : UtilityClass() {
             etAddrPostal.setText(mAddress!!.postal.toString())
             etAddrDetails.setText(mAddress!!.detailAdd)
             smDefaultAddress.isChecked = mAddress!!.default
-            smPickupAddress.isChecked = mAddress!!.pickup
 
             // Change the interface of Address Info
             tvAddressEditTitle.setText(R.string.tlb_title_edit_address)
@@ -171,6 +170,7 @@ class AddressEditActivity : UtilityClass() {
             // Clear the drop down data of barangay for a new batch of data later
             actvAddrBrgy.text.clear()
         }  // end of with(binding)
+
     }  // end of setCityValues method
 
     /* Function to set drop down data of barangay once the user
@@ -182,8 +182,7 @@ class AddressEditActivity : UtilityClass() {
              * enabled. This is to prevent deleting an empty data set
              * whenever the province has changed selection.
              */
-            if (actvAddrBrgy.isEnabled)
-                actvAddrBrgy.text.clear()
+            if (actvAddrBrgy.isEnabled) actvAddrBrgy.text.clear()
 
             // Call the Firestore function to retrieve barangay data
             val brgyResult = FirestoreClass().getBarangays(
@@ -203,6 +202,7 @@ class AddressEditActivity : UtilityClass() {
                 actvAddrBrgy.isEnabled = true
             }
         }  // end of with(binding)
+
     }  // end of setBarangayValues method
 
     // Function to validate user address
@@ -297,6 +297,7 @@ class AddressEditActivity : UtilityClass() {
             }  // end of when
 
         }  // end of with(binding)
+
     }  // end of addressValidation method
 
     // Function to save user's address
@@ -335,8 +336,7 @@ class AddressEditActivity : UtilityClass() {
                 actvAddrBrgy.text.toString().trim { it <= ' ' },
                 etAddrPostal.text.toString().trim { it <= ' ' }.toInt(),
                 etAddrDetails.text.toString().trim { it <= ' ' },
-                smDefaultAddress.isChecked,
-                smPickupAddress.isChecked
+                smDefaultAddress.isChecked
             )
         }
 
@@ -408,13 +408,6 @@ class AddressEditActivity : UtilityClass() {
              */
             if (defaultAdd != mAddress!!.default)
                 mAddrHashMap[Constants.DEFAULT_ADDR] = defaultAdd
-
-            val pickupAdd = smPickupAddress.isChecked
-            /* Save the new pickup address toggle if it is
-             * the opposite of the previous toggle
-             */
-            if (pickupAdd != mAddress!!.pickup)
-                mAddrHashMap[Constants.PICKUP_ADDR] = pickupAdd
         }  // end of with(binding)
     }  // end of storeUserAddressChanges method
 

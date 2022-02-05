@@ -49,6 +49,7 @@
                 android:layout_marginTop="@dimen/large_mrg_pd"
                 android:layout_marginBottom="@dimen/medium_large_mrg_pd"
                 android:contentDescription="@string/user_profile_photo_cd"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_prof_image_placeholder"
                 app:civ_border_color="@color/primaryAccentColor"
                 app:civ_border_width="@dimen/profile_user_stroke_width" />
@@ -186,11 +187,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/profile_rb_gender_marginStartEnd"
                     android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
+                    android:background="@drawable/radio_button_box"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/gender_male"
-                    android:textColor="@drawable/custom_rb_text_color"
+                    android:textColor="@drawable/radio_button_box_text"
                     android:textSize="@dimen/main_text_size" />
 
                 <edu.cccdci.opal.utils.MainRadioButton
@@ -200,11 +201,11 @@
                     android:layout_marginStart="@dimen/profile_rb_gender_marginStartEnd"
                     android:layout_marginEnd="@dimen/profile_rb_gender_marginStartEnd"
                     android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
+                    android:background="@drawable/radio_button_box"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/gender_female"
-                    android:textColor="@drawable/custom_rb_text_color"
+                    android:textColor="@drawable/radio_button_box_text"
                     android:textSize="@dimen/main_text_size" />
 
                 <edu.cccdci.opal.utils.MainRadioButton
@@ -213,11 +214,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/profile_rb_gender_marginStartEnd"
                     android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
+                    android:background="@drawable/radio_button_box"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/gender_other"
-                    android:textColor="@drawable/custom_rb_text_color"
+                    android:textColor="@drawable/radio_button_box_text"
                     android:textSize="@dimen/main_text_size" />
 
             </RadioGroup>
@@ -227,10 +228,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_large_height"
                 android:layout_marginTop="@dimen/large_mrg_pd"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/button_primary"
+                android:letterSpacing="0.0"
+                android:padding="@dimen/button_padding"
                 android:text="@string/save_changes_btn"
                 android:textColor="@color/app_white"
-                android:textSize="@dimen/button_large_text_size" />
+                android:textSize="@dimen/button_large_text_size"
+                app:backgroundTint="@null" />
 
         </LinearLayout>
 

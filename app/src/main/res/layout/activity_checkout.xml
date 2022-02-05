@@ -245,7 +245,7 @@
                         <edu.cccdci.opal.utils.MainTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/order_not_available"
+                            android:text="@string/order_not_available_lbl"
                             android:textColor="@color/app_black"
                             android:textSize="@dimen/main_text_size" />
 
@@ -512,6 +512,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="@dimen/medium_large_mrg_pd"
         android:paddingTop="@dimen/medium_mrg_pd"
@@ -521,7 +522,6 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -545,13 +545,16 @@
 
         <edu.cccdci.opal.utils.MainButton
             android:id="@+id/btn_place_order"
-            android:layout_width="@dimen/place_order_button"
+            android:layout_width="0dp"
             android:layout_height="@dimen/button_small_height"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/custom_button"
+            android:layout_weight="1"
+            android:background="@drawable/button_primary"
+            android:letterSpacing="0.0"
+            android:padding="@dimen/button_padding"
             android:text="@string/chkout_place_order"
             android:textColor="@color/app_white"
-            android:textSize="@dimen/button_small_text_size" />
+            android:textSize="@dimen/button_small_text_size"
+            app:backgroundTint="@null" />
 
     </LinearLayout>
 

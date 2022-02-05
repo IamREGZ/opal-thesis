@@ -16,6 +16,9 @@ class WrapperLinearLayoutManager(
         } catch (e: IndexOutOfBoundsException) {
             // Log the exception
             e.printStackTrace()
+        } catch (e: RuntimeException) {
+            // Log the exception
+            e.printStackTrace()
         }
     }  // end of onLayoutChildren method
 

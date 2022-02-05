@@ -41,8 +41,7 @@ class ChangePasswordFragment : Fragment() {
                 TextUtils.isEmpty(etCurrentPass.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
                     mUtility.showSnackBar(
-                        requireActivity(),
-                        resources.getString(R.string.err_blank_current_password),
+                        requireActivity(), getString(R.string.err_blank_current_password),
                         true
                     )
                     false  // return false
@@ -52,8 +51,7 @@ class ChangePasswordFragment : Fragment() {
                 TextUtils.isEmpty(etNewPass.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
                     mUtility.showSnackBar(
-                        requireActivity(),
-                        resources.getString(R.string.err_blank_new_password),
+                        requireActivity(), getString(R.string.err_blank_new_password),
                         true
                     )
                     false  // return false
@@ -63,8 +61,7 @@ class ChangePasswordFragment : Fragment() {
                 TextUtils.isEmpty(etConfNewPass.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
                     mUtility.showSnackBar(
-                        requireActivity(),
-                        resources.getString(R.string.err_blank_confirm_password),
+                        requireActivity(), getString(R.string.err_blank_confirm_password),
                         true
                     )
                     false  // return false
@@ -75,8 +72,7 @@ class ChangePasswordFragment : Fragment() {
                         etConfNewPass.text.toString().trim { it <= ' ' } -> {
                     // Display an error message
                     mUtility.showSnackBar(
-                        requireActivity(),
-                        resources.getString(R.string.err_passwords_not_match),
+                        requireActivity(), getString(R.string.err_passwords_not_match),
                         true
                     )
                     false  // return false
@@ -94,9 +90,8 @@ class ChangePasswordFragment : Fragment() {
             if (validateChangePass()) {
                 // Display the loading message
                 mUtility.showProgressDialog(
-                    requireContext(),
-                    requireActivity(),
-                    resources.getString(R.string.msg_please_wait)
+                    requireContext(), requireActivity(),
+                    getString(R.string.msg_please_wait)
                 )
 
                 // Get the inputted current and new password
@@ -119,6 +114,9 @@ class ChangePasswordFragment : Fragment() {
 
                             // Hide the loading message
                             mUtility.hideProgressDialog()
+
+                            // Clear the change password fields
+                            clearChangePassword()
 
                             // Display the error message
                             mUtility.showSnackBar(
@@ -144,8 +142,7 @@ class ChangePasswordFragment : Fragment() {
 
                     // Display a Toast message
                     mUtility.toastMessage(
-                        requireContext(),
-                        resources.getString(R.string.msg_pwd_change_success)
+                        requireContext(), getString(R.string.msg_pwd_change_success)
                     )
 
                     // Sends the user back to the previous fragment
@@ -154,14 +151,25 @@ class ChangePasswordFragment : Fragment() {
                     // If it is not successful
                     mUtility.hideProgressDialog()  // Hide the loading message
 
+                    clearChangePassword()  // Clear the change password fields
+
                     // Display the error message
                     mUtility.showSnackBar(
-                        requireActivity(),
-                        task.exception!!.message.toString(),
+                        requireActivity(), task.exception!!.message.toString(),
                         true
                     )
                 }
             }  // end of updatePassword
     }  // end of changePassword method
+
+    // Function to clear the change password text fields for security purposes
+    private fun clearChangePassword() {
+        with(binding) {
+            if (etCurrentPass.text!!.isNotEmpty()) etCurrentPass.text!!.clear()
+            if (etNewPass.text!!.isNotEmpty()) etNewPass.text!!.clear()
+            if (etConfNewPass.text!!.isNotEmpty()) etConfNewPass.text!!.clear()
+        }  // end of with(binding)
+
+    }  // end of clearChangePassword method
 
 }  // end of ChangePasswordFragment class

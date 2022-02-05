@@ -87,26 +87,12 @@
                 android:id="@+id/tv_default_lbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/small_mrg_pd"
                 android:background="@drawable/outlined_textview_label"
                 android:paddingStart="@dimen/addr_label_size_x"
                 android:paddingTop="@dimen/addr_label_size_y"
                 android:paddingEnd="@dimen/addr_label_size_x"
                 android:paddingBottom="@dimen/addr_label_size_y"
                 android:text="@string/addr_default"
-                android:textColor="@color/primaryAccentColor"
-                android:textSize="@dimen/main_text_size" />
-
-            <edu.cccdci.opal.utils.MainTextView
-                android:id="@+id/tv_pickup_lbl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/outlined_textview_label"
-                android:paddingStart="@dimen/addr_label_size_x"
-                android:paddingTop="@dimen/addr_label_size_y"
-                android:paddingEnd="@dimen/addr_label_size_x"
-                android:paddingBottom="@dimen/addr_label_size_y"
-                android:text="@string/addr_pickup"
                 android:textColor="@color/primaryAccentColor"
                 android:textSize="@dimen/main_text_size" />
 

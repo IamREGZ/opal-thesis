@@ -66,7 +66,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener {
 
                     // Load the current profile picture
                     GlideLoader(this@UserProfileActivity)
-                        .loadPicture(profilePic, ivUserProfilePhoto)
+                        .loadImage(profilePic, ivUserProfilePhoto)
 
                 }  // end of with(userInfo)
             }  // end of if
@@ -196,7 +196,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener {
 
                 // Sets the ImageView to the selected image file
                 GlideLoader(this@UserProfileActivity)
-                    .loadPicture(
+                    .loadImage(
                         mSelectedImageFileURI!!,
                         binding.ivUserProfilePhoto
                     )

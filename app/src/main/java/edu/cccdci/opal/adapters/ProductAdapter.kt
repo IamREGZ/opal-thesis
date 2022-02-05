@@ -40,7 +40,7 @@ class ProductAdapter(
             market.text = product.market[Constants.NAME]
 
             // Load the product image
-            GlideLoader(context).loadPicture(product.image, image)
+            GlideLoader(context).loadImage(product.image, image)
 
             // Actions when the product card is clicked
             productCard.setOnClickListener {

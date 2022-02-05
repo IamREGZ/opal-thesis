@@ -2,11 +2,11 @@ package edu.cccdci.opal.utils
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatButton
+import com.google.android.material.button.MaterialButton
 
 class MainButton(
     context: Context, attrs: AttributeSet
-) : AppCompatButton(context, attrs), FontImplementation {
+) : MaterialButton(context, attrs), FontImplementation {
 
     init {
         // Initiates the custom font change

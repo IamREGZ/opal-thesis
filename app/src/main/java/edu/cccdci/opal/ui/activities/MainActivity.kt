@@ -242,7 +242,7 @@ class MainActivity : UtilityClass(),
 
         // Change the profile picture with the image in the Cloud Storage
         GlideLoader(this@MainActivity)
-            .loadPicture(signedInProfilePic, navProfile)
+            .loadImage(signedInProfilePic, navProfile)
 
         // Hide some sidebar menu items depending on user's role
         hideBasedOnUserRole(binding.nvSidebar.menu, signedInUserRole)

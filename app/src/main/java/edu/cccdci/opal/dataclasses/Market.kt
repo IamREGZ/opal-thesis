@@ -9,10 +9,14 @@ data class Market(
     val id: String = "",
     val name: String = "",
     val image: String = "",
+    val wetMarket: String = "",
     val detailAdd: String = "",
     val barangay: String = "",
     val city: String = "",
     val province: String = "",
+    val postal: Int = 0,
+    val category: Int = 0,
+    val otherCat: String = "",
     val vendorID: String = "",
-    val deliveryFee: Double = 0.0
+    val deliveryFee: Double = 20.0
 ) : Parcelable

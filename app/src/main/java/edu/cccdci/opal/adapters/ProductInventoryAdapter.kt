@@ -69,7 +69,7 @@ class ProductInventoryAdapter(
             )
 
             // Load the product image
-            GlideLoader(context).loadPicture(product.image, pdInvImage)
+            GlideLoader(context).loadImage(product.image, pdInvImage)
 
             // Actions when the more button is clicked
             pdInvMoreBtn.setOnClickListener { view ->

@@ -84,6 +84,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+        <!-- Vendor Registration Activity (For Customers Only) -->
+        <activity
+            android:name=".ui.activities.MarketEditorActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
         <!-- Product Inventory Activity (For Vendors Only) -->
         <activity
             android:name=".ui.activities.ProductActivity"
@@ -125,6 +132,7 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
     </application>
 
 </manifest>

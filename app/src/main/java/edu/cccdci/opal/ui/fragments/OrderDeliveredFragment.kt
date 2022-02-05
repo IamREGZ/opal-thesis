@@ -8,16 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.adapters.OrderSalesAdapter
-import edu.cccdci.opal.databinding.FragmentOrderCompletedBinding
+import edu.cccdci.opal.databinding.FragmentOrderDeliveredBinding
 import edu.cccdci.opal.dataclasses.Order
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 
-class OrderCompletedFragment(
+class OrderDeliveredFragment(
     private val isVendor: Boolean
 ) : Fragment() {
 
-    private lateinit var binding: FragmentOrderCompletedBinding
+    private lateinit var binding: FragmentOrderDeliveredBinding
     private var orderSalesAdapter: OrderSalesAdapter? = null
 
     override fun onCreateView(
@@ -25,14 +25,14 @@ class OrderCompletedFragment(
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentOrderCompletedBinding.inflate(inflater)
+        binding = FragmentOrderDeliveredBinding.inflate(inflater)
 
         // Create a Builder for FirestoreRecyclerOptions
         val options = FirestoreRecyclerOptions.Builder<Order>()
             // Gets all the documents from orders collection
             .setQuery(
                 FirestoreClass().getOrderQuery(
-                    this@OrderCompletedFragment, isVendor
+                    this@OrderDeliveredFragment, isVendor
                 ),
                 Order::class.java
             ).build()
@@ -45,7 +45,7 @@ class OrderCompletedFragment(
 
             // Create an object of Order/Sales History Adapter
             orderSalesAdapter = OrderSalesAdapter(
-                this@OrderCompletedFragment, requireContext(), isVendor,
+                this@OrderDeliveredFragment, requireContext(), isVendor,
                 options
             )
             // Sets the adapter of Order/Sales History (Completed) RecyclerView
@@ -73,4 +73,4 @@ class OrderCompletedFragment(
             orderSalesAdapter!!.stopListening()
     }  // end of onDestroyView method
 
-}  // end of OrderCompletedFragment class
+}  // end of OrderDeliveredFragment class

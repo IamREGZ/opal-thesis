@@ -44,7 +44,7 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
                         tvPdMarket.text = market[Constants.NAME]
 
                         // Load the product image
-                        GlideLoader(this@ProductDescActivity).loadPicture(
+                        GlideLoader(this@ProductDescActivity).loadImage(
                             image, ivPdImage
                         )
                     }  // end of with(mProdInfo)

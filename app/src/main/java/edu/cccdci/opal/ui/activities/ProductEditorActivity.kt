@@ -68,7 +68,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                 /* If the Others is selected, display the Custom Unit text
                  * field to specify the measurement
                  */
-                if (mUnitList[position] == Constants.PRODUCT_UNIT_OTHERS) {
+                if (mUnitList[position] == Constants.ITEM_OTHERS) {
                     tilProdEditCustomUnit.visibility = View.VISIBLE
                 }
                 // Hide the text field and clear the text
@@ -112,7 +112,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                 }
 
                 // Saves product information
-                R.id.btn_checkout -> saveProductChanges()
+                R.id.btn_submit_product -> saveProductChanges()
             }  // end of when
 
         }  // end of if
@@ -121,8 +121,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
 
     // Function to check if storage permission is granted or denied
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
+        requestCode: Int, permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -161,9 +160,8 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
 
                 // Sets the ImageView to the selected image file
                 GlideLoader(this@ProductEditorActivity)
-                    .loadPicture(
-                        mSelectedImageFileURI!!,
-                        binding.ivProductImage
+                    .loadImage(
+                        mSelectedImageFileURI!!, binding.ivProductImage
                     )
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -194,7 +192,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                 actvProdEditUnit.setText(mProdInfo!!.unit)
             } else {
                 // If not in the list, set the spinner text into "Others"
-                actvProdEditUnit.setText(Constants.PRODUCT_UNIT_OTHERS)
+                actvProdEditUnit.setText(Constants.ITEM_OTHERS)
                 // Make the EditText visible
                 tilProdEditCustomUnit.visibility = View.VISIBLE
                 // Place the custom unit here
@@ -202,7 +200,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
             }
 
             // Load the product image
-            GlideLoader(this@ProductEditorActivity).loadPicture(
+            GlideLoader(this@ProductEditorActivity).loadImage(
                 mProdInfo!!.image, ivProductImage
             )
 
@@ -291,7 +289,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                  * the Custom Unit field is empty
                  */
                 actvProdEditUnit.text.toString()
-                    .trim { it <= ' ' } == Constants.PRODUCT_UNIT_OTHERS &&
+                    .trim { it <= ' ' } == Constants.ITEM_OTHERS &&
                         TextUtils.isEmpty(etProdEditCustomUnit.text.toString()
                             .trim { it <= ' ' }) -> {
                     // Display an error message
@@ -389,7 +387,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
     }  // end of saveProductChanges method
 
     /* Function to prompt that the user has successfully uploaded the image.
-     * And then adds the product information.
+     * And then adds the rest of the product information.
      */
     fun imageUploadSuccess(imageURL: String) {
         // Store the image URL of Product Image
@@ -416,7 +414,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
              * Specify Custom Unit field
              */
             val unitMeasurement = if (actvProdEditUnit.text
-                    .toString().trim { it <= ' ' } != Constants.PRODUCT_UNIT_OTHERS
+                    .toString().trim { it <= ' ' } != Constants.ITEM_OTHERS
             )
                 actvProdEditUnit.text.toString().trim { it <= ' ' }
             else
@@ -482,7 +480,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
              * store the text in Product Unit spinner.
              */
             val productUnit = if (actvProdEditUnit.text.toString()
-                    .trim { it <= ' ' } == Constants.PRODUCT_UNIT_OTHERS
+                    .trim { it <= ' ' } == Constants.ITEM_OTHERS
             )
                 etProdEditCustomUnit.text.toString().trim { it <= ' ' }
             else

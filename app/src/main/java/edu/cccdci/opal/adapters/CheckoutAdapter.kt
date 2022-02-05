@@ -49,7 +49,7 @@ class CheckoutAdapter(
             )
 
             // Add also the product image
-            GlideLoader(context).loadPicture(product.image, chkProdImage)
+            GlideLoader(context).loadImage(product.image, chkProdImage)
         }  // end of setItemData method
 
     }  // end of CheckoutViewHolder class

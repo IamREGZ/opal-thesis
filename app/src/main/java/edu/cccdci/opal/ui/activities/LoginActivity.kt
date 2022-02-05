@@ -37,40 +37,32 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
         if (view != null) {
             when (view.id) {
                 // Logins the user and sends to home page
-                R.id.btn_log_in -> {
-                    loginUser()
-                }
+                R.id.btn_log_in -> loginUser()
 
                 // Open the Forgot Password Activity
-                R.id.tv_forgot_password -> {
-                    startActivity(
-                        Intent(
-                            this@LoginActivity,
-                            ForgotPasswordActivity::class.java
-                        )
+                R.id.tv_forgot_password -> startActivity(
+                    Intent(
+                        this@LoginActivity, ForgotPasswordActivity::class.java
                     )
-                }
+                )
 
                 // Open the Register Activity
-                R.id.tv_register -> {
-                    startActivity(
-                        Intent(
-                            this@LoginActivity,
-                            RegisterActivity::class.java
-                        )
+                R.id.tv_register -> startActivity(
+                    Intent(
+                        this@LoginActivity, RegisterActivity::class.java
                     )
-                }
+                )
             }  // end of when
 
         }  // end of if
 
     }  // end of onClick method
 
-    // Operations to do when this activity is active again
-    override fun onResume() {
-        super.onResume()
+    // Operations to do when this activity is visible again
+    override fun onRestart() {
+        super.onRestart()
         clearLoginFields()  // Clears the login fields for security purposes
-    }  // end of onResume method
+    }  // end of onRestart method
 
     // Override the function to make the user double press back to exit
     override fun onBackPressed() {
@@ -85,8 +77,7 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
                 TextUtils.isEmpty(etLoginEmail.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
                     showSnackBar(
-                        this@LoginActivity,
-                        resources.getString(R.string.err_blank_email),
+                        this@LoginActivity, getString(R.string.err_blank_email),
                         true
                     )
                     false  // return false
@@ -96,8 +87,7 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
                 TextUtils.isEmpty(etLoginPass.text.toString().trim { it <= ' ' }) -> {
                     // Display an error message
                     showSnackBar(
-                        this@LoginActivity,
-                        resources.getString(R.string.err_blank_password),
+                        this@LoginActivity, getString(R.string.err_blank_password),
                         true
                     )
                     false  // return false
@@ -116,9 +106,8 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
             if (validateLogin()) {
                 // Display the loading message
                 showProgressDialog(
-                    this@LoginActivity,
-                    this@LoginActivity,
-                    resources.getString(R.string.msg_logging_in)
+                    this@LoginActivity, this@LoginActivity,
+                    getString(R.string.msg_logging_in)
                 )
 
                 // Get the inputted email and password
@@ -165,15 +154,13 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
         finish()  // Closes the current activity
     }  // end of logInSuccessPrompt method
 
-    // Function to clear the login text fields
+    // Function to clear the login text fields for security purposes
     private fun clearLoginFields() {
         with(binding) {
-            if (etLoginEmail.text!!.isNotEmpty())
-                etLoginEmail.text!!.clear()
+            if (etLoginEmail.text!!.isNotEmpty()) etLoginEmail.text!!.clear()
+            if (etLoginPass.text!!.isNotEmpty()) etLoginPass.text!!.clear()
+        }  // end of with(binding)
 
-            if (etLoginPass.text!!.isNotEmpty())
-                etLoginPass.text!!.clear()
-        }
     }  // end of clearLoginFields method
 
 }  // end of LoginActivity class

@@ -38,8 +38,7 @@ class DeleteAccountFragment : Fragment() {
                 if (password.isEmpty()) {
                     // Error if password field is empty
                     mUtility.showSnackBar(
-                        requireActivity(),
-                        resources.getString(R.string.err_blank_password),
+                        requireActivity(), getString(R.string.err_blank_password),
                         true
                     )
                 } else {
@@ -57,9 +56,7 @@ class DeleteAccountFragment : Fragment() {
     private fun verifyCredentials(password: String) {
         // Display the loading message
         mUtility.showProgressDialog(
-            requireContext(),
-            requireActivity(),
-            resources.getString(R.string.msg_please_wait)
+            requireContext(), requireActivity(), getString(R.string.msg_please_wait)
         )
 
         // Get credentials of the current user
@@ -80,13 +77,12 @@ class DeleteAccountFragment : Fragment() {
                     // Wrong credentials
                     mUtility.hideProgressDialog()  // Hide the loading message
 
-                    // Clear the password field
+                    // Clear the password field for security purposes
                     binding.etDelAccPass.text!!.clear()
 
                     // Display the error message
                     mUtility.showSnackBar(
-                        requireActivity(),
-                        task.exception!!.message.toString(),
+                        requireActivity(), task.exception!!.message.toString(),
                         true
                     )
                 }
@@ -123,10 +119,12 @@ class DeleteAccountFragment : Fragment() {
                     // If it is not successful
                     mUtility.hideProgressDialog()  // Hide the loading message
 
+                    // Clear the password field for security purposes
+                    binding.etDelAccPass.text!!.clear()
+
                     // Display the error message
                     mUtility.showSnackBar(
-                        requireActivity(),
-                        task.exception!!.message.toString(),
+                        requireActivity(), task.exception!!.message.toString(),
                         true
                     )
                 }

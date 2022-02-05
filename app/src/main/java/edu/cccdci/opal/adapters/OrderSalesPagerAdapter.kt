@@ -18,11 +18,10 @@ class OrderSalesPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> OrderPendingFragment(isVendor)
-            1 -> OrderDeliverFragment(isVendor)
-            2 -> OrderCompletedFragment(isVendor)
+            1 -> OrderToDeliverFragment(isVendor)
+            2 -> OrderDeliveredFragment(isVendor)
             3 -> OrderCancelledFragment(isVendor)
             4 -> OrderReturnFragment(isVendor)
-            5 -> OrderFailedFragment(isVendor)
             else -> Fragment()
         }
     }  // end of createFragment method

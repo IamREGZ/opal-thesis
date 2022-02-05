@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.fragments.OrderDeliverFragment">
+    tools:context=".ui.fragments.OrderDeliveredFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_order_to_deliver"
+        android:id="@+id/rv_order_completed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" />

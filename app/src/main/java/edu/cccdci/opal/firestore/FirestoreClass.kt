@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -161,18 +162,18 @@ class FirestoreClass {
                     // In User Profile Activity, it sends the user to the home page
                     is UserProfileActivity -> activity.userInfoChangedPrompt()
 
-                    // Same goes with Become Vendor Activity
-                    is BecomeVendorActivity -> activity.upgradedToVendorPrompt()
+                    // Same goes with Market Editor Activity (from addMarket method)
+                    is MarketEditorActivity -> activity.marketSavedPrompt()
                 }
             }
             // If it failed
             .addOnFailureListener { e ->
                 /* Closes the loading message in the User Profile Activity
-                 * or Become Vendor Activity
+                 * or Market Editor Activity
                  */
                 when (activity) {
                     is UserProfileActivity -> activity.hideProgressDialog()
-                    is BecomeVendorActivity -> activity.hideProgressDialog()
+                    is MarketEditorActivity -> activity.hideProgressDialog()
                 }
 
                 // Log the error
@@ -219,9 +220,11 @@ class FirestoreClass {
 
     // Function to upload the image to Cloud Storage
     fun uploadImageToCloud(activity: Activity, imageFileURI: Uri?) {
+        // Store the string template for image file, depending on the origin activity
         val template: String = when (activity) {
             is UserProfileActivity -> Constants.USER_PROFILE_IMAGE_TEMP
             is ProductEditorActivity -> Constants.PRODUCT_IMAGE_TEMP
+            is MarketEditorActivity -> Constants.MARKET_IMAGE_TEMP
             else -> ""
         }
 
@@ -256,27 +259,33 @@ class FirestoreClass {
                                 .imageUploadSuccess(uri.toString())
 
                             /* In the Product Editor Activity, it will be stored
-                             * in mProductImageURL
+                             * in mProductImageURL.
                              */
                             is ProductEditorActivity -> activity
+                                .imageUploadSuccess(uri.toString())
+
+                            /* In the Market Editor Activity, it will be stored
+                             * in mMarketImageURL.
+                             */
+                            is MarketEditorActivity -> activity
                                 .imageUploadSuccess(uri.toString())
                         }
                     }
             }
             // If failed
             .addOnFailureListener { exception ->
-                /* Closes the loading message in the User Profile Activity
-                 * or Product Editor Activity
+                /* Closes the loading message in the User Profile Activity,
+                 * Product Editor Activity, or Market Editor Activity
                  */
                 when (activity) {
                     is UserProfileActivity -> activity.hideProgressDialog()
                     is ProductEditorActivity -> activity.hideProgressDialog()
+                    is MarketEditorActivity -> activity.hideProgressDialog()
                 }
 
                 // Log the error
                 Log.e(
-                    activity.javaClass.simpleName,
-                    exception.message,
+                    activity.javaClass.simpleName, exception.message,
                     exception
                 )
             } // end of sRef
@@ -284,7 +293,7 @@ class FirestoreClass {
     }  // end of uploadImageToCloud method
 
     // Function to retrieve province list data from Cloud Firestore
-    fun getProvinces(activity: AddressEditActivity) {
+    fun getProvinces(activity: Activity) {
         // Access the collection named provinces
         mFSInstance.collection(Constants.PROVINCES)
             // Access the document that serves as container for province data (DOC-PRV)
@@ -297,13 +306,17 @@ class FirestoreClass {
                 Log.i(activity.javaClass.simpleName, document.toString())
 
                 // Retrieve the result. If the document is null, return an empty list.
-                val provinces = if (document != null)
+                val provinces = if (document != null && document.exists())
                     document.toObject(Province::class.java)!!.provinceList
                 else
                     listOf()
 
                 // Proceed to store the retrieved list of provinces
-                activity.retrieveProvinces(provinces)
+                when (activity) {
+                    is AddressEditActivity -> activity.retrieveProvinces(provinces)
+
+                    is MarketEditorActivity -> activity.retrieveProvinces(provinces)
+                }
             }
             // If failed
             .addOnFailureListener { e ->
@@ -317,7 +330,7 @@ class FirestoreClass {
     }  // end of getProvinces method
 
     // Function to retrieve city/municipality list data from Cloud Firestore
-    fun getCities(activity: AddressEditActivity, provID: String) {
+    fun getCities(activity: Activity, provID: String) {
         // Access the collection named provinces
         mFSInstance.collection(Constants.PROVINCES)
             // Access the document named by selected province ID
@@ -334,13 +347,17 @@ class FirestoreClass {
                 Log.i(activity.javaClass.simpleName, document.toString())
 
                 // Retrieve the result. If the document is null, return an empty list.
-                val cities = if (document != null)
+                val cities = if (document != null && document.exists())
                     document.toObject(City::class.java)!!.cityList
                 else
                     listOf()
 
                 // Proceed to store the retrieved list of cities/municipalities
-                activity.retrieveCities(cities)
+                when (activity) {
+                    is AddressEditActivity -> activity.retrieveCities(cities)
+
+                    is MarketEditorActivity -> activity.retrieveCities(cities)
+                }
             }
             // If failed
             .addOnFailureListener { e ->
@@ -374,7 +391,7 @@ class FirestoreClass {
                 Log.i(context.javaClass.simpleName, document.toString())
 
                 // Store the barangay list if the result is not null
-                if (document != null) {
+                if (document != null && document.exists()) {
                     barangays.addAll(
                         document.toObject(CityBarangay::class.java)!!.barangays
                     )
@@ -439,12 +456,11 @@ class FirestoreClass {
             .document(getCurrentUserID())
             // Access the collection named addresses
             .collection(Constants.ADDRESSES)
-            // First, order the documents by default first, descending (true first)
+            // Order the documents by default, descending (true first)
             .orderBy(Constants.DEFAULT_ADDR, Query.Direction.DESCENDING)
-            // Next, order the documents by pickup field, descending (true first)
-            .orderBy(Constants.PICKUP_ADDR, Query.Direction.DESCENDING)
     }  // end of getAddressQuery method
 
+    // Function to search for user address set as default
     fun selectDefaultAddress(activity: CheckoutActivity) {
         // Access the collection named users
         mFSInstance.collection(Constants.USERS)
@@ -559,7 +575,7 @@ class FirestoreClass {
             .set(product, SetOptions.merge())
             // If it is successful
             .addOnSuccessListener {
-                // Prompt the user that the product was savec
+                // Prompt the user that the product was saved
                 activity.productSavedPrompt()
             }
             // If it failed
@@ -618,10 +634,11 @@ class FirestoreClass {
                 ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_UNLISTED)
 
                 /* The default query, get all the documents where the status
-                 * code is equal to 1 (In Stock) and limit the number of
-                 * document retrievals to 20.
+                 * code is equal to 1 (In Stock), the stock is greater than 0,
+                 * and limit the number of document retrievals to 20.
                  */
                 else -> whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
+                    .whereGreaterThan(Constants.STOCK, 0)
                     .limit(20)
             }  // end of when
 
@@ -749,6 +766,43 @@ class FirestoreClass {
             }  // end of mFSInstance
     }  // end of deleteProduct method
 
+    // Function to get the document reference of market for ID generation
+    fun getMarketReference(): DocumentReference {
+        return mFSInstance.collection(Constants.MARKETS).document()
+    }  // end of getMarketReference method
+
+    // Function to add market data to Cloud Firestore
+    fun addMarket(activity: MarketEditorActivity, market: Market) {
+        // Access the collection named markets. If none, Firestore will create it for you.
+        mFSInstance.collection(Constants.MARKETS)
+            // Access the document named by market ID. If none, Firestore will create it for you.
+            .document(market.id)
+            // Sets the values in the market document and merge with the current object
+            .set(market, SetOptions.merge())
+            // If it is successful
+            .addOnSuccessListener {
+                // Delay for 1.5 seconds to give way for Firestore's write operation
+                android.os.Handler(Looper.getMainLooper()).postDelayed({
+                    // Proceed to update current user's vendor status
+                    updateUserProfileData(
+                        activity, hashMapOf(Constants.VENDOR to true)
+                    )
+                }, 1500)
+            }
+            // If it failed
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()  // Hide the loading message
+
+                // Log the error
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "There was an error saving the market data.",
+                    e
+                )
+            }  // end of mFSInstance
+
+    }  // end of addMarket method
+
     // Function to get the query statement for market collection
     fun getMarketQuery(): Query {
         // Access the collection named markets
@@ -798,6 +852,39 @@ class FirestoreClass {
                 )
             }  // end of mFSInstance
     }  // end of retrieveMarket method
+
+    // Function to update product data from Cloud Firestore
+    fun updateMarket(
+        activity: Activity, marketID: String, marketHashMap: HashMap<String, Any>
+    ) {
+        // Access the collection named markets
+        mFSInstance.collection(Constants.MARKETS)
+            // Access the document named by market ID
+            .document(marketID)
+            // Update the values of the specified field
+            .update(marketHashMap)
+            // If it is successful
+            .addOnSuccessListener {
+                // In Market Editor Activity, it sends the user back to home page
+                if (activity is MarketEditorActivity) {
+                    activity.marketSavedPrompt()
+                }
+            }
+            // If it failed
+            .addOnFailureListener { e ->
+                // Closes the loading message in Market Editor Activity
+                if (activity is MarketEditorActivity) {
+                    activity.hideProgressDialog()
+                }
+
+                // Log the error
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "There was an error update the market data.",
+                    e
+                )
+            }
+    }  // end of updateMarket method
 
     // Function to update user's cart in Firestore Database
     fun updateCart(
@@ -930,49 +1017,48 @@ class FirestoreClass {
              * customer ID is equal to the current user ID.
              */
             is OrderPendingFragment -> orderRef.whereEqualTo(
-                "${Constants.STATUS}.${Constants.CODE}",
-                Constants.ORDER_PENDING_CODE
+                Constants.STATUS, Constants.ORDER_PENDING_CODE
             ).whereEqualTo(roleKey, getCurrentUserID())
 
             /* To get all the orders that are on delivery, get all the
-             * documents where the status code is equal to 1 (To Deliver),
-             * and the customer ID is equal to the current user ID.
+             * documents where the status code is either 1 (To Deliver)
+             * or 2 (Out for Delivery), and the customer ID is equal to
+             * the current user ID.
              */
-            is OrderDeliverFragment -> orderRef.whereEqualTo(
-                "${Constants.STATUS}.${Constants.CODE}", 1
+            is OrderToDeliverFragment -> orderRef.whereGreaterThanOrEqualTo(
+                Constants.STATUS, Constants.ORDER_TO_DELIVER_CODE
+            ).whereLessThanOrEqualTo(
+                Constants.STATUS, Constants.ORDER_OFD_CODE
             ).whereEqualTo(roleKey, getCurrentUserID())
+                .orderBy(Constants.STATUS, Query.Direction.DESCENDING)
 
             /* To get all the orders that are completed, get all the
-             * documents where the status code is equal to 2 (Completed),
+             * documents where the status code is equal to 3 (Delivered),
              * and the customer ID is equal to the current user ID.
              */
-            is OrderCompletedFragment -> orderRef.whereEqualTo(
-                "${Constants.STATUS}.${Constants.CODE}", 2
+            is OrderDeliveredFragment -> orderRef.whereEqualTo(
+                Constants.STATUS, Constants.ORDER_DELIVERED_CODE
             ).whereEqualTo(roleKey, getCurrentUserID())
 
             /* To get all the orders that are cancelled, get all the
-             * documents where the status code is equal to 3 (Cancelled),
+             * documents where the status code is equal to 4 (Cancelled),
              * and the customer ID is equal to the current user ID.
              */
             is OrderCancelledFragment -> orderRef.whereEqualTo(
-                "${Constants.STATUS}.${Constants.CODE}", 3
+                Constants.STATUS, Constants.ORDER_CANCELLED_CODE
             ).whereEqualTo(roleKey, getCurrentUserID())
 
             /* To get all the orders that are returned, get all the
-             * documents where the status code is equal to 4 (Return/Refund),
+             * documents where the status code is either 5 (Return/Refund
+             * Requested), 6 (To Return/Refund), or 7 (Returned);
              * and the customer ID is equal to the current user ID.
              */
-            is OrderReturnFragment -> orderRef.whereEqualTo(
-                "${Constants.STATUS}.${Constants.CODE}", 4
+            is OrderReturnFragment -> orderRef.whereGreaterThanOrEqualTo(
+                Constants.STATUS, Constants.ORDER_RETURN_REQUEST_CODE
+            ).whereLessThanOrEqualTo(
+                Constants.STATUS, Constants.ORDER_RETURNED_CODE
             ).whereEqualTo(roleKey, getCurrentUserID())
-
-            /* To get all the orders that are failed, get all the
-             * documents where the status code is equal to 5 (Failed),
-             * and the customer ID is equal to the current user ID.
-             */
-            is OrderFailedFragment -> orderRef.whereEqualTo(
-                "${Constants.STATUS}.${Constants.CODE}", 5
-            ).whereEqualTo(roleKey, getCurrentUserID())
+                .orderBy(Constants.STATUS, Query.Direction.DESCENDING)
 
             /* The default query, get all the documents where the customer
              * ID is equal to the current user ID.
@@ -984,9 +1070,46 @@ class FirestoreClass {
 
         // Return the query, ordered by the order date, descending
         return orderQuery.orderBy(
-            "${Constants.DATES}.${Constants.ORDER_DATE_AND_TIME}",
+            "${Constants.DATES}.${Constants.ORDER_DATE}",
             Query.Direction.DESCENDING
         )
     }  // end of getOrderQuery method
+
+    // Function to update Customer Order document in Firestore Database
+    fun updateOrder(
+        fragment: Fragment, orderID: String, orderHashMap: HashMap<String, Any>,
+        util: UtilityClass
+    ) {
+        // Access the collection named orders
+        mFSInstance.collection(Constants.CUSTOMER_ORDERS)
+            // Access the document named by the current order ID
+            .document(orderID)
+            // Update the values of the specified field
+            .update(orderHashMap)
+            // If it is successful
+            .addOnSuccessListener {
+                /* In Order Details Fragment, either the user will stay at the
+                 * said fragment if the status is Out for Delivery and the button
+                 * clicked was Mark as Paid, or will go to the previous fragment.
+                 */
+                if (fragment is OrderDetailsFragment) {
+                    fragment.orderUpdatedPrompt()
+                }
+            }
+            // If it failed
+            .addOnFailureListener { e ->
+                // Closes the loading message in the Order Details Fragment
+                if (fragment is OrderDetailsFragment) {
+                    util.hideProgressDialog()
+                }
+
+                // Log the error
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "There was an error updating the order data.",
+                    e
+                )
+            }  // end of mFSInstance
+    }  // end of updateOrder method
 
 }  // end of FirestoreClass
