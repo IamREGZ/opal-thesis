@@ -14,11 +14,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.Product
 import edu.cccdci.opal.ui.activities.ProductDescActivity
+import edu.cccdci.opal.ui.fragments.HomeFragment
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.GlideLoader
 
 class ProductAdapter(
-    val context: Context,
+    private val context: Context,
+    private val fragment: HomeFragment,
     options: FirestoreRecyclerOptions<Product>
 ) : FirestoreRecyclerAdapter<Product, ProductAdapter.ProductViewHolder>(options) {
 
@@ -40,7 +42,7 @@ class ProductAdapter(
             market.text = product.market[Constants.NAME]
 
             // Load the product image
-            GlideLoader(context).loadImage(product.image, image)
+            GlideLoader(context, fragment).loadImage(product.image, image)
 
             // Actions when the product card is clicked
             productCard.setOnClickListener {

@@ -680,7 +680,7 @@ class FirestoreClass {
 
     // Function to update product data from Cloud Firestore
     fun updateProduct(
-        activity: Activity, productID: String, productHashMap: HashMap<String, Any>,
+        context: Context, productID: String, productHashMap: HashMap<String, Any>,
         fragment: Fragment? = null
     ) {
         // Access the collection named products
@@ -691,11 +691,11 @@ class FirestoreClass {
             .update(productHashMap)
             // If it is successful
             .addOnSuccessListener {
-                when (activity) {
+                when (context) {
                     /* In Product Editor Activity, it sends the user to the
                      * Product Inventory Activity
                      */
-                    is ProductEditorActivity -> activity.productSavedPrompt()
+                    is ProductEditorActivity -> context.productSavedPrompt()
                 }
 
                 // For fragments only
@@ -718,18 +718,20 @@ class FirestoreClass {
                             ).show()
                         }
                     }  // end of when
+
                 }  // end of if
+
             }
             // If failed
             .addOnFailureListener { e ->
                 // Closes the loading message in the Product Editor Activity
-                when (activity) {
-                    is ProductEditorActivity -> activity.hideProgressDialog()
+                when (context) {
+                    is ProductEditorActivity -> context.hideProgressDialog()
                 }
 
                 // Log the error
                 Log.e(
-                    activity.javaClass.simpleName,
+                    context.javaClass.simpleName,
                     "There was an error updating the product data.",
                     e
                 )
@@ -785,7 +787,11 @@ class FirestoreClass {
                 android.os.Handler(Looper.getMainLooper()).postDelayed({
                     // Proceed to update current user's vendor status
                     updateUserProfileData(
-                        activity, hashMapOf(Constants.VENDOR to true)
+                        activity,
+                        hashMapOf(
+                            Constants.VENDOR to true,
+                            Constants.MARKET_ID to market.id
+                        )
                     )
                 }, 1500)
             }
@@ -824,24 +830,38 @@ class FirestoreClass {
                 /* If the document exists, convert the retrieved document
                  * to object. Otherwise, null.
                  */
-                val market = if (document.exists())
+                val market = if (document != null && document.exists())
                     document.toObject(Market::class.java)!!
                 else
                     null
 
-                /* In Cart Activity, it supplies the market name and delivery fee
-                 * output data.
-                 */
-                if (activity is CartActivity) {
-                    activity.setMarketData(market)
+                when (activity) {
+                    /* In Cart Activity, it supplies the market name and
+                     * delivery fee output data.
+                     */
+                    is CartActivity -> activity.setMarketData(market)
+
+                    /* In My Market Activity, it stores the market object
+                     * in the said activity.
+                     */
+                    is MyMarketActivity -> activity.setUserMarket(market)
                 }
             }
             // If failed
             .addOnFailureListener { e ->
-                // Hide the loading message and exit the Cart Activity
-                if (activity is CartActivity) {
-                    activity.hideProgressDialog()
-                    activity.finish()
+                /* Hide the loading message and exit the activity in
+                 * Cart Activity or My Market Activity
+                 */
+                when (activity) {
+                    is CartActivity -> {
+                        activity.hideProgressDialog()
+                        activity.finish()
+                    }
+
+                    is MyMarketActivity -> {
+                        activity.hideProgressDialog()
+                        activity.finish()
+                    }
                 }
 
                 // Log the error
@@ -851,6 +871,7 @@ class FirestoreClass {
                     e
                 )
             }  // end of mFSInstance
+
     }  // end of retrieveMarket method
 
     // Function to update product data from Cloud Firestore

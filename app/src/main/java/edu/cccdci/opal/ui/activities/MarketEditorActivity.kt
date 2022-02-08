@@ -52,6 +52,28 @@ class MarketEditorActivity : UtilityClass(), View.OnClickListener {
                 R.array.market_categories_list
             )
 
+            // Check if there's an existing parcelable extra info
+            if (intent.hasExtra(Constants.MARKET_INFO)) {
+                // Get the parcelable data from intent
+                mMarketInfo = intent.getParcelableExtra(Constants.MARKET_INFO)
+
+                // Set the top action bar title to "EDIT MARKET"
+                tvMarketEditTitle.text = getString(R.string.tlb_title_edit_market)
+                // Make the Vendor Registration head visibility gone
+                llVendorRegPanel.visibility = View.GONE
+
+                // Make the Vendor T&C Checkbox visibility gone
+                fblVendorTAndC.visibility = View.GONE
+                cbVendorTAndC.isChecked = true
+                cbVendorTAndC.isEnabled = false
+
+                // Prevents NullPointerException
+                if (mMarketInfo != null) {
+                    // Change the respective values in the layout
+                    setUserMarketValues()
+                }
+            }  // end of if
+
             // Prepare the drop down values for market categories
             val categoryAdapter = ArrayAdapter(
                 this@MarketEditorActivity, R.layout.spinner_item,
@@ -110,7 +132,7 @@ class MarketEditorActivity : UtilityClass(), View.OnClickListener {
     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
-                // Change thr market image
+                // Change the market image
                 R.id.ll_market_image_selector -> {
                     // If storage permission access is already granted
                     if (ContextCompat.checkSelfPermission(
@@ -191,11 +213,46 @@ class MarketEditorActivity : UtilityClass(), View.OnClickListener {
                     this@MarketEditorActivity,
                     resources.getString(R.string.err_image_selection_failed)
                 )
-            } // end of try-catch
+            }  // end of try-catch
 
-        } // end of if
+        }  // end of if
 
-    } // end of onActivityResult method
+    }  // end of onActivityResult method
+
+    // Function to store existing user's market data in the respective fields
+    private fun setUserMarketValues() {
+        with(binding) {
+            // Market Name and Parent Wet Market
+            etMktEditName.setText(mMarketInfo!!.name)
+            etMktEditWetMkt.setText(mMarketInfo!!.wetMarket)
+
+            // Set the category position to the current category code
+            mCategoryPos = mMarketInfo!!.category
+            // Then get the text from category list array and set its value
+            actvMktEditCategory.setText(mCategoryList[mCategoryPos])
+
+            /* If the category is "Others," set the Specify Others field
+             * with the specified other category.
+             */
+            if (mCategoryList[mCategoryPos] == Constants.ITEM_OTHERS) {
+                tilMktEditOtherSpec.visibility = View.VISIBLE
+                etMktEditOtherSpec.setText(mMarketInfo!!.otherCat)
+            }
+
+            // Market Address
+            actvMktEditProvince.setText(mMarketInfo!!.province)
+            actvMktEditCtm.setText(mMarketInfo!!.city)
+            actvMktEditBrgy.setText(mMarketInfo!!.barangay)
+            etMktEditPostal.setText(mMarketInfo!!.postal.toString())
+            etMktEditDetails.setText(mMarketInfo!!.detailAdd)
+
+            // Load the market image
+            GlideLoader(this@MarketEditorActivity).loadImage(
+                mMarketInfo!!.image, ivVenMarketImage
+            )
+        }  // end of with(binding)
+
+    }  // end of setUserMarketValues method
 
     // Function to supply the retrieved data for Province Spinner
     fun retrieveProvinces(prvList: List<HashMap<String, String>>) {
@@ -605,8 +662,7 @@ class MarketEditorActivity : UtilityClass(), View.OnClickListener {
              * he/she registers.
              */
             getString(R.string.msg_user_now_vendor)
-        }
-        else {
+        } else {
             /* Show the message that the market's information has successfully
              * modified.
              */

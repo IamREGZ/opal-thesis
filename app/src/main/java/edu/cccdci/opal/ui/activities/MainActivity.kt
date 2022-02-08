@@ -178,7 +178,16 @@ class MainActivity : UtilityClass(),
             )
 
             // Send to User's Market
-            R.id.nav_my_market -> navigateFragment(R.id.home_to_my_market)
+            R.id.nav_my_market -> {
+                // Create an Intent to launch MyMarketActivity
+                val intent = Intent(
+                    this@MainActivity, MyMarketActivity::class.java
+                )
+                // Add market ID data to intent
+                intent.putExtra(Constants.MARKET_ID_DATA, mUserInfo!!.marketID)
+
+                startActivity(intent)  // Opens the vendor's market profile
+            }
 
             // Sends user to Product Inventory
             R.id.nav_products -> startActivity(
@@ -188,8 +197,11 @@ class MainActivity : UtilityClass(),
             // Sends user to Sales History
             R.id.nav_sales_history -> navigateFragment(R.id.home_to_sales_history)
 
-            // Sends user to Sales Insights Page
-            R.id.nav_insights -> navigateFragment(R.id.home_to_insights)
+            // Temporary item
+            R.id.nav_insights -> startActivity(
+                Intent(this@MainActivity, InsightsActivity::class.java)
+            )
+
         }  // end of when
 
         // Closes the drawer layout

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activities.InsightsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tlb_insights_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@color/primaryColorTheme">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_insights_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/tlb_title_paddingStart"
+            android:paddingEnd="0dp"
+            android:text="@string/tlb_title_insights"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/header_text_size" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:columnCount="2"
+        android:padding="@dimen/medium_large_mrg_pd">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/medium_mrg_pd">
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:gravity="center"
+                android:text="@string/insight_total_sales"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_insights_sales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/item_price"
+                android:textColor="@color/secondaryAccentColor"
+                android:textSize="@dimen/large_head_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/medium_mrg_pd">
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:gravity="center"
+                android:text="@string/insight_total_orders"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_insights_orders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero_count"
+                android:textColor="@color/secondaryAccentColor"
+                android:textSize="@dimen/large_head_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/medium_mrg_pd">
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:gravity="center"
+                android:text="@string/insight_regular_customers"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_insights_reg_customers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero_count"
+                android:textColor="@color/secondaryAccentColor"
+                android:textSize="@dimen/large_head_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/medium_mrg_pd">
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:gravity="center"
+                android:text="@string/insight_conversion_rate"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_insights_conversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/percentage_value"
+                android:textColor="@color/secondaryAccentColor"
+                android:textSize="@dimen/large_head_text_size" />
+
+        </LinearLayout>
+
+    </GridLayout>
+
+</LinearLayout>

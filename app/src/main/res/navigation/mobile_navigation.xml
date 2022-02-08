@@ -42,20 +42,10 @@
             android:id="@+id/home_to_privacy"
             app:destination="@id/fragment_privacy" />
 
-        <!-- Home to Your Market -->
-        <action
-            android:id="@+id/home_to_my_market"
-            app:destination="@id/fragment_my_market" />
-
         <!-- Home to Customer Transactions -->
         <action
             android:id="@+id/home_to_sales_history"
             app:destination="@id/fragment_sales_history" />
-
-        <!-- Home to Insights -->
-        <action
-            android:id="@+id/home_to_insights"
-            app:destination="@id/fragment_insights" />
 
     </fragment>
 
@@ -187,12 +177,6 @@
         tools:layout="@layout/fragment_privacy_policy" />
 
     <!-- Fragments for Vendors Only -->
-    <!-- My Market Fragment -->
-    <fragment
-        android:id="@+id/fragment_my_market"
-        android:name="edu.cccdci.opal.ui.fragments.MyMarketFragment"
-        android:label="@string/nav_my_market"
-        tools:layout="@layout/fragment_my_market" />
 
     <!-- Sales History Fragment -->
     <fragment
@@ -208,11 +192,5 @@
 
     </fragment>
 
-    <!-- Insights Fragment -->
-    <fragment
-        android:id="@+id/fragment_insights"
-        android:name="edu.cccdci.opal.ui.fragments.InsightsFragment"
-        android:label="@string/nav_insights"
-        tools:layout="@layout/fragment_insights" />
 
 </navigation>

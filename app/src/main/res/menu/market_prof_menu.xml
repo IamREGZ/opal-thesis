@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- More Details Menu Item -->
+    <item android:id="@+id/popup_mkt_more_details"
+        android:title="@string/my_market_more_details" />
+
+    <!-- Edit Market Menu Item -->
+    <item android:id="@+id/popup_mkt_edit_market"
+        android:title="@string/my_market_edit_market" />
+
+</menu>

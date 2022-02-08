@@ -38,7 +38,9 @@ class MarketsFragment : Fragment() {
             )
 
             // Create an object of Market Adapter
-            marketAdapter = MarketAdapter(requireContext(), options)
+            marketAdapter = MarketAdapter(
+                requireContext(), this@MarketsFragment, options
+            )
 
             // Sets the adapter of Markets RecyclerView
             rvMarkets.adapter = marketAdapter

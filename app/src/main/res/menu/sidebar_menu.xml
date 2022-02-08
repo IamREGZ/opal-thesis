@@ -46,7 +46,7 @@
                 android:icon="@drawable/ic_products"
                 android:title="@string/nav_products" />
 
-            <!-- Customer Transactions Submenu Item -->
+            <!-- Sales History Submenu Item -->
             <item
                 android:id="@+id/nav_sales_history"
                 android:icon="@drawable/ic_sales_history"
@@ -57,6 +57,7 @@
                 android:id="@+id/nav_insights"
                 android:icon="@drawable/ic_insights"
                 android:title="@string/nav_insights" />
+
         </menu>
 
     </item>

@@ -98,13 +98,13 @@ class ProductInventoryAdapter(
                 when (menuItem.itemId) {
                     // Set the current product as unlisted
                     R.id.popup_pd_unlist -> FirestoreClass().updateProduct(
-                        activity, product.id, hashMapOf(Constants.STATUS to 0),
+                        context, product.id, hashMapOf(Constants.STATUS to 0),
                         fragment
                     )
 
                     // Set the current product as in stock
                     R.id.popup_pd_relist -> FirestoreClass().updateProduct(
-                        activity, product.id, hashMapOf(Constants.STATUS to 1),
+                        context, product.id, hashMapOf(Constants.STATUS to 1),
                         fragment
                     )
 

@@ -84,9 +84,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <!-- Vendor Registration Activity (For Customers Only) -->
+        <!-- Market Editor Activity (Vendor Registration for Customers) -->
         <activity
             android:name=".ui.activities.MarketEditorActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- My Market Activity (For Vendors Only) -->
+        <activity
+            android:name=".ui.activities.MyMarketActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- My Market More Activity (More Details of User's Market) -->
+        <activity
+            android:name=".ui.activities.MyMarketDetailsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
@@ -101,6 +115,13 @@
         <!-- Product Editor Activity (For Vendors Only) -->
         <activity
             android:name=".ui.activities.ProductEditorActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- Insights Activity (For Vendors Only) -->
+        <activity
+            android:name=".ui.activities.InsightsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
@@ -132,7 +153,6 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-
     </application>
 
 </manifest>

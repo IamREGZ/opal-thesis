@@ -155,11 +155,14 @@
     <string name="tlb_title_checkout">CHECKOUT</string>
     <string name="tlb_title_payment">PAYMENT METHODS</string>
     <string name="tlb_title_vendor_reg">VENDOR REGISTRATION</string>
+    <string name="tlb_title_my_market">MY MARKET</string>
+    <string name="tlb_title_edit_market">EDIT MARKET</string>
+    <string name="tlb_title_market_details">MARKET DETAILS</string>
+    <string name="tlb_title_insights">SALES INSIGHTS</string>
 
     <!--  Top App Bar  -->
     <string name="my_cart">My Cart</string>
     <string name="messages">Messages</string>
-    <string name="add">Add</string>
 
     <!--  Side Navigation Header  -->
     <string name="nav_profile_full_name">Name Surname</string>
@@ -238,21 +241,13 @@
     <!--  Market Card View  -->
     <string name="market_image">Market Image</string>
     <string name="market_name">Market Name</string>
-    <string name="market_address">%1$s, %2$s, %3$s, %4$s</string>
+    <string name="market_address">%1$s, %2$s, %3$s, %4$s, %5$s %6$d</string>
     <string name="market_location">Market Location</string>
 
     <!--  Product Card View  -->
     <string name="product_name">Product Name</string>
     <string name="product_price">₱%1$.2f / %2$s</string>
     <string name="product_market">Product Market</string>
-
-    <!--  Fragment Placeholder Texts (to be removed soon)  -->
-    <string name="insights_fragment_text">
-        Sales graphs, trends, and reports will be placed here.
-    </string>
-    <string name="my_market_fragment_text">
-        User\'s current market information will be displayed here.
-    </string>
 
     <!--  Categories  -->
     <string name="vegetables"><i>Vegetables</i></string>
@@ -335,17 +330,20 @@
         <b>OPAL (Online Palengke)</b> exists to bring necessities at your doorsteps.
     </string>
     <string name="about_paragraph_1">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nullam faucibus, odio et laoreet porttitor, sapien lectus iaculis est,
-        vitae accumsan purus tortor sit amet est.
+        Wet market (<i>palengke</i>) products are one of the most essential
+        commodities in every Filipino family. We value their products, services,
+        and even their culture; that\'s why the OPAL application was developed
+        to bring <i>palengke</i> culture at the comfort of your own home.
     </string>
     <string name="about_paragraph_2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nulla consectetur, leo nec accumsan facilisis, tellus.
+        Envisioned to preserve the <i>palengke</i> culture for the next
+        generation, and to make OPAL a comfortable and accessible community
+        for both customers and vendors.
     </string>
     <string name="about_paragraph_3">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Phasellus at dapibus tellus. Ut nec accumsan.
+        Committed to reduce customer effort, to increase vendor opportunities,
+        and to promote the <i>palengke</i> culture to each nearby family
+        or community.
     </string>
     <string name="team_desc">
         Our team is composed of BS Computer Science students from City College
@@ -360,26 +358,24 @@
     <string name="pp_head_3">HOW DO WE STORE AND PROTECT YOUR INFORMATION?</string>
     <string name="pp_head_4">HOW CAN YOU OPT OUT OF DATA COLLECTION OR USAGE?</string>
     <string name="pp_paragraph_1">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        In vitae sem quis nulla feugiat tempus sed eget odio. Aliquam egestas
-        nibh sed dui vehicula lacinia. Morbi in turpis sapien. Nunc.
+        The information collected in this application (and any other platforms
+        used) are as follows: person\'s name, username, email address, telephone
+        number, etc. All of these information are required for registration
+        purposes.
     </string>
     <string name="pp_paragraph_2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Pellentesque lacinia quam non enim iaculis, sit amet finibus nulla
-        volutpat. Pellentesque in turpis eu metus viverra accumsan vel consectetur
-        mauris. Curabitur.
+        All information stated above are used for research and testing purposes
+        only. Unless the service comes from the trusted source, disclosure of
+        such information is strongly discouraged.
     </string>
     <string name="pp_paragraph_3">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc blandit
-        interdum augue, id blandit arcu. Mauris dictum accumsan ligula in
-        tincidunt. Suspendisse interdum placerat fringilla. Nunc auctor felis
-        magna, vel.
+        All information stated above are stored in a realtime database and the
+        security management is responsible for all operations revolving in the
+        front-end and back-end.
     </string>
     <string name="pp_paragraph_4">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Sed placerat est eu ante aliquet fringilla. Fusce finibus ante dui,
-        non congue orci imperdiet vel. Ut vel neque dolor. Donec a.
+        You may opt out of data collection or usage by either request or account
+        removal, as if it removes all of your personal data stored in the database.
     </string>
 
     <!--  Feedback Page  -->
@@ -392,19 +388,17 @@
     <string name="bav_rules_head">RULES &amp; REGULATIONS</string>
     <string name="bav_how_to_apply_head">HOW CAN I APPLY?</string>
     <string name="bav_paragraph_1">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Integer ante elit, dictum et neque ac, pretium porta libero.
-        In est lectus, interdum sit amet efficitur.
+        OPAL Vendors Community is an online community of vendors that takes
+        an extra step to sell food products to their customers.
     </string>
     <string name="bav_paragraph_2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Praesent posuere velit sit amet dolor fermentum, a facilisis
-        arcu congue. Donec et pulvinar arcu, ut pharetra.
+        Each vendor is subjected to the <b>Vendor\'s Terms and Conditions</b> and
+        <b>Community Guidelines</b>. Failure to comply those guidelines will result
+        to warnings, suspensions, or termination, depending on the violation.
     </string>
     <string name="bav_paragraph_3">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Mauris feugiat condimentum lacus, in laoreet justo dictum quis.
-        Nunc diam mi, faucibus vitae neque eu, auctor.
+        Application for vendor is absolutely free! Just enter your market
+        information and you\'re good to go!
     </string>
     <string name="bav_enter_password_lbl">
         Please enter your password to proceed with application for OPAL
@@ -450,7 +444,7 @@
     <string name="pd_inv_stock">Stock: %d</string>
     <string name="pd_inv_sales">Sales: %d</string>
     <string name="pd_inv_views">Views: %d</string>
-    <string name="pd_inv_more_menu">More</string>
+    <string name="more_menu">More</string>
     <string name="pd_inv_unlist">Unlist</string>
     <string name="pd_inv_edit">Edit</string>
     <string name="pd_inv_delete">Delete</string>
@@ -662,5 +656,26 @@
     <string name="accept_request_btn">Accept Request</string>
     <string name="reject_request_btn">Reject Request</string>
     <string name="order_returned_btn">Order Returned/Refunded</string>
+
+    <!--  My Market  -->
+    <string name="market_products">Market Products</string>
+    <string name="market_product_sold">Products Sold</string>
+    <string name="market_visits">Market Visits</string>
+    <string name="market_rating">Market Rating</string>
+    <string name="zero_count">0</string>
+    <string name="rating_count">%.1f / 5.0</string>
+    <string name="my_market_more_details">More Details</string>
+    <string name="my_market_edit_market">Edit Market</string>
+    <string name="market_category_icon">Market Category Icon</string>
+    <string name="market_address_icon">Market Address Icon</string>
+    <string name="market_delivery_fee_icon">Market Delivery Fee Icon</string>
+    <string name="market_other_category">%1$s | %2$s</string>
+
+    <!--  Insights  -->
+    <string name="insight_total_sales">Total Sales</string>
+    <string name="insight_total_orders">Total Orders</string>
+    <string name="insight_regular_customers">Regular Customers</string>
+    <string name="insight_conversion_rate">Conversion Rate</string>
+    <string name="percentage_value">%.1f%%</string>
 
 </resources>

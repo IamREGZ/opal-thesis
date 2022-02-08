@@ -287,7 +287,8 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
             }
             // Create an object of Order Details Adapter
             orderDetailsAdapter = OrderDetailsAdapter(
-                requireContext(), mOrderDetails!!.orderItems
+                requireContext(), this@OrderDetailsFragment,
+                mOrderDetails!!.orderItems
             )
             // Sets the adapter of Order Details RecyclerView
             rvOdDetItems.adapter = orderDetailsAdapter

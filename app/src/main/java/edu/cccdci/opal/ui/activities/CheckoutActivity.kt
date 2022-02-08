@@ -255,7 +255,7 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
 
     // Function to set drop down data of order unavailable actions
     private fun setOrderUnavailableActions() {
-        // Create a list of order unavailable actions
+        // Create an array of order unavailable actions
         val orderActions = resources.getStringArray(R.array.order_unavailable_actions)
 
         // Prepare the drop down values for order unavailable actions

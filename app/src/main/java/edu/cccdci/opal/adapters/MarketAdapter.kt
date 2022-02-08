@@ -4,15 +4,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.Market
+import edu.cccdci.opal.ui.fragments.MarketsFragment
+import edu.cccdci.opal.utils.GlideLoader
 
 class MarketAdapter(
     private val context: Context,
+    private val fragment: MarketsFragment,
     options: FirestoreRecyclerOptions<Market>
 ) : FirestoreRecyclerAdapter<Market, MarketAdapter.MarketViewHolder>(options) {
 
@@ -21,15 +25,18 @@ class MarketAdapter(
         // Get all the ids of views from market item layout
         private val name: TextView = itemView.findViewById(R.id.market_name)
         private val address: TextView = itemView.findViewById(R.id.market_address)
+        private val mktImage: ImageView = itemView.findViewById(R.id.market_image)
 
         // Function to set values to the specified views from market item
         internal fun setMarketData(market: Market) {
             // Store the market object values in the respective views
             name.text = market.name
             address.text = context.getString(
-                R.string.market_address, market.detailAdd, market.barangay,
-                market.city, market.province
+                R.string.market_address, market.wetMarket, market.detailAdd,
+                market.barangay, market.city, market.province, market.postal
             )
+
+            GlideLoader(context, fragment).loadImage(market.image, mktImage)
         }  // end of setMarketData method
 
     }  // end of MarketViewHolder class

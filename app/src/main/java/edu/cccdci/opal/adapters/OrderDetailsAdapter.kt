@@ -9,10 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.OrderItem
+import edu.cccdci.opal.ui.fragments.OrderDetailsFragment
 import edu.cccdci.opal.utils.GlideLoader
 
 class OrderDetailsAdapter(
     private val context: Context,
+    private val fragment: OrderDetailsFragment,
     private val orderItemList: List<OrderItem>
 ) : RecyclerView.Adapter<OrderDetailsAdapter.OrderDetailsViewHolder>() {
 
@@ -47,7 +49,7 @@ class OrderDetailsAdapter(
             )
 
             // Add also the product image
-            GlideLoader(context).loadImage(item.image, odProdImage)
+            GlideLoader(context, fragment).loadImage(item.image, odProdImage)
         }  // end of setOrderItemData method
 
     }  // end of OrderDetailsViewHolder class

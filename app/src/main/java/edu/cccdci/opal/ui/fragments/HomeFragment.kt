@@ -53,7 +53,9 @@ class HomeFragment : Fragment() {
             )
 
             // Create an object of Product Adapter
-            productAdapter = ProductAdapter(requireContext(), options)
+            productAdapter = ProductAdapter(
+                requireContext(), this@HomeFragment, options
+            )
 
             // Sets the adapter of Home RecyclerView
             rvHome.adapter = productAdapter

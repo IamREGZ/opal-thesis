@@ -15,6 +15,7 @@ data class User(
     val phoneNum: String = "",
     val profilePic: String = "",
     val vendor: Boolean = false,
+    val marketID: String = "",
     val cart: Cart? = null
 ) : Parcelable
 

@@ -94,7 +94,7 @@
             android:layout_width="@dimen/medium_icon_size"
             android:layout_height="@dimen/medium_icon_size"
             android:layout_gravity="top|end"
-            android:contentDescription="@string/pd_inv_more_menu"
+            android:contentDescription="@string/more_menu"
             android:src="@drawable/ic_more" />
 
     </LinearLayout>

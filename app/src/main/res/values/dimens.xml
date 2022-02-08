@@ -8,6 +8,7 @@
     <dimen name="main_text_size">18sp</dimen>
     <dimen name="header_text_size">24sp</dimen>
     <dimen name="secondary_text_size">16sp</dimen>
+    <dimen name="large_head_text_size">36sp</dimen>
     <dimen name="button_large_text_size">22sp</dimen>
     <dimen name="button_small_text_size">18sp</dimen>
     <dimen name="progress_text_size">16sp</dimen>
@@ -125,6 +126,10 @@
     <dimen name="market_image_panel_corners">10dp</dimen>
     <dimen name="mkt_edit_image_size">100dp</dimen>
     <dimen name="mkt_edit_image_border_size">104dp</dimen>
-    <dimen name="mkt_edit_image_corners">15dp</dimen>
+    <dimen name="rounded_rect_image_corners">15dp</dimen>
+
+    <!--  My Market Dimens  -->
+    <dimen name="my_market_profile_size">150dp</dimen>
+    <dimen name="my_market_profile_border_size">154dp</dimen>
 
 </resources>

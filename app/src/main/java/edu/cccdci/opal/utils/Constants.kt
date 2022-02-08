@@ -126,6 +126,7 @@ object Constants {
     const val SELECTED_PAYMENT_METHOD: String = "selected_payment_method"
     const val ORDER_DETAILS: String = "order_details"
     const val IS_VENDOR: String = "is_vendor"
+    const val MARKET_ID_DATA: String = "market_id"
 
     // Request Permission Codes
     const val READ_STORAGE_PERMISSION_CODE = 2

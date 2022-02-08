@@ -111,14 +111,14 @@
                     android:layout_width="@dimen/mkt_edit_image_border_size"
                     android:layout_height="@dimen/mkt_edit_image_border_size"
                     app:cardBackgroundColor="@color/primaryAccentColor"
-                    app:cardCornerRadius="@dimen/mkt_edit_image_corners"
+                    app:cardCornerRadius="@dimen/rounded_rect_image_corners"
                     app:cardElevation="0dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="@dimen/mkt_edit_image_size"
                         android:layout_height="@dimen/mkt_edit_image_size"
                         android:layout_gravity="center"
-                        app:cardCornerRadius="@dimen/mkt_edit_image_corners"
+                        app:cardCornerRadius="@dimen/rounded_rect_image_corners"
                         app:cardElevation="0dp">
 
                         <ImageView
@@ -382,9 +382,9 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/fbl_vendor_t_and_c"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/medium_mrg_pd"
                 android:padding="@dimen/small_mrg_pd"
                 app:alignItems="center"
                 app:flexWrap="wrap"
@@ -420,7 +420,7 @@
                 android:id="@+id/btn_submit_market"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_large_height"
-                android:layout_marginTop="@dimen/small_mrg_pd"
+                android:layout_marginTop="@dimen/medium_large_mrg_pd"
                 android:background="@drawable/button_primary"
                 android:letterSpacing="0.0"
                 android:padding="@dimen/button_padding"
