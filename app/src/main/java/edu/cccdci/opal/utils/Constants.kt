@@ -1,11 +1,14 @@
 package edu.cccdci.opal.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.webkit.MimeTypeMap
 import com.google.android.material.button.MaterialButton
 import edu.cccdci.opal.R
@@ -148,6 +151,14 @@ object Constants {
     const val MEDIUM_ORANGE: String = "#FFF28500"
     const val DIM_GRAY: String = "#FF696969"
 
+    // Google Distance Matrix API constants
+    const val GET_REQUEST_METHOD = "GET"
+    const val ROWS: String = "rows"
+    const val ELEMENTS: String = "elements"
+    const val DISTANCE: String = "distance"
+    const val DURATION: String = "duration"
+    const val VALUE: String = "value"
+
     // Function to launch the Image Selection Activity
     fun showImageSelection(activity: Activity) {
         val galleryIntent = Intent(
@@ -197,5 +208,36 @@ object Constants {
         // Change the button's icon tint
         button.iconTint = cslBtn2
     }  // end of toSecondaryButton method
+
+    // Function to return a Google Distance Matrix API URL
+    fun getDistanceMatrixURL(
+        context: Context, origin: List<Double>, destination: List<Double>
+    ): String {
+        // Variable to store the API Key
+        var apiKey : String? = null
+
+        try {
+            context.packageManager.getApplicationInfo(
+                context.packageName, PackageManager.GET_META_DATA
+            ).apply {
+                // Get the API key from Android Manifest
+                apiKey = metaData.getString(
+                    "edu.cccdci.opal.DIRECTIONS_API_KEY"
+                ) ?: ""
+
+                // Log the API key
+                Log.i(context.javaClass.simpleName, apiKey!!)
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()  // Log the exception
+        } catch (e: NullPointerException) {
+            e.printStackTrace()  // Log the exception
+        }  // end of try-catch
+
+        // 0 - Latitude; 1 - Longitude
+        return "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" +
+                "${origin[0]},${origin[1]}&destinations=" +
+                "${destination[0]},${destination[1]}&key=${apiKey ?: ""}"
+    }  // end of getDistanceMatrixURL method
 
 }  // end of Constants object

@@ -93,6 +93,13 @@
 
                     </LinearLayout>
 
+<!--                    <androidx.fragment.app.FragmentContainerView-->
+<!--                        android:id="@+id/mpfr_checkout_address"-->
+<!--                        android:name="com.google.android.gms.maps.SupportMapFragment"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="150dp"-->
+<!--                        android:layout_margin="@dimen/medium_mrg_pd" />-->
+
                     <LinearLayout
                         android:id="@+id/ll_selected_address"
                         android:layout_width="match_parent"
@@ -140,6 +147,24 @@
                         android:paddingBottom="@dimen/xl_mrg_pd"
                         android:text="@string/no_selected_address"
                         android:textColor="@color/secondaryAccentColor"
+                        android:textSize="@dimen/main_text_size" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/tv_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/medium_mrg_pd"
+                        android:text="@string/distance"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/tv_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/medium_mrg_pd"
+                        android:text="@string/duration"
+                        android:textColor="@color/app_black"
                         android:textSize="@dimen/main_text_size" />
 
                 </LinearLayout>

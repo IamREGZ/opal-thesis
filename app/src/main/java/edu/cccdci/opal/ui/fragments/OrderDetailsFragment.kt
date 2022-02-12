@@ -25,8 +25,8 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
     private var mOrderDetails: Order? = null
     private var mVendorStatus: Boolean = false
     private var mOrderItemsCount: Int = 0
-    private var mNewStatus: Int = 0
-    private var mIsFirstCTA: Boolean = false
+    private var mFirstStatus: Int = 0
+    private var mSecondStatus: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,8 +95,8 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                 /* CTA Button 1 and 2's triggers may vary depending on order's
                  * status and customer role
                  */
-                R.id.btn_order_cta_1,
-                R.id.btn_order_cta_2 -> storeOrderUpdate()
+                R.id.btn_order_cta_1 -> storeOrderUpdate(true)
+                R.id.btn_order_cta_2 -> storeOrderUpdate(false)
 
             }  // end of when
 
@@ -444,7 +444,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                         // Change button style to secondary theme
                         toSecondaryButton(binding.btnOrderCta1)
                         // Change status code to 4 (Cancelled)
-                        mNewStatus = ORDER_CANCELLED_CODE
+                        mFirstStatus = ORDER_CANCELLED_CODE
 
                         // Set the text to "Cancel Order"
                         getString(R.string.cancel_order_btn)
@@ -453,14 +453,12 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     // 2 (Out for Delivery)
                     ORDER_OFD_CODE -> if (mOrderDetails!!.dates!!.paymentDate == null) {
                         // No payment date set
-                        // To indicate that the button pressed is the first CTA
-                        mIsFirstCTA = true
 
                         // Set the text to "Mark as Paid"
                         getString(R.string.mark_as_paid_btn)
                     } else {
                         // Change status code to 3 (Delivered)
-                        mNewStatus = ORDER_DELIVERED_CODE
+                        mFirstStatus = ORDER_DELIVERED_CODE
 
                         // Set the text to "Delivered"
                         getString(R.string.order_delivered_btn)
@@ -481,7 +479,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     // 5 (Return/Refund Requested)
                     ORDER_RETURN_REQUEST_CODE -> {
                         // Change status code to 6 (To Return/Refund)
-                        mNewStatus = ORDER_TO_RETURN_CODE
+                        mFirstStatus = ORDER_TO_RETURN_CODE
 
                         // Set the text to "Accept Request"
                         getString(R.string.accept_request_btn)
@@ -490,7 +488,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     // 6 (To Return/Refund)
                     ORDER_TO_RETURN_CODE -> {
                         // Change status code to 7 (Returned/Refund)
-                        mNewStatus = ORDER_RETURNED_CODE
+                        mFirstStatus = ORDER_RETURNED_CODE
 
                         // Set the text to "Order Returned/Refunded"
                         getString(R.string.order_returned_btn)
@@ -506,7 +504,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     // 0 (Pending)
                     ORDER_PENDING_CODE -> {
                         // Change status code to 4 (Cancelled)
-                        mNewStatus = ORDER_CANCELLED_CODE
+                        mFirstStatus = ORDER_CANCELLED_CODE
 
                         // Set the text to "Cancel Order"
                         getString(R.string.cancel_order_btn)
@@ -533,7 +531,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     // 5 - Cancel Request
                     ORDER_RETURN_REQUEST_CODE -> {
                         // Change status code to 3 (Delivered)
-                        mNewStatus = ORDER_DELIVERED_CODE
+                        mFirstStatus = ORDER_DELIVERED_CODE
 
                         // Set the text to "Cancel Request"
                         getString(R.string.cancel_request_btn)
@@ -553,7 +551,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
      * and functionalities
      */
     private fun setSecondCTAButton() {
-        val btn2Text: String
+        val btn2Text: String  // Variable to store the second CTA button's text
 
         with(Constants) {
             // For vendors (Status codes 0, 1, 2 and 6)
@@ -562,7 +560,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     // 0 (Pending)
                     ORDER_PENDING_CODE -> {
                         // Change status code to 1 (To Deliver)
-                        mNewStatus = ORDER_TO_DELIVER_CODE
+                        mSecondStatus = ORDER_TO_DELIVER_CODE
 
                         // Set the text to "Confirm Order"
                         getString(R.string.confirm_order_btn)
@@ -571,7 +569,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     // 1 - Start Delivery
                     ORDER_TO_DELIVER_CODE -> {
                         // Change status code to 2 (Out for Delivery)
-                        mNewStatus = ORDER_OFD_CODE
+                        mSecondStatus = ORDER_OFD_CODE
 
                         // Set the text to "Start Delivery"
                         getString(R.string.start_delivery_btn)
@@ -583,7 +581,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                         toSecondaryButton(binding.btnOrderCta2)
 
                         // Change status code to 4 (Cancelled)
-                        mNewStatus = ORDER_CANCELLED_CODE
+                        mSecondStatus = ORDER_CANCELLED_CODE
 
                         // Set the text to "Not Delivered"
                         getString(R.string.order_not_delivered_btn)
@@ -592,7 +590,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     // 5 - Reject Request
                     ORDER_RETURN_REQUEST_CODE -> {
                         // Change status code to 3 (Delivered)
-                        mNewStatus = ORDER_DELIVERED_CODE
+                        mSecondStatus = ORDER_DELIVERED_CODE
 
                         // Set the text to "Reject Request"
                         getString(R.string.reject_request_btn)
@@ -606,7 +604,7 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                 mOrderDetails!!.status == ORDER_DELIVERED_CODE
             ) {
                 // Change status code to 5 (Return/Refund Requested)
-                mNewStatus = ORDER_RETURN_REQUEST_CODE
+                mSecondStatus = ORDER_RETURN_REQUEST_CODE
 
                 // Set the text to "Return/Refund"
                 btn2Text = getString(R.string.return_refund_btn)
@@ -631,16 +629,19 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
     }  // end of setSecondCTAButton method
 
     // Function store fields to update in Firestore database using hash map
-    private fun storeOrderUpdate() {
+    private fun storeOrderUpdate(isFirstCTA: Boolean) {
         // Display the loading message
         mUtility.showProgressDialog(
             requireContext(), requireActivity(), getString(R.string.msg_please_wait)
         )
 
+        // Store the new status code, depending on the CTA button clicked
+        val newStatus = if (isFirstCTA) mFirstStatus else mSecondStatus
+
         // Variable to store the hash map of fields to update
         val orderHM: HashMap<String, Any> = if (
             mOrderDetails!!.status == Constants.ORDER_OFD_CODE &&
-            mOrderDetails!!.dates!!.paymentDate == null && mIsFirstCTA
+            mOrderDetails!!.dates!!.paymentDate == null && isFirstCTA
         ) {
             /* For Mark as Paid button, add the current server timestamp
              * to payment date
@@ -650,13 +651,13 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
                     .serverTimestamp()
             )
         } else if (
-            mOrderDetails!!.status == Constants.ORDER_OFD_CODE && mIsFirstCTA
+            mOrderDetails!!.status == Constants.ORDER_OFD_CODE && isFirstCTA
         ) {
             /* For Delivered button, change status code to 3 (Delivered),
              * and add the current server timestamp to delivery date
              */
             hashMapOf(
-                Constants.STATUS to mNewStatus,
+                Constants.STATUS to newStatus,
                 "${Constants.DATES}.${Constants.DELIVER_DATE}" to FieldValue
                     .serverTimestamp()
             )
@@ -666,36 +667,35 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
              * return date
              */
             hashMapOf(
-                Constants.STATUS to mNewStatus,
+                Constants.STATUS to newStatus,
                 "${Constants.DATES}.${Constants.RETURN_DATE}" to FieldValue
                     .serverTimestamp()
             )
         } else {
             // The default hash map value, just change the status code
-            hashMapOf(Constants.STATUS to mNewStatus)
+            hashMapOf(Constants.STATUS to newStatus)
         }
 
         // Update the order document in Firestore database
         FirestoreClass().updateOrder(
-            this@OrderDetailsFragment, mOrderDetails!!.id, orderHM, mUtility
+            this@OrderDetailsFragment, mOrderDetails!!.id, orderHM, mUtility,
+            isFirstCTA
         )
     }  // end of storeOrderUpdate method
 
     // Function to prompt that the order data was updated
-    fun orderUpdatedPrompt() {
+    fun orderUpdatedPrompt(isFirstCTA: Boolean) {
         // Hide the loading message
         mUtility.hideProgressDialog()
 
         // If the status code is 2 and payment date is not set (Mark as Paid button)
         if (mOrderDetails!!.status == Constants.ORDER_OFD_CODE &&
-            mOrderDetails!!.dates!!.paymentDate == null && mIsFirstCTA
+            mOrderDetails!!.dates!!.paymentDate == null && isFirstCTA
         ) {
             // Store the temporary timestamp
             mOrderDetails!!.dates!!.paymentDate = Timestamp.now()
             // Change the first CTA button's text to Delivered
             binding.btnOrderCta1.text = getString(R.string.order_delivered_btn)
-
-            mIsFirstCTA = false  // Revert the first CTA indicator back to false
         } else {
             requireActivity().onBackPressed()  // Sends user back to previous fragment
         }  // end of if-else

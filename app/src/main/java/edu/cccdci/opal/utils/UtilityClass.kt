@@ -26,26 +26,23 @@ open class UtilityClass : AppCompatActivity() {
 
     // Function to display the Message SnackBar
     fun showSnackBar(activity: Activity, message: String, error: Boolean) {
-        // Prepare the SnackBar
-        val msgPrompt = Snackbar.make(
-            activity.findViewById(android.R.id.content),
-            message,
-            Snackbar.LENGTH_LONG
-        )
-        val msgPromptView = msgPrompt.view
-
         // Decides what color of the SnackBar depending on the message
         val snackBarColor = if (error)
             R.color.colorErrorMessage  // Red color if error
         else
             R.color.colorSuccessMessage  // Green color if successful
 
-        // Sets the color of the SnackBar
-        msgPromptView.setBackgroundColor(
-            ContextCompat.getColor(activity.applicationContext, snackBarColor)
-        )
+        // Prepare the SnackBar
+        Snackbar.make(
+            activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG
+        ).run {
+            // Sets the color of the SnackBar
+            view.setBackgroundColor(
+                ContextCompat.getColor(activity.applicationContext, snackBarColor)
+            )
 
-        msgPrompt.show()  // Shows the SnackBar
+            show()  // Shows the SnackBar
+        }
     }  // end of showMessagePrompt method
 
     // Function to show the loading dialog

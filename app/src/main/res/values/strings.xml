@@ -89,6 +89,10 @@
     <string name="err_blank_mkt_postal">Please enter the market\'s postal code.</string>
     <string name="err_blank_mkt_detailed">Please enter the market\'s detailed address.</string>
     <string name="err_unchecked_vendor_tac">Please agree to the Vendor\'s T&amp;C.</string>
+    <string name="err_failed_get_direction">
+        There was an error getting the travel duration and distance between
+        two locations.
+    </string>
 
     <!--  Message Prompts  -->
     <string name="msg_register_success">Your account is successfully registered.</string>
@@ -677,5 +681,9 @@
     <string name="insight_regular_customers">Regular Customers</string>
     <string name="insight_conversion_rate">Conversion Rate</string>
     <string name="percentage_value">%.1f%%</string>
+
+    <!--  Testing Purposes  -->
+    <string name="distance">Distance: %.1f km</string>
+    <string name="duration">Duration: %d minutes</string>
 
 </resources>

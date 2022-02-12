@@ -1099,7 +1099,7 @@ class FirestoreClass {
     // Function to update Customer Order document in Firestore Database
     fun updateOrder(
         fragment: Fragment, orderID: String, orderHashMap: HashMap<String, Any>,
-        util: UtilityClass
+        util: UtilityClass, isFirstCTA: Boolean = false
     ) {
         // Access the collection named orders
         mFSInstance.collection(Constants.CUSTOMER_ORDERS)
@@ -1114,7 +1114,7 @@ class FirestoreClass {
                  * clicked was Mark as Paid, or will go to the previous fragment.
                  */
                 if (fragment is OrderDetailsFragment) {
-                    fragment.orderUpdatedPrompt()
+                    fragment.orderUpdatedPrompt(isFirstCTA)
                 }
             }
             // If it failed

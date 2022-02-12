@@ -9,6 +9,12 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FieldValue
 import com.google.gson.Gson
 import edu.cccdci.opal.R
@@ -17,14 +23,17 @@ import edu.cccdci.opal.databinding.ActivityCheckoutBinding
 import edu.cccdci.opal.dataclasses.*
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.GeoDistance
 import edu.cccdci.opal.utils.UtilityClass
 
-class CheckoutActivity : UtilityClass(), View.OnClickListener {
+class CheckoutActivity
+    : UtilityClass(), View.OnClickListener, GeoDistance.GeoResult {
 
     private lateinit var binding: ActivityCheckoutBinding
     private lateinit var checkoutAdapter: CheckoutAdapter
     private lateinit var mSharedPrefs: SharedPreferences
     private lateinit var mSPEditor: SharedPreferences.Editor
+    // private lateinit var mGoogleMap: GoogleMap
     private var mSelectedAddress: Address? = null
     private var mSelectedPayment: String = ""
     private var mUserInfo: User? = null
@@ -77,6 +86,10 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
             // Setups the Action Bar of the current activity
             setupActionBar(tlbCheckoutActivity, false)
 
+//            val mapFragment = supportFragmentManager
+//                .findFragmentById(R.id.mpfr_checkout_address) as SupportMapFragment
+//            mapFragment.getMapAsync(this@CheckoutActivity)
+
             getDefaultAddress()  // Find the user's default address in Firestore
             // Set the drop down values for order unavailable actions spinner
             setOrderUnavailableActions()
@@ -85,6 +98,11 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
             // Check if mUserInfo and its cart property are not null to prevent NPE
             if (mUserInfo != null && mUserInfo!!.cart != null)
                 setupCheckoutAdapter()  // Setup the Checkout RecyclerView Adapter
+
+            // Testing purposes (might be deleted or modified)
+            GeoDistance(this@CheckoutActivity).calculateDirections(
+                listOf(14.1951128, 121.1710392), listOf(14.1921142, 121.1664394)
+            )
 
             // Click event for Select Address ImageView
             ivSelectAddress.setOnClickListener(this@CheckoutActivity)
@@ -170,6 +188,31 @@ class CheckoutActivity : UtilityClass(), View.OnClickListener {
         }  // end of if
 
     }  // end of onClick method
+
+//    override fun onMapReady(gMap: GoogleMap) {
+//        mGoogleMap = gMap
+//
+//        mGoogleMap.clear()
+//
+//        val myHome = LatLng(14.1951128, 121.1710392)
+//
+//        mGoogleMap.addMarker(MarkerOptions().position(myHome).title("My Home"))
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myHome, 15f))
+//    }  // end of onMapReady method
+
+    // Overriding function to get the result of distance and duration calculations
+    override fun setDistanceResult(res: String) {
+        // Extract the values, separated by commas
+        val distRes: List<String> = res.split(',')
+
+        // Test codes (will be deleted or modified)
+        binding.tvDistance.text = getString(
+            R.string.distance, distRes[0].toDouble() / 1000
+        )
+        binding.tvDuration.text = getString(
+            R.string.duration, distRes[1].toInt() / 60
+        )
+    }  // end of setDistanceResult method
 
     // Function to find user's address labeled as default in Firestore
     private fun getDefaultAddress() {
