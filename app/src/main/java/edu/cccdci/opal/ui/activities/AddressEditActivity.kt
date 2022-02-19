@@ -1,26 +1,45 @@
 package edu.cccdci.opal.ui.activities
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.ArrayAdapter
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityAddressEditBinding
 import edu.cccdci.opal.dataclasses.Address
+import edu.cccdci.opal.dataclasses.Location
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.UtilityClass
 
-class AddressEditActivity : UtilityClass() {
+class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCallback {
 
     private lateinit var binding: ActivityAddressEditBinding
+    private lateinit var mGoogleMap: GoogleMap
+    private lateinit var mSupportMap: SupportMapFragment
+    private lateinit var mSharedPrefs: SharedPreferences
+    private lateinit var mSPEditor: SharedPreferences.Editor
     private val mProvinces: MutableList<HashMap<String, String>> = mutableListOf()
     private val mProvNames: MutableList<String> = mutableListOf()
     private val mCities: MutableList<HashMap<String, String>> = mutableListOf()
     private val mCTNames: MutableList<String> = mutableListOf()
     private var mSelectedProvince: String = ""
     private var mAddress: Address? = null
+    private var mCurrentMarkerPos: LatLng? = null
     private var mAddrHashMap: HashMap<String, Any> = hashMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,15 +48,34 @@ class AddressEditActivity : UtilityClass() {
         // Inflate the layout for this fragment
         binding = ActivityAddressEditBinding.inflate(layoutInflater)
 
+        // Creates the Shared Preferences
+        mSharedPrefs = getSharedPreferences(
+            Constants.OPAL_PREFERENCES, Context.MODE_PRIVATE
+        )
+        // Create the editor for Shared Preferences
+        mSPEditor = mSharedPrefs.edit()
+
         // Check if there's an existing parcelable extra info
         if (intent.hasExtra(Constants.USER_ADDRESS)) {
             // Get data from the parcelable class
             mAddress = intent.getParcelableExtra(Constants.USER_ADDRESS)
-
-            // Store the address data values if it is not null (prevents NPE)
-            if (mAddress != null)
-                setSelectedAddressValues()
         }
+
+        // Store the address data values if it is not null (prevents NPE)
+        if (mAddress != null) {
+            setSelectedAddressValues()
+        } else {
+            /* Set the Shared Preference of current marker position blank
+             * whenever a user creates a new address.
+             */
+            mSPEditor.putString(Constants.CURRENT_MARKER_POS, "").apply()
+        }
+
+        // Prepare the SupportMapFragment
+        mSupportMap = supportFragmentManager
+            .findFragmentById(R.id.mpfr_address_map) as SupportMapFragment
+        // Load the map fragment
+        mSupportMap.getMapAsync(this@AddressEditActivity)
 
         with(binding) {
             setContentView(root)
@@ -65,18 +103,99 @@ class AddressEditActivity : UtilityClass() {
                 setBarangayValues(position)
             }
 
-            // Actions when the submit button is clicked
-            btnSubmitAddress.setOnClickListener {
-                saveUserAddress()
-            }
-
-            // Actions when the delete button is clicked
-            btnDeleteAddress.setOnClickListener {
-                deleteUserAddress()
-            }
+            // Click event for Submit Address button
+            btnSubmitAddress.setOnClickListener(this@AddressEditActivity)
+            // Click event for Delete Address button
+            btnDeleteAddress.setOnClickListener(this@AddressEditActivity)
         }  // end of with(binding)
 
     }  // end of onCreate method
+
+    // Operations to do when this activity is visible again
+    override fun onRestart() {
+        super.onRestart()
+
+        // Get current marker position from Shared Preferences
+        val currentPosition = mSharedPrefs.getString(
+            Constants.CURRENT_MARKER_POS, ""
+        )!!
+
+        /* If the current marker position is not empty, change the selected
+         * address object and update the map fragment.
+         */
+        if (currentPosition.isNotEmpty()) {
+            // Store the new current marker position
+            mCurrentMarkerPos = Gson().fromJson(currentPosition, LatLng::class.java)
+
+            // Update the map fragment
+            mSupportMap.getMapAsync(this@AddressEditActivity)
+        }
+    }  // end of onRestart method
+
+    // onClick events are declared here
+    override fun onClick(view: View?) {
+        if (view != null) {
+            when (view.id) {
+                // Saves the user's address
+                R.id.btn_submit_address -> saveUserAddress()
+                // Deletes the user's address
+                R.id.btn_delete_address -> deleteUserAddress()
+            }  // end of when
+
+        }  // end of if
+
+    }  // end of onClick method
+
+    // Overriding function to set the Map UI of user's address location
+    override fun onMapReady(gMap: GoogleMap) {
+        mGoogleMap = gMap  // Store the GoogleMap object
+
+        mGoogleMap.apply {
+            clear()  // Clear all the markers set in the map
+
+            val markerPosition = if (mCurrentMarkerPos != null) {
+                // Set the marker position to the current position if it is available
+                mCurrentMarkerPos!!
+            }
+            else {
+                // Jose Rizal's house as the default coordinates
+                LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE)
+            }
+
+            // Make the marker visible to the Map UI
+            addMarker(MarkerOptions().apply {
+                // Set the position to the latitude and longitude of user's address
+                position(markerPosition)
+                // Customize the icon image
+                icon(
+                    BitmapDescriptorFactory
+                        .fromResource(R.drawable.ic_map_marker_primary)
+                )
+            })
+            // Focus the Map UI to the position of marker
+            moveCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 18f))
+
+            // Disable all touch interactions and toolbar of the Map UI
+            uiSettings.setAllGesturesEnabled(false)
+            uiSettings.isMapToolbarEnabled = false
+
+            // Actions when the map is clicked
+            setOnMapClickListener {
+                // Create an Intent to launch MapActivity
+                val intent = Intent(
+                    this@AddressEditActivity, MapActivity::class.java
+                )
+
+                // Add the marker position to the intent
+                intent.putExtra(
+                    Constants.CURRENT_MARKER_POS, markerPosition
+                )
+
+                startActivity(intent)  // Opens the Map Activity
+            }
+        }  // end of apply
+
+    }  // end of onMapReady method
 
     // Function to store existing address data in the respective fields
     private fun setSelectedAddressValues() {
@@ -91,10 +210,36 @@ class AddressEditActivity : UtilityClass() {
             etAddrDetails.setText(mAddress!!.detailAdd)
             smDefaultAddress.isChecked = mAddress!!.default
 
+            // Set the current marker position to the existing user location
+            mSPEditor.putString(
+                Constants.CURRENT_MARKER_POS,
+                // Prevents NullPointerException
+                if (mAddress!!.location != null) {
+                    // Update the current marker position
+                    mCurrentMarkerPos = LatLng(
+                        mAddress!!.location!!.latitude,
+                        mAddress!!.location!!.longitude
+                    )
+
+                    // Convert the LatLng object to JSON. If null, use default coordinates
+                    Gson().toJson(
+                        mCurrentMarkerPos ?:
+                        // Jose Rizal's house as the default coordinates
+                        LatLng(
+                            Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE
+                        )
+                    )
+                } else {
+                    // Use blank string to indicate there's no existing current location
+                    ""
+                }
+            ).apply()
+
             // Change the interface of Address Info
             tvAddressEditTitle.setText(R.string.tlb_title_edit_address)
             btnDeleteAddress.visibility = View.VISIBLE
         }  // end of with(binding)
+
     }  // end of setSelectedAddressValues method
 
     // Function to supply the retrieved data for Province Spinner
@@ -336,7 +481,15 @@ class AddressEditActivity : UtilityClass() {
                 actvAddrBrgy.text.toString().trim { it <= ' ' },
                 etAddrPostal.text.toString().trim { it <= ' ' }.toInt(),
                 etAddrDetails.text.toString().trim { it <= ' ' },
-                smDefaultAddress.isChecked
+                smDefaultAddress.isChecked,
+                Location(
+                    mCurrentMarkerPos!!.latitude,
+                    mCurrentMarkerPos!!.longitude,
+                    GeoFireUtils.getGeoHashForLocation(GeoLocation(
+                        mCurrentMarkerPos!!.latitude,
+                        mCurrentMarkerPos!!.longitude,
+                    ))
+                )
             )
         }
 
@@ -408,7 +561,22 @@ class AddressEditActivity : UtilityClass() {
              */
             if (defaultAdd != mAddress!!.default)
                 mAddrHashMap[Constants.DEFAULT_ADDR] = defaultAdd
+
+            val addrLocation = Location(
+                mCurrentMarkerPos!!.latitude,
+                mCurrentMarkerPos!!.longitude,
+                GeoFireUtils.getGeoHashForLocation(GeoLocation(
+                    mCurrentMarkerPos!!.latitude,
+                    mCurrentMarkerPos!!.longitude,
+                ))
+            )
+            /* Save the new address location if it is different from
+             * the previous address location
+             */
+            if (addrLocation != mAddress!!.location!!)
+                mAddrHashMap[Constants.LOCATION] = addrLocation
         }  // end of with(binding)
+
     }  // end of storeUserAddressChanges method
 
     // Function to prompt user that the address is saved

@@ -101,7 +101,7 @@ class MyMarketActivity : UtilityClass() {
             true
         }  // end of setOnMenuItemClickListener
 
-        popup.show()
+        popup.show()  // Display the popup menu
     }  // end of showMarketMenu method
 
     /* Function to navigate user from this activity to a destination activity
@@ -116,7 +116,7 @@ class MyMarketActivity : UtilityClass() {
             // Go to the Market Editor with the market data
             R.id.popup_mkt_edit_market -> MarketEditorActivity::class.java
 
-            else -> null  //
+            else -> null  // Return a null value
         }  // end of when
 
         if (targetClass != null) {

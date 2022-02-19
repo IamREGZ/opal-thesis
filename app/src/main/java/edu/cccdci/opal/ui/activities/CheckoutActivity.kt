@@ -13,8 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.firebase.firestore.FieldValue
 import com.google.gson.Gson
 import edu.cccdci.opal.R
@@ -22,18 +21,18 @@ import edu.cccdci.opal.adapters.CheckoutAdapter
 import edu.cccdci.opal.databinding.ActivityCheckoutBinding
 import edu.cccdci.opal.dataclasses.*
 import edu.cccdci.opal.firestore.FirestoreClass
-import edu.cccdci.opal.utils.Constants
-import edu.cccdci.opal.utils.GeoDistance
-import edu.cccdci.opal.utils.UtilityClass
+import edu.cccdci.opal.utils.*
 
 class CheckoutActivity
-    : UtilityClass(), View.OnClickListener, GeoDistance.GeoResult {
+    : UtilityClass(), View.OnClickListener, OnMapReadyCallback,
+    GeoDistance.GeoDistanceResult {
 
     private lateinit var binding: ActivityCheckoutBinding
     private lateinit var checkoutAdapter: CheckoutAdapter
     private lateinit var mSharedPrefs: SharedPreferences
     private lateinit var mSPEditor: SharedPreferences.Editor
-    // private lateinit var mGoogleMap: GoogleMap
+    private lateinit var mGoogleMap: GoogleMap
+    private lateinit var mSupportMap: SupportMapFragment
     private var mSelectedAddress: Address? = null
     private var mSelectedPayment: String = ""
     private var mUserInfo: User? = null
@@ -61,6 +60,10 @@ class CheckoutActivity
          */
         mSPEditor.putString(Constants.SELECTED_PAYMENT_METHOD, "").apply()
 
+        // Prepare the SupportMapFragment
+        mSupportMap = supportFragmentManager
+            .findFragmentById(R.id.mpfr_checkout_address) as SupportMapFragment
+
         // Check if there's an existing parcelable extra info
         if (intent.hasExtra(Constants.EXTRA_USER_INFO)) {
             // Get data from the parcelable class
@@ -86,10 +89,6 @@ class CheckoutActivity
             // Setups the Action Bar of the current activity
             setupActionBar(tlbCheckoutActivity, false)
 
-//            val mapFragment = supportFragmentManager
-//                .findFragmentById(R.id.mpfr_checkout_address) as SupportMapFragment
-//            mapFragment.getMapAsync(this@CheckoutActivity)
-
             getDefaultAddress()  // Find the user's default address in Firestore
             // Set the drop down values for order unavailable actions spinner
             setOrderUnavailableActions()
@@ -98,11 +97,6 @@ class CheckoutActivity
             // Check if mUserInfo and its cart property are not null to prevent NPE
             if (mUserInfo != null && mUserInfo!!.cart != null)
                 setupCheckoutAdapter()  // Setup the Checkout RecyclerView Adapter
-
-            // Testing purposes (might be deleted or modified)
-            GeoDistance(this@CheckoutActivity).calculateDirections(
-                listOf(14.1951128, 121.1710392), listOf(14.1921142, 121.1664394)
-            )
 
             // Click event for Select Address ImageView
             ivSelectAddress.setOnClickListener(this@CheckoutActivity)
@@ -130,21 +124,17 @@ class CheckoutActivity
         // If the selected address is not empty, change the selected address object
         if (selectedAddress.isNotEmpty()) {
             // Store the new address value
-            mSelectedAddress = Gson().fromJson(
-                selectedAddress, Address::class.java
-            )
+            mSelectedAddress = Gson().fromJson(selectedAddress, Address::class.java)
 
             setCheckoutAddress()  // Change the address text labels
         } else {
             /* If it is empty, make the no selected address label visible
              * and the layout of selected address gone.
              */
-            with(binding) {
-                if (llSelectedAddress.isVisible) {
-                    tvNoSelectedAddress.visibility = View.VISIBLE
-                    llSelectedAddress.visibility = View.GONE
-                }
-            }  // end of with(binding)
+            if (binding.llSelectedAddress.isVisible) {
+                binding.tvNoSelectedAddress.visibility = View.VISIBLE
+                binding.llSelectedAddress.visibility = View.GONE
+            }
         }  // end of if-else
 
         // If the selected payment is not empty, change the payment method text value
@@ -189,16 +179,63 @@ class CheckoutActivity
 
     }  // end of onClick method
 
-//    override fun onMapReady(gMap: GoogleMap) {
-//        mGoogleMap = gMap
-//
-//        mGoogleMap.clear()
-//
-//        val myHome = LatLng(14.1951128, 121.1710392)
-//
-//        mGoogleMap.addMarker(MarkerOptions().position(myHome).title("My Home"))
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myHome, 15f))
-//    }  // end of onMapReady method
+    // Overriding function to set the Map UI of current delivery address
+    override fun onMapReady(gMap: GoogleMap) {
+        mGoogleMap = gMap  // Store the GoogleMap object
+
+        mGoogleMap.apply {
+            clear()  // Clear all the markers set in the map
+
+            // Get the delivery address coordinates
+            val delivery = Constants.getLocation(mSelectedAddress)
+            // Create an object of delivery address' latitude and longitude
+            val deliveryLoc = LatLng(delivery[0], delivery[1])
+
+            // Set the delivery marker attributes
+            val deliveryMarker = MarkerOptions().apply {
+                // Set the position to the latitude and longitude of selected address
+                position(deliveryLoc)
+                // Customize the icon image
+                icon(
+                    BitmapDescriptorFactory
+                        .fromResource(R.drawable.ic_map_marker_primary)
+                )
+            }
+
+            addMarker(deliveryMarker)  // Make the marker visible to the Map UI
+            // Focus the Map UI to the position of marker
+            moveCamera(CameraUpdateFactory.newLatLngZoom(deliveryLoc, 18f))
+
+            // Disable all touch interactions and toolbar of the Map UI
+            uiSettings.setAllGesturesEnabled(false)
+            uiSettings.isMapToolbarEnabled = false
+
+            // Might be temporary
+            setOnMapClickListener {
+                // Create an Intent to launch MapActivity
+                val intent = Intent(
+                    this@CheckoutActivity, MapActivity::class.java
+                )
+
+                // Get the market address coordinates
+                val market = Constants.getLocation(mMarket)
+                // Create an object of market's latitude and longitude
+                val marketLoc = LatLng(market[0], market[1])
+
+                // Add an array of locations (market and delivery) to the intent
+                intent.putExtra(
+                    Constants.LOCATION_MARKERS_INFO, arrayOf(marketLoc, deliveryLoc)
+                )
+                // Add the market name to the intent
+                intent.putExtra(
+                    Constants.MARKET_NAME_DATA, mMarket!!.name
+                )
+
+                startActivity(intent)  // Opens the activity
+            }
+        }  // end of apply
+
+    }  // end of onMapReady method
 
     // Overriding function to get the result of distance and duration calculations
     override fun setDistanceResult(res: String) {
@@ -268,6 +305,18 @@ class CheckoutActivity
                 mSelectedAddress!!.postal
             )
 
+            // Get the origin coordinates (market's location)
+            val origin: List<Double> = Constants.getLocation(mMarket)
+            // Get the destination coordinates (delivery location)
+            val destination: List<Double> = Constants.getLocation(mSelectedAddress)
+
+            // Calculate the distance and delivery duration using coordinates
+            GeoDistance(this@CheckoutActivity)
+                .calculateDistance(origin, destination)
+
+            // Load the map fragment
+            mSupportMap.getMapAsync(this@CheckoutActivity)
+
             /* Make the select address layout visible and make
              * the no selected address label gone.
              */
@@ -280,12 +329,7 @@ class CheckoutActivity
     private fun setupCheckoutAdapter() {
         with(binding) {
             // Sets the layout type of the RecyclerView
-            rvItemsChkout.layoutManager = object : LinearLayoutManager(
-                this@CheckoutActivity
-            ) {
-                // Disable vertical scroll functionality of the RecyclerView
-                override fun canScrollVertically(): Boolean = false
-            }
+            rvItemsChkout.layoutManager = LinearLayoutManager(this@CheckoutActivity)
             // Create an object of Checkout Adapter
             checkoutAdapter = CheckoutAdapter(
                 this@CheckoutActivity, mUserInfo!!.cart!!.cartItems,

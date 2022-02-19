@@ -18,9 +18,10 @@ data class Market(
     val category: Int = 0,
     val otherCat: String = "",
     val vendorID: String = "",
+    val location: Location? = null,
     val deliveryFee: Double = 20.0,
     val products: Int = 0,
     val sold: Int = 0,
     val visits: Int = 0,
-    val ratings: Double = 0.0
+    val ratings: Double = 0.0,
 ) : Parcelable

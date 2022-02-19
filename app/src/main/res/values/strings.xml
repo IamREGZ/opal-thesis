@@ -91,7 +91,10 @@
     <string name="err_unchecked_vendor_tac">Please agree to the Vendor\'s T&amp;C.</string>
     <string name="err_failed_get_direction">
         There was an error getting the travel duration and distance between
-        two locations.
+        the market and customer\'s address.
+    </string>
+    <string name="err_failed_draw_route">
+        There was an error drawing the route between market and customer\'s address.
     </string>
 
     <!--  Message Prompts  -->
@@ -157,12 +160,14 @@
     <string name="tlb_title_edit_address">EDIT ADDRESS</string>
     <string name="tlb_title_my_cart">MY CART</string>
     <string name="tlb_title_checkout">CHECKOUT</string>
+    <string name="tlb_title_delivery_route">DELIVERY ROUTE</string>
     <string name="tlb_title_payment">PAYMENT METHODS</string>
     <string name="tlb_title_vendor_reg">VENDOR REGISTRATION</string>
     <string name="tlb_title_my_market">MY MARKET</string>
     <string name="tlb_title_edit_market">EDIT MARKET</string>
     <string name="tlb_title_market_details">MARKET DETAILS</string>
     <string name="tlb_title_insights">SALES INSIGHTS</string>
+    <string name="tlb_title_select_location">SELECT LOCATION</string>
 
     <!--  Top App Bar  -->
     <string name="my_cart">My Cart</string>
@@ -410,7 +415,7 @@
     </string>
     <string name="bav_apply_now">Apply Now</string>
 
-    <!--  Vendor Registration Activity  -->
+    <!--  Market Editor Activity  -->
     <string name="market_name_helper">Name of Market Stall (Puwesto)</string>
     <string name="wet_market_name">Parent Wet Market (Palengke)</string>
     <string name="wet_market_helper">
@@ -432,6 +437,9 @@
     </string-array>
     <string name="other_cat_specify">Specify Category</string>
     <string name="market_address_head">MARKET ADDRESS</string>
+    <string name="market_location_help">
+        Click on the map to change the location.
+    </string>
     <string name="detailed_vendor_helper">
         Stall Number, Building Number, Street Name, etc.
     </string>
@@ -673,7 +681,7 @@
     <string name="market_category_icon">Market Category Icon</string>
     <string name="market_address_icon">Market Address Icon</string>
     <string name="market_delivery_fee_icon">Market Delivery Fee Icon</string>
-    <string name="market_other_category">%1$s | %2$s</string>
+    <string name="market_other_category">%1$s (%2$s)</string>
 
     <!--  Insights  -->
     <string name="insight_total_sales">Total Sales</string>
@@ -681,6 +689,14 @@
     <string name="insight_regular_customers">Regular Customers</string>
     <string name="insight_conversion_rate">Conversion Rate</string>
     <string name="percentage_value">%.1f%%</string>
+
+    <!--  Map Activity  -->
+    <string name="map_marker">Map Marker</string>
+    <string name="select_location_button">Select Location</string>
+    <string name="delivery_distance_label">Delivery Distance</string>
+    <string name="delivery_distance_value">%.1f km</string>
+    <string name="delivery_duration_label">Delivery Duration</string>
+    <string name="delivery_duration_value">%d min</string>
 
     <!--  Testing Purposes  -->
     <string name="distance">Distance: %.1f km</string>

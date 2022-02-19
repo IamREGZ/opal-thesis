@@ -4,14 +4,11 @@
     package="edu.cccdci.opal"
     tools:ignore="LockedOrientationActivity">
     <!-- Permission to use Internet Provider -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Permission to access approximate location (network provider only) -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- Permission to access precise location (network and GPS) -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- Permission to access device storage -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permission to access approximate location (network provider only) -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Permission to access precise location (network and GPS) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Permission to access device storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Permission to write device storage -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -21,14 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OPAL"
         tools:ignore="AllowBackup">
-        
-<!--        <uses-library-->
-<!--            android:name="org.apache.http.legacy"-->
-<!--            android:required="false" />-->
 
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.version"-->
-<!--            android:value="@integer/google_play_services_version" />-->
+        <!-- Set the HTTP legacy as not required -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <!-- Splash Screen Activity (First to open) -->
         <activity
@@ -162,6 +156,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+        <!-- Delivery Route Activity (View larger map with delivery route) -->
+        <activity
+            android:name=".ui.activities.MapActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
         <!-- Payment Activity (Select Payment Method) -->
         <activity
             android:name=".ui.activities.PaymentActivity"
@@ -169,11 +170,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <!-- Google Directions API Key -->
+        <!-- Google Maps API Key -->
         <meta-data
-            android:name="edu.cccdci.opal.DIRECTIONS_API_KEY"
-            android:value="AIzaSyACsFxIGJvAztLuQNtPiQTV-YlDSr2vbss" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
 
+        <!-- Meta data to store Google Play Services version -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

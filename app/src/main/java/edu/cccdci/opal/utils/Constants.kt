@@ -12,6 +12,9 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import com.google.android.material.button.MaterialButton
 import edu.cccdci.opal.R
+import edu.cccdci.opal.dataclasses.Address
+import edu.cccdci.opal.dataclasses.Location
+import edu.cccdci.opal.dataclasses.Market
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,6 +37,7 @@ object Constants {
     const val POSTAL: String = "postal"
     const val DETAIL_ADDR: String = "detailAdd"
     const val DEFAULT_ADDR: String = "default"
+    const val LOCATION: String = "location"
     const val NAME: String = "name"
     const val IMAGE: String = "image"
     const val DESCRIPTION: String = "description"
@@ -130,6 +134,9 @@ object Constants {
     const val ORDER_DETAILS: String = "order_details"
     const val IS_VENDOR: String = "is_vendor"
     const val MARKET_ID_DATA: String = "market_id"
+    const val MARKET_NAME_DATA: String = "market_name_data"
+    const val LOCATION_MARKERS_INFO: String = "location_markers_info"
+    const val CURRENT_MARKER_POS: String = "current_marker_position"
 
     // Request Permission Codes
     const val READ_STORAGE_PERMISSION_CODE = 2
@@ -145,19 +152,33 @@ object Constants {
     const val YMD_HMS24_DATE_FORMAT: String = "yyyy-MM-dd HH:mm:ss"
 
     // Hex Color constants
+    const val APP_GREEN: String = "#FF00611C"
     const val APP_DARK_GREEN: String = "#FF014421"
     const val APP_DARK_TEAL: String = "#FF006666"
     const val APP_BLACK: String = "#FF0F0F0F"
     const val MEDIUM_ORANGE: String = "#FFF28500"
     const val DIM_GRAY: String = "#FF696969"
 
+    // Default latitude and longitude
+    const val DEFAULT_LATITUDE: Double = 14.2136451
+    const val DEFAULT_LONGITUDE: Double = 121.1667075
+
     // Google Distance Matrix API constants
-    const val GET_REQUEST_METHOD = "GET"
+    const val DISTANCE_MATRIX: String = "distancematrix"
+    const val GET_REQUEST_METHOD: String = "GET"
     const val ROWS: String = "rows"
     const val ELEMENTS: String = "elements"
     const val DISTANCE: String = "distance"
     const val DURATION: String = "duration"
     const val VALUE: String = "value"
+
+    // Google Directions API constants
+    const val DIRECTIONS: String = "directions"
+    const val ROUTES: String = "routes"
+    const val LEGS: String = "legs"
+    const val STEPS: String = "steps"
+    const val POLYLINE: String = "polyline"
+    const val POINTS: String = "points"
 
     // Function to launch the Image Selection Activity
     fun showImageSelection(activity: Activity) {
@@ -209,12 +230,13 @@ object Constants {
         button.iconTint = cslBtn2
     }  // end of toSecondaryButton method
 
-    // Function to return a Google Distance Matrix API URL
-    fun getDistanceMatrixURL(
-        context: Context, origin: List<Double>, destination: List<Double>
+    // Function to return a Google Maps API URL
+    fun getMapsURL(
+        context: Context, origin: List<Double>, destination: List<Double>,
+        apiName: String
     ): String {
         // Variable to store the API Key
-        var apiKey : String? = null
+        var apiKey: String? = null
 
         try {
             context.packageManager.getApplicationInfo(
@@ -222,7 +244,7 @@ object Constants {
             ).apply {
                 // Get the API key from Android Manifest
                 apiKey = metaData.getString(
-                    "edu.cccdci.opal.DIRECTIONS_API_KEY"
+                    "com.google.android.geo.API_KEY"
                 ) ?: ""
 
                 // Log the API key
@@ -235,9 +257,39 @@ object Constants {
         }  // end of try-catch
 
         // 0 - Latitude; 1 - Longitude
-        return "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" +
-                "${origin[0]},${origin[1]}&destinations=" +
-                "${destination[0]},${destination[1]}&key=${apiKey ?: ""}"
+        return if (apiName == DIRECTIONS) {
+            "https://maps.googleapis.com/maps/api/${apiName}/json?origin=" +
+                    "${origin[0]},${origin[1]}&destination=" +
+                    "${destination[0]},${destination[1]}&key=${apiKey ?: ""}"
+        } else {
+            "https://maps.googleapis.com/maps/api/${apiName}/json?origins=" +
+                    "${origin[0]},${origin[1]}&destinations=" +
+                    "${destination[0]},${destination[1]}&key=${apiKey ?: ""}"
+        }
     }  // end of getDistanceMatrixURL method
+
+    // Function to get the location by coordinates using any objects
+    fun getLocation(obj: Any?): List<Double> {
+        // Return the specified list of coordinate if the object is not null
+        return if (obj != null) {
+            when (obj) {
+                // Get the coordinates for Address
+                is Address? -> getCoordinates(obj.location)
+
+                // Get the coordinates for Market
+                is Market? -> getCoordinates(obj.location)
+
+                else -> listOf(0.0, 0.0)  // Default coordinates
+            }
+        } else {
+            listOf(0.0, 0.0)  // Default coordinates
+        }
+    }  // end of getLocation method
+
+    // Function to get the exact coordinates of the specified location
+    private fun getCoordinates(loc: Location?): List<Double> {
+        // Return a list of coordinates if it is not null; otherwise, default
+        return if (loc != null) listOf(loc.latitude, loc.longitude) else listOf(0.0, 0.0)
+    }  // end of getCoordinates method
 
 }  // end of Constants object

@@ -1,15 +1,24 @@
 package edu.cccdci.opal.ui.activities
 
 import android.os.Bundle
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityMyMarketDetailsBinding
 import edu.cccdci.opal.dataclasses.Market
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.UtilityClass
 
-class MyMarketDetailsActivity : UtilityClass() {
+class MyMarketDetailsActivity : UtilityClass(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMyMarketDetailsBinding
+    private lateinit var mGoogleMap: GoogleMap
+    private lateinit var mSupportMap: SupportMapFragment
     private var mMarketInfo: Market? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +30,10 @@ class MyMarketDetailsActivity : UtilityClass() {
             setContentView(root)
             // Setups the Action Bar of the current activity
             setupActionBar(tlbUserMarketDetailsActivity, false)
+
+            // Prepare the SupportMapFragment
+            mSupportMap = supportFragmentManager
+                .findFragmentById(R.id.mpfr_market_address) as SupportMapFragment
 
             // Check if there's an existing parcelable extra info
             if (intent.hasExtra(Constants.MARKET_INFO)) {
@@ -37,6 +50,34 @@ class MyMarketDetailsActivity : UtilityClass() {
 
     }  // end of onCreate method
 
+    // Overriding function to set the Map UI of current delivery address
+    override fun onMapReady(gMap: GoogleMap) {
+        mGoogleMap = gMap  // Store the GoogleMap object
+
+        // Get the latitude and longitude of user's market
+        val marketCoor = Constants.getLocation(mMarketInfo)
+        // Create an object of user's market's latitude and longitude
+        val marketLoc = LatLng(marketCoor[0], marketCoor[1])
+
+        // Set the home marker attributes
+        val marketMarker = MarkerOptions()
+            // Set the position to the latitude and longitude of user's market
+            .position(marketLoc)
+            // Set the market title
+            .title(if (mMarketInfo != null) mMarketInfo!!.name else null)
+            // Customize the icon image
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_primary))
+
+        // Make the marker visible to the Map UI
+        mGoogleMap.addMarker(marketMarker)
+        // Focus the Map UI to the position of marker
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marketLoc, 17f))
+
+        // Disable all touch interactions and controls of the Map UI
+        mGoogleMap.uiSettings.setAllGesturesEnabled(false)
+        mGoogleMap.uiSettings.isMapToolbarEnabled = false
+    }  // end of onMapReady method
+
     // Function to set the additional market details values
     private fun setAdditionalMarketDetails() {
         with(binding) {
@@ -52,7 +93,7 @@ class MyMarketDetailsActivity : UtilityClass() {
             tvMktDetCategory.text = if (
                 categories[mMarketInfo!!.category] == Constants.ITEM_OTHERS
             ) {
-                // Format: Others | Specified Category
+                // Format: Others (Specified Category)
                 getString(
                     R.string.market_other_category,
                     categories[mMarketInfo!!.category],
@@ -77,6 +118,9 @@ class MyMarketDetailsActivity : UtilityClass() {
             tvMktDetDelivery.text = getString(
                 R.string.item_price, mMarketInfo!!.deliveryFee
             )
+
+            // Load the map fragment
+            mSupportMap.getMapAsync(this@MyMarketDetailsActivity)
         }  // end of with(binding)
 
     }  // end of setAdditionalMarketDetails method

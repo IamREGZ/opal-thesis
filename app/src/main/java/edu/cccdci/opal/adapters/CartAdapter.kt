@@ -147,10 +147,11 @@ class CartAdapter(
         if (cartDataList[position].prodQTY == 0) {
             cartDataList.removeAt(position)
             cartItemDetails.removeAt(position)
-        }
 
-        // To reflect changes made in the underlying dataset
-        notifyDataSetChanged()
+            // To reflect changes made in the underlying dataset
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(0, itemCount)
+        }
 
         // Update the current subtotal of all cart items
         cartSubtotal = cartDataList.sumOf { it.prodPrice }
