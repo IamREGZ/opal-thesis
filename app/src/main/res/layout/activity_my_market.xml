@@ -51,7 +51,7 @@
                 android:contentDescription="@string/more_menu"
                 android:foreground="?attr/selectableItemBackground"
                 android:src="@drawable/ic_more"
-                android:tint="@color/app_white" />
+                app:tint="@color/app_white" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/my_market_profile_border_size"

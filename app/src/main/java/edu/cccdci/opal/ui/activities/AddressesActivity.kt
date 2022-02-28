@@ -19,6 +19,7 @@ class AddressesActivity : UtilityClass() {
     private var addressAdapter: AddressAdapter? = null
     // Enables selection of address when it is true
     private var mSelectableAddress: Boolean = false
+    private var mMode: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -49,6 +50,12 @@ class AddressesActivity : UtilityClass() {
                 )
             }
 
+            if (intent.hasExtra(Constants.SELECTION_MODE)) {
+                mMode = intent.getIntExtra(
+                    Constants.SELECTION_MODE, 0
+                )
+            }
+
             // Sets the layout type of the RecyclerView
             rvAddresses.layoutManager = WrapperLinearLayoutManager(
                 this@AddressesActivity, LinearLayoutManager.VERTICAL, false
@@ -56,7 +63,7 @@ class AddressesActivity : UtilityClass() {
 
             // Create an object of Address Adapter
             addressAdapter = AddressAdapter(
-                this@AddressesActivity, mSelectableAddress, options
+                this@AddressesActivity, mSelectableAddress, mMode ?: -1, options
             )
             // Sets the adapter of Address RecyclerView
             rvAddresses.adapter = addressAdapter

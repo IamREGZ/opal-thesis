@@ -8,13 +8,15 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.gson.Gson
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.CartAdapter
 import edu.cccdci.opal.dataclasses.*
@@ -106,6 +108,14 @@ class FirestoreClass {
                     Constants.SIGNED_IN_USER_ROLE, user.vendor
                 ).apply()
 
+                spEditor.putString(
+                    Constants.CURRENT_LOCATION, Gson().toJson(
+                        user.locSettings ?: CurrentLocation(
+                            -1, Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE
+                        )
+                    )
+                ).apply()
+
                 when (activity) {
                     // In Login Activity, it sends the user to the home activity
                     is LoginActivity -> activity.logInSuccessPrompt()
@@ -116,9 +126,7 @@ class FirestoreClass {
                     /* In Main Activity, it sets the placeholder values in
                      * the sidebar header to the user's information.
                      */
-                    is MainActivity -> activity.setNavigationAttributes(
-                        sharedPrefs, user
-                    )
+                    is MainActivity -> activity.setNavigationAttributes(user)
 
                     /* In Product Description Activity, it sets the current
                      * user details to check if the product is in the user's
@@ -159,6 +167,8 @@ class FirestoreClass {
             // If it is successful
             .addOnSuccessListener {
                 when (activity) {
+                    is MainActivity -> activity.userSavedPrompt()
+
                     // In User Profile Activity, it sends the user to the home page
                     is UserProfileActivity -> activity.userInfoChangedPrompt()
 
@@ -172,6 +182,7 @@ class FirestoreClass {
                  * or Market Editor Activity
                  */
                 when (activity) {
+                    is MainActivity -> activity.hideProgressDialog()
                     is UserProfileActivity -> activity.hideProgressDialog()
                     is MarketEditorActivity -> activity.hideProgressDialog()
                 }
@@ -592,55 +603,70 @@ class FirestoreClass {
     }  // end of addProduct method
 
     // Function to get the query statement for products
-    fun getProductQuery(fragment: Fragment): Query {
+    fun getProductQuery(
+        fragment: Fragment?, activity: Activity? = null, marketID: String = ""
+    ): Query {
         // Access the collection named products
         val productRef = mFSInstance.collection(Constants.PRODUCTS)
 
         return with(productRef) {
-            // Returns the query, depending on the tab of Product Inventory fragment
-            when (fragment) {
-                /* To get all products that are in stock, get all the documents
-                 * where vendor ID is equal to the current user ID, the status
-                 * code is equal to 1 (In Stock), and the stock is greater than
-                 * 0.
-                 */
-                is ProductInStockFragment -> whereEqualTo(
-                    Constants.VENDOR_ID, getCurrentUserID()
-                ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
-                    .whereGreaterThan(Constants.STOCK, 0)
+            if (activity != null) {
+                when (activity) {
+                    is MarketPageActivity -> whereEqualTo(
+                        Constants.MARKET_ID, marketID
+                    ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
+                        .whereGreaterThan(Constants.STOCK, 0)
 
-                /* To get all products that are sold out, get all the documents
-                 * where vendor ID is equal to the current user ID, and the
-                 * stock is equal to 0.
-                 */
-                is ProductSoldOutFragment -> whereEqualTo(
-                    Constants.VENDOR_ID, getCurrentUserID()
-                ).whereEqualTo(Constants.STOCK, 0)
+                    else -> whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
+                        .whereGreaterThan(Constants.STOCK, 0)
+                        .limit(20)
+                }
+            } else {
+                // Returns the query, depending on the tab of Product Inventory fragment
+                when (fragment) {
+                    /* To get all products that are in stock, get all the documents
+                     * where vendor ID is equal to the current user ID, the status
+                     * code is equal to 1 (In Stock), and the stock is greater than
+                     * 0.
+                     */
+                    is ProductInStockFragment -> whereEqualTo(
+                        Constants.VENDOR_ID, getCurrentUserID()
+                    ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
+                        .whereGreaterThan(Constants.STOCK, 0)
 
-                /* To get all products that are violated, get all the documents
-                 * where vendor ID is equal to the current user ID, and the
-                 * status code is equal to 2 (Violation).
-                 */
-                is ProductViolationFragment -> whereEqualTo(
-                    Constants.VENDOR_ID, getCurrentUserID()
-                ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_VIOLATION)
+                    /* To get all products that are sold out, get all the documents
+                     * where vendor ID is equal to the current user ID, and the
+                     * stock is equal to 0.
+                     */
+                    is ProductSoldOutFragment -> whereEqualTo(
+                        Constants.VENDOR_ID, getCurrentUserID()
+                    ).whereEqualTo(Constants.STOCK, 0)
 
-                /* To get all products that are unlisted, get all the documents
-                 * where vendor ID is equal to the current user ID, and the
-                 * status code is equal to 0 (Unlisted).
-                 */
-                is ProductUnlistedFragment -> whereEqualTo(
-                    Constants.VENDOR_ID, getCurrentUserID()
-                ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_UNLISTED)
+                    /* To get all products that are violated, get all the documents
+                     * where vendor ID is equal to the current user ID, and the
+                     * status code is equal to 2 (Violation).
+                     */
+                    is ProductViolationFragment -> whereEqualTo(
+                        Constants.VENDOR_ID, getCurrentUserID()
+                    ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_VIOLATION)
 
-                /* The default query, get all the documents where the status
-                 * code is equal to 1 (In Stock), the stock is greater than 0,
-                 * and limit the number of document retrievals to 20.
-                 */
-                else -> whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
-                    .whereGreaterThan(Constants.STOCK, 0)
-                    .limit(20)
-            }  // end of when
+                    /* To get all products that are unlisted, get all the documents
+                     * where vendor ID is equal to the current user ID, and the
+                     * status code is equal to 0 (Unlisted).
+                     */
+                    is ProductUnlistedFragment -> whereEqualTo(
+                        Constants.VENDOR_ID, getCurrentUserID()
+                    ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_UNLISTED)
+
+                    /* The default query, get all the documents where the status
+                     * code is equal to 1 (In Stock), the stock is greater than 0,
+                     * and limit the number of document retrievals to 20.
+                     */
+                    else -> whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
+                        .whereGreaterThan(Constants.STOCK, 0)
+                        .limit(20)
+                }  // end of when
+            }
 
         }  // end of with(productRef)
 
@@ -816,6 +842,69 @@ class FirestoreClass {
             // Limit the number of document retrievals to 10
             .limit(10)
     }  // end of getMarketQuery method
+
+    fun retrieveNearMarkets(activity: Activity, center: GeoLocation) {
+        val radius = 6000.0
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radius)
+        val tasks: MutableList<Task<QuerySnapshot>> = mutableListOf()
+
+        for (b in bounds) {
+            val q = mFSInstance.collection(Constants.MARKETS)
+                .orderBy("${Constants.LOCATION}.geoHash")
+                .startAt(b.startHash)
+                .endAt(b.endHash)
+
+            tasks.add(q.get())
+        }
+
+        Tasks.whenAllComplete(tasks)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+
+                    val matchedDocs: MutableList<Market> = mutableListOf()
+
+                    for (t in tasks) {
+                        val snap = t.result
+
+                        for (doc in snap.documents) {
+                            val market = doc.toObject(Market::class.java)!!
+
+                            val docLoc = if (market.location != null)
+                                GeoLocation(
+                                    market.location.latitude,
+                                    market.location.longitude
+                                )
+                            else
+                                GeoLocation(
+                                    Constants.DEFAULT_LATITUDE,
+                                    Constants.DEFAULT_LONGITUDE
+                                )
+
+                            val distance = GeoFireUtils.getDistanceBetween(
+                                docLoc, center
+                            )
+
+                            if (distance <= radius) {
+                                matchedDocs.add(market)
+                            }
+                        }
+
+                    }
+
+                    if (activity is MarketNavActivity) {
+                        activity.getRetrievedMarkets(matchedDocs)
+                    }
+
+                } else {
+                    Log.e(
+                        activity.javaClass.simpleName,
+                        task.exception!!.message.toString(),
+                        task.exception!!
+                    )
+                }
+            }  // end of whenAllComplete
+
+    }  // end of retrieveNearMarkets method
 
     // Function to retrieve a single market data for Cart Activity
     fun retrieveMarket(activity: Activity, marketID: String) {

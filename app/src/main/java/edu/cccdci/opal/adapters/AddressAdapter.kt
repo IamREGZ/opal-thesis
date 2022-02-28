@@ -16,12 +16,14 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.gson.Gson
 import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.Address
+import edu.cccdci.opal.dataclasses.CurrentLocation
 import edu.cccdci.opal.ui.activities.AddressEditActivity
 import edu.cccdci.opal.utils.Constants
 
 class AddressAdapter(
     private val activity: Activity,
     private val selectable: Boolean,
+    private val mode: Int,
     options: FirestoreRecyclerOptions<Address>
 ): FirestoreRecyclerAdapter<Address, AddressAdapter.AddressViewHolder>(options) {
 
@@ -86,8 +88,22 @@ class AddressAdapter(
 
                     // Shared Preference for Selected Address
                     spEditor.putString(
-                        Constants.SELECTED_ADDRESS, Gson().toJson(address)
+                        if (mode == 0)
+                            Constants.SELECTED_ADDRESS
+                        else
+                            Constants.CURRENT_ADDRESS_DETAILS,
+                        Gson().toJson(address)
                     ).apply()
+
+                    if (mode == 1) {
+                        val curLoc = CurrentLocation(
+                            1, address.location!!.latitude, address.location.longitude
+                        )
+
+                        spEditor.putString(
+                            Constants.CURRENT_LOCATION, Gson().toJson(curLoc)
+                        ).apply()
+                    }
 
                     activity.finish()  // Closes the activity
                 }

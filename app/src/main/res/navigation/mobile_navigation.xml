@@ -49,13 +49,6 @@
 
     </fragment>
 
-    <!-- Markets Fragment -->
-    <fragment
-        android:id="@+id/fragment_markets"
-        android:name="edu.cccdci.opal.ui.fragments.MarketsFragment"
-        android:label="@string/markets"
-        tools:layout="@layout/fragment_markets" />
-
     <!-- Categories Fragment -->
     <fragment
         android:id="@+id/fragment_categories"

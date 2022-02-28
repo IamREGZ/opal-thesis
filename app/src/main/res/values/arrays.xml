@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Resource containing arrays (string, integer, etc.)  -->
+<resources>
+    <!--  Tabs  -->
+    <string-array name="order_sales_tabs">
+        <item>Pending</item>
+        <item>To Deliver</item>
+        <item>Delivered</item>
+        <item>Cancelled</item>
+        <item>Return/Refund</item>
+    </string-array>
+    <string-array name="product_tabs">
+        <item>In Stock</item>
+        <item>Sold Out</item>
+        <item>Violation</item>
+        <item>Unlisted</item>
+    </string-array>
+
+    <!--  Set Location Spinner Options  -->
+    <string-array name="location_spinner_options">
+        <item>My Device\'s Location</item>
+        <item>From Address</item>
+    </string-array>
+
+    <!--  Browse Markets  -->
+    <string-array name="browse_market_categories">
+        <item>Top Sales</item>
+        <item>Bagsak Presyo</item>
+        <item>Recent Markets</item>
+    </string-array>
+
+    <!--  Market Categories  -->
+    <string-array name="market_categories_list">
+        <item>Meat</item>
+        <item>Seafood</item>
+        <item>Poultry</item>
+        <item>Fruits</item>
+        <item>Vegetables</item>
+        <item>Rice</item>
+        <item>Others</item>
+    </string-array>
+
+    <!--  Order Arrays  -->
+    <string-array name="order_unavailable_actions">
+        <item>Remove the item(s) from the order</item>
+        <item>Cancel the entire order</item>
+    </string-array>
+    <string-array name="payment_methods">
+        <item>Cash on Delivery</item>
+        <item>Credit Card</item>
+        <item>Electronic Payment</item>
+    </string-array>
+
+    <!--  Measurement Units  -->
+    <string-array name="measurement_units">
+        <item>250 g</item>
+        <item>500 g</item>
+        <item>kg</item>
+        <item>2 kg</item>
+        <item>pc</item>
+        <item>pack</item>
+        <item>Others</item>
+    </string-array>
+
+</resources>

@@ -6,12 +6,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.ProductPagerAdapter
 import edu.cccdci.opal.databinding.ActivityProductBinding
+import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.UtilityClass
 
 class ProductActivity : UtilityClass() {
 
     private lateinit var binding: ActivityProductBinding
     private lateinit var mProductPager: ProductPagerAdapter
+    private var mMarketID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -22,6 +24,12 @@ class ProductActivity : UtilityClass() {
             setContentView(root)
             // Setups the Action Bar of the current activity
             setupActionBar(tlbProductActivity, false)
+
+            // Check if there's an existing string extra info
+            if (intent.hasExtra(Constants.MARKET_ID_DATA)) {
+                // Get the string data from intent
+                mMarketID = intent.getStringExtra(Constants.MARKET_ID_DATA)
+            }
 
             // Get the string array of product tabs
             val productTitles = resources.getStringArray(R.array.product_tabs)
@@ -40,13 +48,15 @@ class ProductActivity : UtilityClass() {
 
             // Actions taken when the Add New Product button is clicked
             btnAddProduct.setOnClickListener {
-                // Go to Product Editor Activity
-                startActivity(
-                    Intent(
-                        this@ProductActivity,
-                        ProductEditorActivity::class.java
-                    )
+                val intent = Intent(
+                    this@ProductActivity,
+                    ProductEditorActivity::class.java
                 )
+
+                intent.putExtra(Constants.MARKET_ID_DATA, mMarketID ?: "")
+
+                // Go to Product Editor Activity
+                startActivity(intent)
             }
 
         }  // end of with(binding)

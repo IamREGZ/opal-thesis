@@ -15,7 +15,7 @@ data class Product(
     val weight: Double = 0.0,
     val stock: Int = 0,
     val vendorID: String = "",
-    val market: HashMap<String, String> = hashMapOf(),
+    val marketID: String = "",
     val sales: Int = 0,
     val views: Int = 0,
     val status: Int = 1

@@ -643,6 +643,8 @@ class OrderDetailsFragment : Fragment(), View.OnClickListener {
             mOrderDetails!!.status == Constants.ORDER_OFD_CODE &&
             mOrderDetails!!.dates!!.paymentDate == null && isFirstCTA
         ) {
+            mFirstStatus = Constants.ORDER_DELIVERED_CODE
+
             /* For Mark as Paid button, add the current server timestamp
              * to payment date
              */

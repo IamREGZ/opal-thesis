@@ -26,6 +26,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
     private lateinit var mUnitList: List<String>
     private var mProdInfo: Product? = null
     private var mSelectedImageFileURI: Uri? = null
+    private var mMarketID: String? = null
     private var mTempProductImageURL: String = ""
     private var mProductImageURL: String = ""
     private var mProductHashMap: HashMap<String, Any> = hashMapOf()
@@ -43,6 +44,12 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
 
             // Get the string array of measurement units
             mUnitList = resources.getStringArray(R.array.measurement_units).toList()
+
+            // Check if there's an existing string extra info
+            if (intent.hasExtra(Constants.MARKET_ID_DATA)) {
+                // Get the string data from intent
+                mMarketID = intent.getStringExtra(Constants.MARKET_ID_DATA)
+            }
 
             // Check if there's an existing parcelable extra info
             if (intent.hasExtra(Constants.PRODUCT_DESCRIPTION)) {
@@ -430,7 +437,8 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                 unitMeasurement,
                 etProdEditWeight.text.toString().trim { it <= ' ' }.toDouble(),
                 etProdEditStock.text.toString().trim { it <= ' ' }.toInt(),
-                FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                FirebaseAuth.getInstance().currentUser?.uid ?: "",
+                mMarketID ?: ""
             )
 
             // Adds the product data in the Firestore Database

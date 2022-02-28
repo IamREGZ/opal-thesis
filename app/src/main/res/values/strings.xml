@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><!--  Resources containing string values  -->
 <resources>
     <!--  Name of Application  -->
     <string name="app_name">OPAL</string>
@@ -206,20 +207,33 @@
     <string name="categories">Categories</string>
     <string name="notifications">Notifications</string>
 
-    <!--  Tabs  -->
-    <string-array name="product_tabs">
-        <item>In Stock</item>
-        <item>Sold Out</item>
-        <item>Violation</item>
-        <item>Unlisted</item>
-    </string-array>
-    <string-array name="order_sales_tabs">
-        <item>Pending</item>
-        <item>To Deliver</item>
-        <item>Delivered</item>
-        <item>Cancelled</item>
-        <item>Return/Refund</item>
-    </string-array>
+    <!--  Home Header  -->
+    <string name="home_greeting">Hi There!</string>
+    <string name="home_welcome">Welcome to OPAL!</string>
+    <string name="set_location">Set Location</string>
+    <string name="market_browse_head">Browse</string>
+    <string name="market_categories_head">Categories</string>
+
+    <!--  Market Browse Card View  -->
+    <string name="market_browse_title">Browse Title</string>
+    <string name="market_browse_image">Market Browse Image</string>
+
+    <!--  Market Category Card View  -->
+    <string name="market_category_title">Category Title</string>
+    <string name="market_category_image">Market Category Image</string>
+
+    <!--  Market Navigation Header  -->
+    <string name="market_navigation_title">Market Navigation Title</string>
+    <string name="market_navigation_desc">Market Navigation Description</string>
+    <string name="market_navigation_image">Market Navigation Image</string>
+    <string name="user_current_location_icon">Current Location Icon</string>
+    <string name="user_current_location">Current Location</string>
+
+    <!--  Market Card  -->
+    <string name="market_image">Market Image</string>
+    <string name="market_name">Market Name</string>
+    <string name="market_address">%1$s, %2$s</string>
+    <string name="market_location">Market Location</string>
 
     <!--  Notification Item  -->
     <string name="notif_head">Notification Head</string>
@@ -246,12 +260,6 @@
     </string>
     <string name="empty_sad_icon">Empty Sad Icon</string>
     <string name="empty_cart_icon">Empty Cart Icon</string>
-
-    <!--  Market Card View  -->
-    <string name="market_image">Market Image</string>
-    <string name="market_name">Market Name</string>
-    <string name="market_address">%1$s, %2$s, %3$s, %4$s, %5$s %6$d</string>
-    <string name="market_location">Market Location</string>
 
     <!--  Product Card View  -->
     <string name="product_name">Product Name</string>
@@ -426,15 +434,6 @@
         Examples: Market Logo, Front of Market Stall, etc.
     </string>
     <string name="market_category">Market Category</string>
-    <string-array name="market_categories_list">
-        <item>Meat</item>
-        <item>Seafood</item>
-        <item>Poultry</item>
-        <item>Fruits</item>
-        <item>Vegetables</item>
-        <item>Rice</item>
-        <item>Others</item>
-    </string-array>
     <string name="other_cat_specify">Specify Category</string>
     <string name="market_address_head">MARKET ADDRESS</string>
     <string name="market_location_help">
@@ -471,15 +470,6 @@
     <string name="edit_weight">Weight (in kg)</string>
     <string name="edit_stock">Stock</string>
     <string name="delete_product">Delete Product</string>
-    <string-array name="measurement_units">
-        <item>250 g</item>
-        <item>500 g</item>
-        <item>kg</item>
-        <item>2 kg</item>
-        <item>pc</item>
-        <item>pack</item>
-        <item>Others</item>
-    </string-array>
 
     <!--  Messages Editor  -->
     <string name="message_name">Profile Name</string>
@@ -514,10 +504,6 @@
     <string name="order_not_available_lbl">
         If one (or more) product(s) is/are not available
     </string>
-    <string-array name="order_unavailable_actions">
-        <item>Remove the item(s) from the order</item>
-        <item>Cancel the entire order</item>
-    </string-array>
     <string name="order_unavailable_select_action">Please select action</string>
     <string name="special_instructions">Special Instructions (Optional)</string>
     <string name="special_instructions_helper">
@@ -526,11 +512,6 @@
     <string name="payment_method_icon">Payment Method Icon</string>
     <string name="payment_method">Payment Method</string>
     <string name="select_payment">Select Payment Method</string>
-    <string-array name="payment_methods">
-        <item>Cash on Delivery</item>
-        <item>Credit Card</item>
-        <item>Electronic Payment</item>
-    </string-array>
     <string name="payment_selection">Payment Selection Status</string>
     <string name="items_receipt_icon">Items Receipt Icon</string>
     <string name="items_receipt">Items Receipt</string>
@@ -547,10 +528,6 @@
         No items found. A retrieval error might be the cause of this problem.
     </string>
     <string name="order_item_qty_default">Total (n items):</string>
-    <plurals name="items_quantity">
-        <item quantity="one">Total (%d item):</item>
-        <item quantity="other">Total (%d items):</item>
-    </plurals>
     <string name="order_status_icon">Order Status Icon</string>
     <string name="order_status">Status</string>
 
@@ -561,10 +538,6 @@
     <string name="od_det_status_icon">Order Status Icon (Large)</string>
     <string name="od_det_payment_info">Payment Information</string>
     <string name="od_det_subtotal_default">Subtotal (n items)</string>
-    <plurals name="subtotal_order_items">
-        <item quantity="one">Subtotal (%d item)</item>
-        <item quantity="other">Subtotal (%d items)</item>
-    </plurals>
     <string name="od_det_information_icon">Order Information Icon</string>
     <string name="od_det_information">Order Information</string>
     <string name="order_id_placeholder">OPLXXXXXXXXXXXXX</string>
@@ -592,22 +565,6 @@
     <string name="order_unknown_desc">
         Unable to determine the status due to unexpected error or other reasons.
     </string>
-    <plurals name="order_item_quantifier">
-        <item quantity="one">item</item>
-        <item quantity="other">items</item>
-    </plurals>
-    <plurals name="is_are">
-        <item quantity="one">is</item>
-        <item quantity="other">are</item>
-    </plurals>
-    <plurals name="its_their">
-        <item quantity="one">its</item>
-        <item quantity="other">their</item>
-    </plurals>
-    <plurals name="has_have">
-        <item quantity="one">has</item>
-        <item quantity="other">have</item>
-    </plurals>
 
     <!--  Order Status Description for Customers  -->
     <string name="cs_od_pending_desc">Awaiting confirmation from your market vendor.</string>
@@ -701,5 +658,7 @@
     <!--  Testing Purposes  -->
     <string name="distance">Distance: %.1f km</string>
     <string name="duration">Duration: %d minutes</string>
+
+    <string name="current_location">%1$s, %2$s, %3$s, %4$s %5$d</string>
 
 </resources>

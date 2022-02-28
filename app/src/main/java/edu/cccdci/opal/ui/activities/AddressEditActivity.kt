@@ -491,7 +491,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                     ))
                 )
             )
-        }
+        }  // end of with(binding)
 
         // Adds the user address data in the Firestore Database
         FirestoreClass().addUserAddress(

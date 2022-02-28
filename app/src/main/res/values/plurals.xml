@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Resource containing string quantifiers (plurals)  -->
+<resources>
+    <!--  Grammar  -->
+    <plurals name="is_are">
+        <item quantity="one">is</item>
+        <item quantity="other">are</item>
+    </plurals>
+    <plurals name="its_their">
+        <item quantity="one">its</item>
+        <item quantity="other">their</item>
+    </plurals>
+    <plurals name="has_have">
+        <item quantity="one">has</item>
+        <item quantity="other">have</item>
+    </plurals>
+
+    <!--  Order Related  -->
+    <plurals name="items_quantity">
+        <item quantity="one">Total (%d item):</item>
+        <item quantity="other">Total (%d items):</item>
+    </plurals>
+    <plurals name="subtotal_order_items">
+        <item quantity="one">Subtotal (%d item)</item>
+        <item quantity="other">Subtotal (%d items)</item>
+    </plurals>
+    <plurals name="order_item_quantifier">
+        <item quantity="one">item</item>
+        <item quantity="other">items</item>
+    </plurals>
+
+</resources>

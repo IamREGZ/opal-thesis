@@ -19,6 +19,7 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
     private var mUserInfo: User? = null
     private var mProdInfo: Product? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -41,7 +42,7 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
                             R.string.product_price, price, unit
                         )
                         tvPdDesc.text = description
-                        tvPdMarket.text = market[Constants.NAME]
+                        // tvPdMarket.text = market[Constants.NAME]
 
                         // Load the product image
                         GlideLoader(this@ProductDescActivity).loadImage(
@@ -129,7 +130,7 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
             FirestoreClass().updateCart(
                 this@ProductDescActivity,
                 listOf(CartItem(mProdInfo!!.id, 1, mProdInfo!!.price)),
-                mProdInfo!!.market[Constants.ID]!!,
+                mProdInfo!!.marketID,
                 mUserInfo!!
             )
         }

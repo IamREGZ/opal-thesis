@@ -1,5 +1,6 @@
 package edu.cccdci.opal.ui.activities
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -18,8 +19,10 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityMainBinding
+import edu.cccdci.opal.dataclasses.CurrentLocation
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
@@ -34,7 +37,10 @@ class MainActivity : UtilityClass(),
     private lateinit var mNavController: NavController
     private lateinit var mNavGraph: NavGraph
     private lateinit var mAppBarConfiguration: AppBarConfiguration
+    private lateinit var mSharedPrefs: SharedPreferences
+    private lateinit var mSPEditor: SharedPreferences.Editor
     private var mUserInfo: User? = null
+    private var mCurLocJson: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -79,13 +85,19 @@ class MainActivity : UtilityClass(),
                  */
                 when (destination.id) {
                     R.id.fragment_home,
-                    R.id.fragment_markets,
                     R.id.fragment_categories,
                     R.id.fragment_notifs -> bottomNavView.visibility = View.VISIBLE
 
                     else -> binding.bottomNavView.visibility = View.GONE
                 }
             }  // end of addOnDestinationChangedListener
+
+            // Creates the Shared Preferences
+            mSharedPrefs = getSharedPreferences(
+                Constants.OPAL_PREFERENCES, Context.MODE_PRIVATE
+            )
+            // Create the editor for Shared Preferences
+            mSPEditor = mSharedPrefs.edit()
 
         }  // end of with(binding)
 
@@ -190,9 +202,16 @@ class MainActivity : UtilityClass(),
             }
 
             // Sends user to Product Inventory
-            R.id.nav_products -> startActivity(
-                Intent(this@MainActivity, ProductActivity::class.java)
-            )
+            R.id.nav_products -> {
+                // Create an Intent to launch MyMarketActivity
+                val intent = Intent(
+                    this@MainActivity, ProductActivity::class.java
+                )
+                // Add market ID data to intent
+                intent.putExtra(Constants.MARKET_ID_DATA, mUserInfo!!.marketID)
+
+                startActivity(intent)
+            }
 
             // Sends user to Sales History
             R.id.nav_sales_history -> navigateFragment(R.id.home_to_sales_history)
@@ -216,22 +235,25 @@ class MainActivity : UtilityClass(),
     }  // end of navigateFragment method
 
     // Function to set up user information in the sidebar header
-    fun setNavigationAttributes(sp: SharedPreferences, user: User) {
+    fun setNavigationAttributes(user: User) {
         mUserInfo = user  // To be used for Parcelable
 
         // Get user information from Shared Preferences
-        val signedInName = sp.getString(
+        val signedInName = mSharedPrefs.getString(
             Constants.SIGNED_IN_FULL_NAME, "undefined undefined"
         )!!
-        val signedInUserName = sp.getString(
+        val signedInUserName = mSharedPrefs.getString(
             Constants.SIGNED_IN_USERNAME, "undefined"
         )!!
-        val signedInProfilePic = sp.getString(
+        val signedInProfilePic = mSharedPrefs.getString(
             Constants.SIGNED_IN_PROFILE_PIC, ""
         )!!
-        val signedInUserRole = sp.getBoolean(
+        val signedInUserRole = mSharedPrefs.getBoolean(
             Constants.SIGNED_IN_USER_ROLE, false
         )
+        mCurLocJson = mSharedPrefs.getString(
+            Constants.CURRENT_LOCATION, ""
+        )!!
 
         // Gets the header view from sidebar
         val header = binding.nvSidebar.getHeaderView(0)
@@ -268,6 +290,14 @@ class MainActivity : UtilityClass(),
         mNavGraph.addArgument(Constants.EXTRA_USER_INFO, navArg)
         mNavController.graph = mNavGraph  // Update the navigation graph
 
+        if (mCurLocJson.isEmpty()) {
+            if (mUserInfo!!.locSettings != null) {
+                mSPEditor.putString(
+                    Constants.CURRENT_LOCATION,
+                    Gson().toJson(mUserInfo!!.locSettings)
+                ).apply()
+            }
+        }
         hideProgressDialog()  // Hide the loading message
     }  // end of setNavigationAttributes method
 
@@ -286,6 +316,37 @@ class MainActivity : UtilityClass(),
 
     // Function to sign out the user
     fun signOutUser() {
+        mCurLocJson = mSharedPrefs.getString(
+            Constants.CURRENT_LOCATION, ""
+        )!!
+
+        if (mCurLocJson.isNotEmpty()) {
+            showProgressDialog(
+                this@MainActivity, this@MainActivity,
+                getString(R.string.msg_please_wait)
+            )
+
+            FirestoreClass().updateUserProfileData(
+                this@MainActivity, hashMapOf(
+                    "locSettings" to Gson().fromJson(
+                        mCurLocJson, CurrentLocation::class.java
+                    )
+                )
+            )
+        } else {
+            userSavedPrompt()
+        }
+    }  // end of signOutUser method
+
+    fun userSavedPrompt() {
+        if (mCurLocJson.isNotEmpty()) {
+            hideProgressDialog()
+
+            mSPEditor.putString(Constants.CURRENT_LOCATION, "").apply()
+
+            mSPEditor.putString(Constants.CURRENT_ADDRESS_DETAILS, "").apply()
+        }
+
         // Sign out the current Firebase Authentication
         FirebaseAuth.getInstance().signOut()
 
@@ -302,7 +363,6 @@ class MainActivity : UtilityClass(),
 
         startActivity(intent)  // Opens the log in activity
         finish()  // Closes the current activity
-
-    }  // end of signOutUser method
+    }
 
 }  // end of MainActivity class

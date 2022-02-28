@@ -101,6 +101,8 @@ object Constants {
     const val MARKET_ID_TEMP: String = "MK-"
     const val ORDER_ID_TEMP: String = "OPL"
     const val ITEM_OTHERS: String = "Others"
+    const val DEVICE_LOCATION_CODE: String = "dev_loc"
+    const val ADDRESS_LOCATION_CODE: String = "add_loc"
 
     // Product Status Codes
     const val PRODUCT_IN_STOCK: Int = 1
@@ -137,6 +139,9 @@ object Constants {
     const val MARKET_NAME_DATA: String = "market_name_data"
     const val LOCATION_MARKERS_INFO: String = "location_markers_info"
     const val CURRENT_MARKER_POS: String = "current_marker_position"
+    const val CURRENT_LOCATION: String = "current_location"
+    const val CURRENT_ADDRESS_DETAILS: String = "current_address_details"
+    const val SELECTION_MODE: String = "selection_mode"
 
     // Request Permission Codes
     const val READ_STORAGE_PERMISSION_CODE = 2
@@ -153,13 +158,14 @@ object Constants {
 
     // Hex Color constants
     const val APP_GREEN: String = "#FF00611C"
+    const val APP_TEAL: String = "#FF00827F"
     const val APP_DARK_GREEN: String = "#FF014421"
     const val APP_DARK_TEAL: String = "#FF006666"
     const val APP_BLACK: String = "#FF0F0F0F"
     const val MEDIUM_ORANGE: String = "#FFF28500"
     const val DIM_GRAY: String = "#FF696969"
 
-    // Default latitude and longitude
+    // Default latitude and longitude (Jose Rizal's house)
     const val DEFAULT_LATITUDE: Double = 14.2136451
     const val DEFAULT_LONGITUDE: Double = 121.1667075
 

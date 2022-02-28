@@ -33,8 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_mrg_pd"
             android:layout_marginBottom="@dimen/small_mrg_pd"
+            android:gravity="center"
             android:text="@string/account_registration"
-            android:textAlignment="center"
             android:textColor="@color/app_black"
             android:textSize="@dimen/header_text_size" />
 

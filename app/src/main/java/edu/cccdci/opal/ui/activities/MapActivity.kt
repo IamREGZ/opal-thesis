@@ -113,7 +113,7 @@ class MapActivity : UtilityClass(), View.OnClickListener, OnMapReadyCallback,
             setMarkersRoute()
         }
         // For location selection only
-        else {
+        else if (mCurrentMarkerPos != null ){
             initCurrentLocation()
         }
 

@@ -49,6 +49,7 @@
                 android:id="@+id/tv_product_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@string/product_price"
@@ -56,19 +57,6 @@
                 android:textSize="@dimen/card_desc_text_size" />
 
         </LinearLayout>
-
-        <edu.cccdci.opal.utils.MainTextView
-            android:id="@+id/tv_product_market"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/medium_mrg_pd"
-            android:layout_marginEnd="@dimen/medium_mrg_pd"
-            android:layout_marginBottom="@dimen/medium_mrg_pd"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@string/product_market"
-            android:textColor="@color/app_black"
-            android:textSize="@dimen/card_desc_text_size" />
 
     </LinearLayout>
 

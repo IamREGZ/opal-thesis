@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/medium_mrg_pd"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/app_white"
     app:cardCornerRadius="@dimen/card_radius"
     app:cardElevation="@dimen/card_elevation">
 
@@ -34,15 +33,24 @@
             android:orientation="vertical">
 
             <edu.cccdci.opal.utils.HeaderTextView
-                android:id="@+id/market_name"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_market_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/small_mrg_pd"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@string/market_name"
                 android:textColor="@color/primaryAccentColor"
                 android:textSize="@dimen/card_head_text_size" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_market_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_mrg_pd"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:text="@string/market_category"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/card_desc_text_size" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,16 +66,122 @@
                     android:src="@drawable/ic_location" />
 
                 <edu.cccdci.opal.utils.MainTextView
-                    android:id="@+id/market_address"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tv_market_address"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="2"
+                    android:maxLines="1"
                     android:text="@string/market_address"
                     android:textColor="@color/app_black"
                     android:textSize="@dimen/card_desc_text_size" />
 
             </LinearLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
+                android:columnCount="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/small_icon_size"
+                        android:layout_height="@dimen/small_icon_size"
+                        android:layout_marginEnd="@dimen/small_mrg_pd"
+                        android:contentDescription="@string/delivery_distance_label"
+                        android:src="@drawable/ic_distance" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/tv_market_delivery_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/delivery_distance_value"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/card_desc_text_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/small_icon_size"
+                        android:layout_height="@dimen/small_icon_size"
+                        android:layout_marginEnd="@dimen/small_mrg_pd"
+                        android:contentDescription="@string/delivery_duration_label"
+                        android:src="@drawable/ic_duration" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/tv_market_delivery_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/delivery_duration_value"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/card_desc_text_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="@dimen/small_mrg_pd"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/small_icon_size"
+                        android:layout_height="@dimen/small_icon_size"
+                        android:layout_marginEnd="@dimen/small_mrg_pd"
+                        android:contentDescription="@string/delivery_fee"
+                        android:src="@drawable/ic_market_delivery_fee" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/tv_market_delivery_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/item_price"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/card_desc_text_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="@dimen/small_mrg_pd"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/small_icon_size"
+                        android:layout_height="@dimen/small_icon_size"
+                        android:layout_marginEnd="@dimen/small_mrg_pd"
+                        android:contentDescription="@string/market_rating"
+                        android:src="@drawable/ic_market_rating" />
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/tv_market_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rating_count"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/card_desc_text_size" />
+
+                </LinearLayout>
+
+            </GridLayout>
 
         </LinearLayout>
 

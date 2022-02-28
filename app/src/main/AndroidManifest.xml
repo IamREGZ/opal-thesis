@@ -4,10 +4,14 @@
     package="edu.cccdci.opal"
     tools:ignore="LockedOrientationActivity">
     <!-- Permission to use Internet Provider -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permission to access approximate location (network provider only) -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Permission to access precise location (network and GPS) -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Permission to access device storage -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Permission to write device storage -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permission to access approximate location (network provider only) -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Permission to access precise location (network and GPS) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Permission to access device storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Permission to write device storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -58,12 +62,26 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <!-- Home Page of the App -->
+        <!-- Main Activity (Where the main operations happen here) -->
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
+
+        <!-- Market Navigation Activity (List of all markets, depending on category) -->
+        <activity
+            android:name=".ui.activities.MarketNavActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <!-- Market Page Activity (View Market Profile for customers) -->
+        <activity
+            android:name=".ui.activities.MarketPageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
         <!-- User Profile Activity (Change User Information) -->
         <activity
@@ -156,7 +174,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <!-- Delivery Route Activity (View larger map with delivery route) -->
+        <!-- Map Activity (Delivery Route or Location Selector) -->
         <activity
             android:name=".ui.activities.MapActivity"
             android:exported="false"

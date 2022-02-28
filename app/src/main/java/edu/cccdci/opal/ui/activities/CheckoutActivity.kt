@@ -155,6 +155,7 @@ class CheckoutActivity
                     )
                     // To enable address selection functionality in the target activity
                     intent.putExtra(Constants.SELECTABLE_ENABLED, true)
+                    intent.putExtra(Constants.SELECTION_MODE, 0)
 
                     startActivity(intent)  // Opens the activity
                 }

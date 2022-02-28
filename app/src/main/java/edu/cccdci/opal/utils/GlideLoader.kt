@@ -47,6 +47,7 @@ class GlideLoader(
 
                 // Market Placeholder
                 is MarketEditorActivity,
+                is MarketNavActivity,
                 is MyMarketActivity -> R.drawable.ic_market_placeholder
 
                 // Default Blank Image

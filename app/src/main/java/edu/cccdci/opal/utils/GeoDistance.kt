@@ -3,6 +3,7 @@ package edu.cccdci.opal.utils
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
+import androidx.recyclerview.widget.RecyclerView
 import edu.cccdci.opal.R
 import edu.cccdci.opal.ui.activities.CheckoutActivity
 import org.json.JSONException
@@ -16,11 +17,17 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.concurrent.Executors
 
-class GeoDistance(private val activity: Activity) {
+class GeoDistance(
+    private val activity: Activity,
+    viewHolder: RecyclerView.ViewHolder? = null
+) {
 
     private val mExecutor = Executors.newSingleThreadExecutor()
     private val mHandler = Handler(Looper.getMainLooper())
-    private val mGeoDistance: GeoDistanceResult = activity as GeoDistanceResult
+    private val mGeoDistance: GeoDistanceResult = if (viewHolder != null)
+        viewHolder as GeoDistanceResult
+    else
+        activity as GeoDistanceResult
 
     // Function to calculate the travel duration and distance between two locations
     fun calculateDistance(origin: List<Double>, destination: List<Double>) {
