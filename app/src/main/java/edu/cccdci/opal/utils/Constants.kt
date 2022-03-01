@@ -101,8 +101,6 @@ object Constants {
     const val MARKET_ID_TEMP: String = "MK-"
     const val ORDER_ID_TEMP: String = "OPL"
     const val ITEM_OTHERS: String = "Others"
-    const val DEVICE_LOCATION_CODE: String = "dev_loc"
-    const val ADDRESS_LOCATION_CODE: String = "add_loc"
 
     // Product Status Codes
     const val PRODUCT_IN_STOCK: Int = 1
@@ -152,6 +150,15 @@ object Constants {
     const val PRODUCT_IMAGE_TEMP: String = "OPAL_PDT_"
     const val MARKET_IMAGE_TEMP: String = "OPAL_MKT_"
 
+    // Regex patterns
+    private const val VALID_EMAIL: String = "^[A-Za-z0-9]+(?:[._-]?[A-Za-z0-9])+@" +
+            "[A-Za-z0-9]+(?:[._-]?[A-Za-z0-9])+(?:\\.[A-Za-z0-9]{2,3})+\$"
+    private const val VALID_USERNAME: String = "^[A-Za-z0-9]+(?:[.-]?[A-Za-z0-9]+)*\$"
+    const val HAS_LOWERCASE: String = ".*[a-z].*"
+    const val HAS_UPPERCASE: String = ".*[A-Z].*"
+    const val HAS_DIGIT: String = ".*\\d.*"
+    const val HAS_SPECIAL_CHAR: String = ".*[@%+'\"!#\$^?,(){}\\[\\]~`\\-_./\\\\].*"
+
     // Date formatting constants
     const val MDY_HM12_DATE_FORMAT: String = "MM/dd/yyyy hh:mm a"
     const val YMD_HMS24_DATE_FORMAT: String = "yyyy-MM-dd HH:mm:ss"
@@ -185,6 +192,30 @@ object Constants {
     const val STEPS: String = "steps"
     const val POLYLINE: String = "polyline"
     const val POINTS: String = "points"
+
+    // Function to validate email string using Regular Expression (Regex)
+    fun emailValidator(email: String): Boolean {
+        return Regex(VALID_EMAIL).matches(email)
+    }  // end of emailValidator method
+
+    // Function to validate username string using Regular Expression (Regex)
+    fun usernameValidator(user: String): Boolean {
+        return Regex(VALID_USERNAME).matches(user)
+    }  // end of usernameValidator method
+
+    // Function to determine if the password meets the requirement for strong password
+    fun strongPassword(pass: String): Boolean {
+        /* Aside from having at least 8 characters, it must have:
+         * 1. At least one lowercase letter,
+         * 2. At least one uppercase letter,
+         * 3. At least one digit, and
+         * 4. At least one special character
+         */
+        return pass.run {
+            matches(HAS_LOWERCASE.toRegex()) && matches(HAS_UPPERCASE.toRegex()) &&
+                    matches(HAS_DIGIT.toRegex()) && matches(HAS_SPECIAL_CHAR.toRegex())
+        }  // end of run
+    }  // end of strongPassword method
 
     // Function to launch the Image Selection Activity
     fun showImageSelection(activity: Activity) {

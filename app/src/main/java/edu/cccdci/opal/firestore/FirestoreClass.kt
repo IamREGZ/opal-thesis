@@ -835,13 +835,13 @@ class FirestoreClass {
 
     }  // end of addMarket method
 
-    // Function to get the query statement for market collection
-    fun getMarketQuery(): Query {
-        // Access the collection named markets
-        return mFSInstance.collection(Constants.MARKETS)
-            // Limit the number of document retrievals to 10
-            .limit(10)
-    }  // end of getMarketQuery method
+//    // Function to get the query statement for market collection
+//    fun getMarketQuery(): Query {
+//        // Access the collection named markets
+//        return mFSInstance.collection(Constants.MARKETS)
+//            // Limit the number of document retrievals to 10
+//            .limit(10)
+//    }  // end of getMarketQuery method
 
     fun retrieveNearMarkets(activity: Activity, center: GeoLocation) {
         val radius = 6000.0

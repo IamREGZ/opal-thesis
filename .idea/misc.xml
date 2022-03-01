@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_check.xml" value="0.1845" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_distance.xml" value="0.2203125" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_duration.xml" value="0.2203125" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_location.xml" value="0.2203125" />
@@ -10,11 +11,15 @@
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_market_rating.xml" value="0.2203125" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_market_views.xml" value="0.2203125" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_round_delivery_dining_24.xml" value="0.2203125" />
+        <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_status_return.xml" value="0.1845" />
+        <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/ic_status_success.xml" value="0.1845" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/drawable/outlined_text_layout_large.xml" value="0.2203125" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_address_edit.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_addresses.xml" value="0.14628623188405798" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_cart.xml" value="0.2" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_checkout.xml" value="0.25" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_delivery_route.xml" value="0.25" />
+        <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_forgot_password.xml" value="0.2" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_map.xml" value="0.20416666666666666" />
@@ -26,6 +31,7 @@
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_product_desc.xml" value="0.1322463768115942" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_product_editor.xml" value="0.1431159420289855" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_register.xml" value="0.25" />
+        <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/activity_splash_screen.xml" value="0.17" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/cart_item.xml" value="0.1322463768115942" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/checkout_item.xml" value="0.12817028985507245" />
         <entry key="..\:/Users/IamREGZSnts/AndroidStudioProjects/OPAL/app/src/main/res/layout/fragment_home.xml" value="0.22" />

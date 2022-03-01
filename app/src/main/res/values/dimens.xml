@@ -54,12 +54,10 @@
     <dimen name="small_icon_size">20dp</dimen>
     <dimen name="medium_icon_size">36dp</dimen>
     <dimen name="large_icon_size">80dp</dimen>
+    <dimen name="check_icon_size">24dp</dimen>
 
     <!--  Login Dimens  -->
-    <dimen name="login_layout_padding">30dp</dimen>
-
-    <!--  Register Dimens  -->
-    <dimen name="register_layout_padding">16dp</dimen>
+    <dimen name="login_layout_padding">32dp</dimen>
 
     <!--  Progress Dialog Dimens  -->
     <dimen name="progress_dialog_padding">8dp</dimen>

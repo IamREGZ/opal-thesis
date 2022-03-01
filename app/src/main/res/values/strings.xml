@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--  Resources containing string values  -->
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  Resources containing string values  -->
 <resources>
     <!--  Name of Application  -->
     <string name="app_name">OPAL</string>
@@ -14,31 +16,50 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email_address">Email Address</string>
+    <string name="email_helper">Examples: abc@gmail.com , opal@ccc.edu.ph</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="agree_to_lbl">I agree to the</string>
     <string name="terms_and_conditions_link">TERMS &amp; CONDITIONS</string>
     <string name="register_btn">Register</string>
-    <string name="cancel_btn">Cancel</string>
+    <string name="have_account_lbl">Already have an account?</string>
+    <string name="login_link">LOG IN</string>
+    <string name="strong_pass_head">Strong Password Requirements:</string>
+    <string name="strong_pass_indicator">Strong Password Indicator</string>
+    <string name="strong_pass_eight_chars">At least eight (8) characters</string>
+    <string name="strong_pass_lowercase">At least one (1) lowercase letter</string>
+    <string name="strong_pass_uppercase">At least one (1) uppercase letter</string>
+    <string name="strong_pass_digits">At least one (1) digit</string>
+    <string name="strong_pass_special_chars">At least one (1) special character</string>
 
     <!--  Strings for Forgot Password  -->
     <string name="forgot_password_header">FORGOT PASSWORD</string>
     <string name="forgot_password_desc">
-        Please enter your email address in the text field provided below.
-        We\'ll send you an email to reset your password.
+        Please enter your email address in the text field provided below. We\'ll send you an email to reset your password.
     </string>
     <string name="submit">Submit</string>
 
-    <!--  Error Messages  -->
-    <string name="err_blank_fname">Please enter your first name.</string>
-    <string name="err_blank_lname">Please enter your last name.</string>
+    <!--  User-related Form Validation Error Messages  -->
+    <string name="err_blank_first_name">Please enter your first name.</string>
+    <string name="err_blank_last_name">Please enter your last name.</string>
+    <string name="err_first_name_length">First name should be 2 to 30 characters long</string>
+    <string name="err_last_name_length">Last name should be 2 to 30 characters long</string>
     <string name="err_blank_email">Please enter your email address.</string>
+    <string name="err_wrong_email_format">Please enter a valid email address.</string>
     <string name="err_blank_username">Please enter your username.</string>
+    <string name="err_admin_username">\"admin\" is not allowed for username.</string>
+    <string name="err_username_length">Username should be 6 to 20 characters long.</string>
+    <string name="err_invalid_username">Please enter a valid username.</string>
     <string name="err_blank_password">Please enter your password.</string>
+    <string name="err_password_not_strong">
+        Please complete the requirements for strong password.
+    </string>
     <string name="err_blank_confirm_password">Please enter confirm password.</string>
     <string name="err_passwords_not_match">Passwords do not match.</string>
-    <string name="err_unchecked_tac">Please agree to our T&amp;C.</string>
+    <string name="err_unchecked_tac">Please agree to our Terms and Conditions.</string>
+
+    <!--  Error Messages  -->
     <string name="err_blank_phone">Please enter your phone number.</string>
     <string name="err_no_gender_selected">Please select your gender.</string>
     <string name="err_blank_fullname">Please enter your full name.</string>

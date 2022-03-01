@@ -15,7 +15,6 @@
         android:paddingBottom="@dimen/large_mrg_pd">
 
         <ImageView
-            android:id="@+id/iv_login_logo"
             android:layout_width="@dimen/opal_logo_size"
             android:layout_height="@dimen/opal_logo_size"
             android:layout_gravity="center"
@@ -41,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/xl_mrg_pd"
             android:hint="@string/email_address"
-            android:textColorHint="@color/et_hint_black"
             app:boxCornerRadiusBottomEnd="@dimen/et_login_radius"
             app:boxCornerRadiusBottomStart="@dimen/et_login_radius"
             app:boxCornerRadiusTopEnd="@dimen/et_login_radius"
@@ -55,7 +53,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/app_black"
                 android:textSize="@dimen/main_text_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -89,7 +86,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <edu.cccdci.opal.utils.HeaderTextView
-            android:id="@+id/tv_forgot_password"
+            android:id="@+id/tv_forgot_password_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -120,7 +117,6 @@
             android:orientation="horizontal">
 
             <edu.cccdci.opal.utils.MainTextView
-                android:id="@+id/tv_no_account_lbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/small_mrg_pd"
@@ -129,7 +125,7 @@
                 android:textSize="@dimen/main_text_size" />
 
             <edu.cccdci.opal.utils.HeaderTextView
-                android:id="@+id/tv_register"
+                android:id="@+id/tv_register_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:foreground="?attr/selectableItemBackground"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  Resources containing integer values  -->
+<resources>
+
+    <!--  Maximum characters allowed in fields  -->
+    <integer name="max_chars_person_name">30</integer>
+    <integer name="max_chars_username">20</integer>
+
+</resources>

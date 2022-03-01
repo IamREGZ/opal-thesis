@@ -223,7 +223,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener {
                     // Display an error message
                     showSnackBar(
                         this@UserProfileActivity,
-                        resources.getString(R.string.err_blank_fname),
+                        resources.getString(R.string.err_blank_first_name),
                         true
                     )
                     false  // return false
@@ -234,7 +234,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener {
                     // Display an error message
                     showSnackBar(
                         this@UserProfileActivity,
-                        resources.getString(R.string.err_blank_lname),
+                        resources.getString(R.string.err_blank_last_name),
                         true
                     )
                     false  // return false
