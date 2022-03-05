@@ -1,7 +1,6 @@
 package edu.cccdci.opal.utils
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Handler
@@ -13,8 +12,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.DialogProgressBinding
-import edu.cccdci.opal.ui.activities.MainActivity
-import edu.cccdci.opal.ui.activities.UserProfileActivity
 
 /**
  * A class where widgets, dialogs, and other Android utilities are stored.
@@ -42,16 +39,17 @@ open class UtilityClass : AppCompatActivity() {
             )
 
             show()  // Shows the SnackBar
-        }
+        }  // end of run
     }  // end of showMessagePrompt method
 
     // Function to show the loading dialog
     fun showProgressDialog(context: Context, activity: Activity, message: String) {
         // Inflate the Dialog Progress Layout
         val dialogBind = DialogProgressBinding.inflate(activity.layoutInflater)
-        mProgDialog = Dialog(context)  // Create the Dialog object
+        mProgDialog = Dialog(context)
 
-        with(mProgDialog) {
+        // Create the Dialog object
+        mProgDialog.apply {
             // Prepares the progress dialog
             setContentView(dialogBind.root)
             dialogBind.tvProgressText.text = message
@@ -61,59 +59,13 @@ open class UtilityClass : AppCompatActivity() {
             setCanceledOnTouchOutside(false)
 
             show()  // Displays the dialog
-        }  // end of with(mDialog)
+        }  // end of apply
     }  // end of showProgressDialog method
 
     // Function to hide the loading dialog
     fun hideProgressDialog() {
         mProgDialog.dismiss()
     } // end of hideProgressDialog method
-
-    // Function to show the alert dialog
-    fun showAlertDialog(
-        context: Context, title: String, message: String,
-        withCancel: Boolean = false, yesVal: String = "Yes", noVal: String = "No"
-    ) {
-        // Create a builder object for constructing dialogs
-        val builder = AlertDialog.Builder(context)
-
-        builder.setTitle(title)  // Set the title of a dialog
-        builder.setMessage(message)  // Set the message of a dialog
-
-        // Sets the actions for positive (yes) value
-        builder.setPositiveButton(yesVal) { dialogInterface, _ ->
-            when (context) {
-                is MainActivity -> context.signOutUser()
-                is UserProfileActivity -> context.saveUserInfoChanges()
-            }
-            dialogInterface.dismiss()
-        }
-
-        // Sets the actions for negative (no) value
-        builder.setNegativeButton(noVal) { dialogInterface, _ ->
-            when (context) {
-                is UserProfileActivity -> super.onBackPressed()
-            }
-            dialogInterface.dismiss()
-        }
-
-        // Enable neutral (cancel) button if withCancel parameter is true
-        if (withCancel) {
-            // Sets the actions for neutral (cancel) value
-            builder.setNeutralButton(
-                resources.getString(R.string.dialog_cancel)
-            ) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
-        }
-
-        // Creates the alert dialog
-        val alertDialog: AlertDialog = builder.create()
-
-        // To ensure that the dialog will not disappear when clicked outside the dialog
-        alertDialog.setCancelable(false)
-        alertDialog.show()  // Displays the dialog
-    }  // end of showAlertDialog method
 
     // Function to setup the Action Bar for navigation
     protected fun setupActionBar(tlb: Toolbar, isBlack: Boolean = true) {
@@ -125,11 +77,10 @@ open class UtilityClass : AppCompatActivity() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
             // If isBlack is true, use black icon. Otherwise, white.
-            val backIcon: Int = if (isBlack) {
+            val backIcon: Int = if (isBlack)
                 R.drawable.ic_back_nav_black
-            } else {
+            else
                 R.drawable.ic_back_nav_white
-            }
 
             // Sets the icon of the back button
             supportActionBar!!.setHomeAsUpIndicator(backIcon)
@@ -150,11 +101,11 @@ open class UtilityClass : AppCompatActivity() {
     }  // end of toastMessage method
 
     // Function to double press back to exit the application
-    fun doubleBackToExit() {
+    protected fun doubleBackToExit() {
         // User pressed back the second time
         if (backPressedOnce) {
             super.onBackPressed()
-            return  // exit the function and application
+            return  // Exit the function and application
         }
 
         // When the user pressed back once

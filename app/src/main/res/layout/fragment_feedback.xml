@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     android:orientation="vertical"
     android:padding="@dimen/large_mrg_pd"
     tools:context=".ui.fragments.FeedbackFragment">
@@ -82,7 +83,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_large_height"
         android:layout_marginTop="@dimen/large_mrg_pd"
-        android:layout_weight="0"
         android:background="@drawable/button_primary"
         android:letterSpacing="0.0"
         android:padding="@dimen/button_padding"

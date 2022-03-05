@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 
+/**
+ * A class for implementing custom typeface for AutoCompleteTextView.
+ */
 class CustomACTV(
     context: Context, attrs: AttributeSet
 ) : AppCompatAutoCompleteTextView(context, attrs), FontImplementation {
@@ -13,4 +16,4 @@ class CustomACTV(
         typeface = applyRegularFont(context, attrs)
     }
 
-}
+}  // end of CustomACTV class

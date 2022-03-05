@@ -13,7 +13,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FieldValue
 import com.google.gson.Gson
 import edu.cccdci.opal.R
@@ -21,7 +23,9 @@ import edu.cccdci.opal.adapters.CheckoutAdapter
 import edu.cccdci.opal.databinding.ActivityCheckoutBinding
 import edu.cccdci.opal.dataclasses.*
 import edu.cccdci.opal.firestore.FirestoreClass
-import edu.cccdci.opal.utils.*
+import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.GeoDistance
+import edu.cccdci.opal.utils.UtilityClass
 
 class CheckoutActivity
     : UtilityClass(), View.OnClickListener, OnMapReadyCallback,
@@ -261,7 +265,7 @@ class CheckoutActivity
         )
 
         // Call the Firestore function to search for an address labeled as default
-        FirestoreClass().selectDefaultAddress(this@CheckoutActivity)
+        FirestoreClass().findDefaultAddress(this@CheckoutActivity)
     }  // end of getDefaultAddress method
 
     /* Function to store the address retrieved from Firestore (default) or

@@ -66,8 +66,8 @@ class RegisterActivity : UtilityClass(), View.OnClickListener {
     private fun registerValidation(): Boolean {
         with(binding) {
             // Create a FormValidation object, and then execute the validations
-            FormValidation(this@RegisterActivity).run {
-                return when {
+            return FormValidation(this@RegisterActivity).run {
+                when {
                     // First Name
                     !validatePersonName(etRegisterFirstName) -> false
                     // Last Name
@@ -99,7 +99,7 @@ class RegisterActivity : UtilityClass(), View.OnClickListener {
                 // Display the loading message
                 showProgressDialog(
                     this@RegisterActivity, this@RegisterActivity,
-                    resources.getString(R.string.msg_please_wait)
+                    getString(R.string.msg_please_wait)
                 )
 
                 // Create a Firebase Authentication using Email and Password
@@ -110,8 +110,6 @@ class RegisterActivity : UtilityClass(), View.OnClickListener {
                     ).addOnCompleteListener { task ->
                         // Successful task
                         if (task.isSuccessful) {
-                            // val fBaseUser: FirebaseUser = task.result!!.user!!
-
                             // Object to store user data
                             val user = User(
                                 task.result!!.user!!.uid,
@@ -160,7 +158,7 @@ class RegisterActivity : UtilityClass(), View.OnClickListener {
                 // Displays a toast message
                 toastMessage(
                     this@RegisterActivity,
-                    resources.getString(R.string.err_register_login_failed)
+                    getString(R.string.err_register_login_failed)
                 )
                 finish()  // Closes the activity
             }
@@ -173,21 +171,21 @@ class RegisterActivity : UtilityClass(), View.OnClickListener {
         hideProgressDialog()  // Hide the loading message
 
         // Create an Intent to launch MainActivity
-        Intent(this@RegisterActivity, MainActivity::class.java).let {
+        Intent(this@RegisterActivity, MainActivity::class.java).apply {
             /* To clear the current stack of activities so that when the user
              * presses back from the home activity, it will exit the application
              * instead of going to log in activity.
              */
-            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
             // Displays a toast message
             toastMessage(
                 this@RegisterActivity,
-                resources.getString(R.string.msg_register_success),
+                getString(R.string.msg_register_success),
                 false
             )
 
-            startActivity(it)  // Opens the main activity
+            startActivity(this)  // Opens the main activity
             finish()  // Closes the activity
         }  // end of let
 

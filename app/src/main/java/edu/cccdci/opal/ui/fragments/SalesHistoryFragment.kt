@@ -13,7 +13,6 @@ import edu.cccdci.opal.databinding.FragmentSalesHistoryBinding
 class SalesHistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentSalesHistoryBinding
-    private lateinit var mSalesPager: OrderSalesPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,12 +25,10 @@ class SalesHistoryFragment : Fragment() {
             // Get the string array of sales tabs
             val salesTitles = resources.getStringArray(R.array.order_sales_tabs)
 
-            // Create an object of Sales Pager Adapter
-            mSalesPager = OrderSalesPagerAdapter(
+            // Set the adapter of Sales List ViewPager2
+            vpSalesList.adapter = OrderSalesPagerAdapter(
                 requireActivity(), salesTitles.size, true
             )
-            // Set the adapter of Sales List ViewPager2
-            vpSalesList.adapter = mSalesPager
 
             // Integrates the tab items with respective fragments
             TabLayoutMediator(tblySalesTabs, vpSalesList) { tab, position ->

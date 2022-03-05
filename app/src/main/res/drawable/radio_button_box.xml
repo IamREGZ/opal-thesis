@@ -16,4 +16,12 @@
             <corners android:radius="@dimen/radio_button_radius" />
         </shape>
     </item>
+
+    <!--  Disabled Radio Button (Solid Gray Color)  -->
+<!--    <item android:state_enabled="false">-->
+<!--        <shape android:shape="rectangle">-->
+<!--            <solid android:color="@color/dim_gray" />-->
+<!--            <corners android:radius="@dimen/radio_button_radius" />-->
+<!--        </shape>-->
+<!--    </item>-->
 </selector>

@@ -76,8 +76,8 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
     private fun validateLogin(): Boolean {
         with(binding) {
             // Create a FormValidation object, and then execute the validations
-            FormValidation(this@LoginActivity).run {
-                return when {
+            return FormValidation(this@LoginActivity).run {
+                when {
                     // Email Address
                     !validateEmail(etLoginEmail) -> false
                     // Password
@@ -125,6 +125,7 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
                         )
                     }
                 }  // end of signInWithEmailAndPassword
+
             }  // end of if
         }  // end of with(binding)
 

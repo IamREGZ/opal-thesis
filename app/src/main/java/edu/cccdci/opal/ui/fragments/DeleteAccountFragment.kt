@@ -12,6 +12,8 @@ import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.FragmentDeleteAccountBinding
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.ui.activities.LoginActivity
+import edu.cccdci.opal.utils.DialogClass
+import edu.cccdci.opal.utils.FormValidation
 import edu.cccdci.opal.utils.UtilityClass
 
 class DeleteAccountFragment : Fragment() {
@@ -31,21 +33,22 @@ class DeleteAccountFragment : Fragment() {
 
         with(binding) {
             btnConfAccDel.setOnClickListener {
-                // Get the inputted user password
-                val password: String = etDelAccPass.text.toString()
-                    .trim { it <= ' ' }
-
-                if (password.isEmpty()) {
-                    // Error if password field is empty
-                    mUtility.showSnackBar(
-                        requireActivity(), getString(R.string.err_blank_password),
-                        true
-                    )
-                } else {
-                    // Proceed with account deletion
-                    verifyCredentials(password)
+                // If password is not empty, proceed with account deletion
+                if (FormValidation(requireActivity())
+                        .validateAuthPassword(etDelAccPass)
+                ) {
+                    /* Display an alert dialog with two action buttons
+                     * (Delete & Cancel)
+                     */
+                    DialogClass(requireContext(), this@DeleteAccountFragment)
+                        .alertDialog(
+                            getString(R.string.dialog_delete_account_title),
+                            getString(R.string.dialog_delete_account_message),
+                            getString(R.string.dialog_btn_delete),
+                            getString(R.string.dialog_btn_cancel)
+                        )
                 }
-            }  // end of setOnClickListener
+            }
 
             return root
         }  // end of with(binding)
@@ -53,7 +56,7 @@ class DeleteAccountFragment : Fragment() {
     }  // end of onCreateView method
 
     // Function to verify credentials, and then delete user account
-    private fun verifyCredentials(password: String) {
+    internal fun verifyCredentials() {
         // Display the loading message
         mUtility.showProgressDialog(
             requireContext(), requireActivity(), getString(R.string.msg_please_wait)
@@ -61,7 +64,8 @@ class DeleteAccountFragment : Fragment() {
 
         // Get credentials of the current user
         val credential = EmailAuthProvider.getCredential(
-            FirebaseAuth.getInstance().currentUser!!.email!!, password
+            FirebaseAuth.getInstance().currentUser!!.email!!,
+            binding.etDelAccPass.text.toString().trim { it <= ' ' }
         )
 
         // Verify credentials
@@ -73,12 +77,12 @@ class DeleteAccountFragment : Fragment() {
                     FirestoreClass().deleteUserData(
                         this@DeleteAccountFragment, mUtility
                     )
-                } else {
-                    // Wrong credentials
+                }
+                // Wrong credentials
+                else {
                     mUtility.hideProgressDialog()  // Hide the loading message
 
-                    // Clear the password field for security purposes
-                    binding.etDelAccPass.text!!.clear()
+                    clearPassword()  // Clear the password field
 
                     // Display the error message
                     mUtility.showSnackBar(
@@ -91,36 +95,35 @@ class DeleteAccountFragment : Fragment() {
     }  // end of verifyCredentials method
 
     // Function to delete account from Firebase Authentication
-    fun deleteUserAccount() {
+    internal fun deleteUserAccount() {
         // Delete the current user's account
         FirebaseAuth.getInstance().currentUser!!.delete()
             .addOnCompleteListener { task ->
                 // Successful task
                 if (task.isSuccessful) {
                     // Create an Intent to launch LoginActivity
-                    val intent = Intent(
-                        context, LoginActivity::class.java
-                    )
-                    /* To ensure that no more activity layers are active
-                     * after the account was deleted
-                     */
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    Intent(context, LoginActivity::class.java).run {
+                        /* To ensure that no more activity layers are active
+                         * after the account was deleted
+                         */
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-                    // Display a Toast message
-                    mUtility.toastMessage(
-                        requireContext(),
-                        resources.getString(R.string.msg_acc_delete_success)
-                    )
+                        // Display a Toast message
+                        mUtility.toastMessage(
+                            requireContext(),
+                            getString(R.string.msg_acc_delete_success)
+                        )
 
-                    startActivity(intent)  // Opens the login page
-                    requireActivity().finish()  // Closes the current activity
-                } else {
-                    // If it is not successful
+                        startActivity(this)  // Opens the login page
+                        requireActivity().finish()  // Closes the current activity
+                    }
+                }
+                // If it is not successful
+                else {
                     mUtility.hideProgressDialog()  // Hide the loading message
 
-                    // Clear the password field for security purposes
-                    binding.etDelAccPass.text!!.clear()
+                    clearPassword()  // Clear the password field
 
                     // Display the error message
                     mUtility.showSnackBar(
@@ -131,5 +134,11 @@ class DeleteAccountFragment : Fragment() {
             }  // end of delete
 
     }  // end of deleteUserAccount method
+
+    // Function to clear the password text field for security purposes
+    internal fun clearPassword() {
+        if (binding.etDelAccPass.text!!.isNotEmpty())
+            binding.etDelAccPass.text!!.clear()
+    }  // end of clearPassword method
 
 }  // end of DeleteAccountFragment class

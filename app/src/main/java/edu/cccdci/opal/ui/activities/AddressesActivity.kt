@@ -2,6 +2,7 @@ package edu.cccdci.opal.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.R
@@ -22,16 +23,11 @@ class AddressesActivity : UtilityClass() {
     private var mMode: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        // Inflate the layout for this fragment
-        binding = ActivityAddressesBinding.inflate(layoutInflater)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        // Create a Builder for FirestoreRecyclerOptions
-        val options = FirestoreRecyclerOptions.Builder<Address>()
-            // Gets all the documents from addresses collection
-            .setQuery(FirestoreClass().getAddressQuery(), Address::class.java)
-            .build()
+        binding = ActivityAddressesBinding.inflate(layoutInflater)
 
         with(binding) {
             setContentView(root)
@@ -50,23 +46,14 @@ class AddressesActivity : UtilityClass() {
                 )
             }
 
+            // Might be temporary
             if (intent.hasExtra(Constants.SELECTION_MODE)) {
                 mMode = intent.getIntExtra(
                     Constants.SELECTION_MODE, 0
                 )
             }
 
-            // Sets the layout type of the RecyclerView
-            rvAddresses.layoutManager = WrapperLinearLayoutManager(
-                this@AddressesActivity, LinearLayoutManager.VERTICAL, false
-            )
-
-            // Create an object of Address Adapter
-            addressAdapter = AddressAdapter(
-                this@AddressesActivity, mSelectableAddress, mMode ?: -1, options
-            )
-            // Sets the adapter of Address RecyclerView
-            rvAddresses.adapter = addressAdapter
+            setupAddressAdapter()  // Setup the Address RecyclerView Adapter
 
             // Actions when the Add Address button is clicked
             btnAddAddress.setOnClickListener {
@@ -98,5 +85,29 @@ class AddressesActivity : UtilityClass() {
         if (addressAdapter != null)
             addressAdapter!!.stopListening()
     }  // end of onStop method
+
+    // Function to setup the RecyclerView adapter for addresses
+    private fun setupAddressAdapter() {
+        // Create a Builder for FirestoreRecyclerOptions
+        val options = FirestoreRecyclerOptions.Builder<Address>()
+            // Gets all the documents from addresses collection
+            .setQuery(FirestoreClass().getAddressQuery(), Address::class.java)
+            .build()
+
+        with(binding) {
+            // Sets the layout type of the RecyclerView
+            rvAddresses.layoutManager = WrapperLinearLayoutManager(
+                this@AddressesActivity, LinearLayoutManager.VERTICAL, false
+            )
+
+            // Create an object of Address Adapter
+            addressAdapter = AddressAdapter(
+                this@AddressesActivity, mSelectableAddress, mMode ?: -1, options
+            )
+            // Sets the adapter of Address RecyclerView
+            rvAddresses.adapter = addressAdapter
+        }  // end of with(binding)
+
+    }  // end of setupAddressAdapter method
 
 }  // end of AddressesActivity class

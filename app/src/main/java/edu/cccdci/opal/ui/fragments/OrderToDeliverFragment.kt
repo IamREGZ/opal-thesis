@@ -13,9 +13,7 @@ import edu.cccdci.opal.dataclasses.Order
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 
-class OrderToDeliverFragment(
-    private val isVendor: Boolean
-) : Fragment() {
+class OrderToDeliverFragment(private val isVendor: Boolean) : Fragment() {
 
     private lateinit var binding: FragmentOrderToDeliverBinding
     private var orderSalesAdapter: OrderSalesAdapter? = null

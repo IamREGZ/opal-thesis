@@ -30,7 +30,7 @@ class AddressAdapter(
     // Nested Class to hold views from the target layout
     inner class AddressViewHolder(
         itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {
+    ) : RecyclerView.ViewHolder(itemView) {  // end of AddressViewHolder class
         // Get all the ids of views from address item layout
         private val addrFullName: TextView = itemView
             .findViewById(R.id.tv_addr_full_name)
@@ -58,57 +58,70 @@ class AddressAdapter(
                 address.province, address.postal
             )
 
-            // Set the visibility of address labels depending on the assigned label
+            /* Set the visibility of default address label depending the
+             * default address status
+             */
             defaultAddr.visibility = if (address.default) View.VISIBLE else View.GONE
 
             // Actions when the Edit icon is clicked
             editAddr.setOnClickListener {
-                // Create an Intent to launch AddressEditActivity
-                val intent = Intent(activity, AddressEditActivity::class.java)
-
-                // Stores the parcelable class
-                intent.putExtra(Constants.USER_ADDRESS, address)
-
                 // Opens the address editor
-                activity.startActivity(intent)
+                activity.startActivity(openEditorWithAddress(address))
             }
 
-            // Enable address selection if the preceding activity is Checkout
+            // Enable address selection if the preceding activity is Checkout or Home
             if (selectable) {
                 // Actions when the Address Item Layout is clicked
                 userAddrPanel.setOnClickListener {
-                    // Creates the Shared Preferences
-                    val sharedPrefs = activity.getSharedPreferences(
-                        Constants.OPAL_PREFERENCES,
-                        Context.MODE_PRIVATE
-                    )
-
-                    // Create the editor for Shared Preferences
-                    val spEditor: SharedPreferences.Editor = sharedPrefs.edit()
-
-                    // Shared Preference for Selected Address
-                    spEditor.putString(
-                        if (mode == 0)
-                            Constants.SELECTED_ADDRESS
-                        else
-                            Constants.CURRENT_ADDRESS_DETAILS,
-                        Gson().toJson(address)
-                    ).apply()
-
-                    if (mode == 1) {
-                        val curLoc = CurrentLocation(
-                            1, address.location!!.latitude, address.location.longitude
-                        )
-
-                        spEditor.putString(
-                            Constants.CURRENT_LOCATION, Gson().toJson(curLoc)
-                        ).apply()
-                    }
-
-                    activity.finish()  // Closes the activity
+                    // Selects the address and sends back the user to previous page
+                    selectAddress(address)
                 }
             }  // end of if
+
         }  // end of setAddressData method
+
+        // Function to return an Intent with Address class parcelable
+        private fun openEditorWithAddress(address: Address) : Intent {
+            // Create an Intent to launch AddressEditActivity
+            return Intent(activity, AddressEditActivity::class.java).run {
+                // Stores the parcelable class
+                putExtra(Constants.USER_ADDRESS, address)
+            }
+        }  // end of openEditorWithAddress class
+
+        // Function to select this address and do something depending on the context
+        private fun selectAddress(address: Address) {
+            // Creates the Shared Preferences
+            val sharedPrefs = activity.getSharedPreferences(
+                Constants.OPAL_PREFERENCES,
+                Context.MODE_PRIVATE
+            )
+
+            // Create the editor for Shared Preferences
+            val spEditor: SharedPreferences.Editor = sharedPrefs.edit()
+
+            // Shared Preference for Selected Address
+            spEditor.putString(
+                if (mode == 0)
+                    Constants.SELECTED_ADDRESS
+                else
+                    Constants.CURRENT_ADDRESS_DETAILS,
+                Gson().toJson(address)
+            ).apply()
+
+            if (mode == 1) {
+                val curLoc = CurrentLocation(
+                    1, address.location!!.latitude, address.location.longitude
+                )
+
+                spEditor.putString(
+                    Constants.CURRENT_LOCATION, Gson().toJson(curLoc)
+                ).apply()
+            }
+
+            activity.finish()  // Closes the activity
+
+        }  // end of selectAddress method
 
     }  // end of AddressViewHolder class
 
@@ -118,7 +131,7 @@ class AddressAdapter(
     ): AddressViewHolder {
         return AddressViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.address_item, parent, false
+                R.layout.item_address, parent, false
             )
         )
     }  // end of onCreateViewHolder method

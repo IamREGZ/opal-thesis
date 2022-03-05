@@ -5,19 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import edu.cccdci.opal.databinding.FragmentLocationSettingsBinding
+import edu.cccdci.opal.databinding.FragmentSettingsNotifBinding
 
-class LocationSettingsFragment : Fragment() {
+class SettingsNotifFragment : Fragment() {
 
-    private lateinit var binding: FragmentLocationSettingsBinding
+    private lateinit var binding: FragmentSettingsNotifBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentLocationSettingsBinding.inflate(inflater)
+        binding = FragmentSettingsNotifBinding.inflate(inflater)
         return binding.root
     }  // end of onCreateView method
 
-}  // end of LocationSettingsFragment class
+}  // end of SettingsNotifFragment class

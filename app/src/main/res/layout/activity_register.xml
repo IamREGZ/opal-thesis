@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     android:orientation="vertical"
-    android:background="@color/white"
     tools:context=".ui.activities.RegisterActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -23,7 +23,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true"
         android:scrollbars="none">
 
@@ -48,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginBottom="@dimen/small_mrg_pd"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
                 android:gravity="center"
                 android:text="@string/account_registration"
                 android:textColor="@color/app_black"
@@ -59,7 +60,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_mrg_pd"
                 android:hint="@string/first_name"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -166,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_mrg_pd"
-                android:layout_marginTop="@dimen/medium_large_mrg_pd"
+                android:layout_marginTop="@dimen/medium_mrg_pd"
                 android:layout_marginEnd="@dimen/small_mrg_pd"
                 android:layout_marginBottom="@dimen/small_mrg_pd"
                 android:text="@string/strong_pass_head"
@@ -382,24 +382,11 @@
 
             </com.google.android.flexbox.FlexboxLayout>
 
-            <edu.cccdci.opal.utils.MainButton
-                android:id="@+id/btn_register"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_large_height"
-                android:layout_marginTop="@dimen/large_mrg_pd"
-                android:background="@drawable/button_primary"
-                android:letterSpacing="0.0"
-                android:padding="@dimen/button_padding"
-                android:text="@string/register_btn"
-                android:textColor="@color/app_white"
-                android:textSize="@dimen/button_large_text_size"
-                app:backgroundTint="@null" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/xl_mrg_pd"
+                android:layout_marginTop="@dimen/large_mrg_pd"
                 android:orientation="horizontal">
 
                 <edu.cccdci.opal.utils.MainTextView
@@ -424,5 +411,29 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/app_white"
+        app:cardElevation="@dimen/card_elevation">
+
+        <edu.cccdci.opal.utils.MainButton
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_large_height"
+            android:layout_marginStart="@dimen/medium_large_mrg_pd"
+            android:layout_marginTop="@dimen/medium_mrg_pd"
+            android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+            android:layout_marginBottom="@dimen/medium_mrg_pd"
+            android:background="@drawable/button_primary"
+            android:letterSpacing="0.0"
+            android:padding="@dimen/button_padding"
+            android:text="@string/register_btn"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/button_large_text_size"
+            app:backgroundTint="@null" />
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

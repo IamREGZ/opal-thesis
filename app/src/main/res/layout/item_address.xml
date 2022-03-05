@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_address_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/medium_mrg_pd"
+    android:layout_marginBottom="@dimen/medium_mrg_pd"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/medium_large_mrg_pd"
+    android:paddingEnd="@dimen/medium_large_mrg_pd">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/small_mrg_pd"
+        android:gravity="top"
+        android:orientation="horizontal">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_addr_full_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/addr_person_name"
+            android:textColor="@color/primaryAccentColor"
+            android:textSize="@dimen/header_text_size" />
+
+        <ImageView
+            android:id="@+id/iv_edit_addr_btn"
+            android:layout_width="@dimen/medium_icon_size"
+            android:layout_height="@dimen/medium_icon_size"
+            android:layout_marginStart="@dimen/medium_mrg_pd"
+            android:contentDescription="@string/addr_edit"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_edit"
+            app:tint="@color/primaryAccentColor" />
+
+    </LinearLayout>
+
+    <edu.cccdci.opal.utils.MainTextView
+        android:id="@+id/tv_addr_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/small_mrg_pd"
+        android:text="@string/addr_phone_number"
+        android:textColor="@color/app_black"
+        android:textSize="@dimen/main_text_size" />
+
+    <edu.cccdci.opal.utils.MainTextView
+        android:id="@+id/tv_addr_line_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/small_mrg_pd"
+        android:text="@string/addr_line_1"
+        android:textColor="@color/app_black"
+        android:textSize="@dimen/main_text_size" />
+
+    <edu.cccdci.opal.utils.MainTextView
+        android:id="@+id/tv_addr_line_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/medium_mrg_pd"
+        android:text="@string/addr_line_2"
+        android:textColor="@color/app_black"
+        android:textSize="@dimen/main_text_size" />
+
+    <edu.cccdci.opal.utils.MainTextView
+        android:id="@+id/tv_default_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/outlined_textview_label"
+        android:paddingStart="@dimen/addr_label_size_x"
+        android:paddingTop="@dimen/addr_label_size_y"
+        android:paddingEnd="@dimen/addr_label_size_x"
+        android:paddingBottom="@dimen/addr_label_size_y"
+        android:text="@string/addr_default"
+        android:textColor="@color/primaryAccentColor"
+        android:textSize="@dimen/main_text_size" />
+
+</LinearLayout>

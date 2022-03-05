@@ -19,6 +19,9 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.concurrent.Executors
 
+/**
+ * A class for drawing the route between two locations in Google Maps API.
+ */
 class GeoDirections(private val activity: Activity) {
 
     private val mExecutor = Executors.newSingleThreadExecutor()
@@ -215,7 +218,7 @@ class GeoDirections(private val activity: Activity) {
     }  // end of decodePoly method
 
     /**
-     * Interface to draw the resulting route between two locations
+     * Interface to draw the resulting route between two locations.
      */
     internal interface GeoDirectionsResult {
         // Abstract function to draw the route between two locations

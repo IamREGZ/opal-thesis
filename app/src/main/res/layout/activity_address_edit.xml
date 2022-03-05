@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/app_white"
     android:orientation="vertical"
     tools:context=".ui.activities.AddressEditActivity">
 
@@ -30,7 +30,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true"
         android:scrollbars="none">
 
@@ -38,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/xl_mrg_pd">
+            android:paddingBottom="@dimen/medium_large_mrg_pd">
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/mpfr_address_map"
@@ -51,16 +52,19 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:layout_marginTop="@dimen/medium_large_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:hint="@string/full_name"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
                 app:boxCornerRadiusBottomStart="@dimen/et_radius"
                 app:boxCornerRadiusTopEnd="@dimen/et_radius"
                 app:boxCornerRadiusTopStart="@dimen/et_radius"
-                app:boxStrokeWidth="@dimen/et_stroke_width">
+                app:boxStrokeWidth="@dimen/et_stroke_width"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/max_chars_full_person_name"
+                app:counterTextColor="@color/app_black">
 
                 <edu.cccdci.opal.utils.MainEditText
                     android:id="@+id/et_addr_full_name"
@@ -77,16 +81,19 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                android:layout_marginTop="@dimen/small_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:hint="@string/phone_number"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
                 app:boxCornerRadiusBottomStart="@dimen/et_radius"
                 app:boxCornerRadiusTopEnd="@dimen/et_radius"
                 app:boxCornerRadiusTopStart="@dimen/et_radius"
-                app:boxStrokeWidth="@dimen/et_stroke_width">
+                app:boxStrokeWidth="@dimen/et_stroke_width"
+                app:helperText="@string/phone_number_helper"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="@color/app_black">
 
                 <edu.cccdci.opal.utils.MainEditText
                     android:id="@+id/et_addr_phone"
@@ -103,9 +110,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:hint="@string/province"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -131,9 +138,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:hint="@string/city_municipality"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -161,9 +168,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:hint="@string/barangay"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -191,9 +198,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:hint="@string/postal_code"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -217,9 +224,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:hint="@string/detailed_address"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -227,8 +234,12 @@
                 app:boxCornerRadiusTopEnd="@dimen/et_radius"
                 app:boxCornerRadiusTopStart="@dimen/et_radius"
                 app:boxStrokeWidth="@dimen/et_stroke_width"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/max_chars_detailed_address"
+                app:counterTextColor="@color/app_black"
                 app:helperText="@string/detailed_helper"
-                app:helperTextEnabled="true">
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="@color/app_black">
 
                 <edu.cccdci.opal.utils.MainEditText
                     android:id="@+id/et_addr_details"
@@ -247,10 +258,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
-                android:orientation="horizontal">
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_mrg_pd">
 
                 <edu.cccdci.opal.utils.MainTextView
                     android:layout_width="0dp"
@@ -274,9 +287,9 @@
                 android:id="@+id/btn_delete_address"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_large_height"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
                 android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                 android:background="@drawable/button_secondary"
                 android:letterSpacing="0.0"
                 android:padding="@dimen/button_padding"
@@ -289,23 +302,32 @@
                 app:iconGravity="textStart"
                 app:iconTint="@drawable/button_secondary_text" />
 
-            <edu.cccdci.opal.utils.MainButton
-                android:id="@+id/btn_submit_address"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_large_height"
-                android:layout_marginTop="@dimen/medium_mrg_pd"
-                android:layout_marginStart="@dimen/large_mrg_pd"
-                android:layout_marginEnd="@dimen/large_mrg_pd"
-                android:background="@drawable/button_primary"
-                android:letterSpacing="0.0"
-                android:padding="@dimen/button_padding"
-                android:text="@string/submit"
-                android:textColor="@color/app_white"
-                android:textSize="@dimen/button_large_text_size"
-                app:backgroundTint="@null" />
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/app_white"
+        app:cardElevation="@dimen/card_elevation">
+
+        <edu.cccdci.opal.utils.MainButton
+            android:id="@+id/btn_submit_address"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_large_height"
+            android:layout_marginStart="@dimen/medium_large_mrg_pd"
+            android:layout_marginTop="@dimen/medium_mrg_pd"
+            android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+            android:layout_marginBottom="@dimen/medium_mrg_pd"
+            android:background="@drawable/button_primary"
+            android:letterSpacing="0.0"
+            android:padding="@dimen/button_padding"
+            android:text="@string/submit"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/button_large_text_size"
+            app:backgroundTint="@null" />
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

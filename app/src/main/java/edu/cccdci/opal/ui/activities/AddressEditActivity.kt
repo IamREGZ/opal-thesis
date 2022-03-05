@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatDelegate
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -24,6 +24,8 @@ import edu.cccdci.opal.dataclasses.Address
 import edu.cccdci.opal.dataclasses.Location
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.DialogClass
+import edu.cccdci.opal.utils.FormValidation
 import edu.cccdci.opal.utils.UtilityClass
 
 class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCallback {
@@ -34,18 +36,18 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
     private lateinit var mSharedPrefs: SharedPreferences
     private lateinit var mSPEditor: SharedPreferences.Editor
     private val mProvinces: MutableList<HashMap<String, String>> = mutableListOf()
-    private val mProvNames: MutableList<String> = mutableListOf()
     private val mCities: MutableList<HashMap<String, String>> = mutableListOf()
-    private val mCTNames: MutableList<String> = mutableListOf()
-    private var mSelectedProvince: String = ""
+    private var mSelectedProvinceID: String = ""
     private var mAddress: Address? = null
     private var mCurrentMarkerPos: LatLng? = null
-    private var mAddrHashMap: HashMap<String, Any> = hashMapOf()
+    private var mAddrHashMap: HashMap<String, Any?> = hashMapOf()
+    private var mIsNewAddress: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        // Inflate the layout for this fragment
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         binding = ActivityAddressEditBinding.inflate(layoutInflater)
 
         // Creates the Shared Preferences
@@ -59,16 +61,17 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
         if (intent.hasExtra(Constants.USER_ADDRESS)) {
             // Get data from the parcelable class
             mAddress = intent.getParcelableExtra(Constants.USER_ADDRESS)
+
+            setSelectedAddressValues()  // Store the address data values
         }
 
-        // Store the address data values if it is not null (prevents NPE)
-        if (mAddress != null) {
-            setSelectedAddressValues()
-        } else {
+        if (mAddress == null) {
             /* Set the Shared Preference of current marker position blank
              * whenever a user creates a new address.
              */
             mSPEditor.putString(Constants.CURRENT_MARKER_POS, "").apply()
+
+            mIsNewAddress = true  // To indicate that this is for new addresses
         }
 
         // Prepare the SupportMapFragment
@@ -84,12 +87,6 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
 
             // Call the Firestore Function to retrieve province data
             FirestoreClass().getProvinces(this@AddressEditActivity)
-
-            // Prepare the drop down values for provinces
-            val provinceAdapter = ArrayAdapter(
-                this@AddressEditActivity, R.layout.spinner_item, mProvNames
-            )
-            actvAddrProvince.setAdapter(provinceAdapter)
 
             // Actions when one of the province items was selected
             actvAddrProvince.setOnItemClickListener { _, _, position, _ ->
@@ -137,14 +134,91 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
         if (view != null) {
             when (view.id) {
                 // Saves the user's address
-                R.id.btn_submit_address -> saveUserAddress()
+                R.id.btn_submit_address -> {
+                    // Stores modified information (if any)
+                    storeAddressChanges()
+
+                    if (mIsNewAddress || mAddrHashMap.isNotEmpty()) {
+                        // If there are any changes made, save address info
+                        saveAddressChanges()
+                    } else {
+                        /* Exit the activity if there are no changes made.
+                         * This is to prevent unnecessary reads and writes
+                         * in Cloud Firestore.
+                         */
+
+                        // Displays the Toast message
+                        toastMessage(
+                            this@AddressEditActivity,
+                            getString(R.string.msg_no_address_info_changed)
+                        )
+
+                        finish()  // Closes the current activity
+                    }  // end of if-else
+                }
+
                 // Deletes the user's address
-                R.id.btn_delete_address -> deleteUserAddress()
+                R.id.btn_delete_address -> {
+                    // Prevent deletion of default address
+                    if (mAddress != null && mAddress!!.default) {
+                        showSnackBar(
+                            this@AddressEditActivity,
+                            getString(R.string.err_delete_default_address),
+                            true
+                        )
+                    }
+                    // Display a dialog to confirm deletion of non-default address
+                    else {
+                        /* Display an alert dialog with two action buttons
+                         * (Delete & Cancel)
+                         */
+                        DialogClass(this@AddressEditActivity).alertDialog(
+                            getString(R.string.dialog_delete_address_title),
+                            getString(R.string.dialog_delete_address_message),
+                            getString(R.string.dialog_btn_delete),
+                            getString(R.string.dialog_btn_cancel),
+                            Constants.DELETE_ADDRESS_ACTION
+                        )
+                    }
+                }
             }  // end of when
 
         }  // end of if
 
     }  // end of onClick method
+
+    // Override the back function
+    override fun onBackPressed() {
+        storeAddressChanges()  // Stores modified information (if any)
+
+        // If there are any changes to the user profile information (New Address)
+        if (mIsNewAddress && mAddrHashMap.isNotEmpty()) {
+            // Display an alert dialog with two action buttons (Exit & Continue)
+            DialogClass(this@AddressEditActivity).alertDialog(
+                getString(R.string.dialog_new_address_title),
+                getString(R.string.dialog_new_address_message),
+                getString(R.string.dialog_btn_exit),
+                getString(R.string.dialog_btn_continue),
+                Constants.EXIT_ADDRESS_ACTION
+            )
+        }
+        // If there are any changes to the user profile information (Edit Address)
+        else if (mAddrHashMap.isNotEmpty()) {
+            /* Display an alert dialog with three action buttons
+             * (Save, Don't Save & Cancel)
+             */
+            DialogClass(this@AddressEditActivity).alertDialog(
+                getString(R.string.dialog_edit_address_title),
+                getString(R.string.dialog_edit_address_message),
+                getString(R.string.dialog_btn_save),
+                getString(R.string.dialog_btn_dont_save),
+                getString(R.string.dialog_btn_cancel)
+            )
+        } else {
+            super.onBackPressed()
+        }  // end of if-else if-else
+
+    }  // end of onBackPressed method
 
     // Overriding function to set the Map UI of user's address location
     override fun onMapReady(gMap: GoogleMap) {
@@ -153,14 +227,11 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
         mGoogleMap.apply {
             clear()  // Clear all the markers set in the map
 
-            val markerPosition = if (mCurrentMarkerPos != null) {
-                // Set the marker position to the current position if it is available
-                mCurrentMarkerPos!!
-            }
-            else {
+            // Set the marker position to the current position if it is available
+            val markerPosition = mCurrentMarkerPos ?: LatLng(
                 // Jose Rizal's house as the default coordinates
-                LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE)
-            }
+                Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE
+            )
 
             // Make the marker visible to the Map UI
             addMarker(MarkerOptions().apply {
@@ -182,16 +253,13 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
             // Actions when the map is clicked
             setOnMapClickListener {
                 // Create an Intent to launch MapActivity
-                val intent = Intent(
-                    this@AddressEditActivity, MapActivity::class.java
-                )
+                Intent(this@AddressEditActivity, MapActivity::class.java)
+                    .run {
+                        // Add the marker position to the intent
+                        putExtra(Constants.CURRENT_MARKER_POS, markerPosition)
 
-                // Add the marker position to the intent
-                intent.putExtra(
-                    Constants.CURRENT_MARKER_POS, markerPosition
-                )
-
-                startActivity(intent)  // Opens the Map Activity
+                        startActivity(this)  // Opens the Map Activity
+                    }
             }
         }  // end of apply
 
@@ -200,28 +268,48 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
     // Function to store existing address data in the respective fields
     private fun setSelectedAddressValues() {
         with(binding) {
-            // Fill up the available fields
-            etAddrFullName.setText(mAddress!!.fullName)
-            etAddrPhone.setText(mAddress!!.phoneNum)
-            actvAddrProvince.setText(mAddress!!.province)
-            actvAddrCtm.setText(mAddress!!.city)
-            actvAddrBrgy.setText(mAddress!!.barangay)
-            etAddrPostal.setText(mAddress!!.postal.toString())
-            etAddrDetails.setText(mAddress!!.detailAdd)
-            smDefaultAddress.isChecked = mAddress!!.default
+            mAddress?.let {
+                // Fill up the available fields
+                etAddrFullName.setText(it.fullName)
+                etAddrPhone.setText(it.phoneNum)
+                actvAddrProvince.setText(it.province)
+                actvAddrCtm.setText(it.city)
+                actvAddrBrgy.setText(it.barangay)
+                etAddrPostal.setText(it.postal.toString())
+                etAddrDetails.setText(it.detailAdd)
+                smDefaultAddress.isChecked = it.default
 
-            // Set the current marker position to the existing user location
-            mSPEditor.putString(
-                Constants.CURRENT_MARKER_POS,
+                // Disable changing status of default address
+                if (it.default) {
+                    smDefaultAddress.setOnCheckedChangeListener { _, _ ->
+                        // Forces the switch to remain checked
+                        smDefaultAddress.isChecked = true
+
+                        /* Shows a message that unselecting default address
+                         * is not allowed
+                         */
+                        showSnackBar(
+                            this@AddressEditActivity,
+                            getString(R.string.err_unselect_default_address),
+                            true
+                        )
+                    }
+                }  // end of if
+
                 // Prevents NullPointerException
-                if (mAddress!!.location != null) {
+                if (it.location != null) {
                     // Update the current marker position
                     mCurrentMarkerPos = LatLng(
-                        mAddress!!.location!!.latitude,
-                        mAddress!!.location!!.longitude
+                        it.location.latitude, it.location.longitude
                     )
+                }
 
-                    // Convert the LatLng object to JSON. If null, use default coordinates
+                // Set the current marker position to the existing user location
+                mSPEditor.putString(
+                    Constants.CURRENT_MARKER_POS,
+                    /* Convert the LatLng object to JSON. If null,
+                     * use default coordinates.
+                     */
                     Gson().toJson(
                         mCurrentMarkerPos ?:
                         // Jose Rizal's house as the default coordinates
@@ -229,54 +317,186 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                             Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE
                         )
                     )
-                } else {
-                    // Use blank string to indicate there's no existing current location
-                    ""
-                }
-            ).apply()
+                ).apply()
 
-            // Change the interface of Address Info
-            tvAddressEditTitle.setText(R.string.tlb_title_edit_address)
-            btnDeleteAddress.visibility = View.VISIBLE
+                // Change the interface of Address Info
+                tvAddressEditTitle.setText(R.string.tlb_title_edit_address)
+                btnDeleteAddress.visibility = View.VISIBLE
+            }  // end of let
         }  // end of with(binding)
 
     }  // end of setSelectedAddressValues method
 
+    // Function to get the current marker position in the map fragment
+    private fun getMarkerPosition(): Location {
+        return mCurrentMarkerPos?.let {
+            // The current available location
+            Location(
+                it.latitude, it.longitude,
+                GeoFireUtils.getGeoHashForLocation(
+                    GeoLocation(it.latitude, it.longitude)
+                )
+            )
+        } ?: run {
+            // Jose Rizal's house as the default coordinates
+            Location(
+                Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE,
+                GeoFireUtils.getGeoHashForLocation(
+                    GeoLocation(
+                        Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE
+                    )
+                )
+            )
+        }  // end of let & run
+    }  // end of getMarkerLocation method
+
     // Function to supply the retrieved data for Province Spinner
-    fun retrieveProvinces(prvList: List<HashMap<String, String>>) {
-        // Clear the list of Province Data if it has any
-        if (mProvinces.isNotEmpty())
-            mProvinces.clear()
-        // Clear the list of Province Names if it has any
-        if (mProvNames.isNotEmpty())
-            mProvNames.clear()
+    internal fun retrieveProvinces(prvList: List<HashMap<String, String>>) {
+        // Clear the list of Province data if it has any
+        if (mProvinces.isNotEmpty()) mProvinces.clear()
+
+        // Variable to store the list of province names
+        val provinces: MutableList<String> = mutableListOf()
 
         // Perform data storage if the retrieved list is not empty
         if (prvList.isNotEmpty()) {
             // Add the whole sorted list of Provinces
             mProvinces.addAll(prvList.sortedBy { it[Constants.PROVINCE_NAME] })
             // Also, store the province names in the another list
-            mProvinces.forEach { mProvNames.add(it[Constants.PROVINCE_NAME]!!) }
+            mProvinces.forEach { provinces.add(it[Constants.PROVINCE_NAME]!!) }
         }
+
+        with(binding) {
+            // Prepare the drop down values for provinces
+            actvAddrProvince.setAdapter(
+                ArrayAdapter(
+                    this@AddressEditActivity, R.layout.spinner_item, provinces
+                )
+            )
+
+            // Get the selected province, if any
+            val prov = actvAddrProvince.text.toString().trim { it <= ' ' }
+
+            /* If the selected province exists in the list, proceed to set
+             * drop down items for city/municipality
+             */
+            if (prov in provinces) {
+                setCityValues(provinces.indexOf(prov))
+            } else if (prov.isNotEmpty()) {
+                // Clear the spinner text of province, city/municipality and barangay
+                actvAddrProvince.text.clear()
+                actvAddrCtm.text.clear()
+                actvAddrBrgy.text.clear()
+
+                // Display a dialog that the province data is non-existent
+                DialogClass(this@AddressEditActivity).alertDialog(
+                    getString(
+                        R.string.dialog_no_place_found_title,
+                        resources.getStringArray(R.array.address_places)[0]
+                    ),
+                    getString(
+                        R.string.dialog_no_place_found_message,
+                        resources.getStringArray(R.array.address_places)[0],
+                        prov,
+                        resources.getStringArray(R.array.address_places)[0]
+                    ),
+                    getString(R.string.dialog_btn_ok)
+                )
+            }
+        }  // end of with(binding)
+
     }  // end of retrieveProvinces method
 
     // Function to supply the retrieved data for City/Municipality Spinner
-    fun retrieveCities(ctList: List<HashMap<String, String>>) {
-        // Clear the list of City Data if it has any
-        if (mCities.isNotEmpty())
-            mCities.clear()
-        // Clear the list of City Names if it has any
-        if (mCTNames.isNotEmpty())
-            mCTNames.clear()
+    internal fun retrieveCities(ctList: List<HashMap<String, String>>) {
+        // Clear the list of City/Municipality data if it has any
+        if (mCities.isNotEmpty()) mCities.clear()
+
+        // Variable to store the list of city/municipality names
+        val cities: MutableList<String> = mutableListOf()
 
         // Perform data storage if the retrieved list is not empty
         if (ctList.isNotEmpty()) {
             // Add the whole sorted list of Cities
             mCities.addAll(ctList.sortedBy { it[Constants.CITY_NAME] })
             // Also, store the city names in the another list
-            mCities.forEach { mCTNames.add(it[Constants.CITY_NAME]!!) }
+            mCities.forEach { cities.add(it[Constants.CITY_NAME]!!) }
         }
+
+        with(binding) {
+            // Prepare the drop down values for cities
+            actvAddrCtm.setAdapter(
+                ArrayAdapter(
+                    this@AddressEditActivity, R.layout.spinner_item, cities
+                )
+            )
+
+            // Get the selected city, if any
+            val ct = actvAddrCtm.text.toString().trim { it <= ' ' }
+
+            /* If the selected city/municipality exists in the list, proceed to
+             * set drop down items for barangay
+             */
+            if (ct in cities) {
+                setBarangayValues(cities.indexOf(ct))
+            } else if (ct.isNotEmpty()) {
+                // Clear the spinner text of city/municipality and barangay
+                actvAddrCtm.text.clear()
+                actvAddrBrgy.text.clear()
+
+                // Display a dialog that the city/municipality data is non-existent
+                DialogClass(this@AddressEditActivity).alertDialog(
+                    getString(
+                        R.string.dialog_no_place_found_title,
+                        resources.getStringArray(R.array.address_places)[1]
+                    ),
+                    getString(
+                        R.string.dialog_no_place_found_message,
+                        resources.getStringArray(R.array.address_places)[1],
+                        ct,
+                        resources.getStringArray(R.array.address_places)[1]
+                    ),
+                    getString(R.string.dialog_btn_ok)
+                )
+            }
+        }  // end of with(binding)
+
     }  // end of retrieveCities method
+
+    // Function to supply the retrieved data for Barangay Spinner
+    internal fun retrieveBarangays(bgyList: List<String>) {
+        with(binding) {
+            // Prepare the drop down values for barangays
+            actvAddrBrgy.setAdapter(
+                ArrayAdapter(
+                    this@AddressEditActivity, R.layout.spinner_item, bgyList
+                )
+            )
+
+            // Get the selected barangay, if any
+            val brgy = actvAddrBrgy.text.toString().trim { it <= ' ' }
+
+            if (brgy.isNotEmpty() && brgy !in bgyList) {
+                actvAddrBrgy.text.clear()  // Clear the spinner text of barangay
+
+                // Display a dialog that the barangay data is non-existent
+                DialogClass(this@AddressEditActivity).alertDialog(
+                    getString(
+                        R.string.dialog_no_place_found_title,
+                        resources.getStringArray(R.array.address_places)[2]
+                    ),
+                    getString(
+                        R.string.dialog_no_place_found_message,
+                        resources.getStringArray(R.array.address_places)[2],
+                        brgy,
+                        resources.getStringArray(R.array.address_places)[2]
+                    ),
+                    getString(R.string.dialog_btn_ok)
+                )
+            }
+        }  // end of with(binding)
+
+    }  // end of retrieveBarangays method
 
     /* Function to set drop down data of city/municipality once
      * the user selects an item from province.
@@ -284,36 +504,31 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
     private fun setCityValues(position: Int) {
         with(binding) {
             // Store the selected province's ID
-            mSelectedProvince = mProvinces[position][Constants.PROVINCE_ID]!!
-
-            // Clear the drop down data of city/municipality for a new batch of data
-            actvAddrCtm.text.clear()
-
-            // Call the Firestore function to retrieve city data
-            FirestoreClass().getCities(
-                this@AddressEditActivity, mSelectedProvince
-            )
-
-            // Prepare the drop down values for cities
-            val cityAdapter = ArrayAdapter(
-                this@AddressEditActivity, R.layout.spinner_item, mCTNames
-            )
-            actvAddrCtm.setAdapter(cityAdapter)
+            mSelectedProvinceID = mProvinces[position][Constants.PROVINCE_ID]!!
 
             // Enable drop down functionality of city/municipality
             if (!actvAddrCtm.isEnabled) {
                 tilAddrCtm.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
                 actvAddrCtm.isEnabled = true
             }
+            // Clear the drop down data of city/municipality for a new batch of data
+            else if (actvAddrCtm.text.isNotEmpty()) {
+                actvAddrCtm.text.clear()
+            }
 
             // Disable drop down functionality of barangays
             if (actvAddrBrgy.isEnabled) {
                 tilAddrBrgy.endIconMode = TextInputLayout.END_ICON_NONE
                 actvAddrBrgy.isEnabled = false
+
+                // Clear the drop down data of barangay if the field is not empty
+                if (actvAddrBrgy.text.isNotEmpty()) actvAddrBrgy.text.clear()
             }
 
-            // Clear the drop down data of barangay for a new batch of data later
-            actvAddrBrgy.text.clear()
+            // Call the Firestore function to retrieve city data
+            FirestoreClass().getCities(
+                this@AddressEditActivity, mSelectedProvinceID
+            )
         }  // end of with(binding)
 
     }  // end of setCityValues method
@@ -323,29 +538,21 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
      */
     private fun setBarangayValues(position: Int) {
         with(binding) {
-            /* Clear the drop down data of barangay if it the spinner is
-             * enabled. This is to prevent deleting an empty data set
-             * whenever the province has changed selection.
-             */
-            if (actvAddrBrgy.isEnabled) actvAddrBrgy.text.clear()
-
-            // Call the Firestore function to retrieve barangay data
-            val brgyResult = FirestoreClass().getBarangays(
-                this@AddressEditActivity, mSelectedProvince,
-                mCities[position][Constants.CITY_ID]!!
-            )
-
-            // Prepare the drop down values for barangays
-            val brgyAdapter = ArrayAdapter(
-                this@AddressEditActivity, R.layout.spinner_item, brgyResult
-            )
-            actvAddrBrgy.setAdapter(brgyAdapter)
-
             // Enable the drop down functionality of barangays
             if (!actvAddrBrgy.isEnabled) {
                 tilAddrBrgy.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
                 actvAddrBrgy.isEnabled = true
             }
+            // Clear the drop down data of barangay for a new batch of data
+            else if (actvAddrBrgy.text.isNotEmpty()) {
+                actvAddrBrgy.text.clear()
+            }
+
+            // Call the Firestore function to retrieve barangay data
+            FirestoreClass().getBarangays(
+                this@AddressEditActivity, mSelectedProvinceID,
+                mCities[position][Constants.CITY_ID]!!
+            )
         }  // end of with(binding)
 
     }  // end of setBarangayValues method
@@ -353,254 +560,173 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
     // Function to validate user address
     private fun addressValidation(): Boolean {
         with(binding) {
-            return when {
-                // If the Full Name field is empty
-                TextUtils.isEmpty(etAddrFullName.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@AddressEditActivity,
-                        resources.getString(R.string.err_blank_fullname),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Phone Number field is empty
-                TextUtils.isEmpty(etAddrPhone.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@AddressEditActivity,
-                        resources.getString(R.string.err_blank_phone),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If no province is selected
-                TextUtils.isEmpty(actvAddrProvince.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@AddressEditActivity,
-                        resources.getString(R.string.err_blank_province),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If no city/municipality is selected
-                TextUtils.isEmpty(actvAddrCtm.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@AddressEditActivity,
-                        resources.getString(R.string.err_blank_city),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If no barangay is selected
-                TextUtils.isEmpty(actvAddrBrgy.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@AddressEditActivity,
-                        resources.getString(R.string.err_blank_brgy),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Postal Code field is empty
-                TextUtils.isEmpty(etAddrPostal.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@AddressEditActivity,
-                        resources.getString(R.string.err_blank_postal),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Detailed Address field is empty
-                TextUtils.isEmpty(etAddrDetails.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@AddressEditActivity,
-                        resources.getString(R.string.err_blank_detailed),
-                        true
-                    )
-                    false  // return false
-                }
-
-                else -> true  // If all inputs are valid
-            }  // end of when
+            // Create a FormValidation object, and then execute the validations
+            return FormValidation(this@AddressEditActivity).run {
+                when {
+                    // Full Name
+                    !validateFullName(etAddrFullName) -> false
+                    // Phone Number
+                    !validatePhoneNumber(etAddrPhone) -> false
+                    // Province
+                    !checkSpinnerSelection(actvAddrProvince) -> false
+                    // City/Municipality
+                    !checkSpinnerSelection(actvAddrCtm) -> false
+                    // Barangay
+                    !checkSpinnerSelection(actvAddrBrgy) -> false
+                    // Postal Code
+                    !validatePostalCode(etAddrPostal) -> false
+                    // Detailed Address
+                    !validateDetailedAddress(etAddrDetails) -> false
+                    // When all fields are valid
+                    else -> true
+                }  // end of when
+            }  // end of run
 
         }  // end of with(binding)
 
     }  // end of addressValidation method
 
     // Function to save user's address
-    private fun saveUserAddress() {
+    internal fun saveAddressChanges() {
         // Validate first the address fields
         if (addressValidation()) {
             // Display the loading message
             showProgressDialog(
                 this@AddressEditActivity, this@AddressEditActivity,
-                resources.getString(R.string.msg_please_wait)
+                getString(R.string.msg_saving_changes)
             )
 
-            if (mAddress == null) {
-                // If mAddress object is null, add a new address
-                addNewUserAddress()
-            } else {
-                // If mAddress has a value, update the current address
-                updateUserAddress()
-            }  // end of if-else
+            // If default address status was changed
+            if (mAddrHashMap[Constants.DEFAULT_ADDR] != null)
+                FirestoreClass().findDefaultAddress(this@AddressEditActivity)
+            else
+                addOrUpdateAddress()  // Adding or updating address information
         }  // end of if
-    }  // end of saveUserAddress method
 
-    // Function to add user address to Firestore (if mAddress is null)
-    private fun addNewUserAddress() {
-        // Get the document reference for the new address
-        val addressRef = FirestoreClass().getUserAddressReference()
+    }  // end of saveAddressChanges method
 
-        with(binding) {
-            // Object to store user address data
-            mAddress = Address(
-                Constants.ADDRESS_ID_TEMP + addressRef.id,
-                etAddrFullName.text.toString().trim { it <= ' ' },
-                etAddrPhone.text.toString().trim { it <= ' ' },
-                actvAddrProvince.text.toString().trim { it <= ' ' },
-                actvAddrCtm.text.toString().trim { it <= ' ' },
-                actvAddrBrgy.text.toString().trim { it <= ' ' },
-                etAddrPostal.text.toString().trim { it <= ' ' }.toInt(),
-                etAddrDetails.text.toString().trim { it <= ' ' },
-                smDefaultAddress.isChecked,
-                Location(
-                    mCurrentMarkerPos!!.latitude,
-                    mCurrentMarkerPos!!.longitude,
-                    GeoFireUtils.getGeoHashForLocation(GeoLocation(
-                        mCurrentMarkerPos!!.latitude,
-                        mCurrentMarkerPos!!.longitude,
-                    ))
+    // Function to add (null mAddress) or update user address to Firestore
+    internal fun addOrUpdateAddress() {
+        // If mAddress object is null, add a new address
+        if (mAddress == null) {
+            // Get the document reference for the new address
+            val addressRef = FirestoreClass().getUserAddressReference()
+
+            with(binding) {
+                // Object to store user address data
+                mAddress = Address(
+                    Constants.ADDRESS_ID_TEMP + addressRef.id,
+                    etAddrFullName.text.toString().trim { it <= ' ' },
+                    etAddrPhone.text.toString().trim { it <= ' ' },
+                    actvAddrProvince.text.toString().trim { it <= ' ' },
+                    actvAddrCtm.text.toString().trim { it <= ' ' },
+                    actvAddrBrgy.text.toString().trim { it <= ' ' },
+                    etAddrPostal.text.toString().trim { it <= ' ' }.toInt(),
+                    etAddrDetails.text.toString().trim { it <= ' ' },
+                    smDefaultAddress.isChecked,
+                    getMarkerPosition()
                 )
+            }  // end of with(binding)
+
+            // Adds the user address data in the Firestore Database
+            FirestoreClass().addUserAddress(
+                this@AddressEditActivity, mAddress!!
             )
-        }  // end of with(binding)
+        }
+        // If mAddress has a value, update the current address
+        else {
+            FirestoreClass().updateAddress(
+                this@AddressEditActivity, mAddress!!.addressID, mAddrHashMap
+            )
+        }  // end of if-else
 
-        // Adds the user address data in the Firestore Database
-        FirestoreClass().addUserAddress(
-            this@AddressEditActivity, mAddress!!
-        )
-    }  // end of addNewUserAddress method
-
-    // Function to update existing user address (if mAddress is not null)
-    private fun updateUserAddress() {
-        storeUserAddressChanges()  // Stores modified information, if any
-
-        // Proceed to update fields in the Cloud Firestore
-        FirestoreClass().updateAddress(
-            this@AddressEditActivity, mAddress!!.addressID,
-            mAddrHashMap
-        )
-    }  // end of updateUserAddress method
+    }  // end of addOrUpdateAddress method
 
     // Function to store modified user address information
-    private fun storeUserAddressChanges() {
+    private fun storeAddressChanges() {
         // Clear the HashMap first for a new batch of modified information
         mAddrHashMap.clear()
 
+        /* Store temporary object for comparison purposes if the page is for
+         * creating new address
+         */
+        if (mIsNewAddress) mAddress = Address()
+
         with(binding) {
-            val fullName = etAddrFullName.text.toString().trim { it <= ' ' }
-            // Save the new full name if it is different from previous full name
-            if (fullName != mAddress!!.fullName)
-                mAddrHashMap[Constants.FULL_NAME] = fullName
+            mAddress?.let { ad ->
+                val fullName = etAddrFullName.text.toString().trim { it <= ' ' }
+                // Save the new full name if it is different from previous full name
+                if (fullName != ad.fullName)
+                    mAddrHashMap[Constants.FULL_NAME] = fullName
 
-            val phoneNumber = etAddrPhone.text.toString().trim { it <= ' ' }
-            // Save the new phone number if it is different from previous phone number
-            if (phoneNumber != mAddress!!.phoneNum)
-                mAddrHashMap[Constants.PHONENUM] = phoneNumber
+                val phoneNumber = etAddrPhone.text.toString().trim { it <= ' ' }
+                // Save the new phone number if it is different from previous phone number
+                if (phoneNumber != ad.phoneNum)
+                    mAddrHashMap[Constants.PHONE_NUM] = phoneNumber
 
-            val province = actvAddrProvince.text.toString().trim { it <= ' ' }
-            // Save the new province if it is different from previous province
-            if (province != mAddress!!.province)
-                mAddrHashMap[Constants.PROVINCE] = province
+                val province = actvAddrProvince.text.toString().trim { it <= ' ' }
+                // Save the new province if it is different from previous province
+                if (province != ad.province)
+                    mAddrHashMap[Constants.PROVINCE] = province
 
-            val city = actvAddrCtm.text.toString().trim { it <= ' ' }
-            /* Save the new city/municipality if it is different
-             * from previous city/municipality
-             */
-            if (city != mAddress!!.city)
-                mAddrHashMap[Constants.CITY] = city
+                val city = actvAddrCtm.text.toString().trim { it <= ' ' }
+                /* Save the new city/municipality if it is different
+                 * from previous city/municipality
+                 */
+                if (city != ad.city)
+                    mAddrHashMap[Constants.CITY] = city
 
-            val barangay = actvAddrBrgy.text.toString().trim { it <= ' ' }
-            // Save the new barangay if it is different from previous barangay
-            if (barangay != mAddress!!.barangay)
-                mAddrHashMap[Constants.BARANGAY] = barangay
+                val barangay = actvAddrBrgy.text.toString().trim { it <= ' ' }
+                // Save the new barangay if it is different from previous barangay
+                if (barangay != ad.barangay)
+                    mAddrHashMap[Constants.BARANGAY] = barangay
 
-            val postalCode = etAddrPostal.text.toString().trim { it <= ' ' }.toInt()
-            // Save the new postal code if it is different from previous postal code
-            if (postalCode != mAddress!!.postal)
-                mAddrHashMap[Constants.POSTAL] = postalCode
+                val postalCode = if (etAddrPostal.text!!.isNotEmpty())
+                    etAddrPostal.text.toString().trim { it <= ' ' }.toInt()
+                else
+                    0  // Default value to prevent NumberFormatException
+                // Save the new postal code if it is different from previous postal code
+                if (postalCode != ad.postal)
+                    mAddrHashMap[Constants.POSTAL] = postalCode
 
-            val detailAdd = etAddrDetails.text.toString().trim { it <= ' ' }
-            /* Save the new detailed address if it is different
-             * from previous detailed address
-             */
-            if (detailAdd != mAddress!!.detailAdd)
-                mAddrHashMap[Constants.DETAIL_ADDR] = detailAdd
+                val detailAdd = etAddrDetails.text.toString().trim { it <= ' ' }
+                /* Save the new detailed address if it is different
+                 * from previous detailed address
+                 */
+                if (detailAdd != ad.detailAdd)
+                    mAddrHashMap[Constants.DETAIL_ADDR] = detailAdd
 
-            val defaultAdd = smDefaultAddress.isChecked
-            /* Save the new default address toggle if it is
-             * the opposite of the previous toggle
-             */
-            if (defaultAdd != mAddress!!.default)
-                mAddrHashMap[Constants.DEFAULT_ADDR] = defaultAdd
+                val defaultAdd = smDefaultAddress.isChecked
+                /* Save the new default address toggle if it is
+                 * the opposite of the previous toggle
+                 */
+                if (defaultAdd != ad.default)
+                    mAddrHashMap[Constants.DEFAULT_ADDR] = defaultAdd
 
-            val addrLocation = Location(
-                mCurrentMarkerPos!!.latitude,
-                mCurrentMarkerPos!!.longitude,
-                GeoFireUtils.getGeoHashForLocation(GeoLocation(
-                    mCurrentMarkerPos!!.latitude,
-                    mCurrentMarkerPos!!.longitude,
-                ))
-            )
-            /* Save the new address location if it is different from
-             * the previous address location
-             */
-            if (addrLocation != mAddress!!.location!!)
-                mAddrHashMap[Constants.LOCATION] = addrLocation
+                val addrLocation = if (mCurrentMarkerPos != null)
+                    getMarkerPosition()
+                else
+                    null  // Default value
+                /* Save the new address location if it is different from
+                 * the previous address location
+                 */
+                if (addrLocation != ad.location)
+                    mAddrHashMap[Constants.LOCATION] = addrLocation
+            }  // end of let
         }  // end of with(binding)
 
-    }  // end of storeUserAddressChanges method
-
-    // Function to prompt user that the address is saved
-    fun addressSavedPrompt() {
-        hideProgressDialog()  // Hide the loading message
-
-        // Display a Toast message
-        toastMessage(
-            this@AddressEditActivity,
-            resources.getString(R.string.msg_address_saved)
-        )
-
-        finish()  // Closes the activity
-
-    }  // end of addressSavedPrompt method
+        // Revert back to null if the page is for creating new address
+        if (mIsNewAddress) mAddress = null
+    }  // end of storeAddressChanges method
 
     // Function to delete user's address
-    private fun deleteUserAddress() {
+    internal fun deleteUserAddress() {
         // Check if the mSelectedAddress object is not null
         if (mAddress != null) {
             // Display the loading message
             showProgressDialog(
                 this@AddressEditActivity, this@AddressEditActivity,
-                resources.getString(R.string.msg_please_wait)
+                getString(R.string.msg_please_wait)
             )
 
             // Deletes the user address data in the Firestore Database
@@ -610,16 +736,20 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
         }  // end of if
     }  // end of deleteUserAddress method
 
-    // Function to prompt user that the address was deleted
-    fun addressDeletedPrompt() {
+    // Function to prompt user that the address is saved or deleted
+    internal fun addressSavedOrDeleted(isModified: Boolean) {
         hideProgressDialog()  // Hide the loading message
 
         // Display a Toast message
         toastMessage(
-            this@AddressEditActivity, resources.getString(R.string.msg_address_deleted)
+            this@AddressEditActivity,
+            if (isModified)
+                getString(R.string.msg_address_saved)
+            else
+                getString(R.string.msg_address_deleted)
         )
 
         finish()  // Closes the activity
-    }  // end of addressDeletedPrompt method
+    }  // end of addressSavedOrDeleted method
 
 }  // end of AddressEditActivity class

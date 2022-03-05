@@ -17,6 +17,10 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.concurrent.Executors
 
+/**
+ * A class for calculating the distance and duration between two points in
+ * Google Maps API.
+ */
 class GeoDistance(
     private val activity: Activity,
     viewHolder: RecyclerView.ViewHolder? = null
@@ -145,11 +149,11 @@ class GeoDistance(
     }  // end of getDistAndDur method
 
     /**
-     * Interface to store the result of distance calculation
+     * Interface to store the result of distance calculation.
      */
     internal interface GeoDistanceResult {
         /* Abstract function to set the distance and duration result in the
-         * respective views.
+         * respective views of the selected activity/fragment
          */
         fun setDistanceResult(res: String)
     }  // end of GeoDistanceResult interface

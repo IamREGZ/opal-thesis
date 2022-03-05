@@ -20,6 +20,6 @@ data class User(
     val cart: Cart? = null
 ) : Parcelable
 
-/* gender, phoneNum, profilePic and vendor variables
- * will be used later upon account registration.
+/* gender, phoneNum, profilePic, vendor, marketID, locSettings, and cart
+ * variables will be used later upon account registration.
  */

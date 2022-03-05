@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     tools:context=".ui.fragments.AboutUsFragment">
 
     <LinearLayout
@@ -24,7 +25,7 @@
                 android:layout_gravity="center"
                 android:contentDescription="@string/app_name"
                 android:scaleType="fitCenter"
-                android:src="@drawable/opal_logo_transparent"
+                android:src="@drawable/opal_logo"
                 app:tint="@color/app_white" />
 
         </FrameLayout>

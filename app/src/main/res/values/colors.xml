@@ -17,6 +17,7 @@
     <color name="secondaryColorTheme">#FF00827F</color>
     <color name="secondaryAccentColor">#FF006666</color>
     <color name="secondaryDarkModeColor">#FF40E0D0</color>
+    <color name="transparent">#00000000</color>
     <color name="app_white">#FFF8F8FF</color>
     <color name="app_black">#FF0F0F0F</color>
     <color name="et_hint_black">#B00F0F0F</color>

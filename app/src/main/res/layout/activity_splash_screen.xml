@@ -13,7 +13,7 @@
         android:layout_height="@dimen/opal_logo_size"
         android:contentDescription="@string/app_name"
         android:scaleType="fitCenter"
-        android:src="@drawable/opal_logo_transparent"
+        android:src="@drawable/opal_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -198,7 +198,7 @@ class FirestoreClass {
     }  // end of updateUserProfileData method
 
     // Function to delete user data during account deletion process
-    fun deleteUserData(fragment: Fragment, util: UtilityClass) {
+    fun deleteUserData(fragment: DeleteAccountFragment, util: UtilityClass) {
         // Access the collection named users
         mFSInstance.collection(Constants.USERS)
             // Access the document named by the current user id
@@ -207,17 +207,12 @@ class FirestoreClass {
             .delete()
             // If it is successful
             .addOnSuccessListener {
-                // In Delete Account Fragment, it sends the user to Login Screen
-                if (fragment is DeleteAccountFragment) {
-                    fragment.deleteUserAccount()
-                }
+                // Proceed to delete the Firebase Authentication account
+                fragment.deleteUserAccount()
             }
             // If it failed
             .addOnFailureListener { e ->
-                // Closes the loading message in the Delete Account Fragment
-                if (fragment is DeleteAccountFragment) {
-                    util.hideProgressDialog()
-                }
+                util.hideProgressDialog()  // Hide the loading message
 
                 // Log the error
                 Log.e(
@@ -267,7 +262,7 @@ class FirestoreClass {
                              * will be stored in the variable mUserProfileImageURL.
                              */
                             is UserProfileActivity -> activity
-                                .imageUploadSuccess(uri.toString())
+                                .updateUserInfo(uri.toString())
 
                             /* In the Product Editor Activity, it will be stored
                              * in mProductImageURL.
@@ -320,12 +315,11 @@ class FirestoreClass {
                 val provinces = if (document != null && document.exists())
                     document.toObject(Province::class.java)!!.provinceList
                 else
-                    listOf()
+                    emptyList()
 
                 // Proceed to store the retrieved list of provinces
                 when (activity) {
                     is AddressEditActivity -> activity.retrieveProvinces(provinces)
-
                     is MarketEditorActivity -> activity.retrieveProvinces(provinces)
                 }
             }
@@ -361,12 +355,11 @@ class FirestoreClass {
                 val cities = if (document != null && document.exists())
                     document.toObject(City::class.java)!!.cityList
                 else
-                    listOf()
+                    emptyList()
 
                 // Proceed to store the retrieved list of cities/municipalities
                 when (activity) {
                     is AddressEditActivity -> activity.retrieveCities(cities)
-
                     is MarketEditorActivity -> activity.retrieveCities(cities)
                 }
             }
@@ -382,10 +375,7 @@ class FirestoreClass {
     }  // end of getCities
 
     // Function to retrieve barangay list data from Cloud Firestore
-    fun getBarangays(context: Context, provID: String, cityID: String): List<String> {
-        // A return variable that stores list of barangay data
-        val barangays: MutableList<String> = mutableListOf()
-
+    fun getBarangays(activity: Activity, provID: String, cityID: String) {
         // Access the collection named provinces
         mFSInstance.collection(Constants.PROVINCES)
             // Access the document named by selected province ID
@@ -399,26 +389,28 @@ class FirestoreClass {
             // If it is successful
             .addOnSuccessListener { document ->
                 // Log the retrieved documents
-                Log.i(context.javaClass.simpleName, document.toString())
+                Log.i(activity.javaClass.simpleName, document.toString())
 
-                // Store the barangay list if the result is not null
-                if (document != null && document.exists()) {
-                    barangays.addAll(
-                        document.toObject(CityBarangay::class.java)!!.barangays
-                    )
+                // Retrieve the result. If the document is null, return an empty list.
+                val barangays = if (document != null && document.exists())
+                    document.toObject(CityBarangay::class.java)!!.barangays
+                else
+                    emptyList()
+
+                // Proceed to store the retrieved list of barangays
+                when (activity) {
+                    is AddressEditActivity -> activity.retrieveBarangays(barangays)
                 }
             }
             // If failed
             .addOnFailureListener { e ->
                 // Log the error
                 Log.e(
-                    context.javaClass.simpleName,
+                    activity.javaClass.simpleName,
                     "There was an error retrieving barangay data.",
                     e
                 )
             }  // end of mFSInstance
-
-        return barangays  // The list value will be returned
     }  // end of getBarangays method
 
     // Function to get the document reference of user address for ID generation
@@ -444,9 +436,9 @@ class FirestoreClass {
             // If it is successful
             .addOnSuccessListener {
                 // Prompt the user that the address was saved
-                activity.addressSavedPrompt()
+                activity.addressSavedOrDeleted(true)
             }
-            // If failed
+            // If it failed
             .addOnFailureListener { e ->
                 activity.hideProgressDialog()  // Hide the loading message
 
@@ -471,8 +463,8 @@ class FirestoreClass {
             .orderBy(Constants.DEFAULT_ADDR, Query.Direction.DESCENDING)
     }  // end of getAddressQuery method
 
-    // Function to search for user address set as default
-    fun selectDefaultAddress(activity: CheckoutActivity) {
+    // Function to search for address set as default
+    fun findDefaultAddress(activity: Activity) {
         // Access the collection named users
         mFSInstance.collection(Constants.USERS)
             // Access the document named by the current user id
@@ -484,20 +476,45 @@ class FirestoreClass {
             .get()
             // If it is successful
             .addOnSuccessListener { documents ->
-                /* If a document is found, get the found document and convert
-                 * to an object (Address). Otherwise, null.
+                /* If a document is found, get the found document and convert into
+                 * an object (Address). Otherwise, null.
                  */
                 val address: Address? = if (documents != null && !documents.isEmpty)
                     documents.documents[0].toObject(Address::class.java)
                 else
                     null
 
-                // Proceed to store the result in the Checkout Activity
-                activity.storeSelectedAddress(address)
+                when (activity) {
+                    /* In Address Edit Activity, remove the default address status
+                     * of found address or just update the modified address info.
+                     */
+                    is AddressEditActivity -> {
+                        if (address != null && address.default) {
+                            // Proceed to change the default status of found address
+                            updateAddress(
+                                activity, address.addressID,
+                                hashMapOf(Constants.DEFAULT_ADDR to false),
+                                true
+                            )
+                        } else {
+                            // Just update the modified address information
+                            activity.addOrUpdateAddress()
+                        }  // end of if-else
+                    }
+
+                    /* In Checkout Activity, it stores the result to the delivery
+                     * address section.
+                     */
+                    is CheckoutActivity -> activity.storeSelectedAddress(address)
+                }
             }
             // If it failed
             .addOnFailureListener { e ->
-                activity.hideProgressDialog()  // Hide the loading message
+                // Closes the loading message in the Address Edit or Checkout Activity
+                when (activity) {
+                    is AddressEditActivity -> activity.hideProgressDialog()
+                    is CheckoutActivity -> activity.hideProgressDialog()
+                }
 
                 // Log the error
                 Log.e(
@@ -506,12 +523,12 @@ class FirestoreClass {
                     e
                 )
             }  // end of mFSInstance
-    }  // end of selectDefaultAddress method
+    }  // end of findDefaultAddress method
 
     // Function to update user address data from Cloud Firestore
     fun updateAddress(
         activity: AddressEditActivity, addressID: String,
-        addrHashMap: HashMap<String, Any>
+        addrHashMap: HashMap<String, Any?>, changeStatus: Boolean = false
     ) {
         // Access the collection named users
         mFSInstance.collection(Constants.USERS)
@@ -525,8 +542,20 @@ class FirestoreClass {
             .update(addrHashMap)
             // If it is successful
             .addOnSuccessListener {
-                // Prompt that the address was saved in the Firestore
-                activity.addressSavedPrompt()
+                // If there's a change in one of the default address' status
+                if (changeStatus) {
+                    // Delay for 1.5 seconds to give way for Firestore's write operation
+                    android.os.Handler(Looper.getMainLooper()).postDelayed({
+                        // Update the rest of the address information
+                        activity.addOrUpdateAddress()
+                    }, 1500)
+                }
+                // For updating the rest of address information
+                else {
+                    // Prompt that the address was saved in the Firestore
+                    activity.addressSavedOrDeleted(true)
+                }  // end of if-else
+
             }
             // If failed
             .addOnFailureListener { e ->
@@ -556,7 +585,7 @@ class FirestoreClass {
             // If it is successful
             .addOnSuccessListener {
                 // Prompt that the address was deleted from Firestore
-                activity.addressDeletedPrompt()
+                activity.addressSavedOrDeleted(false)
             }
             // If failed
             .addOnFailureListener { e ->
@@ -834,14 +863,6 @@ class FirestoreClass {
             }  // end of mFSInstance
 
     }  // end of addMarket method
-
-//    // Function to get the query statement for market collection
-//    fun getMarketQuery(): Query {
-//        // Access the collection named markets
-//        return mFSInstance.collection(Constants.MARKETS)
-//            // Limit the number of document retrievals to 10
-//            .limit(10)
-//    }  // end of getMarketQuery method
 
     fun retrieveNearMarkets(activity: Activity, center: GeoLocation) {
         val radius = 6000.0

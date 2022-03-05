@@ -8,7 +8,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import android.webkit.MimeTypeMap
 import com.google.android.material.button.MaterialButton
 import edu.cccdci.opal.R
@@ -18,17 +17,30 @@ import edu.cccdci.opal.dataclasses.Market
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * An object to store constant variables and functions for reusability.
+ */
 object Constants {
-    // For Cloud Firestore (Collection, Documents, and Fields)
-    const val USERS: String = "users"
+    // Generic Cloud Firestore constants (Collection, Documents, and Fields)
     const val ID: String = "id"
+    const val NAME: String = "name"
+    const val IMAGE: String = "image"
+    const val DESCRIPTION: String = "description"
+    const val STATUS: String = "status"
+    const val VENDOR_ID: String = "vendorID"
+
+    // Cloud Firestore constants for Users
+    const val USERS: String = "users"
     const val FIRST_NAME: String = "firstName"
     const val LAST_NAME: String = "lastName"
-    const val CUSTOMER_USERNAME: String = "custUser"
     const val GENDER: String = "gender"
-    const val PHONENUM: String = "phoneNum"
-    const val PROFILEPIC: String = "profilePic"
+    const val PHONE_NUM: String = "phoneNum"
+    const val PROFILE_PIC: String = "profilePic"
     const val VENDOR: String = "vendor"
+    const val CART: String = "cart"
+    const val CART_ITEMS: String = "cartItems"
+
+    // Cloud Firestore constants for Addresses
     const val ADDRESSES: String = "addresses"
     const val FULL_NAME: String = "fullName"
     const val PROVINCE: String = "province"
@@ -38,36 +50,8 @@ object Constants {
     const val DETAIL_ADDR: String = "detailAdd"
     const val DEFAULT_ADDR: String = "default"
     const val LOCATION: String = "location"
-    const val NAME: String = "name"
-    const val IMAGE: String = "image"
-    const val DESCRIPTION: String = "description"
-    const val PRICE: String = "price"
-    const val UNIT: String = "unit"
-    const val WEIGHT: String = "weight"
-    const val STOCK: String = "stock"
-    const val STATUS: String = "status"
-    const val VENDOR_ID: String = "vendorID"
-    const val CART: String = "cart"
-    const val CART_ITEMS: String = "cartItems"
-    const val DATES: String = "dates"
-    const val ORDER_DATE: String = "orderDate"
-    const val PAYMENT_DATE: String = "paymentDate"
-    const val DELIVER_DATE: String = "deliverDate"
-    const val RETURN_DATE: String = "returnDate"
-    const val ORDER_PAYMENT: String = "payment"
-    const val CUSTOMER_ID: String = "customerID"
-    const val ADDRESS: String = "address"
-    const val ORDER_ITEMS: String = "orderItems"
-    const val TOTAL_PRICE: String = "totalPrice"
-    const val SUB_TOTAL: String = "subtotal"
-    const val DELIVERY_FEE_PRICE: String = "deliveryFee"
-    const val ORDER_ACTION: String = "orderAction"
-    const val SPECIAL_INSTRUCTIONS: String = "special"
-    const val WET_MARKET: String = "wetMarket"
-    const val CATEGORY: String = "category"
-    const val OTHER_CATEGORY: String = "otherCat"
 
-    // Cloud Firestore constants for Addresses
+    // Cloud Firestore constants for Address Data
     const val PRV_DOC: String = "DOC-PRV"
     const val PROVINCES: String = "provinces"
     const val PROVINCE_ID: String = "provinceID"
@@ -77,30 +61,61 @@ object Constants {
     const val CITY_ID: String = "cityID"
     const val CITY_NAME: String = "cityName"
 
-    // Cloud Firestore constants for Products
-    const val PRODUCTS: String = "products"
-
     // Cloud Firestore constants for Markets
     const val MARKETS: String = "markets"
     const val MARKET_ID: String = "marketID"
     const val MARKET_NAME: String = "marketName"
+    const val WET_MARKET: String = "wetMarket"
+    const val CATEGORY: String = "category"
+    const val OTHER_CATEGORY: String = "otherCat"
+
+    // Cloud Firestore constants for Products
+    const val PRODUCTS: String = "products"
+    const val PRICE: String = "price"
+    const val UNIT: String = "unit"
+    const val WEIGHT: String = "weight"
+    const val STOCK: String = "stock"
 
     // Cloud Firestore constants for Orders
     const val CUSTOMER_ORDERS: String = "orders"
+    const val DATES: String = "dates"
+    const val ORDER_DATE: String = "orderDate"
+    const val PAYMENT_DATE: String = "paymentDate"
+    const val DELIVER_DATE: String = "deliverDate"
+    const val RETURN_DATE: String = "returnDate"
+    const val ORDER_PAYMENT: String = "payment"
+    const val CUSTOMER_ID: String = "customerID"
+    const val CUSTOMER_USERNAME: String = "custUser"
+    const val ADDRESS: String = "address"
+    const val ORDER_ITEMS: String = "orderItems"
+    const val TOTAL_PRICE: String = "totalPrice"
+    const val SUB_TOTAL: String = "subtotal"
+    const val DELIVERY_FEE_PRICE: String = "deliveryFee"
+    const val ORDER_ACTION: String = "orderAction"
+    const val SPECIAL_INSTRUCTIONS: String = "special"
 
     // Payment Information constants
     const val PAYMENT_METHOD: String = "payment_method"
     const val IS_SELECTED: String = "is_selected"
 
-    // For storing information to Firestore
-    const val GENDER_MALE: String = "male"
-    const val GENDER_FEMALE: String = "female"
-    const val GENDER_OTHER: String = "other"
+    // Generic Firestore Values
+    const val ITEM_OTHERS: String = "Others"
+
+    // Firestore Document ID Templates
     const val ADDRESS_ID_TEMP: String = "ADD-"
     const val PRODUCT_ID_TEMP: String = "PD-"
     const val MARKET_ID_TEMP: String = "MK-"
     const val ORDER_ID_TEMP: String = "OPL"
-    const val ITEM_OTHERS: String = "Others"
+
+    // File upload naming templates
+    const val USER_PROFILE_IMAGE_TEMP: String = "OPAL_USRIMG_"
+    const val PRODUCT_IMAGE_TEMP: String = "OPAL_PDT_"
+    const val MARKET_IMAGE_TEMP: String = "OPAL_MKT_"
+
+    // User Genders
+    const val GENDER_MALE: String = "male"
+    const val GENDER_FEMALE: String = "female"
+    const val GENDER_OTHER: String = "other"
 
     // Product Status Codes
     const val PRODUCT_IN_STOCK: Int = 1
@@ -142,18 +157,18 @@ object Constants {
     const val SELECTION_MODE: String = "selection_mode"
 
     // Request Permission Codes
-    const val READ_STORAGE_PERMISSION_CODE = 2
-    const val SELECT_IMAGE_REQUEST_CODE = 1
+    const val READ_STORAGE_PERMISSION_CODE: Int = 2
+    const val SELECT_IMAGE_REQUEST_CODE: Int = 1
 
-    // File upload naming templates
-    const val USER_PROFILE_IMAGE_TEMP: String = "OPAL_USRIMG_"
-    const val PRODUCT_IMAGE_TEMP: String = "OPAL_PDT_"
-    const val MARKET_IMAGE_TEMP: String = "OPAL_MKT_"
+    // Dialog Action IDs
+    const val DELETE_ADDRESS_ACTION: Int = 10
+    const val EXIT_ADDRESS_ACTION: Int = 11
 
     // Regex patterns
     private const val VALID_EMAIL: String = "^[A-Za-z0-9]+(?:[._-]?[A-Za-z0-9])+@" +
             "[A-Za-z0-9]+(?:[._-]?[A-Za-z0-9])+(?:\\.[A-Za-z0-9]{2,3})+\$"
     private const val VALID_USERNAME: String = "^[A-Za-z0-9]+(?:[.-]?[A-Za-z0-9]+)*\$"
+    private const val VALID_PHONE: String = "^(?:0|\\+63)9\\d{9}\$"
     const val HAS_LOWERCASE: String = ".*[a-z].*"
     const val HAS_UPPERCASE: String = ".*[A-Z].*"
     const val HAS_DIGIT: String = ".*\\d.*"
@@ -194,14 +209,12 @@ object Constants {
     const val POINTS: String = "points"
 
     // Function to validate email string using Regular Expression (Regex)
-    fun emailValidator(email: String): Boolean {
-        return Regex(VALID_EMAIL).matches(email)
-    }  // end of emailValidator method
+    fun emailValidator(email: String): Boolean = Regex(VALID_EMAIL).matches(email)
 
     // Function to validate username string using Regular Expression (Regex)
-    fun usernameValidator(user: String): Boolean {
-        return Regex(VALID_USERNAME).matches(user)
-    }  // end of usernameValidator method
+    fun usernameValidator(user: String): Boolean = Regex(VALID_USERNAME).matches(user)
+
+    fun phoneNumberValidator(phone: String): Boolean = Regex(VALID_PHONE).matches(phone)
 
     // Function to determine if the password meets the requirement for strong password
     fun strongPassword(pass: String): Boolean {
@@ -219,12 +232,10 @@ object Constants {
 
     // Function to launch the Image Selection Activity
     fun showImageSelection(activity: Activity) {
-        val galleryIntent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        activity.startActivityForResult(
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
+            SELECT_IMAGE_REQUEST_CODE
         )
-        // Opens the Image Selection Activity
-        activity.startActivityForResult(galleryIntent, SELECT_IMAGE_REQUEST_CODE)
     }  // end of showImageSelection method
 
     /* Function to get the file extension of the file being uploaded
@@ -280,12 +291,7 @@ object Constants {
                 context.packageName, PackageManager.GET_META_DATA
             ).apply {
                 // Get the API key from Android Manifest
-                apiKey = metaData.getString(
-                    "com.google.android.geo.API_KEY"
-                ) ?: ""
-
-                // Log the API key
-                Log.i(context.javaClass.simpleName, apiKey!!)
+                apiKey = metaData.getString("com.google.android.geo.API_KEY") ?: ""
             }
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()  // Log the exception
@@ -316,17 +322,18 @@ object Constants {
                 // Get the coordinates for Market
                 is Market? -> getCoordinates(obj.location)
 
-                else -> listOf(0.0, 0.0)  // Default coordinates
+                else -> listOf(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)  // Default coordinates
             }
         } else {
-            listOf(0.0, 0.0)  // Default coordinates
+            listOf(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)  // Default coordinates
         }
     }  // end of getLocation method
 
     // Function to get the exact coordinates of the specified location
     private fun getCoordinates(loc: Location?): List<Double> {
         // Return a list of coordinates if it is not null; otherwise, default
-        return if (loc != null) listOf(loc.latitude, loc.longitude) else listOf(0.0, 0.0)
+        return if (loc != null) listOf(loc.latitude, loc.longitude)
+        else listOf(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
     }  // end of getCoordinates method
 
 }  // end of Constants object

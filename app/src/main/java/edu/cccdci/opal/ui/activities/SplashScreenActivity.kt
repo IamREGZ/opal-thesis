@@ -52,7 +52,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
                 finish()  // Closes the Splash Screen
             }  // end of withEndAction
-
         }  // end of with(binding)
 
     }  // end of onCreate method

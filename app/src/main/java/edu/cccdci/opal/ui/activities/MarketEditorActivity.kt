@@ -33,7 +33,6 @@ import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.GlideLoader
 import edu.cccdci.opal.utils.UtilityClass
 import java.io.IOException
-import java.util.*
 
 class MarketEditorActivity : UtilityClass(), View.OnClickListener,
     OnMapReadyCallback {
@@ -472,17 +471,17 @@ class MarketEditorActivity : UtilityClass(), View.OnClickListener,
              */
             if (actvMktEditBrgy.isEnabled) actvMktEditBrgy.text.clear()
 
-            // Call the Firestore function to retrieve barangay data
-            val brgyResult = FirestoreClass().getBarangays(
-                this@MarketEditorActivity, mSelectedProvince,
-                mCities[position][Constants.CITY_ID]!!
-            )
-
-            // Prepare the drop down values for barangays
-            val brgyAdapter = ArrayAdapter(
-                this@MarketEditorActivity, R.layout.spinner_item, brgyResult
-            )
-            actvMktEditBrgy.setAdapter(brgyAdapter)
+//            // Call the Firestore function to retrieve barangay data
+//            val brgyResult = FirestoreClass().getBarangays(
+//                this@MarketEditorActivity, mSelectedProvince,
+//                mCities[position][Constants.CITY_ID]!!
+//            )
+//
+//            // Prepare the drop down values for barangays
+//            val brgyAdapter = ArrayAdapter(
+//                this@MarketEditorActivity, R.layout.spinner_item, brgyResult
+//            )
+//            actvMktEditBrgy.setAdapter(brgyAdapter)
 
             // Enable the drop down functionality of barangays
             if (!actvMktEditBrgy.isEnabled) {

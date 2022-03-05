@@ -614,8 +614,8 @@
         android:id="@+id/cv_main_order_ctas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="@dimen/card_elevation"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:cardElevation="@dimen/card_elevation">
 
         <LinearLayout
             android:layout_width="match_parent"

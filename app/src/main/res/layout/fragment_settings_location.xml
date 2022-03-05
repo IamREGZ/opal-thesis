@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     android:orientation="vertical"
     android:paddingTop="@dimen/medium_large_mrg_pd"
-    tools:context=".ui.fragments.LocationSettingsFragment">
+    tools:context=".ui.fragments.SettingsLocationFragment">
 
     <View
         android:layout_width="match_parent"

@@ -1,7 +1,6 @@
 package edu.cccdci.opal.ui.fragments
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.FragmentChangePasswordBinding
+import edu.cccdci.opal.utils.FormValidation
 import edu.cccdci.opal.utils.UtilityClass
 
 class ChangePasswordFragment : Fragment() {
@@ -27,8 +27,22 @@ class ChangePasswordFragment : Fragment() {
         // To access Android utilities (e.g., Toast, Dialogs, etc.)
         mUtility = UtilityClass()
 
-        // Verify password change once it is clicked
-        binding.btnChangePass.setOnClickListener { verifyPassword() }
+        with(binding) {
+            // Enables observer for a strong password
+            FormValidation(requireActivity()).passwordObserver(
+                etNewPass,
+                /* In order: Eight characters, lowercase, uppercase, digits &
+                 * special character
+                 */
+                listOf(
+                    ivNewPassEightChars, ivNewPassLowercase, ivNewPassUppercase,
+                    ivNewPassDigits, ivNewPassSpecialChars
+                )
+            )
+
+            // Verify password change once it is clicked
+            btnChangePass.setOnClickListener { verifyPassword() }
+        }
 
         return binding.root
     }  // end of onCreateView method
@@ -36,99 +50,66 @@ class ChangePasswordFragment : Fragment() {
     // Function to validate password change
     private fun validateChangePass(): Boolean {
         with(binding) {
-            return when {
-                // If Current Password Field is empty
-                TextUtils.isEmpty(etCurrentPass.text.toString().trim { it <= ' ' }) -> {
-                    // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(), getString(R.string.err_blank_current_password),
-                        true
-                    )
-                    false  // return false
-                }
 
-                // If New Password Field is empty
-                TextUtils.isEmpty(etNewPass.text.toString().trim { it <= ' ' }) -> {
-                    // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(), getString(R.string.err_blank_new_password),
-                        true
-                    )
-                    false  // return false
-                }
+            return FormValidation(requireActivity()).run {
+                when {
+                    // Current Password
+                    !validateAuthPassword(etCurrentPass) -> false
+                    // New Password
+                    !validatePassword(etNewPass) -> false
+                    // Confirm New Password
+                    !confirmPassword(etNewPass, etConfNewPass) -> false
+                    // When all fields are valid
+                    else -> true
+                }  // end of when
+            }  // end of run
 
-                // If Confirm New Password Field is empty
-                TextUtils.isEmpty(etConfNewPass.text.toString().trim { it <= ' ' }) -> {
-                    // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(), getString(R.string.err_blank_confirm_password),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If New Password and Confirm New Password do not match
-                etNewPass.text.toString().trim { it <= ' ' } !=
-                        etConfNewPass.text.toString().trim { it <= ' ' } -> {
-                    // Display an error message
-                    mUtility.showSnackBar(
-                        requireActivity(), getString(R.string.err_passwords_not_match),
-                        true
-                    )
-                    false  // return false
-                }
-
-                else -> true  // If all inputs are valid
-            } // end of when
         }  // end of with(binding)
+
     }  // end of validateChangePass method
 
     // Function to verify current password, and then change password
     private fun verifyPassword() {
-        with(binding) {
-            // Validate first the Change Password inputs
-            if (validateChangePass()) {
-                // Display the loading message
-                mUtility.showProgressDialog(
-                    requireContext(), requireActivity(),
-                    getString(R.string.msg_please_wait)
-                )
+        // Validate first the Change Password inputs
+        if (validateChangePass()) {
+            // Display the loading message
+            mUtility.showProgressDialog(
+                requireContext(), requireActivity(),
+                getString(R.string.msg_please_wait)
+            )
 
-                // Get the inputted current and new password
-                val currentPass = etCurrentPass.text.toString().trim { it <= ' ' }
-                val newPass = etNewPass.text.toString().trim { it <= ' ' }
+            // Get credentials of the current user
+            val credential = EmailAuthProvider.getCredential(
+                FirebaseAuth.getInstance().currentUser!!.email!!,
+                binding.etCurrentPass.text.toString().trim { it <= ' ' }
+            )
 
-                // Get credentials of the current user
-                val credential = EmailAuthProvider.getCredential(
-                    FirebaseAuth.getInstance().currentUser!!.email!!, currentPass
-                )
+            // Verify credentials
+            FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential)
+                .addOnCompleteListener { task ->
+                    // Correct credentials
+                    if (task.isSuccessful) {
+                        // Proceed to change password
+                        changePassword(
+                            binding.etNewPass.text.toString().trim { it <= ' ' }
+                        )
+                    }
+                    // Wrong credentials
+                    else {
+                        mUtility.hideProgressDialog()  // Hide the loading message
 
-                // Verify credentials
-                FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential)
-                    .addOnCompleteListener { task ->
-                        // Correct credentials
-                        if (task.isSuccessful) {
-                            changePassword(newPass)  // Proceed to change password
-                        } else {
-                            // Wrong credentials
+                        clearChangePassword()  // Clear the change password fields
 
-                            // Hide the loading message
-                            mUtility.hideProgressDialog()
+                        // Display the error message
+                        mUtility.showSnackBar(
+                            requireActivity(),
+                            task.exception!!.message.toString(),
+                            true
+                        )
+                    }
+                }  // end of reauthenticate
+        }  // end of if
 
-                            // Clear the change password fields
-                            clearChangePassword()
-
-                            // Display the error message
-                            mUtility.showSnackBar(
-                                requireActivity(),
-                                task.exception!!.message.toString(),
-                                true
-                            )
-                        }
-                    }  // end of reauthenticate
-            }  // end of if
-
-        }  // end of with(binding)
     }  // end of verifyPassword method
 
     // Function to change password
@@ -147,8 +128,9 @@ class ChangePasswordFragment : Fragment() {
 
                     // Sends the user back to the previous fragment
                     requireActivity().onBackPressed()
-                } else {
-                    // If it is not successful
+                }
+                // If it is not successful
+                else {
                     mUtility.hideProgressDialog()  // Hide the loading message
 
                     clearChangePassword()  // Clear the change password fields
@@ -160,6 +142,7 @@ class ChangePasswordFragment : Fragment() {
                     )
                 }
             }  // end of updatePassword
+
     }  // end of changePassword method
 
     // Function to clear the change password text fields for security purposes
@@ -169,7 +152,6 @@ class ChangePasswordFragment : Fragment() {
             if (etNewPass.text!!.isNotEmpty()) etNewPass.text!!.clear()
             if (etConfNewPass.text!!.isNotEmpty()) etConfNewPass.text!!.clear()
         }  // end of with(binding)
-
     }  // end of clearChangePassword method
 
 }  // end of ChangePasswordFragment class

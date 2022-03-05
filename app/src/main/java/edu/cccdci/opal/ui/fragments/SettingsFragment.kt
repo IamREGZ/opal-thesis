@@ -29,9 +29,10 @@ class SettingsFragment : Fragment(), View.OnClickListener {
             llChangePass.setOnClickListener(this@SettingsFragment)
             // Click event for Delete Account
             llDeleteAcc.setOnClickListener(this@SettingsFragment)
+
+            return root
         }  // end of with(binding)
 
-        return binding.root
     }  // end of onCreateView method
 
     // onClick events are declared here
@@ -39,20 +40,20 @@ class SettingsFragment : Fragment(), View.OnClickListener {
         if (view != null) {
             when (view.id) {
                 // Go to Notification Settings
-                R.id.ll_notification ->
-                    findNavController().navigate(R.id.settings_to_notif_settings)
+                R.id.ll_notification -> findNavController()
+                    .navigate(R.id.settings_to_notif_settings)
 
                 // Go to Location Settings
-                R.id.ll_location ->
-                    findNavController().navigate(R.id.settings_to_loc_settings)
+                R.id.ll_location -> findNavController()
+                    .navigate(R.id.settings_to_loc_settings)
 
                 // Go to Change Password
-                R.id.ll_change_pass ->
-                    findNavController().navigate(R.id.settings_to_change_pass)
+                R.id.ll_change_pass -> findNavController()
+                    .navigate(R.id.settings_to_change_pass)
 
                 // Go to Delete Account
-                R.id.ll_delete_acc ->
-                    findNavController().navigate(R.id.settings_to_del_account)
+                R.id.ll_delete_acc -> findNavController()
+                    .navigate(R.id.settings_to_del_account)
             }  // end of when
         }  // end of if
 

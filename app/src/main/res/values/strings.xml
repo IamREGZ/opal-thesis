@@ -5,26 +5,7 @@
     <!--  Name of Application  -->
     <string name="app_name">OPAL</string>
 
-    <!--  Strings for Log-in  -->
-    <string name="forgot_password_link">FORGOT PASSWORD?</string>
-    <string name="login_btn">Log In</string>
-    <string name="no_account_lbl">Don\'t have an account?</string>
-    <string name="register_link">REGISTER</string>
-
-    <!--  Strings for Register  -->
-    <string name="account_registration">ACCOUNT REGISTRATION</string>
-    <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
-    <string name="email_address">Email Address</string>
-    <string name="email_helper">Examples: abc@gmail.com , opal@ccc.edu.ph</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="agree_to_lbl">I agree to the</string>
-    <string name="terms_and_conditions_link">TERMS &amp; CONDITIONS</string>
-    <string name="register_btn">Register</string>
-    <string name="have_account_lbl">Already have an account?</string>
-    <string name="login_link">LOG IN</string>
+    <!--  Strong Password Strings  -->
     <string name="strong_pass_head">Strong Password Requirements:</string>
     <string name="strong_pass_indicator">Strong Password Indicator</string>
     <string name="strong_pass_eight_chars">At least eight (8) characters</string>
@@ -33,18 +14,19 @@
     <string name="strong_pass_digits">At least one (1) digit</string>
     <string name="strong_pass_special_chars">At least one (1) special character</string>
 
-    <!--  Strings for Forgot Password  -->
-    <string name="forgot_password_header">FORGOT PASSWORD</string>
-    <string name="forgot_password_desc">
-        Please enter your email address in the text field provided below. We\'ll send you an email to reset your password.
+    <!--  Generic Error Messages  -->
+    <string name="err_permission_denied">
+        Storage permission denied. You can also allow it from your device\'s settings.
     </string>
-    <string name="submit">Submit</string>
+    <string name="err_image_selection_failed">
+        There was an error selecting the image file.
+    </string>
 
     <!--  User-related Form Validation Error Messages  -->
     <string name="err_blank_first_name">Please enter your first name.</string>
     <string name="err_blank_last_name">Please enter your last name.</string>
-    <string name="err_first_name_length">First name should be 2 to 30 characters long</string>
-    <string name="err_last_name_length">Last name should be 2 to 30 characters long</string>
+    <string name="err_first_name_length">First name should be 2 to 30 characters long.</string>
+    <string name="err_last_name_length">Last name should be 2 to 30 characters long.</string>
     <string name="err_blank_email">Please enter your email address.</string>
     <string name="err_wrong_email_format">Please enter a valid email address.</string>
     <string name="err_blank_username">Please enter your username.</string>
@@ -58,45 +40,37 @@
     <string name="err_blank_confirm_password">Please enter confirm password.</string>
     <string name="err_passwords_not_match">Passwords do not match.</string>
     <string name="err_unchecked_tac">Please agree to our Terms and Conditions.</string>
-
-    <!--  Error Messages  -->
+    <string name="err_no_profile_pic_to_remove">
+        No profile picture found. Tap the profile picture to select one.
+    </string>
     <string name="err_blank_phone">Please enter your phone number.</string>
+    <string name="err_wrong_phone_format">Please enter a valid phone number.</string>
     <string name="err_no_gender_selected">Please select your gender.</string>
-    <string name="err_blank_fullname">Please enter your full name.</string>
-    <string name="err_blank_province">Please select your province.</string>
-    <string name="err_blank_city">Please select your city/municipality.</string>
-    <string name="err_blank_brgy">Please select your barangay.</string>
-    <string name="err_blank_postal">Please enter your postal code.</string>
-    <string name="err_blank_detailed">Please enter your detailed address.</string>
-    <string name="err_permission_denied">
-        Storage permission denied. You can also allow it from your device\'s settings.
-    </string>
-    <string name="err_image_selection_failed">
-        There was an error selecting the image file.
-    </string>
     <string name="err_register_login_failed">
         Your account is successfully registered. However, there was a problem
         logging in to your account.
     </string>
     <string name="err_blank_current_password">Please enter your current password.</string>
     <string name="err_blank_new_password">Please enter your new password.</string>
-    <string name="err_no_product_image_selected">Please select the product image.</string>
-    <string name="err_blank_product_name">Please enter the product name.</string>
-    <string name="err_blank_product_desc">Please enter the product description.</string>
-    <string name="err_blank_product_price">Please enter the product price.</string>
-    <string name="err_zero_or_negative_price">Product price must be greater than 0.</string>
-    <string name="err_no_unit_selected">Please select the product\'s measurement unit.</string>
-    <string name="err_blank_custom_unit">Please specify the custom unit.</string>
-    <string name="err_blank_product_weight">Please enter the product weight.</string>
-    <string name="err_zero_or_negative_weight">Product weight must be greater than 0.</string>
-    <string name="err_blank_product_stock">Please enter the product stock.</string>
-    <string name="err_negative_stock">Product stock must not be a negative number.</string>
-    <string name="err_no_selected_address">Please select your delivery address.</string>
-    <string name="err_no_selected_order_action">
-        Please select an action when one (or more) item(s) in your order
-        is/are unavailable.
+
+    <!--  Address-related Form Validation Error Messages  -->
+    <string name="err_blank_full_name">Please enter your full name.</string>
+    <string name="err_full_name_length">Full name should be 3 to 60 characters long.</string>
+    <string name="err_blank_province">Please select your province.</string>
+    <string name="err_blank_city">Please select your city/municipality.</string>
+    <string name="err_blank_brgy">Please select your barangay.</string>
+    <string name="err_blank_postal">Please enter your postal code.</string>
+    <string name="err_postal_length">Postal code should have exactly 4 digits.</string>
+    <string name="err_blank_detailed">Please enter your detailed address.</string>
+    <string name="err_detailed_length">
+        Detailed address should be 10 to 100 characters long.
     </string>
-    <string name="err_no_selected_payment">Please select your payment method.</string>
+    <string name="err_unselect_default_address">
+        Cannot unselect default address. Set another address as default instead.
+    </string>
+    <string name="err_delete_default_address">Default address cannot be deleted.</string>
+
+    <!--  Market-related Form Validation Error Messages  -->
     <string name="err_blank_market_name">Please enter the market name.</string>
     <string name="err_blank_wet_market">
         Please enter the name of parent wet market.
@@ -111,6 +85,29 @@
     <string name="err_blank_mkt_postal">Please enter the market\'s postal code.</string>
     <string name="err_blank_mkt_detailed">Please enter the market\'s detailed address.</string>
     <string name="err_unchecked_vendor_tac">Please agree to the Vendor\'s T&amp;C.</string>
+
+    <!--  Product-related Form Validation Error Messages  -->
+    <string name="err_no_product_image_selected">Please select the product image.</string>
+    <string name="err_blank_product_name">Please enter the product name.</string>
+    <string name="err_blank_product_desc">Please enter the product description.</string>
+    <string name="err_blank_product_price">Please enter the product price.</string>
+    <string name="err_zero_or_negative_price">Product price must be greater than 0.</string>
+    <string name="err_no_unit_selected">Please select the product\'s measurement unit.</string>
+    <string name="err_blank_custom_unit">Please specify the custom unit.</string>
+    <string name="err_blank_product_weight">Please enter the product weight.</string>
+    <string name="err_zero_or_negative_weight">Product weight must be greater than 0.</string>
+    <string name="err_blank_product_stock">Please enter the product stock.</string>
+    <string name="err_negative_stock">Product stock must not be a negative number.</string>
+
+    <!--  Checkout Error Messages  -->
+    <string name="err_no_selected_address">Please select your delivery address.</string>
+    <string name="err_no_selected_order_action">
+        Please select an action when one (or more) item(s) in your order
+        is/are unavailable.
+    </string>
+    <string name="err_no_selected_payment">Please select your payment method.</string>
+
+    <!--  Google Maps API-related Error Messages  -->
     <string name="err_failed_get_direction">
         There was an error getting the travel duration and distance between
         the market and customer\'s address.
@@ -119,35 +116,70 @@
         There was an error drawing the route between market and customer\'s address.
     </string>
 
-    <!--  Message Prompts  -->
+    <!--  Unknown Form Validation Error Messages  -->
+    <string name="unk_err_person_name">Invalid person name (EditText ID unknown).</string>
+    <string name="unk_err_email">Invalid email address (EditText ID unknown).</string>
+    <string name="unk_err_phone">Invalid phone number (EditText ID unknown).</string>
+    <string name="unk_err_username">Invalid username (EditText ID unknown).</string>
+    <string name="unk_err_password">Invalid password (EditText ID unknown).</string>
+    <string name="unk_err_postal">Invalid postal code (EditText ID unknown).</string>
+    <string name="unk_err_detailed_address">
+        Invalid detailed address (EditText ID unknown).
+    </string>
+    <string name="unk_err_checkbox">
+        Please check all of the required checkboxes (CheckBox ID unknown).
+    </string>
+    <string name="unk_err_radio_group">
+        Please select one option from each radio group (RadioGroup ID unknown).
+    </string>
+    <string name="unk_err_actv_spinner">
+        Please select one item from each auto complete text view spinner
+        (AutoCompleteTextView ID unknown).
+    </string>
+
+    <!--  User-related Message Prompts  -->
     <string name="msg_register_success">Your account is successfully registered.</string>
     <string name="msg_recovery_email_submitted">
         Email sent successfully. Check your email to reset your password.
     </string>
     <string name="msg_logged_out">Logged out successfully.</string>
+    <string name="msg_profile_pic_removed">Your profile picture was removed.</string>
     <string name="msg_user_info_changed">
         Your user profile information was changed successfully.
     </string>
     <string name="msg_no_user_info_changed">
         User profile information not saved. No changes were made.
     </string>
-    <string name="msg_address_saved">Your address was saved successfully.</string>
-    <string name="msg_address_deleted">Your address was deleted successfully.</string>
-    <string name="msg_back_again_to_exit">Press back again to exit.</string>
+    <string name="msg_user_now_vendor">Congratulations! You\'re now a vendor!</string>
     <string name="msg_pwd_change_success">Your password was changed successfully.</string>
     <string name="msg_acc_delete_success">Your account was deleted successfully.</string>
-    <string name="msg_user_now_vendor">Congratulations! You\'re now a vendor!</string>
+
+    <!--  Address-related Message Prompts  -->
+    <string name="msg_address_saved">Your address was saved successfully.</string>
+    <string name="msg_no_address_info_changed">
+        Address information not saved. No changes were made.
+    </string>
+    <string name="msg_address_deleted">Your address was deleted successfully.</string>
+
+    <!--  Market-related Message Prompts  -->
+    <string name="msg_market_saved">
+        Your market information was changed successfully.
+    </string>
+
+    <!--  Product-related Message Prompts  -->
     <string name="msg_product_saved">Your product was saved successfully.</string>
     <string name="msg_product_deleted">Your product was deleted successfully.</string>
     <string name="msg_product_unlisted">Product unlisted successfully.</string>
     <string name="msg_product_relisted">Product relisted in stocks successfully.</string>
     <string name="msg_added_to_cart">Added to cart successfully.</string>
+
+    <!--  Order-related Message Prompts  -->
     <string name="msg_order_placed_success">
         Your order was placed successfully. Thank you for choosing OPAL!
     </string>
-    <string name="msg_market_saved">
-        Your market information was changed successfully.
-    </string>
+
+    <!--  System-related Message Prompts  -->
+    <string name="msg_back_again_to_exit">Press back again to exit.</string>
 
     <!--  Progress Dialog  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
@@ -155,19 +187,53 @@
     <string name="msg_logging_in">Logging in&#8230;</string>
 
     <!--  Alert Dialog  -->
-    <string name="dialog_title_template">Alert Title</string>
-    <string name="dialog_message_template">Alert Message Here&#8230;</string>
     <string name="dialog_log_out_title">Log Out</string>
     <string name="dialog_log_out_message">Are you sure you want to log out?</string>
     <string name="dialog_edit_user_title">Edit User Profile</string>
     <string name="dialog_edit_user_message">
         User profile information has been changed. Do you want to save changes?
     </string>
-    <string name="dialog_yes">Yes</string>
-    <string name="dialog_no">No</string>
-    <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_save">Save</string>
-    <string name="dialog_dont_save">Don\'t Save</string>
+    <string name="dialog_profile_pic_remove_title">Remove Profile Picture</string>
+    <string name="dialog_profile_pic_remove_message">
+        Are you sure you want to remove your profile picture?
+    </string>
+    <string name="dialog_no_place_found_title">No %s found</string>
+    <string name="dialog_no_place_found_message">
+        The %1$s %2$s doesn\'t exist in the dataset. It may be renamed or deleted
+        by the admin. Please select an existing %3$s.
+    </string>
+    <string name="dialog_new_address_title">New Address</string>
+    <string name="dialog_new_address_message">
+        You haven\'t finished filling up the address information. Do you wish to
+        exit the page?
+    </string>
+    <string name="dialog_edit_address_title">Edit Address</string>
+    <string name="dialog_edit_address_message">
+        Address information has been changed. Do you want to save changes?
+    </string>
+    <string name="dialog_delete_address_title">Delete Address</string>
+    <string name="dialog_delete_address_message">
+        Are you sure you want to delete this address? This action cannot be undone.
+    </string>
+    <string name="dialog_delete_account_title">Confirm Account Deletion</string>
+    <string name="dialog_delete_account_message">
+        We\'re sad to see you go. However, this process cannot be undone once
+        you confirm your account deletion. Are you sure you want to delete
+        your account for good?
+    </string>
+
+    <!--  Alert Dialog Buttons  -->
+    <string name="dialog_btn_yes">Yes</string>
+    <string name="dialog_btn_no">No</string>
+    <string name="dialog_btn_cancel">Cancel</string>
+    <string name="dialog_btn_ok">OK</string>
+    <string name="dialog_btn_save">Save</string>
+    <string name="dialog_btn_dont_save">Don\'t Save</string>
+    <string name="dialog_btn_log_out">Log Out</string>
+    <string name="dialog_btn_remove">Remove</string>
+    <string name="dialog_btn_delete">Delete</string>
+    <string name="dialog_btn_exit">Exit</string>
+    <string name="dialog_btn_continue">Continue</string>
 
     <!--  Toolbar Titles  -->
     <string name="tlb_title_user_profile">USER PROFILE</string>
@@ -190,6 +256,35 @@
     <string name="tlb_title_market_details">MARKET DETAILS</string>
     <string name="tlb_title_insights">SALES INSIGHTS</string>
     <string name="tlb_title_select_location">SELECT LOCATION</string>
+
+    <!--  Log In Activity  -->
+    <string name="forgot_password_link">FORGOT PASSWORD?</string>
+    <string name="login_btn">Log In</string>
+    <string name="no_account_lbl">Don\'t have an account?</string>
+    <string name="register_link">REGISTER</string>
+
+    <!--  Register Activity  -->
+    <string name="account_registration">ACCOUNT REGISTRATION</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="email_helper">Examples: abc@gmail.com , opal@ccc.edu.ph</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="agree_to_lbl">I agree to the</string>
+    <string name="terms_and_conditions_link">TERMS &amp; CONDITIONS</string>
+    <string name="register_btn">Register</string>
+    <string name="have_account_lbl">Already have an account?</string>
+    <string name="login_link">LOG IN</string>
+
+    <!--  Strings for Forgot Password  -->
+    <string name="forgot_password_header">FORGOT PASSWORD</string>
+    <string name="forgot_password_desc">
+        Please enter your email address in the text field provided below.
+        We\'ll send you an email to reset your password.
+    </string>
+    <string name="submit">Submit</string>
 
     <!--  Top App Bar  -->
     <string name="my_cart">My Cart</string>
@@ -224,7 +319,6 @@
 
     <!--  Bottom Navigation  -->
     <string name="home">Home</string>
-    <string name="markets">Markets</string>
     <string name="categories">Categories</string>
     <string name="notifications">Notifications</string>
 
@@ -264,6 +358,8 @@
 
     <!--  User Profile  -->
     <string name="user_profile_photo_cd">User Profile Picture</string>
+    <string name="delete_profile_photo_lbl">Long press to remove</string>
+    <string name="phone_number_helper">Format: 09XXXXXXXXX or +639XXXXXXXXX</string>
     <string name="phone_number">Phone Number</string>
     <string name="gender_male">MALE</string>
     <string name="gender_female">FEMALE</string>
@@ -295,7 +391,7 @@
 
     <!--  Address Menu  -->
     <string name="add_new_address">Add New Address</string>
-    <string name="addr_person_name">Person/Business Name</string>
+    <string name="addr_person_name">Person Name</string>
     <string name="addr_phone_number">09XXXXXXXXX/+639XXXXXXXXX</string>
     <string name="addr_line_1">Detailed Address</string>
     <string name="addr_line_2">%1$s, %2$s, %3$s %4$d</string>
@@ -546,7 +642,7 @@
     <string name="order_date">Order Date</string>
     <string name="order_items">Order Items</string>
     <string name="empty_order_items">
-        No items found. A retrieval error might be the cause of this problem.
+        <i>No items found. A retrieval error might be the cause of this problem.</i>
     </string>
     <string name="order_item_qty_default">Total (n items):</string>
     <string name="order_status_icon">Order Status Icon</string>

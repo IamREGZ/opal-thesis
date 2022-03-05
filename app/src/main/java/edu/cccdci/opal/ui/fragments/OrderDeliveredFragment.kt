@@ -13,9 +13,7 @@ import edu.cccdci.opal.dataclasses.Order
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 
-class OrderDeliveredFragment(
-    private val isVendor: Boolean
-) : Fragment() {
+class OrderDeliveredFragment(private val isVendor: Boolean) : Fragment() {
 
     private lateinit var binding: FragmentOrderDeliveredBinding
     private var orderSalesAdapter: OrderSalesAdapter? = null
@@ -48,7 +46,7 @@ class OrderDeliveredFragment(
                 this@OrderDeliveredFragment, requireContext(), isVendor,
                 options
             )
-            // Sets the adapter of Order/Sales History (Completed) RecyclerView
+            // Sets the adapter of Order/Sales History (Delivered) RecyclerView
             rvOrderCompleted.adapter = orderSalesAdapter
 
             return root

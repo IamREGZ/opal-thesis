@@ -11,9 +11,11 @@ import edu.cccdci.opal.ui.fragments.MarketsFragment
 import edu.cccdci.opal.ui.fragments.OrderDetailsFragment
 import java.io.IOException
 
+/**
+ * A class for loading images using Glide Framework.
+ */
 class GlideLoader(
-    private val context: Context,
-    private val fragment: Fragment? = null
+    private val context: Context, private val fragment: Fragment? = null
 ) {
 
     // Function to load the image using Glide
@@ -48,6 +50,7 @@ class GlideLoader(
                 // Market Placeholder
                 is MarketEditorActivity,
                 is MarketNavActivity,
+                is MarketPageActivity,
                 is MyMarketActivity -> R.drawable.ic_market_placeholder
 
                 // Default Blank Image
@@ -70,7 +73,8 @@ class GlideLoader(
         } catch (e: IOException) {
             // Log the error if loading the image fails
             e.printStackTrace()
-        }
+        }  // end of try-catch
+
     }  // end of loadImage method
 
 }  // end of GlideLoader class

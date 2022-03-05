@@ -9,9 +9,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -26,11 +28,13 @@ import edu.cccdci.opal.dataclasses.CurrentLocation
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.DialogClass
 import edu.cccdci.opal.utils.GlideLoader
 import edu.cccdci.opal.utils.UtilityClass
 
 class MainActivity : UtilityClass(),
     NavigationView.OnNavigationItemSelectedListener,
+    NavController.OnDestinationChangedListener,
     View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
@@ -43,9 +47,18 @@ class MainActivity : UtilityClass(),
     private var mCurLocJson: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        // Creates the Shared Preferences
+        mSharedPrefs = getSharedPreferences(
+            Constants.OPAL_PREFERENCES, Context.MODE_PRIVATE
+        )
+        // Create the editor for Shared Preferences
+        mSPEditor = mSharedPrefs.edit()
 
         with(binding) {
             setContentView(root)
@@ -78,26 +91,22 @@ class MainActivity : UtilityClass(),
             // Add functionality to the sidebar
             nvSidebar.setNavigationItemSelectedListener(this@MainActivity)
 
+//            // Toggle bottom navigation visibility
+//            mNavController.addOnDestinationChangedListener { _, destination, _ ->
+//                /* Bottom nav is visible for home, markets, categories,
+//                 * and notifications fragments
+//                 */
+//                when (destination.id) {
+//                    R.id.fragment_home,
+//                    R.id.fragment_categories,
+//                    R.id.fragment_notifs -> bottomNavView.visibility = View.VISIBLE
+//
+//                    else -> bottomNavView.visibility = View.GONE
+//                }
+//            }  // end of addOnDestinationChangedListener
+
             // Toggle bottom navigation visibility
-            mNavController.addOnDestinationChangedListener { _, destination, _ ->
-                /* Bottom nav is visible for home, markets, categories,
-                 * and notifications fragments
-                 */
-                when (destination.id) {
-                    R.id.fragment_home,
-                    R.id.fragment_categories,
-                    R.id.fragment_notifs -> bottomNavView.visibility = View.VISIBLE
-
-                    else -> binding.bottomNavView.visibility = View.GONE
-                }
-            }  // end of addOnDestinationChangedListener
-
-            // Creates the Shared Preferences
-            mSharedPrefs = getSharedPreferences(
-                Constants.OPAL_PREFERENCES, Context.MODE_PRIVATE
-            )
-            // Create the editor for Shared Preferences
-            mSPEditor = mSharedPrefs.edit()
+            mNavController.addOnDestinationChangedListener(this@MainActivity)
 
         }  // end of with(binding)
 
@@ -150,6 +159,7 @@ class MainActivity : UtilityClass(),
 
     }  // end of onClick method
 
+    // Overriding function to create functionality for Up button (from Top Action Bar)
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(mNavController, mAppBarConfiguration)
     }  // end of onSupportNavigateUp method
@@ -169,11 +179,15 @@ class MainActivity : UtilityClass(),
             R.id.nav_settings -> navigateFragment(R.id.home_to_settings)
 
             // Logs the user out
-            R.id.nav_log_out -> showAlertDialog(
-                this@MainActivity,
-                resources.getString(R.string.dialog_log_out_title),
-                resources.getString(R.string.dialog_log_out_message)
-            )
+            R.id.nav_log_out -> {
+                // Display an alert dialog with two action buttons (Log Out & Cancel)
+                DialogClass(this@MainActivity).alertDialog(
+                    getString(R.string.dialog_log_out_title),
+                    getString(R.string.dialog_log_out_message),
+                    getString(R.string.dialog_btn_log_out),
+                    getString(R.string.dialog_btn_cancel)
+                )
+            }
 
             // Sends user to About Us Page
             R.id.nav_about_us -> navigateFragment(R.id.home_to_about)
@@ -228,6 +242,20 @@ class MainActivity : UtilityClass(),
 
         return true
     }  // end of onNavigationItemSelected method
+
+    // Overriding function to trigger events when the fragment was changed
+    override fun onDestinationChanged(
+        controller: NavController, destination: NavDestination, arguments: Bundle?
+    ) {
+        // Bottom navigation is visible for home, categories, notifications fragments
+        binding.bottomNavView.visibility = when (destination.id) {
+            R.id.fragment_home,
+            R.id.fragment_categories,
+            R.id.fragment_notifs -> View.VISIBLE
+
+            else -> View.GONE
+        }  // end of when
+    }  // end of onDestinationChanged method
 
     // Function to navigate from source fragment to destination fragment
     private fun navigateFragment(resId: Int) {
@@ -314,8 +342,8 @@ class MainActivity : UtilityClass(),
         }
     }  // end of hideBasedOnUserRole method
 
-    // Function to sign out the user
-    fun signOutUser() {
+    // Function to log out the user
+    fun logOutUser() {
         mCurLocJson = mSharedPrefs.getString(
             Constants.CURRENT_LOCATION, ""
         )!!
@@ -336,7 +364,7 @@ class MainActivity : UtilityClass(),
         } else {
             userSavedPrompt()
         }
-    }  // end of signOutUser method
+    }  // end of logOutUser method
 
     fun userSavedPrompt() {
         if (mCurLocJson.isNotEmpty()) {
@@ -347,7 +375,7 @@ class MainActivity : UtilityClass(),
             mSPEditor.putString(Constants.CURRENT_ADDRESS_DETAILS, "").apply()
         }
 
-        // Sign out the current Firebase Authentication
+        // Log out the current Firebase Authentication
         FirebaseAuth.getInstance().signOut()
 
         // Create an Intent to launch LoginActivity
@@ -363,6 +391,6 @@ class MainActivity : UtilityClass(),
 
         startActivity(intent)  // Opens the log in activity
         finish()  // Closes the current activity
-    }
+    }  // end of userSavedPrompt method
 
 }  // end of MainActivity class

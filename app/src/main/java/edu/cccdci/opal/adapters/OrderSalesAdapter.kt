@@ -170,7 +170,6 @@ class OrderSalesAdapter(
             else {
                 Constants.MDY_HM12_DATE_FORMAT
             }
-
         }  // end of getOrderDateText method
 
         // Function to convert the list of order items into String sequence
@@ -189,25 +188,25 @@ class OrderSalesAdapter(
             }  // end of for
 
             // Return the final output of sequence
-            return if (itemSequence.isNotEmpty())
-                itemSequence
-            else
+            return itemSequence.ifEmpty {
                 context.resources.getString(R.string.empty_order_items)
+            }
         }  // end of getOrderListSequence method
 
         // Function to send user to Order Details Page
         private fun goToOrderDetails(order: Order) {
             // Create a bundle object to store the order object
-            val bundle = Bundle()
-            // Stores the parcelable class
-            bundle.putParcelable(Constants.ORDER_DETAILS, order)
-            // Stores the boolean value (for changes in Order Details layout)
-            bundle.putBoolean(Constants.IS_VENDOR, isVendor)
+            Bundle().run {
+                // Stores the parcelable class
+                putParcelable(Constants.ORDER_DETAILS, order)
+                // Stores the boolean value (for changes in Order Details layout)
+                putBoolean(Constants.IS_VENDOR, isVendor)
 
-            // Send user to Order Details Fragment with the bundle object
-            fragment.findNavController().navigate(
-                R.id.order_to_order_details, bundle
-            )
+                // Send user to Order Details Fragment with the bundle object
+                fragment.findNavController().navigate(
+                    R.id.order_to_order_details, this
+                )
+            }
         }  // end of goToOrderDetails method
 
     }  // end of OrderSalesViewHolder class
@@ -218,7 +217,7 @@ class OrderSalesAdapter(
     ): OrderSalesViewHolder {
         return OrderSalesViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.order_card, parent, false
+                R.layout.item_order_card, parent, false
             )
         )
     }  // end of onCreateViewHolder method
