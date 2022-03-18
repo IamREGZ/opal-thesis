@@ -54,8 +54,8 @@
 
                 <ImageView
                     android:id="@+id/iv_od_det_status_icon"
-                    android:layout_width="@dimen/large_icon_size"
-                    android:layout_height="@dimen/large_icon_size"
+                    android:layout_width="@dimen/xl_icon_size"
+                    android:layout_height="@dimen/xl_icon_size"
                     android:contentDescription="@string/od_det_status_icon"
                     app:tint="@color/app_white" />
 

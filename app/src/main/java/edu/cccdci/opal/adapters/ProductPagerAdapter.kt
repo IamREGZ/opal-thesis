@@ -10,7 +10,8 @@ import edu.cccdci.opal.ui.fragments.ProductViolationFragment
 
 class ProductPagerAdapter(
     fragmentActivity: FragmentActivity,
-    private val productTabsCount: Int
+    private val productTabsCount: Int,
+    private val marketID: String
 ): FragmentStateAdapter(fragmentActivity) {
 
     // Function to get the number of items in the tab layout
@@ -19,10 +20,10 @@ class ProductPagerAdapter(
     // Function to create fragments based on the current position
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            0 -> ProductInStockFragment()  // In Stock Products
-            1 -> ProductSoldOutFragment()  // Sold Out Products
-            2 -> ProductViolationFragment()  // Violation Products
-            3 -> ProductUnlistedFragment()  // Unlisted Products
+            0 -> ProductInStockFragment(marketID)  // In Stock Products
+            1 -> ProductSoldOutFragment(marketID)  // Sold Out Products
+            2 -> ProductViolationFragment(marketID)  // Violation Products
+            3 -> ProductUnlistedFragment(marketID)  // Unlisted Products
             else -> Fragment()  // Default
         }
     }  // end of createFragment method

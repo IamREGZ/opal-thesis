@@ -2,6 +2,7 @@ package edu.cccdci.opal.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.tabs.TabLayoutMediator
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.ProductPagerAdapter
@@ -16,8 +17,10 @@ class ProductActivity : UtilityClass() {
     private var mMarketID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         binding = ActivityProductBinding.inflate(layoutInflater)
 
         with(binding) {
@@ -36,7 +39,7 @@ class ProductActivity : UtilityClass() {
 
             // Create an object of Product Pager Adapter
             mProductPager = ProductPagerAdapter(
-                this@ProductActivity, productTitles.size
+                this@ProductActivity, productTitles.size, mMarketID!!
             )
             // Set the adapter of Product List ViewPager2
             vpProductList.adapter = mProductPager
@@ -48,15 +51,15 @@ class ProductActivity : UtilityClass() {
 
             // Actions taken when the Add New Product button is clicked
             btnAddProduct.setOnClickListener {
-                val intent = Intent(
-                    this@ProductActivity,
-                    ProductEditorActivity::class.java
-                )
+                Intent(
+                    this@ProductActivity, ProductEditorActivity::class.java
+                ).run {
+                    // Add market ID data to intent
+                    putExtra(Constants.MARKET_ID_DATA, mMarketID ?: "")
 
-                intent.putExtra(Constants.MARKET_ID_DATA, mMarketID ?: "")
-
-                // Go to Product Editor Activity
-                startActivity(intent)
+                    // Go to Product Editor Activity
+                    startActivity(this)
+                }
             }
 
         }  // end of with(binding)

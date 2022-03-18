@@ -30,7 +30,7 @@ class AddressAdapter(
     // Nested Class to hold views from the target layout
     inner class AddressViewHolder(
         itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {  // end of AddressViewHolder class
+    ) : RecyclerView.ViewHolder(itemView) {
         // Get all the ids of views from address item layout
         private val addrFullName: TextView = itemView
             .findViewById(R.id.tv_addr_full_name)

@@ -3,10 +3,13 @@ package edu.cccdci.opal.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
+import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.*
+import androidx.core.text.isDigitsOnly
 import edu.cccdci.opal.R
+import edu.cccdci.opal.ui.activities.*
 
 /**
  * A class for validating form fields in different activities/fragments.
@@ -15,10 +18,20 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
 
     private lateinit var message: String  // Stores message for SnackBar
 
-    // Function to validate edit text fields for person's name
-    internal fun validatePersonName(editText: EditText): Boolean {
+    // Function to validate edit text fields for names (person, market & product)
+    internal fun validateName(editText: EditText): Boolean {
+        // Valid character count, depending on activity origin
+        val validRange = when (activity) {
+            is RegisterActivity,
+            is UserProfileActivity -> 2..30
+            is AddressEditActivity -> 3..60
+            is MarketEditorActivity -> 5..50
+            is ProductEditorActivity -> 4..50
+            else -> 0..0
+        }
+
         return when {
-            // Person's name must not be empty
+            // Name must not be empty
             editText.text.isEmpty() -> {
                 // Display an error message
                 message = when (editText.id) {
@@ -32,15 +45,30 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
                     R.id.et_profile_last_name -> activity
                         .getString(R.string.err_blank_last_name)
 
+                    // Full Name from Address Editor Activity
+                    R.id.et_addr_full_name -> activity
+                        .getString(R.string.err_blank_full_name)
+
+                    // Market Name from Market Editor Activity
+                    R.id.et_mkt_edit_name -> activity
+                        .getString(R.string.err_blank_market_name)
+                    // Parent Wet Market from Market Editor Activity
+                    R.id.et_mkt_edit_wet_mkt -> activity
+                        .getString(R.string.err_blank_wet_market)
+
+                    // Product Name from Product Editor Activity
+                    R.id.et_prod_edit_name -> activity
+                        .getString(R.string.err_blank_product_name)
+
                     // Default error message
-                    else -> activity.getString(R.string.unk_err_person_name)
+                    else -> activity.getString(R.string.unk_err_name)
                 }.also { showSnackBar(activity, it, true) }
 
                 false  // Return false
             }
 
-            // Person's name length must be 2 to 30 characters long
-            editText.text.length !in 2..30 -> {
+            // Name length must be within valid range, depending on the activity
+            editText.text.length !in validRange -> {
                 // Display an error message
                 message = when (editText.id) {
                     // First Name from Register & User Profile Editor Activity
@@ -53,8 +81,23 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
                     R.id.et_profile_last_name -> activity
                         .getString(R.string.err_last_name_length)
 
+                    // Full Name from Address Editor Activity
+                    R.id.et_addr_full_name -> activity
+                        .getString(R.string.err_full_name_length)
+
+                    // Market Name from Market Editor Activity
+                    R.id.et_mkt_edit_name -> activity
+                        .getString(R.string.err_market_name_length)
+                    // Parent Wet Market from Market Editor Activity
+                    R.id.et_mkt_edit_wet_mkt -> activity
+                        .getString(R.string.err_wet_market_length)
+
+                    // Product Name from Product Editor Activity
+                    R.id.et_prod_edit_name -> activity
+                        .getString(R.string.err_product_name_length)
+
                     // Default error message
-                    else -> activity.getString(R.string.unk_err_person_name)
+                    else -> activity.getString(R.string.unk_err_name)
                 }.also { showSnackBar(activity, it, true) }
 
                 false  // Return false
@@ -63,33 +106,65 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
             else -> true  // All conditions are valid
         }  // end of when
 
-    }  // end of validatePersonName method
+    }  // end of validateName method
 
-    // Function to validate edit text fields for full person's name
-    internal fun validateFullName(editText: EditText): Boolean {
+    // Function to validate edit text fields for long texts (Text Areas)
+    internal fun validateLongTexts(editText: EditText): Boolean {
+        // Valid character count, depending on activity origin
+        val validRange = when (activity) {
+            is AddressEditActivity,
+            is MarketEditorActivity -> 10..100
+            is ProductEditorActivity -> 10..400
+            else -> 0..0
+        }
+
         return when {
-            // Full person's name must not be empty
+            // Long text must not be empty
             editText.text.isEmpty() -> {
                 // Display an error message
-                message = activity.getString(R.string.err_blank_full_name)
-                    .also { showSnackBar(activity, it, true) }
+                message = when (editText.id) {
+                    // Detailed Address from Address Edit Activity
+                    R.id.et_addr_details -> activity.getString(R.string.err_blank_detailed)
+
+                    // Detailed Address from Market Editor Activity
+                    R.id.et_mkt_edit_details -> activity
+                        .getString(R.string.err_blank_mkt_detailed)
+
+                    // Product Description from Product Editor Activity
+                    R.id.et_prod_edit_desc -> activity
+                        .getString(R.string.err_blank_product_desc)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_long_text)
+                }.also { showSnackBar(activity, it, true) }
 
                 false  // Return false
             }
 
-            // Full person's name length must be 3 to 60 characters long
-            editText.text.length !in 3..60 -> {
+            // Long text must be 10 to 100 characters long
+            editText.text.length !in validRange -> {
                 // Display an error message
-                message = activity.getString(R.string.err_full_name_length)
-                    .also { showSnackBar(activity, it, true) }
+                message = when (editText.id) {
+                    // Detailed Address from Address Edit or Market Editor Activity
+                    R.id.et_addr_details,
+                    R.id.et_mkt_edit_details -> activity
+                        .getString(R.string.err_detailed_length)
+
+                    // Product Description from Product Editor Activity
+                    R.id.et_prod_edit_desc -> activity
+                        .getString(R.string.err_product_desc_length)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_long_text)
+                }.also { showSnackBar(activity, it, true) }
 
                 false  // Return false
             }
 
-            else -> true // All conditions are valid
+            else -> true  // All conditions are valid
         }  // end of when
 
-    }  // end of validateFullName method
+    }  // end of validateLongTexts method
 
     // Function to validate edit text fields for email address
     internal fun validateEmail(editText: EditText): Boolean {
@@ -379,9 +454,22 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
                     // Postal code from Address Edit Activity
                     R.id.et_addr_postal -> activity.getString(R.string.err_blank_postal)
 
+                    // Postal code from Market Editor Activity
+                    R.id.et_mkt_edit_postal -> activity
+                        .getString(R.string.err_blank_mkt_postal)
+
                     // Default error message
                     else -> activity.getString(R.string.unk_err_postal)
                 }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            // Postal code must contain only digits
+            !editText.text.isDigitsOnly() -> {
+                // Display an error message
+                message = activity.getString(R.string.err_postal_format)
+                    .also { showSnackBar(activity, it, true) }
 
                 false  // Return false
             }
@@ -400,37 +488,6 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
 
     }  // end of validatePostalCode method
 
-    // Function to validate edit text fields for detailed address
-    internal fun validateDetailedAddress(editText: EditText): Boolean {
-        return when {
-            // Detailed address must not be empty
-            editText.text.isEmpty() -> {
-                // Display an error message
-                message = when (editText.id) {
-                    // Detailed address from Address Edit Activity
-                    R.id.et_addr_details -> activity.getString(R.string.err_blank_detailed)
-
-                    // Default error message
-                    else -> activity.getString(R.string.unk_err_detailed_address)
-                }.also { showSnackBar(activity, it, true) }
-
-                false  // Return false
-            }
-
-            // Detailed address must be 10 to 100 characters long
-            editText.text.length !in 10..100 -> {
-                // Display an error message
-                message = activity.getString(R.string.err_detailed_length)
-                    .also { showSnackBar(activity, it, true) }
-
-                false  // Return false
-            }
-
-            else -> true  // All conditions are valid
-        }  // end of when
-
-    }  // end of validateDetailedAddress method
-
     // Function to display an error message if the required checkbox is not checked
     internal fun requiredCheckbox(checkBox: CheckBox): Boolean {
         return if (!checkBox.isChecked) {
@@ -438,6 +495,10 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
                 // Account Registration T&C Checkbox
                 R.id.cb_terms_and_conditions -> activity
                     .getString(R.string.err_unchecked_tac)
+
+                // Vendor Registration T&C Checkbox
+                R.id.cb_vendor_t_and_c -> activity
+                    .getString(R.string.err_unchecked_vendor_tac)
 
                 // Default error message
                 else -> activity.getString(R.string.unk_err_checkbox)
@@ -475,12 +536,29 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
             message = when (actv.id) {
                 // Province from Address Edit Activity
                 R.id.actv_addr_province -> activity.getString(R.string.err_blank_province)
+                // Province from Market Editor Activity
+                R.id.actv_mkt_edit_province -> activity
+                    .getString(R.string.err_blank_mkt_province)
 
                 // City/Municipality from Address Edit Activity
                 R.id.actv_addr_ctm -> activity.getString(R.string.err_blank_city)
+                // City/Municipality from Market Editor Activity
+                R.id.actv_mkt_edit_ctm -> activity
+                    .getString(R.string.err_blank_mkt_city)
 
                 // Barangay from Address Edit Activity
                 R.id.actv_addr_brgy -> activity.getString(R.string.err_blank_brgy)
+                // Barangay from Market Editor Activity
+                R.id.actv_mkt_edit_brgy -> activity
+                    .getString(R.string.err_blank_mkt_brgy)
+
+                // Market Category from Market Editor Activity
+                R.id.actv_mkt_edit_category -> activity
+                    .getString(R.string.err_no_mkt_category_selected)
+
+                // Product Unit from Product Editor Activity
+                R.id.actv_prod_edit_unit -> activity
+                    .getString(R.string.err_no_unit_selected)
 
                 // Default error message
                 else -> activity.getString(R.string.unk_err_actv_spinner)
@@ -492,5 +570,197 @@ class FormValidation(private val activity: Activity) : UtilityClass() {
         }  // end of if-else
 
     }  // end of checkSpinnerSelection method
+
+    // Function to validate edit text fields for specifying other answers
+    internal fun validateSpecifyOthers(editText: EditText): Boolean {
+        // Valid character count, depending on activity origin
+        val validRange: IntRange = when (activity) {
+            is MarketEditorActivity -> 4..20
+            is ProductEditorActivity -> 2..15
+            else -> 0..0
+        }
+
+        return when {
+            // Specific category must not be empty
+            editText.text.isEmpty() -> {
+                // Display an error message
+                message = when (editText.id) {
+                    // Specify Category from Market Editor Activity
+                    R.id.et_mkt_edit_other_spec -> activity
+                        .getString(R.string.err_blank_custom_category)
+
+                    // Custom Unit from Product Editor Activity
+                    R.id.et_prod_edit_custom_unit -> activity
+                        .getString(R.string.err_blank_custom_unit)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_specific_other)
+                }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            // Specific category must be within valid range, depending on the activity
+            editText.text.length !in validRange -> {
+                // Display an error message
+                message = when (editText.id) {
+                    // Specify Category from Market Editor Activity (4-20)
+                    R.id.et_mkt_edit_other_spec -> activity
+                        .getString(R.string.err_custom_category_length)
+
+                    // Custom Unit from Product Editor Activity (2-15)
+                    R.id.et_prod_edit_custom_unit -> activity
+                        .getString(R.string.err_custom_unit_length)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_specific_other)
+                }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            else -> true  // All fields are valid
+        }  // end of when
+
+    }  // end of validateSpecifyOthers
+
+    // Function to check if numeric text field is greater than 0
+    internal fun isGreaterThanZero(editText: EditText): Boolean {
+        return when {
+            // Numeric text field must not be empty
+            editText.text.isEmpty() -> {
+                // Display an error message
+                message = when (editText.id) {
+                    // Product Price from Product Editor Activity
+                    R.id.et_prod_edit_price -> activity
+                        .getString(R.string.err_blank_product_price)
+
+                    // Product Weight from Product Editor Activity
+                    R.id.et_prod_edit_weight -> activity
+                        .getString(R.string.err_blank_product_weight)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_numeric_text)
+                }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            // Make sure text field contains only numeric values (e.g., 3, 2.5, 0.75, etc.)
+            !Constants.isNumeric(editText.text.toString().trim { it <= ' ' }) -> {
+                // Display an error message
+                message = when (editText.id) {
+                    // Product Price from Product Editor Activity
+                    R.id.et_prod_edit_price -> activity
+                        .getString(R.string.err_product_price_format)
+
+                    // Product Weight from Product Editor Activity
+                    R.id.et_prod_edit_weight -> activity
+                        .getString(R.string.err_product_weight_format)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_numeric_text)
+                }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            // Numeric text field must be greater than 0
+            editText.text.toString().trim { it <= ' ' }.toDouble() <= 0 -> {
+                // Display an error message
+                message = when (editText.id) {
+                    // Product Price from Product Editor Activity
+                    R.id.et_prod_edit_price -> activity
+                        .getString(R.string.err_zero_or_negative_price)
+
+                    // Product Weight from Product Editor Activity
+                    R.id.et_prod_edit_weight -> activity
+                        .getString(R.string.err_zero_or_negative_weight)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_numeric_text)
+                }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            else -> true  // All fields are valid
+        }  // end of when
+
+    }  // end of isGreaterThanZero method
+
+    // Function to check if numeric text field is a non-negative number
+    internal fun isNonNegativeNumber(editText: EditText): Boolean {
+        return when {
+            // Numeric text field must not be empty
+            editText.text.isEmpty() -> {
+                // Display an error message
+                message = when (editText.id) {
+                    // Product Stock from Product Editor Activity
+                    R.id.et_prod_edit_stock -> activity
+                        .getString(R.string.err_blank_product_stock)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_numeric_text)
+                }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            // Make sure text field contains only numeric values (e.g., 3, 2.5, 0.75, etc.)
+            !Constants.isNumeric(editText.text.toString().trim { it <= ' ' }) -> {
+                // Display an error message
+                message = when (editText.id) {
+                    // Product Stock from Product Editor Activity
+                    R.id.et_prod_edit_stock -> activity
+                        .getString(R.string.err_product_stock_format)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_numeric_text)
+                }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            // Numeric text field must be greater than or equal to 0 (non-negative number)
+            editText.text.toString().trim { it <= ' ' }.toDouble() < 0 -> {
+                // Display an error message
+                message = when (editText.id) {
+                    // Product Stock from Product Editor Activity
+                    R.id.et_prod_edit_stock -> activity
+                        .getString(R.string.err_negative_stock)
+
+                    // Default error message
+                    else -> activity.getString(R.string.unk_err_numeric_text)
+                }.also { showSnackBar(activity, it, true) }
+
+                false  // Return false
+            }
+
+            else -> true  // All fields are valid
+        }  // end of when
+
+    }  // end of isNonNegativeNumber method
+
+    // Function to display an error message if no image was selected
+    internal fun requiredImage(
+        src: ImageView, imageURI: Uri?, tempImageURL: String
+    ): Boolean {
+        return if (imageURI == null && tempImageURL.isEmpty()) {
+            message = when (src.id) {
+                // Product Image from Product Editor Activity
+                R.id.iv_product_image -> activity
+                    .getString(R.string.err_no_product_image_selected)
+
+                // Default error message
+                else -> activity
+                    .getString(R.string.unk_err_image)
+            }.also { showSnackBar(activity, it, true) }
+
+            false  // Return false
+        } else {
+            true  // Valid
+        }
+    }  // end of requiredImage method
 
 }  // end of FormValidation class

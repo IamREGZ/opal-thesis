@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     android:orientation="vertical"
     tools:context=".ui.activities.MyMarketDetailsActivity">
 
@@ -29,8 +30,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/medium_large_mrg_pd"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="@dimen/medium_large_mrg_pd">
 
         <edu.cccdci.opal.utils.HeaderTextView
             android:id="@+id/tv_mkt_det_name"
@@ -96,7 +97,7 @@
                 android:id="@+id/tv_mkt_det_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/market_address"
+                android:text="@string/market_address_detailed"
                 android:textColor="@color/app_black"
                 android:textSize="@dimen/main_text_size" />
 

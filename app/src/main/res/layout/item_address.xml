@@ -6,10 +6,13 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/medium_mrg_pd"
     android:layout_marginBottom="@dimen/medium_mrg_pd"
+    android:background="@color/white"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:paddingStart="@dimen/medium_large_mrg_pd"
-    android:paddingEnd="@dimen/medium_large_mrg_pd">
+    android:paddingTop="@dimen/small_mrg_pd"
+    android:paddingEnd="@dimen/medium_large_mrg_pd"
+    android:paddingBottom="@dimen/small_mrg_pd">
 
     <LinearLayout
         android:layout_width="match_parent"

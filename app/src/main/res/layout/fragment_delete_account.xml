@@ -14,7 +14,8 @@
         android:layout_height="@dimen/warning_icon_size"
         android:layout_gravity="center"
         android:contentDescription="@string/del_acc_warning_head"
-        android:src="@drawable/ic_warning" />
+        android:src="@drawable/ic_warning"
+        app:tint="@color/colorErrorMessage" />
 
     <edu.cccdci.opal.utils.HeaderTextView
         android:layout_width="wrap_content"

@@ -8,5 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class CartItem(
     val prodID: String = "",
     var prodQTY: Int = 1,
-    var prodPrice: Double = 0.0
+    var prodPrice: Double = 0.0,
+    var prodWeight: Double = 0.0,
+    var selected: Boolean = false
 ) : Parcelable

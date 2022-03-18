@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -13,7 +14,7 @@ import edu.cccdci.opal.dataclasses.Product
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 
-class ProductUnlistedFragment : Fragment() {
+class ProductUnlistedFragment(private val marketID: String) : Fragment() {
 
     private lateinit var binding: FragmentProductUnlistedBinding
     private var productInvAdapter: ProductInventoryAdapter? = null
@@ -22,6 +23,9 @@ class ProductUnlistedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         // Inflate the layout for this fragment
         binding = FragmentProductUnlistedBinding.inflate(inflater)
 
@@ -29,7 +33,9 @@ class ProductUnlistedFragment : Fragment() {
         val options = FirestoreRecyclerOptions.Builder<Product>()
             // Gets all the documents from products collection
             .setQuery(
-                FirestoreClass().getProductQuery(this@ProductUnlistedFragment),
+                FirestoreClass().getProductQuery(
+                    this@ProductUnlistedFragment, marketID = marketID
+                ),
                 Product::class.java
             ).build()
 

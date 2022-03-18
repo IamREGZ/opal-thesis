@@ -1,8 +1,11 @@
 package edu.cccdci.opal.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.CartAdapter
@@ -10,7 +13,9 @@ import edu.cccdci.opal.databinding.ActivityCartBinding
 import edu.cccdci.opal.dataclasses.Market
 import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.firestore.FirestoreClass
+import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.DialogClass
 import edu.cccdci.opal.utils.UtilityClass
 
 class CartActivity : UtilityClass(), View.OnClickListener {
@@ -19,13 +24,12 @@ class CartActivity : UtilityClass(), View.OnClickListener {
     private lateinit var cartAdapter: CartAdapter
     private var mUserInfo: User? = null
     private var mMarket: Market? = null
-    private var mSubtotal: Double = 0.0
-    private var mDelivery: Double = 0.0
-    private var mTotal: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         binding = ActivityCartBinding.inflate(layoutInflater)
 
         with(binding) {
@@ -48,20 +52,27 @@ class CartActivity : UtilityClass(), View.OnClickListener {
                     // Display the loading message
                     showProgressDialog(
                         this@CartActivity, this@CartActivity,
-                        resources.getString(R.string.msg_please_wait)
+                        getString(R.string.msg_please_wait)
                     )
 
                     // Retrieve the market information from Firestore
                     FirestoreClass().retrieveMarket(
                         this@CartActivity, mUserInfo!!.cart!!.marketID
                     )
-                }  // end of if
+                } else {
+                    // Make the empty cart layout visible
+                    llEmptyCart.visibility = View.VISIBLE
+                }
             }  // end of if
 
             // Click event for Checkout Button
             btnCheckout.setOnClickListener(this@CartActivity)
             // Click event for Continue Browsing Button
             btnContBrowse.setOnClickListener(this@CartActivity)
+            // Click event for Delete All Cart Items ImageView
+            ivCartDeleteAll.setOnClickListener(this@CartActivity)
+            // Click event for Select All Cart Items CheckBox
+            cbCartSelectAll.setOnClickListener(this@CartActivity)
         }  // end of with(binding)
 
     }  // end of onCreate method
@@ -69,7 +80,6 @@ class CartActivity : UtilityClass(), View.OnClickListener {
     // Operations to do when the user presses back to exit the activity
     override fun onBackPressed() {
         super.onBackPressed()
-
         updateCart()  // Update the cart items before exiting
     }  // end of onBackPressed method
 
@@ -84,93 +94,125 @@ class CartActivity : UtilityClass(), View.OnClickListener {
                     // Check if mUserInfo and its cart property are not null
                     if (mUserInfo != null && mUserInfo!!.cart != null) {
                         // Create an intent to go to Checkout Activity
-                        val intent = Intent(
+                        Intent(
                             this@CartActivity, CheckoutActivity::class.java
-                        )
-                        // Add the required information to intent
-                        intent.putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
-                        intent.putExtra(Constants.MARKET_INFO, mMarket)
-                        intent.putExtra(
-                            Constants.CART_PRODUCT_DETAILS,
-                            cartAdapter.getProductDetails()
-                        )
+                        ).apply {
+                            // Add the required information to intent
+                            putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
+                            putExtra(Constants.MARKET_INFO, mMarket)
+                            putExtra(
+                                Constants.CART_PRODUCT_DETAILS,
+                                cartAdapter.getProductDetails()
+                            )
 
-                        startActivity(intent)  // Opens the activity
+                            startActivity(this)  // Opens the activity
+                        }  // end of run
                     }  // end of if
                 }
 
                 // Sends user back to the previous activity
                 R.id.btn_cont_browse -> finish()
-            }  // end of when
 
+                // Remove all selected items from the cart
+                R.id.iv_cart_delete_all -> DialogClass(
+                    this@CartActivity, mAdapter = cartAdapter
+                ).alertDialog(
+                    getString(R.string.dialog_remove_selected_items_title),
+                    getString(R.string.dialog_remove_selected_items_message),
+                    getString(R.string.dialog_btn_remove),
+                    getString(R.string.dialog_btn_cancel)
+                )
+
+                // Selects all items from the cart
+                R.id.cb_cart_select_all -> cartAdapter.toggleAllSelection(
+                    binding.cbCartSelectAll.isChecked
+                )
+            }  // end of when
         }  // end of if
 
     }  // end of onClick method
 
     // Function to store market name and its delivery fee in the market activity
-    fun setMarketData(market: Market?) {
+    internal fun setMarketData(market: Market?) {
         // Prevents NullPointerException
         if (market != null) {
             mMarket = market  // Store the object for parcelable
-
             // Change the market name text view
             binding.tvCartMarketName.text = mMarket!!.name
         }
 
-        // Store the delivery fee value. Default is 0.0 if mMarket is null.
-        mDelivery = if (mMarket != null) mMarket!!.deliveryFee else 0.0
-
-        // Change the delivery fee text view
-        binding.tvDeliveryFee.text = getString(R.string.item_price, mDelivery)
-
         setupCartAdapter()  // Setup the Cart RecyclerView Adapter
-
-        // Update the subtotal and total values
-        setSubtotalValues(cartAdapter.getSubtotal())
     }  // end of setMarketData method
-
-    // Function to change the subtotal and total text views once there are changes made
-    fun setSubtotalValues(sbt: Double) {
-        mSubtotal = sbt  // Store the new subtotal value
-        // Get the sum of subtotal and delivery fee
-        mTotal = mSubtotal + mDelivery
-
-        // Change the subtotal and total text views
-        binding.tvSubTotal.text = getString(R.string.item_price, mSubtotal)
-        binding.tvTotal.text = getString(R.string.item_price, mTotal)
-    }  // end of setSubtotalValues method
 
     // Function to setup the RecyclerView adapter for cart
     private fun setupCartAdapter() {
         with(binding) {
             // Sets the layout type of the RecyclerView
-            rvCart.layoutManager = object : LinearLayoutManager(
-                this@CartActivity
-            ) {
-                // Disable vertical scroll functionality of the RecyclerView
-                override fun canScrollVertically(): Boolean = false
-            }
+            rvCart.layoutManager = WrapperLinearLayoutManager(
+                this@CartActivity, LinearLayoutManager.VERTICAL, false
+            )
             // Create an object of Cart Adapter
             cartAdapter = CartAdapter(
                 this@CartActivity, this@CartActivity,
                 mUserInfo!!.cart!!.cartItems
             )
-            // Sets the adapter of Cart RecyclerView
-            rvCart.adapter = cartAdapter
+            cartAdapter.apply {
+                rvCart.adapter = this  // Sets the adapter of Cart RecyclerView
+
+                // Update the total price, total weight, and number of selected items
+                updateCartValues(getTotalPrice(), getTotalWeight(), getSelectedItems())
+            }
 
             // Make the Cart Layout visible if cartItems is not empty
-            if (mUserInfo!!.cart!!.cartItems.isNotEmpty()) {
-                svCartLayout.visibility = View.VISIBLE
-                llEmptyCart.visibility = View.GONE
-            }
+            if (mUserInfo!!.cart!!.cartItems.isNotEmpty())
+                llCartLayout.visibility = View.VISIBLE
+            else
+                llEmptyCart.visibility = View.VISIBLE
 
             hideProgressDialog()  // Hide the loading message
         }  // end of with(binding)
 
     }  // end of setupCartAdapter method
 
+    // Function to change all attributes in the cart (total price, weight, etc.)
+    @SuppressLint("ResourceType")
+    internal fun updateCartValues(price: Double, wt: Double, selected: Int) {
+        with(binding) {
+            // Change the total weight and total price values
+            tvCartTotalWeight.text = getString(R.string.product_weight, wt)
+            tvCartTotalPrice.text = getString(R.string.item_price, price)
+
+            // Make the Select All CheckBox checked if all items are selected
+            cbCartSelectAll.isChecked = selected == cartAdapter.itemCount
+
+            // Weight limit banner will be visible if weight is greater than 25
+            llWeightLimitBanner.visibility = if (wt > 25)
+                View.VISIBLE
+            else
+                View.GONE
+
+            // Total weight value text will be red if greater than 25. Else, black.
+            tvCartTotalWeight.setTextColor(
+                Color.parseColor(
+                    getString(
+                        if (wt > 25) R.color.colorErrorMessage else R.color.app_black
+                    )
+                )
+            )
+
+            // Delete all icon will be visible if there are any selected items
+            ivCartDeleteAll.visibility = if (selected > 0) View.VISIBLE else View.INVISIBLE
+
+            /* It enables if and only if weight is between 0 and 25, and at least
+             * one item is selected from the cart
+             */
+            btnCheckout.isEnabled = wt in 0.0..25.0 && selected > 0
+        }  // end of with(binding)
+
+    }  // end of updateCartValues method
+
     // Function to update cart items upon activity exit
-    fun updateCart() {
+    internal fun updateCart() {
         // Check if mUserInfo and its cart property are not null to prevent NPE
         if (mUserInfo != null && mUserInfo!!.cart != null) {
             /* To determine if the market ID needs to be cleared depending

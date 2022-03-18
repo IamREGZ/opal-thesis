@@ -129,7 +129,7 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
             // Update user's cart in the Firestore database
             FirestoreClass().updateCart(
                 this@ProductDescActivity,
-                listOf(CartItem(mProdInfo!!.id, 1, mProdInfo!!.price)),
+                listOf(CartItem(mProdInfo!!.id, 1, mProdInfo!!.price, mProdInfo!!.weight)),
                 mProdInfo!!.marketID,
                 mUserInfo!!
             )

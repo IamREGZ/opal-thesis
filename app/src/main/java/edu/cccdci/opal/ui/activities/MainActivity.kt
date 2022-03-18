@@ -91,20 +91,6 @@ class MainActivity : UtilityClass(),
             // Add functionality to the sidebar
             nvSidebar.setNavigationItemSelectedListener(this@MainActivity)
 
-//            // Toggle bottom navigation visibility
-//            mNavController.addOnDestinationChangedListener { _, destination, _ ->
-//                /* Bottom nav is visible for home, markets, categories,
-//                 * and notifications fragments
-//                 */
-//                when (destination.id) {
-//                    R.id.fragment_home,
-//                    R.id.fragment_categories,
-//                    R.id.fragment_notifs -> bottomNavView.visibility = View.VISIBLE
-//
-//                    else -> bottomNavView.visibility = View.GONE
-//                }
-//            }  // end of addOnDestinationChangedListener
-
             // Toggle bottom navigation visibility
             mNavController.addOnDestinationChangedListener(this@MainActivity)
 
@@ -204,27 +190,23 @@ class MainActivity : UtilityClass(),
             )
 
             // Send to User's Market
-            R.id.nav_my_market -> {
-                // Create an Intent to launch MyMarketActivity
-                val intent = Intent(
-                    this@MainActivity, MyMarketActivity::class.java
-                )
+            R.id.nav_my_market -> Intent(
+                this@MainActivity, MyMarketActivity::class.java
+            ).run {
                 // Add market ID data to intent
-                intent.putExtra(Constants.MARKET_ID_DATA, mUserInfo!!.marketID)
+                putExtra(Constants.MARKET_ID_DATA, mUserInfo!!.marketID)
 
-                startActivity(intent)  // Opens the vendor's market profile
+                startActivity(this)  // Opens the vendor's market profile
             }
 
             // Sends user to Product Inventory
-            R.id.nav_products -> {
-                // Create an Intent to launch MyMarketActivity
-                val intent = Intent(
-                    this@MainActivity, ProductActivity::class.java
-                )
+            R.id.nav_products -> Intent(
+                this@MainActivity, ProductActivity::class.java
+            ).run {
                 // Add market ID data to intent
-                intent.putExtra(Constants.MARKET_ID_DATA, mUserInfo!!.marketID)
+                putExtra(Constants.MARKET_ID_DATA, mUserInfo!!.marketID)
 
-                startActivity(intent)
+                startActivity(this)  // Opens the product inventory
             }
 
             // Sends user to Sales History

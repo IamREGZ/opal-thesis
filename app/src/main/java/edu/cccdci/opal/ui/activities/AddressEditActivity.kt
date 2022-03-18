@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatDelegate
-import com.firebase.geofire.GeoFireUtils
-import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -21,7 +19,6 @@ import com.google.gson.Gson
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityAddressEditBinding
 import edu.cccdci.opal.dataclasses.Address
-import edu.cccdci.opal.dataclasses.Location
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.DialogClass
@@ -31,6 +28,7 @@ import edu.cccdci.opal.utils.UtilityClass
 class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCallback {
 
     private lateinit var binding: ActivityAddressEditBinding
+    private lateinit var mAddressPlaces: Array<String>
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var mSupportMap: SupportMapFragment
     private lateinit var mSharedPrefs: SharedPreferences
@@ -49,6 +47,8 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         binding = ActivityAddressEditBinding.inflate(layoutInflater)
+        // Get the string array of address places (for alert dialogs)
+        mAddressPlaces = resources.getStringArray(R.array.address_places)
 
         // Creates the Shared Preferences
         mSharedPrefs = getSharedPreferences(
@@ -215,7 +215,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                 getString(R.string.dialog_btn_cancel)
             )
         } else {
-            super.onBackPressed()
+            super.onBackPressed()  // Default back operation
         }  // end of if-else if-else
 
     }  // end of onBackPressed method
@@ -244,7 +244,11 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                 )
             })
             // Focus the Map UI to the position of marker
-            moveCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 18f))
+            moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    markerPosition, Constants.ZOOM_SMALL
+                )
+            )
 
             // Disable all touch interactions and toolbar of the Map UI
             uiSettings.setAllGesturesEnabled(false)
@@ -319,36 +323,13 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                     )
                 ).apply()
 
-                // Change the interface of Address Info
+                // Change the interface of Address Editor
                 tvAddressEditTitle.setText(R.string.tlb_title_edit_address)
                 btnDeleteAddress.visibility = View.VISIBLE
             }  // end of let
         }  // end of with(binding)
 
     }  // end of setSelectedAddressValues method
-
-    // Function to get the current marker position in the map fragment
-    private fun getMarkerPosition(): Location {
-        return mCurrentMarkerPos?.let {
-            // The current available location
-            Location(
-                it.latitude, it.longitude,
-                GeoFireUtils.getGeoHashForLocation(
-                    GeoLocation(it.latitude, it.longitude)
-                )
-            )
-        } ?: run {
-            // Jose Rizal's house as the default coordinates
-            Location(
-                Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE,
-                GeoFireUtils.getGeoHashForLocation(
-                    GeoLocation(
-                        Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE
-                    )
-                )
-            )
-        }  // end of let & run
-    }  // end of getMarkerLocation method
 
     // Function to supply the retrieved data for Province Spinner
     internal fun retrieveProvinces(prvList: List<HashMap<String, String>>) {
@@ -391,14 +372,11 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                 // Display a dialog that the province data is non-existent
                 DialogClass(this@AddressEditActivity).alertDialog(
                     getString(
-                        R.string.dialog_no_place_found_title,
-                        resources.getStringArray(R.array.address_places)[0]
+                        R.string.dialog_no_place_found_title, mAddressPlaces[0]
                     ),
                     getString(
-                        R.string.dialog_no_place_found_message,
-                        resources.getStringArray(R.array.address_places)[0],
-                        prov,
-                        resources.getStringArray(R.array.address_places)[0]
+                        R.string.dialog_no_place_found_message, mAddressPlaces[0],
+                        prov, mAddressPlaces[0]
                     ),
                     getString(R.string.dialog_btn_ok)
                 )
@@ -447,14 +425,11 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                 // Display a dialog that the city/municipality data is non-existent
                 DialogClass(this@AddressEditActivity).alertDialog(
                     getString(
-                        R.string.dialog_no_place_found_title,
-                        resources.getStringArray(R.array.address_places)[1]
+                        R.string.dialog_no_place_found_title, mAddressPlaces[1]
                     ),
                     getString(
-                        R.string.dialog_no_place_found_message,
-                        resources.getStringArray(R.array.address_places)[1],
-                        ct,
-                        resources.getStringArray(R.array.address_places)[1]
+                        R.string.dialog_no_place_found_message, mAddressPlaces[1],
+                        ct, mAddressPlaces[1]
                     ),
                     getString(R.string.dialog_btn_ok)
                 )
@@ -482,14 +457,11 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                 // Display a dialog that the barangay data is non-existent
                 DialogClass(this@AddressEditActivity).alertDialog(
                     getString(
-                        R.string.dialog_no_place_found_title,
-                        resources.getStringArray(R.array.address_places)[2]
+                        R.string.dialog_no_place_found_title, mAddressPlaces[2]
                     ),
                     getString(
-                        R.string.dialog_no_place_found_message,
-                        resources.getStringArray(R.array.address_places)[2],
-                        brgy,
-                        resources.getStringArray(R.array.address_places)[2]
+                        R.string.dialog_no_place_found_message, mAddressPlaces[2],
+                        brgy, mAddressPlaces[2]
                     ),
                     getString(R.string.dialog_btn_ok)
                 )
@@ -564,7 +536,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
             return FormValidation(this@AddressEditActivity).run {
                 when {
                     // Full Name
-                    !validateFullName(etAddrFullName) -> false
+                    !validateName(etAddrFullName) -> false
                     // Phone Number
                     !validatePhoneNumber(etAddrPhone) -> false
                     // Province
@@ -576,7 +548,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                     // Postal Code
                     !validatePostalCode(etAddrPostal) -> false
                     // Detailed Address
-                    !validateDetailedAddress(etAddrDetails) -> false
+                    !validateLongTexts(etAddrDetails) -> false
                     // When all fields are valid
                     else -> true
                 }  // end of when
@@ -593,7 +565,8 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
             // Display the loading message
             showProgressDialog(
                 this@AddressEditActivity, this@AddressEditActivity,
-                getString(R.string.msg_saving_changes)
+                if (mAddress != null) getString(R.string.msg_saving_changes)
+                else getString(R.string.msg_please_wait)
             )
 
             // If default address status was changed
@@ -624,7 +597,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                     etAddrPostal.text.toString().trim { it <= ' ' }.toInt(),
                     etAddrDetails.text.toString().trim { it <= ' ' },
                     smDefaultAddress.isChecked,
-                    getMarkerPosition()
+                    Constants.getMarkerLocationData(mCurrentMarkerPos)
                 )
             }  // end of with(binding)
 
@@ -704,7 +677,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                     mAddrHashMap[Constants.DEFAULT_ADDR] = defaultAdd
 
                 val addrLocation = if (mCurrentMarkerPos != null)
-                    getMarkerPosition()
+                    Constants.getMarkerLocationData(mCurrentMarkerPos)
                 else
                     null  // Default value
                 /* Save the new address location if it is different from

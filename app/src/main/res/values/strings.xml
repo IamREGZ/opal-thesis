@@ -60,6 +60,7 @@
     <string name="err_blank_city">Please select your city/municipality.</string>
     <string name="err_blank_brgy">Please select your barangay.</string>
     <string name="err_blank_postal">Please enter your postal code.</string>
+    <string name="err_postal_format">Postal code should only contain numbers.</string>
     <string name="err_postal_length">Postal code should have exactly 4 digits.</string>
     <string name="err_blank_detailed">Please enter your detailed address.</string>
     <string name="err_detailed_length">
@@ -69,16 +70,33 @@
         Cannot unselect default address. Set another address as default instead.
     </string>
     <string name="err_delete_default_address">Default address cannot be deleted.</string>
+    <string name="err_address_limit">
+        You cannot have more than five (5) addresses. Delete some of your addresses
+        and try again.
+    </string>
 
     <!--  Market-related Form Validation Error Messages  -->
     <string name="err_blank_market_name">Please enter the market name.</string>
+    <string name="err_market_name_length">
+        Market name should be 5 to 50 characters long.
+    </string>
     <string name="err_blank_wet_market">
         Please enter the name of parent wet market.
+    </string>
+    <string name="err_wet_market_length">
+        Parent wet market name should be 5 to 50 characters long.
     </string>
     <string name="err_no_mkt_category_selected">
         Please select the market\'s category.
     </string>
     <string name="err_blank_custom_category">Please specify the custom category.</string>
+    <string name="err_custom_category_length">
+        Custom category should be 4 to 20 characters long.
+    </string>
+    <string name="err_no_market_pic_to_remove">
+        No market profile picture found. Tap the market profile picture panel
+        to select one.
+    </string>
     <string name="err_blank_mkt_province">Please select the market\'s province.</string>
     <string name="err_blank_mkt_city">Please select the market\'s city/municipality.</string>
     <string name="err_blank_mkt_brgy">Please select the market\'s barangay.</string>
@@ -88,24 +106,48 @@
 
     <!--  Product-related Form Validation Error Messages  -->
     <string name="err_no_product_image_selected">Please select the product image.</string>
+    <string name="err_no_product_pic_to_remove">
+        No product image found. Tap the add product image to select one.
+    </string>
     <string name="err_blank_product_name">Please enter the product name.</string>
+    <string name="err_product_name_length">
+        Product name should be 4 to 50 characters long.
+    </string>
     <string name="err_blank_product_desc">Please enter the product description.</string>
+    <string name="err_product_desc_length">
+        Product description should be 10 to 400 characters long.
+    </string>
     <string name="err_blank_product_price">Please enter the product price.</string>
+    <string name="err_product_price_format">Product price must be a decimal number.</string>
     <string name="err_zero_or_negative_price">Product price must be greater than 0.</string>
     <string name="err_no_unit_selected">Please select the product\'s measurement unit.</string>
     <string name="err_blank_custom_unit">Please specify the custom unit.</string>
+    <string name="err_custom_unit_length">Custom unit should be 2 to 15 characters long.</string>
     <string name="err_blank_product_weight">Please enter the product weight.</string>
+    <string name="err_product_weight_format">Product weight must be a decimal number.</string>
     <string name="err_zero_or_negative_weight">Product weight must be greater than 0.</string>
     <string name="err_blank_product_stock">Please enter the product stock.</string>
+    <string name="err_product_stock_format">Product stock must be a whole number.</string>
     <string name="err_negative_stock">Product stock must not be a negative number.</string>
 
-    <!--  Checkout Error Messages  -->
-    <string name="err_no_selected_address">Please select your delivery address.</string>
-    <string name="err_no_selected_order_action">
-        Please select an action when one (or more) item(s) in your order
-        is/are unavailable.
+    <!--  Order-related Error Message  -->
+    <string name="err_cart_weight_limit">
+        Your cart exceeds the weight limit of 25 kg. Please remove some of
+        your items in the cart.
     </string>
-    <string name="err_no_selected_payment">Please select your payment method.</string>
+
+    <!--  Checkout Error Messages  -->
+    <string name="err_no_selected_address">
+        You haven\'t set one of your addresses as default delivery address.
+        Please select one from your address list.
+    </string>
+    <string name="err_address_not_in_coverage">
+        Your selected address is not within the market\'s delivery coverage.
+    </string>
+    <string name="err_route_not_in_coverage">
+        Cannot view route. Selected address is not within the market\'s
+        delivery coverage.
+    </string>
 
     <!--  Google Maps API-related Error Messages  -->
     <string name="err_failed_get_direction">
@@ -117,14 +159,17 @@
     </string>
 
     <!--  Unknown Form Validation Error Messages  -->
-    <string name="unk_err_person_name">Invalid person name (EditText ID unknown).</string>
+    <string name="unk_err_name">Invalid name (EditText ID unknown).</string>
+    <string name="unk_err_long_text">
+        Invalid long text (EditText ID unknown).
+    </string>
     <string name="unk_err_email">Invalid email address (EditText ID unknown).</string>
     <string name="unk_err_phone">Invalid phone number (EditText ID unknown).</string>
     <string name="unk_err_username">Invalid username (EditText ID unknown).</string>
     <string name="unk_err_password">Invalid password (EditText ID unknown).</string>
     <string name="unk_err_postal">Invalid postal code (EditText ID unknown).</string>
-    <string name="unk_err_detailed_address">
-        Invalid detailed address (EditText ID unknown).
+    <string name="unk_err_specific_other">
+        Invalid specific other answer (EditText ID unknown).
     </string>
     <string name="unk_err_checkbox">
         Please check all of the required checkboxes (CheckBox ID unknown).
@@ -135,6 +180,11 @@
     <string name="unk_err_actv_spinner">
         Please select one item from each auto complete text view spinner
         (AutoCompleteTextView ID unknown).
+    </string>
+    <string name="unk_err_numeric_text">Invalid numeric text (EditText ID unknown).</string>
+    <string name="unk_err_image">
+        Please add an image from your gallery to the required images
+        (ImageView ID src unknown).
     </string>
 
     <!--  User-related Message Prompts  -->
@@ -162,11 +212,21 @@
     <string name="msg_address_deleted">Your address was deleted successfully.</string>
 
     <!--  Market-related Message Prompts  -->
+    <string name="msg_market_pic_removed">
+        Your market\'s profile picture was removed.
+    </string>
+    <string name="msg_no_market_info_changed">
+        Market information not saved. No changes were made.
+    </string>
     <string name="msg_market_saved">
         Your market information was changed successfully.
     </string>
 
     <!--  Product-related Message Prompts  -->
+    <string name="msg_product_pic_removed">Product image was removed.</string>
+    <string name="msg_no_product_info_changed">
+        Product information not saved. No changes were made.
+    </string>
     <string name="msg_product_saved">Your product was saved successfully.</string>
     <string name="msg_product_deleted">Your product was deleted successfully.</string>
     <string name="msg_product_unlisted">Product unlisted successfully.</string>
@@ -221,6 +281,55 @@
         you confirm your account deletion. Are you sure you want to delete
         your account for good?
     </string>
+    <string name="dialog_market_pic_remove_title">Remove Market Profile Picture</string>
+    <string name="dialog_market_pic_remove_message">
+        Are you sure you want to remove your market\'s profile picture?
+    </string>
+    <string name="dialog_vendor_reg_title">Vendor Registration</string>
+    <string name="dialog_vendor_reg_message">
+        You haven\'t finished filling up the market information. Do you wish to
+        exit the vendor registration?
+    </string>
+    <string name="dialog_edit_market_title">Edit Market</string>
+    <string name="dialog_edit_market_message">
+        Market information has been changed. Do you want to save changes?
+    </string>
+    <string name="dialog_product_pic_remove_title">Remove Product Image</string>
+    <string name="dialog_product_pic_remove_message">
+        Are you sure you want to remove this product\'s image? You need to add
+        an image to proceed.
+    </string>
+    <string name="dialog_add_product_title">Add Product</string>
+    <string name="dialog_add_product_message">
+        You haven\'t finished filling up the product information. Do you wish to
+        exit the page?
+    </string>
+    <string name="dialog_edit_product_title">Edit Product</string>
+    <string name="dialog_edit_product_message">
+        Product information has been changed. Do you want to save changes?
+    </string>
+    <string name="dialog_unlist_product_title">Unlist Product</string>
+    <string name="dialog_unlist_product_message">
+        Are you sure you want to unlist this product? Your customers will not
+        be able to view or buy this product once it is unlisted.
+    </string>
+    <string name="dialog_relist_product_title">Relist Product</string>
+    <string name="dialog_relist_product_message">
+        Proceed to relist this product? Your customers will be able to view
+        or buy this product again.
+    </string>
+    <string name="dialog_delete_product_title">Delete Product</string>
+    <string name="dialog_delete_product_message">
+        Are you sure you want to delete this product? This action cannot be undone.
+    </string>
+    <string name="dialog_remove_from_cart_title">Remove from Cart</string>
+    <string name="dialog_remove_from_cart_message">
+        Are you sure you want to remove this item from your cart?
+    </string>
+    <string name="dialog_remove_selected_items_title">Remove Selected Items</string>
+    <string name="dialog_remove_selected_items_message">
+        Are you sure you want to remove the selected item(s) from your cart?
+    </string>
 
     <!--  Alert Dialog Buttons  -->
     <string name="dialog_btn_yes">Yes</string>
@@ -234,6 +343,8 @@
     <string name="dialog_btn_delete">Delete</string>
     <string name="dialog_btn_exit">Exit</string>
     <string name="dialog_btn_continue">Continue</string>
+    <string name="dialog_btn_unlist">Unlist</string>
+    <string name="dialog_btn_relist">Relist</string>
 
     <!--  Toolbar Titles  -->
     <string name="tlb_title_user_profile">USER PROFILE</string>
@@ -358,7 +469,7 @@
 
     <!--  User Profile  -->
     <string name="user_profile_photo_cd">User Profile Picture</string>
-    <string name="delete_profile_photo_lbl">Long press to remove</string>
+    <string name="remove_image_lbl">Long press to remove</string>
     <string name="phone_number_helper">Format: 09XXXXXXXXX or +639XXXXXXXXX</string>
     <string name="phone_number">Phone Number</string>
     <string name="gender_male">MALE</string>
@@ -595,14 +706,19 @@
 
     <!--  My Cart  -->
     <string name="market_icon">Market Icon</string>
+    <string name="delete_all">Delete All</string>
+    <string name="weight_limit_warning_icon">Weight Limit Warning</string>
     <string name="product_image">Product Image</string>
     <string name="product_weight">%.2f kg</string>
     <string name="cart_qty_minus">-</string>
     <string name="cart_qty_counter">0</string>
     <string name="cart_qty_plus">+</string>
+    <string name="total_weight">Total Weight</string>
     <string name="sub_total">Subtotal</string>
     <string name="delivery_fee">Delivery Fee</string>
-    <string name="total_price">Total</string>
+    <string name="total_price">Total Price</string>
+    <string name="default_price">₱0.00</string>
+    <string name="default_weight">0.00 kg</string>
     <string name="item_price">₱%.2f</string>
     <string name="btn_checkout">Checkout</string>
     <string name="continue_browsing">Continue Browsing</string>
@@ -611,17 +727,17 @@
     <string name="delivery_address">Delivery Address</string>
     <string name="delivery_address_icon">Delivery Address Icon</string>
     <string name="select_address">Select Address</string>
-    <string name="no_selected_address">
-        Your selected address will be displayed here.
-    </string>
+    <string name="click_map_view_route_lbl">Click on the map to view delivery route.</string>
     <string name="address_contact_info">%1$s | %2$s</string>
     <string name="product_qty">QTY: %d</string>
+    <string name="delivery_message_icon">Delivery Message Icon</string>
+    <string name="est_delivery_time_lbl">Estimated Delivery Time</string>
     <string name="order_instructions_icon">Order Instructions Icon</string>
     <string name="order_instructions">Order Instructions</string>
     <string name="order_not_available_lbl">
-        If one (or more) product(s) is/are not available
+        If one (or more) product(s) is/are not available:
     </string>
-    <string name="order_unavailable_select_action">Please select action</string>
+    <string name="order_unavailable_select_action">Order Unavailable Action</string>
     <string name="special_instructions">Special Instructions (Optional)</string>
     <string name="special_instructions_helper">
         Examples: Chop the whole chicken, cut pork loin into chops, etc.
@@ -634,6 +750,8 @@
     <string name="items_receipt">Items Receipt</string>
     <string name="chkout_total_payment">Total Payment</string>
     <string name="chkout_place_order">Place Order</string>
+    <string name="chkout_delivery_fee_distance">Delivery Fee (%.1f km)</string>
+    <string name="chkout_delivery_duration">%d mins.</string>
 
     <!--  Order/Sales History  -->
     <string name="market_customer_icon">Market/Customer Icon</string>
@@ -773,9 +891,7 @@
     <string name="delivery_duration_value">%d min</string>
 
     <!--  Testing Purposes  -->
-    <string name="distance">Distance: %.1f km</string>
-    <string name="duration">Duration: %d minutes</string>
-
     <string name="current_location">%1$s, %2$s, %3$s, %4$s %5$d</string>
+    <string name="market_address_detailed">%1$s, %2$s, %3$s, %4$s, %5$s %6$d</string>
 
 </resources>

@@ -69,9 +69,9 @@ class RegisterActivity : UtilityClass(), View.OnClickListener {
             return FormValidation(this@RegisterActivity).run {
                 when {
                     // First Name
-                    !validatePersonName(etRegisterFirstName) -> false
+                    !validateName(etRegisterFirstName) -> false
                     // Last Name
-                    !validatePersonName(etRegisterLastName) -> false
+                    !validateName(etRegisterLastName) -> false
                     // Email Address
                     !validateEmail(etRegisterEmail) -> false
                     // Username

@@ -15,7 +15,7 @@ import edu.cccdci.opal.utils.GlideLoader
 class CheckoutAdapter(
     private val context: Context,
     private val cartItemList: List<CartItem>,
-    private val cartDetailsList: List<Product?>
+    private val cartDetailsList: List<Product>
 ) : RecyclerView.Adapter<CheckoutAdapter.CheckoutViewHolder>() {
 
     // Nested Class to hold views from the target layout
@@ -58,7 +58,7 @@ class CheckoutAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CheckoutViewHolder {
         return CheckoutViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.checkout_item, parent, false
+                R.layout.item_checkout, parent, false
             )
         )
     }  // end of onCreateViewHolder method
@@ -68,7 +68,7 @@ class CheckoutAdapter(
         // Get an object from the current position of cart item list
         val cartItem = cartItemList[position]
         // Get an object from the current position of cart details list
-        val cartDetail = cartDetailsList[position]!!
+        val cartDetail = cartDetailsList[position]
 
         // Sets the values of checkout item data to the current view
         holder.setItemData(cartItem, cartDetail)

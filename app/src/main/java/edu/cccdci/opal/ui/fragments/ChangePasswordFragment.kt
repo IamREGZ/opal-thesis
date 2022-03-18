@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -21,11 +22,13 @@ class ChangePasswordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        binding = FragmentChangePasswordBinding.inflate(inflater)
-
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         // To access Android utilities (e.g., Toast, Dialogs, etc.)
         mUtility = UtilityClass()
+
+        // Inflate the layout for this fragment
+        binding = FragmentChangePasswordBinding.inflate(inflater)
 
         with(binding) {
             // Enables observer for a strong password

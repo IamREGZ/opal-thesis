@@ -9,6 +9,9 @@ import android.graphics.Color
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.button.MaterialButton
 import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.Address
@@ -50,6 +53,7 @@ object Constants {
     const val DETAIL_ADDR: String = "detailAdd"
     const val DEFAULT_ADDR: String = "default"
     const val LOCATION: String = "location"
+    const val GEO_HASH: String = "geoHash"
 
     // Cloud Firestore constants for Address Data
     const val PRV_DOC: String = "DOC-PRV"
@@ -163,12 +167,20 @@ object Constants {
     // Dialog Action IDs
     const val DELETE_ADDRESS_ACTION: Int = 10
     const val EXIT_ADDRESS_ACTION: Int = 11
+    const val DELETE_MARKET_IMAGE_ACTION: Int = 20
+    const val EXIT_VENDOR_REG_ACTION: Int = 21
+    const val DELETE_PRODUCT_ACTION: Int = 30
+    const val UNLIST_PRODUCT_ACTION: Int = 31
+    const val RELIST_PRODUCT_ACTION: Int = 32
+    const val DELETE_PRODUCT_IMAGE_ACTION: Int = 33
+    const val EXIT_PRODUCT_ACTION: Int = 34
 
     // Regex patterns
     private const val VALID_EMAIL: String = "^[A-Za-z0-9]+(?:[._-]?[A-Za-z0-9])+@" +
             "[A-Za-z0-9]+(?:[._-]?[A-Za-z0-9])+(?:\\.[A-Za-z0-9]{2,3})+\$"
     private const val VALID_USERNAME: String = "^[A-Za-z0-9]+(?:[.-]?[A-Za-z0-9]+)*\$"
     private const val VALID_PHONE: String = "^(?:0|\\+63)9\\d{9}\$"
+    private const val VALID_NUMERIC: String = "^-?\\d+(?:\\.\\d+)?\$"
     const val HAS_LOWERCASE: String = ".*[a-z].*"
     const val HAS_UPPERCASE: String = ".*[A-Z].*"
     const val HAS_DIGIT: String = ".*\\d.*"
@@ -191,6 +203,11 @@ object Constants {
     const val DEFAULT_LATITUDE: Double = 14.2136451
     const val DEFAULT_LONGITUDE: Double = 121.1667075
 
+    // Google Maps API-related constants
+    const val ZOOM_SMALL: Float = 18F
+    const val ZOOM_LARGE: Float = 17F
+    const val MAX_RADIUS_IN_M: Double = 5000.0
+
     // Google Distance Matrix API constants
     const val DISTANCE_MATRIX: String = "distancematrix"
     const val GET_REQUEST_METHOD: String = "GET"
@@ -208,16 +225,24 @@ object Constants {
     const val POLYLINE: String = "polyline"
     const val POINTS: String = "points"
 
-    // Function to validate email string using Regular Expression (Regex)
-    fun emailValidator(email: String): Boolean = Regex(VALID_EMAIL).matches(email)
+    // REGULAR EXPRESSION (REGEX) FUNCTIONS
+    // Function to validate email string
+    internal fun emailValidator(email: String): Boolean = Regex(VALID_EMAIL)
+        .matches(email)
 
-    // Function to validate username string using Regular Expression (Regex)
-    fun usernameValidator(user: String): Boolean = Regex(VALID_USERNAME).matches(user)
+    // Function to validate username string
+    internal fun usernameValidator(user: String): Boolean = Regex(VALID_USERNAME)
+        .matches(user)
 
-    fun phoneNumberValidator(phone: String): Boolean = Regex(VALID_PHONE).matches(phone)
+    // Function to validate phone number string
+    internal fun phoneNumberValidator(phone: String): Boolean = Regex(VALID_PHONE)
+        .matches(phone)
+
+    // Function to validate number string
+    internal fun isNumeric(number: String): Boolean = Regex(VALID_NUMERIC).matches(number)
 
     // Function to determine if the password meets the requirement for strong password
-    fun strongPassword(pass: String): Boolean {
+    internal fun strongPassword(pass: String): Boolean {
         /* Aside from having at least 8 characters, it must have:
          * 1. At least one lowercase letter,
          * 2. At least one uppercase letter,
@@ -231,7 +256,7 @@ object Constants {
     }  // end of strongPassword method
 
     // Function to launch the Image Selection Activity
-    fun showImageSelection(activity: Activity) {
+    internal fun showImageSelection(activity: Activity) {
         activity.startActivityForResult(
             Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
             SELECT_IMAGE_REQUEST_CODE
@@ -242,21 +267,21 @@ object Constants {
      * Example: C:\Users\username\Desktop\spider-man.jpg
      * The function will return a String value of ".jpg"
      */
-    fun getFileExtension(activity: Activity, uri: Uri?): String? {
+    internal fun getFileExtension(activity: Activity, uri: Uri?): String? {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(
             activity.contentResolver.getType(uri!!)
         )
     }  // end of getFileExtension method
 
     // Function to get the formatted date according to the pattern
-    fun formatDate(pattern: String, date: Date): String {
+    internal fun formatDate(pattern: String, date: Date): String {
         return SimpleDateFormat(pattern, Locale.ENGLISH).format(date)
     }  // end of formatDate method
 
     /* Function to change the appearance of button to secondary style (green
      * outline & text)
      */
-    fun toSecondaryButton(button: MaterialButton) {
+    internal fun toSecondaryButton(button: MaterialButton) {
         // Object to toggle colors depending on the button's state
         val cslBtn2 = ColorStateList(
             // Array of states: Enabled and Disabled
@@ -279,7 +304,7 @@ object Constants {
     }  // end of toSecondaryButton method
 
     // Function to return a Google Maps API URL
-    fun getMapsURL(
+    internal fun getMapsURL(
         context: Context, origin: List<Double>, destination: List<Double>,
         apiName: String
     ): String {
@@ -312,7 +337,7 @@ object Constants {
     }  // end of getDistanceMatrixURL method
 
     // Function to get the location by coordinates using any objects
-    fun getLocation(obj: Any?): List<Double> {
+    internal fun getLocation(obj: Any?): List<Double> {
         // Return the specified list of coordinate if the object is not null
         return if (obj != null) {
             when (obj) {
@@ -335,5 +360,26 @@ object Constants {
         return if (loc != null) listOf(loc.latitude, loc.longitude)
         else listOf(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
     }  // end of getCoordinates method
+
+    // Function to get the current marker position in the map fragment
+    internal fun getMarkerLocationData(coordinates: LatLng?): Location {
+        return coordinates?.let {
+            // The current available location
+            Location(
+                it.latitude, it.longitude,
+                GeoFireUtils.getGeoHashForLocation(
+                    GeoLocation(it.latitude, it.longitude)
+                )
+            )
+        } ?: run {
+            // Jose Rizal's house as the default coordinates
+            Location(
+                DEFAULT_LATITUDE, DEFAULT_LONGITUDE,
+                GeoFireUtils.getGeoHashForLocation(
+                    GeoLocation(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+                )
+            )
+        }  // end of let & run
+    }  // end of getGeoLocationData method
 
 }  // end of Constants object

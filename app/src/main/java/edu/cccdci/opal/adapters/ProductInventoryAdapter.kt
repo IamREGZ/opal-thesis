@@ -20,6 +20,7 @@ import edu.cccdci.opal.ui.activities.ProductEditorActivity
 import edu.cccdci.opal.ui.fragments.ProductUnlistedFragment
 import edu.cccdci.opal.ui.fragments.ProductViolationFragment
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.DialogClass
 import edu.cccdci.opal.utils.GlideLoader
 import edu.cccdci.opal.utils.UtilityClass
 
@@ -97,32 +98,64 @@ class ProductInventoryAdapter(
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     // Set the current product as unlisted
-                    R.id.popup_pd_unlist -> FirestoreClass().updateProduct(
-                        context, product.id, hashMapOf(Constants.STATUS to 0),
-                        fragment
-                    )
+                    R.id.popup_pd_unlist -> {
+                        /* Display an alert dialog with two action buttons
+                         * (Unlist & Cancel)
+                         */
+                        DialogClass(
+                            context, fragment, product, this@ProductInventoryAdapter
+                        ).alertDialog(
+                            context.getString(R.string.dialog_unlist_product_title),
+                            context.getString(R.string.dialog_unlist_product_message),
+                            context.getString(R.string.dialog_btn_unlist),
+                            context.getString(R.string.dialog_btn_cancel),
+                            Constants.UNLIST_PRODUCT_ACTION
+                        )
+                    }
 
                     // Set the current product as in stock
-                    R.id.popup_pd_relist -> FirestoreClass().updateProduct(
-                        context, product.id, hashMapOf(Constants.STATUS to 1),
-                        fragment
-                    )
+                    R.id.popup_pd_relist -> {
+                        /* Display an alert dialog with two action buttons
+                         * (Relist & Cancel)
+                         */
+                        DialogClass(
+                            context, fragment, product, this@ProductInventoryAdapter
+                        ).alertDialog(
+                            context.getString(R.string.dialog_relist_product_title),
+                            context.getString(R.string.dialog_relist_product_message),
+                            context.getString(R.string.dialog_btn_relist),
+                            context.getString(R.string.dialog_btn_cancel),
+                            Constants.RELIST_PRODUCT_ACTION
+                        )
+                    }
 
                     // Go to the Product Editor with the product data
                     R.id.popup_pd_edit -> {
                         // Create an Intent to launch ProductEditorActivity
-                        val intent = Intent(
-                            context, ProductEditorActivity::class.java
-                        )
-                        // Add product information to intent
-                        intent.putExtra(Constants.PRODUCT_DESCRIPTION, product)
+                        Intent(context, ProductEditorActivity::class.java).run {
+                            // Add product information to intent
+                            putExtra(Constants.PRODUCT_DESCRIPTION, product)
 
-                        // Opens the product editor
-                        context.startActivity(intent)
+                            // Opens the product editor
+                            context.startActivity(this)
+                        }
                     }
 
                     // Delete the current product
-                    R.id.popup_pd_delete -> deleteProductInfo(product)
+                    R.id.popup_pd_delete -> {
+                        /* Display an alert dialog with two action buttons
+                         * (Delete & Cancel)
+                         */
+                        DialogClass(
+                            context, fragment, product, this@ProductInventoryAdapter
+                        ).alertDialog(
+                            context.getString(R.string.dialog_delete_product_title),
+                            context.getString(R.string.dialog_delete_product_message),
+                            context.getString(R.string.dialog_btn_delete),
+                            context.getString(R.string.dialog_btn_cancel),
+                            Constants.DELETE_PRODUCT_ACTION
+                        )
+                    }
                 }  // end of when
 
                 true
@@ -130,21 +163,6 @@ class ProductInventoryAdapter(
 
             popup.show()  // Display the popup menu
         }  // end of showProductInvMenu method
-
-        // Function to delete the selected product
-        private fun deleteProductInfo(product: Product) {
-            // Create a utility object for progress dialog and others
-            val utility = UtilityClass()
-
-            // Display the loading message
-            utility.showProgressDialog(
-                context, activity,
-                context.resources.getString(R.string.msg_please_wait)
-            )
-
-            // Deletes the product data in the Firestore Database
-            FirestoreClass().deleteProduct(context, product.id, utility)
-        }  // end of deleteProductInfo method
 
     }  // end of ProductInventoryViewHolder class
 
@@ -154,7 +172,7 @@ class ProductInventoryAdapter(
     ): ProductInventoryViewHolder {
         return ProductInventoryViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.product_inventory_item, parent, false
+                R.layout.item_product_inventory, parent, false
             )
         )
     }  // end of onCreateViewHolder method
@@ -166,5 +184,36 @@ class ProductInventoryAdapter(
         // Sets the values of product inventory data to the current view
         holder.setProductInvData(product)
     }  // end of onBindViewHolder method
+
+    // Function to update the product's status
+    internal fun updateProductStatus(product: Product, statusCode: Int) {
+        // Create a utility object for progress dialog and others
+        UtilityClass().run {
+            // Display a loading message
+            showProgressDialog(
+                context, activity, context.getString(R.string.msg_please_wait)
+            )
+
+            // Update the status code, whether unlist or relist
+            FirestoreClass().updateProduct(
+                context, product.id, hashMapOf(Constants.STATUS to statusCode),
+                this, fragment
+            )
+        }
+    }  // end of updateProductStatus method
+
+    // Function to delete the selected product
+    internal fun deleteProductInfo(product: Product) {
+        // Create a utility object for progress dialog and others
+        UtilityClass().run {
+            // Display the loading message
+            showProgressDialog(
+                context, activity, context.getString(R.string.msg_please_wait)
+            )
+
+            // Deletes the product data in the Firestore Database
+            FirestoreClass().deleteProduct(context, product.id, this)
+        }
+    }  // end of deleteProductInfo method
 
 }  // end of ProductInventoryAdapter class

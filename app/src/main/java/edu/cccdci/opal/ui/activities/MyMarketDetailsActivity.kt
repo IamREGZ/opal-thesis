@@ -1,6 +1,7 @@
 package edu.cccdci.opal.ui.activities
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -22,8 +23,10 @@ class MyMarketDetailsActivity : UtilityClass(), OnMapReadyCallback {
     private var mMarketInfo: Market? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         binding = ActivityMyMarketDetailsBinding.inflate(layoutInflater)
 
         with(binding) {
@@ -40,11 +43,8 @@ class MyMarketDetailsActivity : UtilityClass(), OnMapReadyCallback {
                 // Get the parcelable data from intent
                 mMarketInfo = intent.getParcelableExtra(Constants.MARKET_INFO)
 
-                // Prevents NullPointerException
-                if (mMarketInfo != null) {
-                    // Change the respective values in the layout
-                    setAdditionalMarketDetails()
-                }
+                // Change the respective values in the layout
+                setAdditionalMarketDetails()
             }  // end of if
         }  // end of with(binding)
 
@@ -68,14 +68,21 @@ class MyMarketDetailsActivity : UtilityClass(), OnMapReadyCallback {
             // Customize the icon image
             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_primary))
 
-        // Make the marker visible to the Map UI
-        mGoogleMap.addMarker(marketMarker)
-        // Focus the Map UI to the position of marker
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marketLoc, 17f))
+        mGoogleMap.apply {
+            // Make the marker visible to the Map UI
+            addMarker(marketMarker)
+            // Focus the Map UI to the position of marker
+            moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    marketLoc, Constants.ZOOM_LARGE
+                )
+            )
 
-        // Disable all touch interactions and controls of the Map UI
-        mGoogleMap.uiSettings.setAllGesturesEnabled(false)
-        mGoogleMap.uiSettings.isMapToolbarEnabled = false
+            // Disable all touch interactions and controls of the Map UI
+            uiSettings.setAllGesturesEnabled(false)
+            uiSettings.isMapToolbarEnabled = false
+        }  // end of apply
+
     }  // end of onMapReady method
 
     // Function to set the additional market details values
@@ -108,7 +115,7 @@ class MyMarketDetailsActivity : UtilityClass(), OnMapReadyCallback {
              * City/Municipality, Province & Postal Code)
              */
             tvMktDetAddress.text = getString(
-                R.string.market_address, mMarketInfo!!.wetMarket,
+                R.string.market_address_detailed, mMarketInfo!!.wetMarket,
                 mMarketInfo!!.detailAdd, mMarketInfo!!.barangay,
                 mMarketInfo!!.city, mMarketInfo!!.province,
                 mMarketInfo!!.postal

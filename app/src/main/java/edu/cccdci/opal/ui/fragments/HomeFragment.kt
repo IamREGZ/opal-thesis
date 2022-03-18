@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,8 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         // This is important to make two icons (my cart and messages) visible
         setHasOptionsMenu(true)
@@ -70,34 +73,9 @@ class HomeFragment : Fragment() {
             )
         }
 
-        // Create a Builder for FirestoreRecyclerOptions
-//        val options = FirestoreRecyclerOptions.Builder<Product>()
-//            // Gets all the documents from products collection
-//            .setQuery(
-//                FirestoreClass().getProductQuery(this@HomeFragment),
-//                Product::class.java
-//            )
-//            .build()
-
         setLocationSpinner()  // Set the location options spinner items
 
-        with(binding) {
-            // Sets the layout type of the RecyclerView
-//            rvHome.layoutManager = WrapperGridLayoutManager(
-//                requireContext(), 2, GridLayoutManager.VERTICAL, false
-//            )
-
-            // Create an object of Product Adapter
-//            productAdapter = ProductAdapter(
-//                requireContext(), this@HomeFragment, options
-//            )
-
-            // Sets the adapter of Home RecyclerView
-//            rvHome.adapter = productAdapter
-
-            return root
-        }  // end of with(binding)
-
+        return binding.root
     }  // end of onCreateView method
 
     // Operations to do when the fragment is visible
@@ -112,19 +90,7 @@ class HomeFragment : Fragment() {
          */
         if (bundle != null)
             mUserInfo = bundle.getParcelable(Constants.EXTRA_USER_INFO)
-
-        // Starts listening to Firestore operations on products
-        // productAdapter!!.startListening()
     }  // end of onStart method
-
-    // Operations to do when the fragment is no longer visible
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        // Stops listening to Firestore operations on products
-//        if (productAdapter != null)
-//            productAdapter!!.stopListening()
-    }  // end of onDestroyView method
 
     // Override the function to add two icons on top app bar (my cart and messages)
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -138,12 +104,13 @@ class HomeFragment : Fragment() {
             // Send to Item Cart
             R.id.tab_cart -> {
                 // Create an Intent to launch CartActivity
-                val intent = Intent(requireContext(), CartActivity::class.java)
-                // Add product information to intent
-                intent.putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
+                Intent(requireContext(), CartActivity::class.java).run {
+                    // Add product information to intent
+                    putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
 
-                // Opens the user cart activity
-                requireContext().startActivity(intent)
+                    // Opens the user cart activity
+                    requireContext().startActivity(this)
+                }  // end of run
             }
 
             // Send to Messages

@@ -57,13 +57,23 @@ class AddressesActivity : UtilityClass() {
 
             // Actions when the Add Address button is clicked
             btnAddAddress.setOnClickListener {
-                // Sends user to the Address Editor
-                startActivity(
-                    Intent(
-                        this@AddressesActivity,
-                        AddressEditActivity::class.java
+                // Maximum allowed number of addresses is five (5)
+                if (addressAdapter!!.itemCount in 0..4) {
+                    // Sends user to the Address Editor
+                    startActivity(
+                        Intent(
+                            this@AddressesActivity,
+                            AddressEditActivity::class.java
+                        )
                     )
-                )
+                } else {
+                    // If the number of addresses is exactly 5, display an message
+                    showSnackBar(
+                        this@AddressesActivity,
+                        getString(R.string.err_address_limit),
+                        true
+                    )
+                }
             }
         }  // end of with(binding)
 

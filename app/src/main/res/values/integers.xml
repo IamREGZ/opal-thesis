@@ -8,5 +8,11 @@
     <integer name="max_chars_username">20</integer>
     <integer name="max_chars_full_person_name">60</integer>
     <integer name="max_chars_detailed_address">100</integer>
+    <integer name="max_chars_market_name">50</integer>
+    <integer name="max_chars_others_specify">20</integer>
+    <integer name="max_chars_product_name">50</integer>
+    <integer name="max_chars_product_description">400</integer>
+    <integer name="max_chars_other_unit">15</integer>
+    <integer name="max_chars_special_instructions">100</integer>
 
 </resources>

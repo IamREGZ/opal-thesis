@@ -5,22 +5,22 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityProductEditorBinding
 import edu.cccdci.opal.dataclasses.Product
 import edu.cccdci.opal.firestore.FirestoreClass
-import edu.cccdci.opal.utils.Constants
-import edu.cccdci.opal.utils.GlideLoader
-import edu.cccdci.opal.utils.UtilityClass
+import edu.cccdci.opal.utils.*
 import java.io.IOException
 
-class ProductEditorActivity : UtilityClass(), View.OnClickListener {
+class ProductEditorActivity : UtilityClass(), View.OnClickListener,
+    View.OnLongClickListener {
 
     private lateinit var binding: ActivityProductEditorBinding
     private lateinit var mUnitList: List<String>
@@ -28,12 +28,14 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
     private var mSelectedImageFileURI: Uri? = null
     private var mMarketID: String? = null
     private var mTempProductImageURL: String = ""
-    private var mProductImageURL: String = ""
     private var mProductHashMap: HashMap<String, Any> = hashMapOf()
+    private var mIsNewProduct: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         binding = ActivityProductEditorBinding.inflate(layoutInflater)
 
         with(binding) {
@@ -54,21 +56,20 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
             // Check if there's an existing parcelable extra info
             if (intent.hasExtra(Constants.PRODUCT_DESCRIPTION)) {
                 // Get data in the parcelable class
-                mProdInfo = intent.getParcelableExtra(Constants.PRODUCT_DESCRIPTION)!!
+                mProdInfo = intent.getParcelableExtra(Constants.PRODUCT_DESCRIPTION)
 
-                // Change the header of the Toolbar
-                tvProdEditTitle.text = resources.getString(R.string.tlb_title_edit_prod)
-
-                // To prevent NullPointerException
-                if (mProdInfo != null)
-                    setSelectedProductValues()  // Fill up the available fields
+                setSelectedProductValues()  // Fill up the available fields
             }  // end of if
 
+            // To indicate that this is for new products
+            if (mProdInfo == null) mIsNewProduct = true
+
             // Prepare the drop down values for measurement units
-            val unitAdapter = ArrayAdapter(
-                this@ProductEditorActivity, R.layout.spinner_item, mUnitList
+            actvProdEditUnit.setAdapter(
+                ArrayAdapter(
+                    this@ProductEditorActivity, R.layout.spinner_item, mUnitList
+                )
             )
-            actvProdEditUnit.setAdapter(unitAdapter)
 
             // Actions when one of the measurement unit items is selected
             actvProdEditUnit.setOnItemClickListener { _, _, position, _ ->
@@ -87,9 +88,12 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
 
             // Click event for Product Image Selector ImageView
             ivSelectProductImage.setOnClickListener(this@ProductEditorActivity)
+            // Click event for Product ImageView
+            ivProductImage.setOnClickListener(this@ProductEditorActivity)
+            // Long click event for Product ImageView
+            ivProductImage.setOnLongClickListener(this@ProductEditorActivity)
             // Click event for Submit Product Button
             btnSubmitProduct.setOnClickListener(this@ProductEditorActivity)
-
         }  // end of with(binding)
 
     }  // end of onCreate method
@@ -99,6 +103,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
         if (view != null) {
             when (view.id) {
                 // Change the product image
+                R.id.iv_product_image,
                 R.id.iv_select_product_image -> {
                     // If storage permission access is already granted
                     if (ContextCompat.checkSelfPermission(
@@ -119,12 +124,98 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                 }
 
                 // Saves product information
-                R.id.btn_submit_product -> saveProductChanges()
-            }  // end of when
+                R.id.btn_submit_product -> {
+                    // Stores modified information, if any
+                    storeProductInfoChanges()
 
+                    if (mIsNewProduct || mProductHashMap.isNotEmpty()) {
+                        // If there are any changes made, save product info
+                        saveProductChanges()
+                    } else {
+                        /* Exit the activity if there are no changes made.
+                         * This is to prevent unnecessary reads and writes
+                         * in Cloud Firestore.
+                         */
+
+                        // Displays the Toast message
+                        toastMessage(
+                            this@ProductEditorActivity,
+                            getString(R.string.msg_no_product_info_changed)
+                        )
+
+                        finish()  // Closes the current activity
+                    }  // end of if-else
+                }
+            }  // end of when
         }  // end of if
 
     }  // end of onClick method
+
+    // onLongClick events are declared here
+    override fun onLongClick(view: View?): Boolean {
+        if (view != null) {
+            when (view.id) {
+                // Clear the product image
+                R.id.iv_product_image -> {
+                    if (mTempProductImageURL.isNotEmpty()) {
+                        /* Display an alert dialog with two action buttons
+                         * (Remove & Cancel)
+                         */
+                        DialogClass(this@ProductEditorActivity).alertDialog(
+                            getString(R.string.dialog_product_pic_remove_title),
+                            getString(R.string.dialog_product_pic_remove_message),
+                            getString(R.string.dialog_btn_remove),
+                            getString(R.string.dialog_btn_cancel),
+                            Constants.DELETE_PRODUCT_IMAGE_ACTION
+                        )
+                    } else {
+                        // Display an error message
+                        showSnackBar(
+                            this@ProductEditorActivity,
+                            getString(R.string.err_no_product_pic_to_remove),
+                            true
+                        )
+                    }  // end of if-else
+                }
+
+            }  // end of when
+        }  // end of if
+
+        return true
+    }  // end of onLongClick method
+
+    // Override the back function
+    override fun onBackPressed() {
+        storeProductInfoChanges()  // Stores modified information, if any
+
+        // If there are any changes to the product information (Add Product)
+        if (mIsNewProduct && mProductHashMap.isNotEmpty()) {
+            // Display an alert dialog with two action buttons (Exit & Continue)
+            DialogClass(this@ProductEditorActivity).alertDialog(
+                getString(R.string.dialog_add_product_title),
+                getString(R.string.dialog_add_product_message),
+                getString(R.string.dialog_btn_exit),
+                getString(R.string.dialog_btn_continue),
+                Constants.EXIT_PRODUCT_ACTION
+            )
+        }
+        // If there are any changes to the product information (Edit Product)
+        else if (mProductHashMap.isNotEmpty()) {
+            /* Display an alert dialog with three action buttons
+             * (Save, Don't Save & Cancel)
+             */
+            DialogClass(this@ProductEditorActivity).alertDialog(
+                getString(R.string.dialog_edit_product_title),
+                getString(R.string.dialog_edit_product_message),
+                getString(R.string.dialog_btn_save),
+                getString(R.string.dialog_btn_dont_save),
+                getString(R.string.dialog_btn_cancel)
+            )
+        } else {
+            super.onBackPressed()
+        }  // end of if-else if-else
+
+    }  // end of onBackPressed method
 
     // Function to check if storage permission is granted or denied
     override fun onRequestPermissionsResult(
@@ -144,7 +235,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                 // If the user denies the permission access
                 showSnackBar(
                     this@ProductEditorActivity,
-                    resources.getString(R.string.err_permission_denied),
+                    getString(R.string.err_permission_denied),
                     true
                 )
             }  // end of if-else
@@ -162,24 +253,35 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
             && data != null
         ) {
             try {
-                // URI of selected image file
-                mSelectedImageFileURI = data.data!!
+                with(binding) {
+                    // URI of selected image file
+                    mSelectedImageFileURI = data.data!!
 
-                // Sets the ImageView to the selected image file
-                GlideLoader(this@ProductEditorActivity)
-                    .loadImage(
-                        mSelectedImageFileURI!!, binding.ivProductImage
-                    )
+                    // Sets the ImageView to the selected image file
+                    GlideLoader(this@ProductEditorActivity)
+                        .loadImage(mSelectedImageFileURI!!, ivProductImage)
+
+                    // Set the temporary image URL to the URI of selected image
+                    mTempProductImageURL = mSelectedImageFileURI.toString()
+
+                    // Make the "Long Press to Remove" instruction visible
+                    tvDeleteProductPicLabel.visibility = View.VISIBLE
+
+                    /* Make the select product image icon from bottom right
+                     * not visible if there's any image selected.
+                     */
+                    if (ivSelectProductImage.isVisible)
+                        ivSelectProductImage.visibility = View.GONE
+                }
             } catch (e: IOException) {
                 e.printStackTrace()
 
                 // Display an error Toast message
                 toastMessage(
                     this@ProductEditorActivity,
-                    resources.getString(R.string.err_image_selection_failed)
+                    getString(R.string.err_image_selection_failed)
                 )
             } // end of try-catch
-
         } // end of if
 
     } // end of onActivityResult method
@@ -187,190 +289,115 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
     // Function to store existing product data in the respective fields
     private fun setSelectedProductValues() {
         with(binding) {
-            // Product Details (Name, Description, Price, Weight, Stock)
-            etProdEditName.setText(mProdInfo!!.name)
-            etProdEditDesc.setText(mProdInfo!!.description)
-            etProdEditPrice.setText(mProdInfo!!.price.toString())
-            etProdEditWeight.setText(mProdInfo!!.weight.toString())
-            etProdEditStock.setText(mProdInfo!!.stock.toString())
+            mProdInfo?.let {
+                // Product Details (Name, Description, Price, Weight, Stock)
+                etProdEditName.setText(it.name)
+                etProdEditDesc.setText(it.description)
+                etProdEditPrice.setText(it.price.toString())
+                etProdEditWeight.setText(it.weight.toString())
+                etProdEditStock.setText(it.stock.toString())
 
-            // If the unit is in the list of predefined list
-            if (mProdInfo!!.unit in mUnitList) {
-                actvProdEditUnit.setText(mProdInfo!!.unit)
-            } else {
-                // If not in the list, set the spinner text into "Others"
-                actvProdEditUnit.setText(Constants.ITEM_OTHERS)
-                // Make the EditText visible
-                tilProdEditCustomUnit.visibility = View.VISIBLE
-                // Place the custom unit here
-                etProdEditCustomUnit.setText(mProdInfo!!.unit)
-            }
+                // If the unit is in the list of predefined list
+                if (it.unit in mUnitList) {
+                    actvProdEditUnit.setText(it.unit)
+                } else {
+                    // If not in the list, set the spinner text into "Others"
+                    actvProdEditUnit.setText(Constants.ITEM_OTHERS)
+                    // Make the EditText visible
+                    tilProdEditCustomUnit.visibility = View.VISIBLE
+                    // Place the custom unit here
+                    etProdEditCustomUnit.setText(it.unit)
+                }
 
-            // Load the product image
-            GlideLoader(this@ProductEditorActivity).loadImage(
-                mProdInfo!!.image, ivProductImage
-            )
+                // Load the product image
+                GlideLoader(this@ProductEditorActivity).loadImage(
+                    it.image, ivProductImage
+                )
 
-            // Set the temporary product image URL for validation
-            mTempProductImageURL = mProdInfo!!.image
+                // Set the temporary product image URL for validation
+                mTempProductImageURL = it.image
+
+                // If there's any image uploaded
+                if (mTempProductImageURL.isNotEmpty()) {
+                    // Make "Long Press to Remove" instruction visible
+                    tvDeleteProductPicLabel.visibility = View.VISIBLE
+                    // Make the select product image icon from bottom right not visible
+                    ivSelectProductImage.visibility = View.GONE
+                }
+
+                // Change the header of the Toolbar
+                tvProdEditTitle.text = getString(R.string.tlb_title_edit_prod)
+            }  // end of let
         }  // end of with(binding)
+
     }  // end of setSelectedProductValues method
+
+    // Function to remove product image
+    internal fun removeProductImage() {
+        // Set the product image to default placeholder
+        GlideLoader(this@ProductEditorActivity)
+            .loadImage("", binding.ivProductImage)
+
+        // Clear all image selection values
+        mTempProductImageURL = ""
+        // Make the select product image icon from bottom right visible
+        mSelectedImageFileURI = null
+
+        // Make the "Long Press to Remove" instruction not visible
+        binding.tvDeleteProductPicLabel.visibility = View.GONE
+        binding.ivSelectProductImage.visibility = View.VISIBLE
+
+        // Display a success message
+        showSnackBar(
+            this@ProductEditorActivity, getString(R.string.msg_product_pic_removed),
+            false
+        )
+    }  // end of removeMarketImage method
 
     // Function to validate product information
     private fun validateProduct(): Boolean {
         with(binding) {
-            return when {
-                // If no Product Image is selected
-                mSelectedImageFileURI == null && mTempProductImageURL.isEmpty() -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_no_product_image_selected),
-                        true
-                    )
-                    false  // return false
+            return FormValidation(this@ProductEditorActivity).run {
+                when {
+                    // Product Image
+                    !requiredImage(
+                        ivProductImage, mSelectedImageFileURI, mTempProductImageURL
+                    ) -> false
+                    // Product Name
+                    !validateName(etProdEditName) -> false
+                    // Product Description
+                    !validateLongTexts(etProdEditDesc) -> false
+                    // Price (Double)
+                    !isGreaterThanZero(etProdEditPrice) -> false
+                    // Unit
+                    !checkSpinnerSelection(actvProdEditUnit) -> false
+                    // Custom Unit (Unit must be Others)
+                    actvProdEditUnit.text.toString()
+                        .trim { it <= ' ' } == Constants.ITEM_OTHERS &&
+                            !validateSpecifyOthers(etProdEditCustomUnit) -> false
+                    // Weight (Double)
+                    !isGreaterThanZero(etProdEditWeight) -> false
+                    // Stock (Int)
+                    !isNonNegativeNumber(etProdEditStock) -> false
+                    // When all fields are valid
+                    else -> true
                 }
-
-                // If the Product Name field is empty
-                TextUtils.isEmpty(etProdEditName.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_blank_product_name),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Product Description field is empty
-                TextUtils.isEmpty(etProdEditDesc.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_blank_product_desc),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Product Price field is empty
-                TextUtils.isEmpty(etProdEditPrice.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_blank_product_price),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Product Price is zero or negative
-                etProdEditPrice.text.toString().trim { it <= ' ' }
-                    .toDouble() <= 0 -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_zero_or_negative_price),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If no Product Measurement Unit is selected
-                TextUtils.isEmpty(actvProdEditUnit.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_no_unit_selected),
-                        true
-                    )
-                    false  // return false
-                }
-
-
-                /* If the user selects Others in the Measurement Unit and
-                 * the Custom Unit field is empty
-                 */
-                actvProdEditUnit.text.toString()
-                    .trim { it <= ' ' } == Constants.ITEM_OTHERS &&
-                        TextUtils.isEmpty(etProdEditCustomUnit.text.toString()
-                            .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_blank_custom_unit),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Product Weight field is empty
-                TextUtils.isEmpty(etProdEditWeight.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_blank_product_weight),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Product Weight is zero or negative
-                etProdEditWeight.text.toString().trim { it <= ' ' }
-                    .toDouble() <= 0 -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_zero_or_negative_weight),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Product Stock field is empty
-                TextUtils.isEmpty(etProdEditStock.text.toString()
-                    .trim { it <= ' ' }) -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_blank_product_stock),
-                        true
-                    )
-                    false  // return false
-                }
-
-                // If the Product Stock is negative
-                etProdEditStock.text.toString().trim { it <= ' ' }
-                    .toInt() < 0 -> {
-                    // Display an error message
-                    showSnackBar(
-                        this@ProductEditorActivity,
-                        resources.getString(R.string.err_negative_stock),
-                        true
-                    )
-                    false  // return false
-                }
-
-                else -> true  // If all inputs are valid
-            }  // end of when
-
+            }  // end of run
         }  // end of with(binding)
 
     }  // end of validateProduct method
 
     // Function to proceed with saving product information
-    private fun saveProductChanges() {
+    internal fun saveProductChanges() {
         // Validate first the product inputs
         if (validateProduct()) {
-            // Display the loading message
+            /* Display the loading message. "Please wait..." - Add Product.
+             * "Saving changes..." - Edit Product.
+             */
             showProgressDialog(
                 this@ProductEditorActivity, this@ProductEditorActivity,
-                resources.getString(R.string.msg_please_wait)
+                if (mProdInfo != null) getString(R.string.msg_saving_changes)
+                else getString(R.string.msg_please_wait)
             )
 
             // If the user uploaded the image
@@ -381,136 +408,132 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
                 )
             } else {
                 // If the user didn't upload the image
-                if (mProdInfo == null) {
-                    addProductInfo()  // Add product data if mProdInfo is null
-                } else {
-                    // Update product data if mProdInfo contains any information
-                    updateProductInfo()
-                }
-
+                addOrUpdateProduct()
             }  // end of if-else
 
-        }
+        }  // end of if
+
     }  // end of saveProductChanges method
 
-    /* Function to prompt that the user has successfully uploaded the image.
-     * And then adds the rest of the product information.
-     */
-    fun imageUploadSuccess(imageURL: String) {
-        // Store the image URL of Product Image
-        mProductImageURL = imageURL
-
-        if (mProdInfo == null) {
-            // Proceed to add the rest of the product information if mProdInfo is null
-            addProductInfo()
-        } else {
-            /* Proceed to update the rest of the product information if
-             * mProdInfo contains any information
-             */
-            updateProductInfo()
-        }
-    }  // end of imageUploadSuccess method
-
-    // Function to add product information in the Firestore
-    private fun addProductInfo() {
+    // Function to add (null mProdInfo) or update product information in the Firestore
+    internal fun addOrUpdateProduct(imageURL: String? = null) {
         with(binding) {
-            // Get the document reference for the new product
-            val productRef = FirestoreClass().getProductReference()
+            if (mProdInfo == null) {
+                // Get the document reference for the new product
+                val productRef = FirestoreClass().getProductReference()
 
-            /* Get the unit measurement. If it is "Others", get from the
-             * Specify Custom Unit field
-             */
-            val unitMeasurement = if (actvProdEditUnit.text
-                    .toString().trim { it <= ' ' } != Constants.ITEM_OTHERS
-            )
-                actvProdEditUnit.text.toString().trim { it <= ' ' }
-            else
-                etProdEditCustomUnit.text.toString().trim { it <= ' ' }
+                /* Get the unit measurement. If it is "Others", get from the
+                 * Specify Custom Unit field
+                 */
+                val unitMeasurement = if (actvProdEditUnit.text
+                        .toString().trim { it <= ' ' } != Constants.ITEM_OTHERS
+                )
+                    actvProdEditUnit.text.toString().trim { it <= ' ' }
+                else
+                    etProdEditCustomUnit.text.toString().trim { it <= ' ' }
 
-            // Object to store product data
-            val product = Product(
-                Constants.PRODUCT_ID_TEMP + productRef.id,
-                etProdEditName.text.toString().trim { it <= ' ' },
-                mProductImageURL,
-                etProdEditDesc.text.toString().trim { it <= ' ' },
-                etProdEditPrice.text.toString().trim { it <= ' ' }.toDouble(),
-                unitMeasurement,
-                etProdEditWeight.text.toString().trim { it <= ' ' }.toDouble(),
-                etProdEditStock.text.toString().trim { it <= ' ' }.toInt(),
-                FirebaseAuth.getInstance().currentUser?.uid ?: "",
-                mMarketID ?: ""
-            )
+                // Object to store product data
+                val product = Product(
+                    Constants.PRODUCT_ID_TEMP + productRef.id,
+                    etProdEditName.text.toString().trim { it <= ' ' },
+                    imageURL ?: "",
+                    etProdEditDesc.text.toString().trim { it <= ' ' },
+                    etProdEditPrice.text.toString().trim { it <= ' ' }.toDouble(),
+                    unitMeasurement,
+                    etProdEditWeight.text.toString().trim { it <= ' ' }.toDouble(),
+                    etProdEditStock.text.toString().trim { it <= ' ' }.toInt(),
+                    FirebaseAuth.getInstance().currentUser?.uid ?: "",
+                    mMarketID ?: ""
+                )
 
-            // Adds the product data in the Firestore Database
-            FirestoreClass().addProduct(this@ProductEditorActivity, product)
+                // Adds the product data in the Firestore Database
+                FirestoreClass().addProduct(this@ProductEditorActivity, product)
+            } else {
+                // Overwrite product image URL, if the user uploaded the image
+                if (imageURL != null)
+                    mProductHashMap[Constants.IMAGE] = imageURL
+
+                // Proceed to update fields in the Cloud Firestore
+                FirestoreClass().updateProduct(
+                    this@ProductEditorActivity, mProdInfo!!.id, mProductHashMap
+                )
+            }  // end of if-else
+
         }  // end of with(binding)
+
     }  // end of addProductInfo method
-
-    // Function to store modified information to Firestore (if any)
-    private fun updateProductInfo() {
-        storeProductInfoChanges()  // Stores modified information, if any
-
-        // Overwrite product image URL, if the user uploaded the image
-        if (mProductImageURL.isNotEmpty())
-            mProductHashMap[Constants.IMAGE] = mProductImageURL
-
-        // Proceed to update fields in the Cloud Firestore
-        FirestoreClass().updateProduct(
-            this@ProductEditorActivity, mProdInfo!!.id, mProductHashMap
-        )
-    }  // end of updateProductInfo method
 
     // Function to store modified product information
     private fun storeProductInfoChanges() {
         // Clear the HashMap first for a new batch of modified information
         mProductHashMap.clear()
 
+        /* Store temporary object for comparison purposes if the page is for
+         * adding new products
+         */
+        if (mIsNewProduct) mProdInfo = Product()
+
         with(binding) {
-            val productName = etProdEditName.text.toString().trim { it <= ' ' }
-            // Save the new product name if it is different from previous product name
-            if (productName != mProdInfo!!.name)
-                mProductHashMap[Constants.NAME] = productName
+            mProdInfo?.let { prod ->
+                val productName = etProdEditName.text.toString().trim { it <= ' ' }
+                // Save the new product name if it is different from previous product name
+                if (productName != prod.name)
+                    mProductHashMap[Constants.NAME] = productName
 
-            val productDesc = etProdEditDesc.text.toString().trim { it <= ' ' }
-            /* Save the new product description if it is different from previous
-             * product description
-             */
-            if (productDesc != mProdInfo!!.description)
-                mProductHashMap[Constants.DESCRIPTION] = productDesc
+                val productDesc = etProdEditDesc.text.toString().trim { it <= ' ' }
+                /* Save the new product description if it is different from previous
+                 * product description
+                 */
+                if (productDesc != prod.description)
+                    mProductHashMap[Constants.DESCRIPTION] = productDesc
 
-            val productPrice = etProdEditPrice.text.toString().trim { it <= ' ' }.toDouble()
-            // Save the new product price if it is different from previous product price
-            if (productPrice != mProdInfo!!.price)
-                mProductHashMap[Constants.PRICE] = productPrice
+                val productPrice = if (etProdEditPrice.text!!.isNotEmpty())
+                    etProdEditPrice.text.toString().trim { it <= ' ' }.toDouble()
+                else
+                    0.0  // Default value to prevent NumberFormatException
+                // Save the new product price if it is different from previous product price
+                if (productPrice != prod.price)
+                    mProductHashMap[Constants.PRICE] = productPrice
 
-            /* Stores product unit. If the user selects "Others" in the Product
-             * unit spinner, store the text in Custom Unit field. Otherwise,
-             * store the text in Product Unit spinner.
-             */
-            val productUnit = if (actvProdEditUnit.text.toString()
-                    .trim { it <= ' ' } == Constants.ITEM_OTHERS
-            )
-                etProdEditCustomUnit.text.toString().trim { it <= ' ' }
-            else
-                actvProdEditUnit.text.toString().trim { it <= ' ' }
-            // Save the new product unit if it is different from previous product unit
-            if (productUnit != mProdInfo!!.unit)
-                mProductHashMap[Constants.UNIT] = productUnit
+                /* Stores product unit. If the user selects "Others" in the Product
+                 * unit spinner, store the text in Custom Unit field. Otherwise,
+                 * store the text in Product Unit spinner.
+                 */
+                val productUnit = if (actvProdEditUnit.text.toString()
+                        .trim { it <= ' ' } == Constants.ITEM_OTHERS
+                )
+                    etProdEditCustomUnit.text.toString().trim { it <= ' ' }
+                else
+                    actvProdEditUnit.text.toString().trim { it <= ' ' }
+                // Save the new product unit if it is different from previous product unit
+                if (productUnit != prod.unit)
+                    mProductHashMap[Constants.UNIT] = productUnit
 
-            val productWeight = etProdEditWeight.text.toString().trim { it <= ' ' }.toDouble()
-            // Save the new product weight if it is different from previous product weight
-            if (productWeight != mProdInfo!!.weight)
-                mProductHashMap[Constants.WEIGHT] = productWeight
+                val productWeight = if (etProdEditWeight.text!!.isNotEmpty())
+                    etProdEditWeight.text.toString().trim { it <= ' ' }.toDouble()
+                else
+                    0.0  // Default value to prevent NumberFormatException
+                // Save the new product weight if it is different from previous product weight
+                if (productWeight != prod.weight)
+                    mProductHashMap[Constants.WEIGHT] = productWeight
 
-            val productStock = etProdEditStock.text.toString().trim { it <= ' ' }.toInt()
-            // Save the new product stock if it is different from previous product stock
-            if (productStock != mProdInfo!!.stock)
-                mProductHashMap[Constants.STOCK] = productStock
+                val productStock = if (etProdEditStock.text!!.isNotEmpty())
+                    etProdEditStock.text.toString().trim { it <= ' ' }.toInt()
+                else
+                    0  // Default value to prevent NumberFormatException
+                // Save the new product stock if it is different from previous product stock
+                if (productStock != prod.stock)
+                    mProductHashMap[Constants.STOCK] = productStock
 
-            // Check if a user has uploaded a new image, add a temporary value
-            if (mSelectedImageFileURI != null)
-                mProductHashMap[Constants.IMAGE] = "0"
+                // Check if a user has uploaded a new image, add a temporary value
+                if (mTempProductImageURL != prod.image)
+                    mProductHashMap[Constants.IMAGE] = mTempProductImageURL
+            }  // end of let
         }  // end of with(binding)
+
+        // Revert back to null if the page is for vendor registration
+        if (mIsNewProduct) mProdInfo = null
+
     }  // end of storeProductInfoChanges method
 
     // Function to prompt that the product was saved
@@ -519,8 +542,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener {
 
         // Displays the Toast message
         toastMessage(
-            this@ProductEditorActivity,
-            resources.getString(R.string.msg_product_saved)
+            this@ProductEditorActivity, getString(R.string.msg_product_saved)
         )
 
         finish() // Closes the current activity

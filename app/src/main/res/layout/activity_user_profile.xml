@@ -63,7 +63,7 @@
                 android:layout_marginBottom="@dimen/medium_mrg_pd"
                 android:gravity="center"
                 android:visibility="gone"
-                android:text="@string/delete_profile_photo_lbl"
+                android:text="@string/remove_image_lbl"
                 android:textColor="@color/secondaryAccentColor"
                 android:textSize="@dimen/main_text_size" />
 

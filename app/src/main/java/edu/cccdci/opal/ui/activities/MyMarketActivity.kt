@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatDelegate
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityMyMarketBinding
 import edu.cccdci.opal.dataclasses.Market
@@ -19,8 +20,10 @@ class MyMarketActivity : UtilityClass() {
     private var mMarketInfo: Market? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         binding = ActivityMyMarketBinding.inflate(layoutInflater)
 
         with(binding) {
@@ -34,10 +37,8 @@ class MyMarketActivity : UtilityClass() {
                 mMarketID = intent.getStringExtra(Constants.MARKET_ID_DATA)
             }
 
-            // Actions when the more menu button in the user's market is clicked
-            ivUserMarketMoreMenu.setOnClickListener { view ->
-                showMarketMenu(view)  // Open a popup menu
-            }
+            // Open the market menu
+            ivUserMarketMoreMenu.setOnClickListener { view -> showMarketMenu(view) }
         }  // end of with(binding)
 
     }  // end of onCreate method
@@ -61,30 +62,26 @@ class MyMarketActivity : UtilityClass() {
     }  // end of onStart method
 
     // Function to change the output values of user's market
-    fun setUserMarket(market: Market?) {
+    internal fun setUserMarket(market: Market?) {
         hideProgressDialog()  // Hide the loading message
 
         mMarketInfo = market  // Store the retrieved user's market object
 
-        // Prevents NullPointerException
-        if (mMarketInfo != null) {
-            with(binding) {
+        with(binding) {
+            mMarketInfo?.let {
+
                 // Store the text values
-                tvUserMarketName.text = mMarketInfo!!.name
-                tvUserMarketProducts.text = mMarketInfo!!.products.toString()
-                tvUserMarketProductSold.text = mMarketInfo!!.sold.toString()
-                tvUserMarketVisits.text = mMarketInfo!!.visits.toString()
-                tvUserMarketRating.text = getString(
-                    R.string.rating_count, mMarketInfo!!.ratings
-                )
+                tvUserMarketName.text = it.name
+                tvUserMarketProducts.text = it.products.toString()
+                tvUserMarketProductSold.text = it.sold.toString()
+                tvUserMarketVisits.text = it.visits.toString()
+                tvUserMarketRating.text = getString(R.string.rating_count, it.ratings)
 
                 // And then load the user's market image
-                GlideLoader(this@MyMarketActivity).loadImage(
-                    mMarketInfo!!.image, ivUserMarketImage
-                )
-            }  // end of with(binding)
-
-        }  // end of if
+                GlideLoader(this@MyMarketActivity)
+                    .loadImage(it.image, ivUserMarketImage)
+            }
+        }  // end of with(binding)
 
     }  // end of setUserMarket method
 
@@ -123,19 +120,19 @@ class MyMarketActivity : UtilityClass() {
             /* Create an Intent to launch a target class, depending on the selected
              * menu item. Make sure targetClass is not null to avoid NPE.
              */
-            Intent(this@MyMarketActivity, targetClass).let {
+            Intent(this@MyMarketActivity, targetClass).run {
                 // Add market information to intent
-                it.putExtra(Constants.MARKET_INFO, mMarketInfo)
+                putExtra(Constants.MARKET_INFO, mMarketInfo)
 
-                startActivity(it)  // Opens the target class
+                startActivity(this)  // Opens the target class
             }
         } else {
             // Send back to Main Activity if targetClass is null
-            Intent(this@MyMarketActivity, MainActivity::class.java).let {
+            Intent(this@MyMarketActivity, MainActivity::class.java).run {
                 // Clear all activity layers
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-                startActivity(it)  // Opens the Main Activity
+                startActivity(this)  // Opens the Main Activity
                 finish()  // Closes this activity
             }
         }  // end of if-else

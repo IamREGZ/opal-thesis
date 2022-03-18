@@ -70,6 +70,9 @@ class GlideLoader(
                 .placeholder(defImage)
                 // View that will load the user image
                 .into(imageView)
+        } catch (e: IllegalArgumentException) {
+            // Log the error if loading the image fails
+            e.printStackTrace()
         } catch (e: IOException) {
             // Log the error if loading the image fails
             e.printStackTrace()

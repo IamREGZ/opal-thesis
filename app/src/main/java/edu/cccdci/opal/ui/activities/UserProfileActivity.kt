@@ -290,8 +290,8 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener, View.OnLongCli
             // Create a FormValidation object, and then execute the validations
             return FormValidation(this@UserProfileActivity).run {
                 when {
-                    !validatePersonName(etProfileFirstName) -> false
-                    !validatePersonName(etProfileLastName) -> false
+                    !validateName(etProfileFirstName) -> false
+                    !validateName(etProfileLastName) -> false
                     !validatePhoneNumber(etProfilePhone) -> false
                     !checkRadioSelection(rgProfileGender) -> false
                     else -> true
@@ -321,6 +321,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener, View.OnLongCli
             }
             // If the user didn't upload the image
             else {
+                // Just update the user information without profile image
                 updateUserInfo()
             }  // end of if-else
         }  // end of if

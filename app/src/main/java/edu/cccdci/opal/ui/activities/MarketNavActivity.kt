@@ -78,7 +78,7 @@ class MarketNavActivity : UtilityClass() {
                 )
             }
 
-            FirestoreClass().retrieveNearMarkets(
+            FirestoreClass().getNearbyLocations(
                 this@MarketNavActivity,
                 GeoLocation(
                     mCurrentLocation!!.latitude,

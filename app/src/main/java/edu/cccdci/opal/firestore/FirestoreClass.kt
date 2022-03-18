@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
@@ -258,8 +257,8 @@ class FirestoreClass {
                         Log.e("Downloadable Image URL", uri.toString())
 
                         when (activity) {
-                            /* In the User Profile Activity, the URI of the image
-                             * will be stored in the variable mUserProfileImageURL.
+                            /* In the User Profile Activity, the Image URI will be
+                             * stored in the user profile object or hashmap.
                              */
                             is UserProfileActivity -> activity
                                 .updateUserInfo(uri.toString())
@@ -268,13 +267,13 @@ class FirestoreClass {
                              * in mProductImageURL.
                              */
                             is ProductEditorActivity -> activity
-                                .imageUploadSuccess(uri.toString())
+                                .addOrUpdateProduct(uri.toString())
 
-                            /* In the Market Editor Activity, it will be stored
-                             * in mMarketImageURL.
+                            /* In the Market Editor Activity, the Image URI will be
+                             * stored in the market object or hashmap.
                              */
                             is MarketEditorActivity -> activity
-                                .imageUploadSuccess(uri.toString())
+                                .addOrUpdateMarket(uri.toString())
                         }
                     }
             }
@@ -317,7 +316,9 @@ class FirestoreClass {
                 else
                     emptyList()
 
-                // Proceed to store the retrieved list of provinces
+                /* Proceed to store the retrieved list of provinces in either
+                 * Address Edit or Market Editor activity
+                 */
                 when (activity) {
                     is AddressEditActivity -> activity.retrieveProvinces(provinces)
                     is MarketEditorActivity -> activity.retrieveProvinces(provinces)
@@ -400,6 +401,7 @@ class FirestoreClass {
                 // Proceed to store the retrieved list of barangays
                 when (activity) {
                     is AddressEditActivity -> activity.retrieveBarangays(barangays)
+                    is MarketEditorActivity -> activity.retrieveBarangays(barangays)
                 }
             }
             // If failed
@@ -525,6 +527,117 @@ class FirestoreClass {
             }  // end of mFSInstance
     }  // end of findDefaultAddress method
 
+    // Function to get nearby locations within the 5 km radius from center
+    fun getNearbyLocations(
+        activity: Activity, center: GeoLocation, selectAddress: Address? = null
+    ) {
+        val radius = Constants.MAX_RADIUS_IN_M  // 5000 m or 5 km
+        /* Used to create a circular boundary to limit geo queries within the
+         * specified radius
+         */
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radius)
+
+        // Variable to store all tasks to query nearby locations
+        val tasks: MutableList<Task<QuerySnapshot>> = mutableListOf()
+
+        val locationQuery = if (selectAddress != null) {
+            // Get the collection of user's address for Checkout
+            mFSInstance.collection(Constants.USERS)
+                .document(getCurrentUserID())
+                .collection(Constants.ADDRESSES)
+        } else {
+            // Get the collection of markets for Market Navigation
+            mFSInstance.collection(Constants.MARKETS)
+        }
+
+        // Loop through bounds using startHash and endHash
+        for (b in bounds) {
+            val boundQuery = locationQuery.orderBy(
+                "${Constants.LOCATION}.${Constants.GEO_HASH}"
+            ).startAt(b.startHash).endAt(b.endHash)
+
+            tasks.add(boundQuery.get())  // Add the query
+        }
+
+        // Execute all tasks created from bound queries
+        Tasks.whenAllComplete(tasks)
+            .addOnCompleteListener { task ->
+                // If it is successful
+                if (task.isSuccessful) {
+                    // Variable to store all documents within the 5 km radius from center
+                    val matchedDocs = mutableListOf<Any>()
+
+                    for (t in tasks) {
+                        // For each result from tasks, get the snapshot
+                        val snap = t.result
+
+                        // Make sure it is not null, not empty, and has existing documents
+                        if (snap != null && !snap.isEmpty &&
+                            snap.documents.isNotEmpty()
+                        ) {
+                            // Get all documents
+                            for (doc in snap.documents) {
+                                val data = doc.toObject(
+                                    if (selectAddress != null)
+                                        Address::class.java  // For Checkout
+                                    else
+                                        Market::class.java  // For Market Navigation
+                                )!!
+
+                                // Store the document geo location
+                                val docLoc = when (data) {
+                                    is Address -> data.location?.let {
+                                        GeoLocation(it.latitude, it.longitude)
+                                    } ?: GeoLocation(0.0, 0.0)
+
+                                    is Market -> data.location?.let {
+                                        GeoLocation(it.latitude, it.longitude)
+                                    } ?: GeoLocation(0.0, 0.0)
+
+                                    else -> GeoLocation(0.0, 0.0)
+                                }
+
+                                /* Get the straight line (euclidean) distance
+                                 * between the center and document's geo location
+                                 */
+                                val distance = GeoFireUtils.getDistanceBetween(
+                                    docLoc, center
+                                )
+
+                                // If it is in the radius, add that document
+                                if (distance <= radius) matchedDocs.add(data)
+                            }  // end of for (doc)
+                        }  // end of if
+
+                    }  // end of for (t)
+
+                    if (selectAddress != null) {
+                        /* Checkout - check if the selected address is in the
+                         * delivery coverage
+                         */
+                        (activity as CheckoutActivity).checkAddressCoverage(
+                            selectAddress in matchedDocs.filterIsInstance<Address>()
+                        )
+                    } else {
+                        // Market Navigation - get all matched documents
+                        (activity as MarketNavActivity).getRetrievedMarkets(
+                            matchedDocs.filterIsInstance<Market>()
+                        )
+                    }
+                }
+                // If it failed
+                else {
+                    // Log the error
+                    Log.e(
+                        activity.javaClass.simpleName,
+                        task.exception!!.message.toString(),
+                        task.exception!!
+                    )
+                }  // end of if-else
+            }  // end of whenAllComplete
+
+    }  // end of getNearbyLocations method
+
     // Function to update user address data from Cloud Firestore
     fun updateAddress(
         activity: AddressEditActivity, addressID: String,
@@ -639,18 +752,28 @@ class FirestoreClass {
         val productRef = mFSInstance.collection(Constants.PRODUCTS)
 
         return with(productRef) {
+            // Activities only
             if (activity != null) {
                 when (activity) {
+                    /* Get all the documents where
+                     *
+                     */
                     is MarketPageActivity -> whereEqualTo(
                         Constants.MARKET_ID, marketID
                     ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
                         .whereGreaterThan(Constants.STOCK, 0)
 
+                    /* The default query, get all the documents where the status
+                     * code is equal to 1 (In Stock), the stock is greater than 0,
+                     * and limit the number of document retrievals to 20.
+                     */
                     else -> whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
                         .whereGreaterThan(Constants.STOCK, 0)
                         .limit(20)
                 }
-            } else {
+            }
+            // Fragments only
+            else {
                 // Returns the query, depending on the tab of Product Inventory fragment
                 when (fragment) {
                     /* To get all products that are in stock, get all the documents
@@ -659,7 +782,7 @@ class FirestoreClass {
                      * 0.
                      */
                     is ProductInStockFragment -> whereEqualTo(
-                        Constants.VENDOR_ID, getCurrentUserID()
+                        Constants.MARKET_ID, marketID
                     ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
                         .whereGreaterThan(Constants.STOCK, 0)
 
@@ -668,7 +791,7 @@ class FirestoreClass {
                      * stock is equal to 0.
                      */
                     is ProductSoldOutFragment -> whereEqualTo(
-                        Constants.VENDOR_ID, getCurrentUserID()
+                        Constants.MARKET_ID, marketID
                     ).whereEqualTo(Constants.STOCK, 0)
 
                     /* To get all products that are violated, get all the documents
@@ -676,7 +799,7 @@ class FirestoreClass {
                      * status code is equal to 2 (Violation).
                      */
                     is ProductViolationFragment -> whereEqualTo(
-                        Constants.VENDOR_ID, getCurrentUserID()
+                        Constants.MARKET_ID, marketID
                     ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_VIOLATION)
 
                     /* To get all products that are unlisted, get all the documents
@@ -684,7 +807,7 @@ class FirestoreClass {
                      * status code is equal to 0 (Unlisted).
                      */
                     is ProductUnlistedFragment -> whereEqualTo(
-                        Constants.VENDOR_ID, getCurrentUserID()
+                        Constants.MARKET_ID, marketID
                     ).whereEqualTo(Constants.STATUS, Constants.PRODUCT_UNLISTED)
 
                     /* The default query, get all the documents where the status
@@ -694,8 +817,8 @@ class FirestoreClass {
                     else -> whereEqualTo(Constants.STATUS, Constants.PRODUCT_IN_STOCK)
                         .whereGreaterThan(Constants.STOCK, 0)
                         .limit(20)
-                }  // end of when
-            }
+                }
+            }  // end of if-else
 
         }  // end of with(productRef)
 
@@ -736,7 +859,7 @@ class FirestoreClass {
     // Function to update product data from Cloud Firestore
     fun updateProduct(
         context: Context, productID: String, productHashMap: HashMap<String, Any>,
-        fragment: Fragment? = null
+        util: UtilityClass? = null, fragment: Fragment? = null
     ) {
         // Access the collection named products
         mFSInstance.collection(Constants.PRODUCTS)
@@ -758,19 +881,25 @@ class FirestoreClass {
                     when (fragment) {
                         // Show the prompt message that the product is unlisted
                         is ProductInStockFragment,
-                        is ProductSoldOutFragment -> Toast.makeText(
-                            fragment.requireContext(),
-                            fragment.resources.getString(R.string.msg_product_unlisted),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        is ProductSoldOutFragment -> {
+                            util?.hideProgressDialog()  // Hide the loading message
+
+                            // Display a Toast message
+                            util?.toastMessage(
+                                fragment.requireContext(),
+                                fragment.getString(R.string.msg_product_unlisted)
+                            )
+                        }
 
                         // Show the prompt message that the product is relisted
                         is ProductUnlistedFragment -> {
-                            Toast.makeText(
+                            util?.hideProgressDialog()  // Hide the loading message
+
+                            // Display a loading message
+                            util?.toastMessage(
                                 fragment.requireContext(),
-                                fragment.resources.getString(R.string.msg_product_relisted),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                fragment.getString(R.string.msg_product_relisted)
+                            )
                         }
                     }  // end of when
 
@@ -782,6 +911,15 @@ class FirestoreClass {
                 // Closes the loading message in the Product Editor Activity
                 when (context) {
                     is ProductEditorActivity -> context.hideProgressDialog()
+                }
+
+                // Closes the loading message in the listed fragments below
+                if (fragment != null) {
+                    when (fragment) {
+                        is ProductInStockFragment,
+                        is ProductSoldOutFragment,
+                        is ProductViolationFragment -> util?.hideProgressDialog()
+                    }
                 }
 
                 // Log the error
@@ -807,7 +945,7 @@ class FirestoreClass {
 
                 // Displays the Toast message
                 util.toastMessage(
-                    context, context.resources.getString(R.string.msg_product_deleted)
+                    context, context.getString(R.string.msg_product_deleted)
                 )
             }
             // If failed
@@ -863,69 +1001,6 @@ class FirestoreClass {
             }  // end of mFSInstance
 
     }  // end of addMarket method
-
-    fun retrieveNearMarkets(activity: Activity, center: GeoLocation) {
-        val radius = 6000.0
-        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radius)
-        val tasks: MutableList<Task<QuerySnapshot>> = mutableListOf()
-
-        for (b in bounds) {
-            val q = mFSInstance.collection(Constants.MARKETS)
-                .orderBy("${Constants.LOCATION}.geoHash")
-                .startAt(b.startHash)
-                .endAt(b.endHash)
-
-            tasks.add(q.get())
-        }
-
-        Tasks.whenAllComplete(tasks)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-
-                    val matchedDocs: MutableList<Market> = mutableListOf()
-
-                    for (t in tasks) {
-                        val snap = t.result
-
-                        for (doc in snap.documents) {
-                            val market = doc.toObject(Market::class.java)!!
-
-                            val docLoc = if (market.location != null)
-                                GeoLocation(
-                                    market.location.latitude,
-                                    market.location.longitude
-                                )
-                            else
-                                GeoLocation(
-                                    Constants.DEFAULT_LATITUDE,
-                                    Constants.DEFAULT_LONGITUDE
-                                )
-
-                            val distance = GeoFireUtils.getDistanceBetween(
-                                docLoc, center
-                            )
-
-                            if (distance <= radius) {
-                                matchedDocs.add(market)
-                            }
-                        }
-
-                    }
-
-                    if (activity is MarketNavActivity) {
-                        activity.getRetrievedMarkets(matchedDocs)
-                    }
-
-                } else {
-                    Log.e(
-                        activity.javaClass.simpleName,
-                        task.exception!!.message.toString(),
-                        task.exception!!
-                    )
-                }
-            }  // end of whenAllComplete
-
-    }  // end of retrieveNearMarkets method
 
     // Function to retrieve a single market data for Cart Activity
     fun retrieveMarket(activity: Activity, marketID: String) {
@@ -986,7 +1061,7 @@ class FirestoreClass {
 
     // Function to update product data from Cloud Firestore
     fun updateMarket(
-        activity: Activity, marketID: String, marketHashMap: HashMap<String, Any>
+        activity: Activity, marketID: String, marketHashMap: HashMap<String, Any?>
     ) {
         // Access the collection named markets
         mFSInstance.collection(Constants.MARKETS)
@@ -1044,8 +1119,7 @@ class FirestoreClass {
                 cartItemMap[Constants.MARKET_ID] = marketID
 
                 // Also, empty the current cart items if it is not empty
-                if (currentCartItems.isNotEmpty())
-                    currentCartItems.clear()
+                if (currentCartItems.isNotEmpty()) currentCartItems.clear()
             }
 
             // Add the item on the list
@@ -1084,14 +1158,14 @@ class FirestoreClass {
                     /* In Checkout Activity, it prompts the user that the
                      * cart data is cleared, and then sends to home page.
                      */
-                    is CheckoutActivity -> activity.cartClearedPrompt()
+                    is CheckoutActivity -> activity.cartUpdatedPrompt()
                 }
             }
             // If it failed
             .addOnFailureListener { e ->
                 when (activity) {
                     /* Closes the loading message in the Product Description
-                     * Activity and Checkout Activity
+                     * Activity and Checkout Activity.
                      */
                     is ProductDescActivity -> activity.hideProgressDialog()
                     is CheckoutActivity -> activity.hideProgressDialog()

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     android:orientation="vertical"
     tools:context=".ui.activities.CartActivity">
 
@@ -27,85 +28,143 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <!--  Will only display if the cart is not empty  -->
-    <ScrollView
-        android:id="@+id/sv_cart_layout"
+    <!--  Show this if the cart is not empty  -->
+    <LinearLayout
+        android:id="@+id/ll_cart_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="none"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardElevation="@dimen/card_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/medium_mrg_pd">
+
+                    <CheckBox
+                        android:id="@+id/cb_cart_select_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/cart_prod_selector_marginEnd" />
+
+                    <ImageView
+                        android:layout_width="@dimen/medium_icon_size"
+                        android:layout_height="@dimen/medium_icon_size"
+                        android:contentDescription="@string/market_icon"
+                        android:src="@drawable/ic_market" />
+
+                    <edu.cccdci.opal.utils.HeaderTextView
+                        android:id="@+id/tv_cart_market_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/medium_mrg_pd"
+                        android:layout_marginEnd="@dimen/medium_mrg_pd"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/market_name"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/main_text_size" />
+
+                    <ImageView
+                        android:id="@+id/iv_cart_delete_all"
+                        android:layout_width="@dimen/medium_icon_size"
+                        android:layout_height="@dimen/medium_icon_size"
+                        android:contentDescription="@string/delete_all"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:src="@drawable/ic_delete"
+                        android:visibility="invisible"
+                        app:tint="@color/dark_red" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/ll_weight_limit_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorErrorMessage"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/medium_mrg_pd">
+                android:padding="@dimen/medium_mrg_pd"
+                android:visibility="gone">
 
                 <ImageView
-                    android:layout_width="@dimen/medium_icon_size"
-                    android:layout_height="@dimen/medium_icon_size"
-                    android:layout_marginEnd="@dimen/medium_mrg_pd"
-                    android:contentDescription="@string/market_icon"
-                    android:src="@drawable/ic_market" />
+                    android:layout_width="@dimen/large_icon_size"
+                    android:layout_height="@dimen/large_icon_size"
+                    android:contentDescription="@string/weight_limit_warning_icon"
+                    android:src="@drawable/ic_warning"
+                    app:tint="@color/app_white" />
 
-                <edu.cccdci.opal.utils.HeaderTextView
-                    android:id="@+id/tv_cart_market_name"
+                <edu.cccdci.opal.utils.MainTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="@string/market_name"
-                    android:textColor="@color/app_black"
-                    android:textSize="@dimen/main_text_size" />
+                    android:layout_marginStart="@dimen/medium_mrg_pd"
+                    android:text="@string/err_cart_weight_limit"
+                    android:textColor="@color/app_white"
+                    android:textSize="@dimen/secondary_text_size" />
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_cart"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:background="@color/app_white"
                 android:scrollbars="none" />
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/card_elevation">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingStart="@dimen/medium_large_mrg_pd"
                 android:paddingTop="@dimen/medium_mrg_pd"
+                android:paddingEnd="@dimen/medium_large_mrg_pd"
                 android:paddingBottom="@dimen/medium_large_mrg_pd">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/large_mrg_pd"
-                    android:layout_marginTop="@dimen/medium_mrg_pd"
-                    android:layout_marginEnd="@dimen/large_mrg_pd"
-                    android:layout_marginBottom="@dimen/medium_mrg_pd"
+                    android:layout_marginTop="@dimen/small_mrg_pd"
+                    android:layout_marginBottom="@dimen/small_mrg_pd"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <edu.cccdci.opal.utils.MainTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/medium_large_mrg_pd"
                         android:layout_weight="1"
-                        android:text="@string/sub_total"
+                        android:text="@string/total_weight"
                         android:textColor="@color/app_black"
                         android:textSize="@dimen/main_text_size" />
 
                     <edu.cccdci.opal.utils.MainTextView
-                        android:id="@+id/tv_sub_total"
+                        android:id="@+id/tv_cart_total_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/medium_large_mrg_pd"
-                        android:text="@string/item_price"
+                        android:text="@string/default_weight"
                         android:textColor="@color/app_black"
                         android:textSize="@dimen/main_text_size" />
 
@@ -114,39 +173,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/large_mrg_pd"
-                    android:layout_marginTop="@dimen/medium_mrg_pd"
-                    android:layout_marginEnd="@dimen/large_mrg_pd"
-                    android:layout_marginBottom="@dimen/medium_mrg_pd"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <edu.cccdci.opal.utils.MainTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/delivery_fee"
-                        android:textColor="@color/app_black"
-                        android:textSize="@dimen/main_text_size" />
-
-                    <edu.cccdci.opal.utils.MainTextView
-                        android:id="@+id/tv_delivery_fee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/medium_large_mrg_pd"
-                        android:text="@string/item_price"
-                        android:textColor="@color/app_black"
-                        android:textSize="@dimen/main_text_size" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/large_mrg_pd"
-                    android:layout_marginTop="@dimen/medium_mrg_pd"
-                    android:layout_marginEnd="@dimen/large_mrg_pd"
-                    android:layout_marginBottom="@dimen/medium_mrg_pd"
+                    android:layout_marginTop="@dimen/small_mrg_pd"
+                    android:layout_marginBottom="@dimen/small_mrg_pd"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -159,11 +187,11 @@
                         android:textSize="@dimen/main_text_size" />
 
                     <edu.cccdci.opal.utils.HeaderTextView
-                        android:id="@+id/tv_total"
+                        android:id="@+id/tv_cart_total_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/medium_large_mrg_pd"
-                        android:text="@string/item_price"
+                        android:text="@string/default_price"
                         android:textColor="@color/black"
                         android:textSize="@dimen/main_text_size" />
 
@@ -173,10 +201,9 @@
                     android:id="@+id/btn_checkout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_large_height"
-                    android:layout_marginStart="@dimen/large_mrg_pd"
                     android:layout_marginTop="@dimen/medium_mrg_pd"
-                    android:layout_marginEnd="@dimen/large_mrg_pd"
                     android:background="@drawable/button_primary"
+                    android:enabled="false"
                     android:letterSpacing="0.0"
                     android:padding="@dimen/button_padding"
                     android:text="@string/btn_checkout"
@@ -186,17 +213,18 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-    </ScrollView>
+    </LinearLayout>
 
-    <!--  If the cart is empty  -->
+    <!--  Show this if the cart is empty  -->
     <LinearLayout
         android:id="@+id/ll_empty_cart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/empty_icon_size"
