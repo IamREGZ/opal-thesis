@@ -66,8 +66,8 @@ class GeoDistance(
                     // Set the input stream
                     inputStream = connection!!.inputStream
                     // Set the BufferedReader
-
                     br = BufferedReader(InputStreamReader(inputStream))
+
                     // Variable to receive String inputs
                     val sb = StringBuilder()
 

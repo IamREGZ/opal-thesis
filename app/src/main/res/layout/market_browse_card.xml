@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cv_market_browse"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/browse_card_width"
     android:layout_height="@dimen/browse_card_height"
     android:layout_marginStart="@dimen/medium_large_mrg_pd"
     android:layout_marginTop="@dimen/medium_mrg_pd"
@@ -27,7 +27,7 @@
             android:maxLines="2"
             android:text="@string/market_browse_title"
             android:textColor="@color/app_white"
-            android:textSize="@dimen/header_text_size" />
+            android:textSize="@dimen/main_text_size" />
 
         <ImageView
             android:id="@+id/iv_market_browse_image"

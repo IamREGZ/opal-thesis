@@ -44,7 +44,7 @@ class MainActivity : UtilityClass(),
     private lateinit var mSharedPrefs: SharedPreferences
     private lateinit var mSPEditor: SharedPreferences.Editor
     private var mUserInfo: User? = null
-    private var mCurLocJson: String = ""
+    private var mCurLocJson: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,22 +78,16 @@ class MainActivity : UtilityClass(),
             bottomNavView.setupWithNavController(mNavController)
 
             // Prepare Drawer Navigation (Sidebar)
-            mAppBarConfiguration = AppBarConfiguration(
-                mNavController.graph, dlHomeDrawer
-            )
-            // Setup Drawer Navigation
+            mAppBarConfiguration = AppBarConfiguration(mNavController.graph, dlHomeDrawer)
+
+            // Setup Drawer Navigation (Sidebar)
             NavigationUI.setupActionBarWithNavController(
                 this@MainActivity, mNavController, dlHomeDrawer
             )
-            // Setup Sidebar
             NavigationUI.setupWithNavController(nvSidebar, mNavController)
 
             // Add functionality to the sidebar
             nvSidebar.setNavigationItemSelectedListener(this@MainActivity)
-
-            // Toggle bottom navigation visibility
-            mNavController.addOnDestinationChangedListener(this@MainActivity)
-
         }  // end of with(binding)
 
     }  // end of onCreate method
@@ -105,7 +99,7 @@ class MainActivity : UtilityClass(),
         // Display the loading message
         showProgressDialog(
             this@MainActivity, this@MainActivity,
-            resources.getString(R.string.msg_please_wait)
+            getString(R.string.msg_please_wait)
         )
 
         // Gets the user profile data
@@ -127,20 +121,21 @@ class MainActivity : UtilityClass(),
             when (view.id) {
                 // Go to User Profile Settings when this ImageView is clicked
                 R.id.iv_nav_profile_pic -> {
-                    // Create an Intent to launch UserProfileActivity
-                    val intent = Intent(
-                        this@MainActivity,
-                        UserProfileActivity::class.java
-                    )
-                    // Add extra user information to intent
-                    intent.putExtra(Constants.EXTRA_USER_INFO, mUserInfo!!)
-
-                    // Opens the edit user profile
-                    startActivity(intent)
                     // Closes the drawer layout
                     binding.dlHomeDrawer.closeDrawer(GravityCompat.START)
+
+                    // Create an Intent to launch UserProfileActivity
+                    Intent(
+                        this@MainActivity, UserProfileActivity::class.java
+                    ).apply {
+                        // Add extra user information to intent
+                        putExtra(Constants.EXTRA_USER_INFO, mUserInfo!!)
+
+                        startActivity(this)  // Opens the edit user profile
+                    }  // end of apply
                 }
             }  // end of when
+
         }  // end of if
 
     }  // end of onClick method
@@ -192,9 +187,9 @@ class MainActivity : UtilityClass(),
             // Send to User's Market
             R.id.nav_my_market -> Intent(
                 this@MainActivity, MyMarketActivity::class.java
-            ).run {
+            ).apply {
                 // Add market ID data to intent
-                putExtra(Constants.MARKET_ID_DATA, mUserInfo!!.marketID)
+                putExtra(Constants.MARKET_ID_DATA, mUserInfo?.marketID)
 
                 startActivity(this)  // Opens the vendor's market profile
             }
@@ -202,9 +197,9 @@ class MainActivity : UtilityClass(),
             // Sends user to Product Inventory
             R.id.nav_products -> Intent(
                 this@MainActivity, ProductActivity::class.java
-            ).run {
+            ).apply {
                 // Add market ID data to intent
-                putExtra(Constants.MARKET_ID_DATA, mUserInfo!!.marketID)
+                putExtra(Constants.MARKET_ID_DATA, mUserInfo?.marketID)
 
                 startActivity(this)  // Opens the product inventory
             }
@@ -232,11 +227,21 @@ class MainActivity : UtilityClass(),
         // Bottom navigation is visible for home, categories, notifications fragments
         binding.bottomNavView.visibility = when (destination.id) {
             R.id.fragment_home,
-            R.id.fragment_categories,
+            R.id.fragment_cart,
             R.id.fragment_notifs -> View.VISIBLE
 
             else -> View.GONE
+        }
+
+        when (destination.id) {
+            R.id.fragment_home -> {
+                if (mUserInfo != null) {
+                    NavArgument.Builder().setDefaultValue(mUserInfo!!).build()
+                        .also { destination.addArgument(Constants.EXTRA_USER_INFO, it) }
+                }
+            }
         }  // end of when
+
     }  // end of onDestinationChanged method
 
     // Function to navigate from source fragment to destination fragment
@@ -245,9 +250,7 @@ class MainActivity : UtilityClass(),
     }  // end of navigateFragment method
 
     // Function to set up user information in the sidebar header
-    fun setNavigationAttributes(user: User) {
-        mUserInfo = user  // To be used for Parcelable
-
+    internal fun setNavigationAttributes(user: User) {
         // Get user information from Shared Preferences
         val signedInName = mSharedPrefs.getString(
             Constants.SIGNED_IN_FULL_NAME, "undefined undefined"
@@ -261,9 +264,9 @@ class MainActivity : UtilityClass(),
         val signedInUserRole = mSharedPrefs.getBoolean(
             Constants.SIGNED_IN_USER_ROLE, false
         )
-        mCurLocJson = mSharedPrefs.getString(
-            Constants.CURRENT_LOCATION, ""
-        )!!
+
+        // Get the current location in String JSON format
+        mCurLocJson = mSharedPrefs.getString(Constants.CURRENT_LOCATION, "")
 
         // Gets the header view from sidebar
         val header = binding.nvSidebar.getHeaderView(0)
@@ -279,10 +282,10 @@ class MainActivity : UtilityClass(),
         navUserName.text = signedInUserName
 
         // Set the role indicator of the user
-        navUserRole.text = if (signedInUserRole)
-            resources.getString(R.string.role_vendor)
-        else
-            resources.getString(R.string.role_customer)
+        navUserRole.text = getString(
+            if (signedInUserRole) R.string.role_vendor
+            else R.string.role_customer
+        )
 
         // Change the profile picture with the image in the Cloud Storage
         GlideLoader(this@MainActivity)
@@ -291,23 +294,35 @@ class MainActivity : UtilityClass(),
         // Hide some sidebar menu items depending on user's role
         hideBasedOnUserRole(binding.nvSidebar.menu, signedInUserRole)
 
-        // Click event for Navigation Profile Picture ImageView
-        navProfile.setOnClickListener(this@MainActivity)
-
-        // Create an argument to store user data for Home Fragment
-        val navArg = NavArgument.Builder().setDefaultValue(mUserInfo!!).build()
-        // Adds the parcelable argument for Home Fragment
-        mNavGraph.addArgument(Constants.EXTRA_USER_INFO, navArg)
-        mNavController.graph = mNavGraph  // Update the navigation graph
-
-        if (mCurLocJson.isEmpty()) {
-            if (mUserInfo!!.locSettings != null) {
+        /* In case the String JSON for user's current location is null or empty,
+         * fill up the Shared Preference of the said location if it is available
+         * in the Firestore.
+         */
+        if (mCurLocJson.isNullOrEmpty()) {
+            if (user.locSettings != null) {
                 mSPEditor.putString(
-                    Constants.CURRENT_LOCATION,
-                    Gson().toJson(mUserInfo!!.locSettings)
+                    Constants.CURRENT_LOCATION, Gson().toJson(user.locSettings)
                 ).apply()
             }
         }
+
+        // Modify the mUserInfo if there are any changes detected
+        if (mUserInfo != user) {
+            // Create an argument to store user data for Home Fragment
+            val navArg = NavArgument.Builder().setDefaultValue(user).build()
+
+            // Adds the parcelable argument for Home Fragment
+            mNavGraph.addArgument(Constants.EXTRA_USER_INFO, navArg)
+            mNavController.graph = mNavGraph
+
+            mUserInfo = user  // To be used for Parcelable
+        }
+
+        // Click event for Navigation Profile Picture ImageView
+        navProfile.setOnClickListener(this@MainActivity)
+        // Toggle bottom navigation visibility
+        mNavController.addOnDestinationChangedListener(this@MainActivity)
+
         hideProgressDialog()  // Hide the loading message
     }  // end of setNavigationAttributes method
 
@@ -324,55 +339,58 @@ class MainActivity : UtilityClass(),
         }
     }  // end of hideBasedOnUserRole method
 
-    // Function to log out the user
-    fun logOutUser() {
-        mCurLocJson = mSharedPrefs.getString(
-            Constants.CURRENT_LOCATION, ""
-        )!!
+    // Function to log out the user (and save the current location if available)
+    internal fun logOutUser() {
+        // Get the most recent location data from Shared Preference
+        mCurLocJson = mSharedPrefs.getString(Constants.CURRENT_LOCATION, "")!!
 
-        if (mCurLocJson.isNotEmpty()) {
+        // Save the most recent location data if the String JSON is not empty
+        if (!mCurLocJson.isNullOrEmpty()) {
+            // Display the loading message
             showProgressDialog(
                 this@MainActivity, this@MainActivity,
                 getString(R.string.msg_please_wait)
             )
 
+            // Update the user's location settings in Firestore
             FirestoreClass().updateUserProfileData(
                 this@MainActivity, hashMapOf(
-                    "locSettings" to Gson().fromJson(
+                    Constants.LOCATION_SETTINGS to Gson().fromJson(
                         mCurLocJson, CurrentLocation::class.java
                     )
                 )
             )
         } else {
-            userSavedPrompt()
+            userAuthLogOut()  // Just log out the user
         }
     }  // end of logOutUser method
 
-    fun userSavedPrompt() {
-        if (mCurLocJson.isNotEmpty()) {
+    // Function to log out the user's session in Firebase Authentication
+    internal fun userAuthLogOut() {
+        // Clear the current location Shared Preference data if it is not null or empty
+        if (!mCurLocJson.isNullOrEmpty()) {
             hideProgressDialog()
 
             mSPEditor.putString(Constants.CURRENT_LOCATION, "").apply()
-
-            mSPEditor.putString(Constants.CURRENT_ADDRESS_DETAILS, "").apply()
         }
 
         // Log out the current Firebase Authentication
         FirebaseAuth.getInstance().signOut()
 
         // Create an Intent to launch LoginActivity
-        val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        // To ensure that no more activity layers are active after the user signs out
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        Intent(this@MainActivity, LoginActivity::class.java).apply {
+            // To ensure that no more activity layers are active after the user signs out
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-        // Display a Toast message
-        toastMessage(
-            this@MainActivity,
-            resources.getString(R.string.msg_logged_out)
-        )
+            // Display a Toast message
+            toastMessage(
+                this@MainActivity, getString(R.string.msg_logged_out)
+            )
 
-        startActivity(intent)  // Opens the log in activity
-        finish()  // Closes the current activity
-    }  // end of userSavedPrompt method
+            startActivity(this)  // Opens the log in activity
+            finish()  // Closes the current activity
+        }  // end of apply
+
+    }  // end of userAuthLogOut method
 
 }  // end of MainActivity class

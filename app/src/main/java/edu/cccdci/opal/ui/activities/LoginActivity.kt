@@ -78,12 +78,9 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
             // Create a FormValidation object, and then execute the validations
             return FormValidation(this@LoginActivity).run {
                 when {
-                    // Email Address
-                    !validateEmail(etLoginEmail) -> false
-                    // Password
-                    !validateAuthPassword(etLoginPass) -> false
-                    // When all fields are valid
-                    else -> true
+                    !validateEmail(etLoginEmail) -> false  // Email Address
+                    !validateAuthPassword(etLoginPass) -> false  // Password
+                    else -> true  // When all fields are valid
                 }  // end of when
             }  // end of run
 
@@ -111,8 +108,9 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
                     if (task.isSuccessful) {
                         // Gets the user details
                         FirestoreClass().getUserDetails(this@LoginActivity)
-                    } else {
-                        // If it is not successful
+                    }
+                    // If it is not successful
+                    else {
                         hideProgressDialog()  // Hide the loading message
 
                         clearLoginFields()  // Clears the login fields
@@ -132,14 +130,12 @@ class LoginActivity : UtilityClass(), View.OnClickListener {
     }  // end of loginUser method
 
     // Function to prompt that he/she is logged in
-    fun logInSuccessPrompt() {
+    internal fun logInSuccessPrompt() {
         hideProgressDialog()  // Hide the loading message
 
         // Opens the home page
         startActivity(
-            Intent(
-                this@LoginActivity, MainActivity::class.java
-            )
+            Intent(this@LoginActivity, MainActivity::class.java)
         )
         finish()  // Closes the current activity
     }  // end of logInSuccessPrompt method

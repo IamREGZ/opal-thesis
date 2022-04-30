@@ -8,7 +8,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.AddressAdapter
 import edu.cccdci.opal.databinding.ActivityAddressesBinding
-import edu.cccdci.opal.dataclasses.Address
+import edu.cccdci.opal.dataclasses.UserAddress
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
 import edu.cccdci.opal.utils.Constants
@@ -18,8 +18,10 @@ class AddressesActivity : UtilityClass() {
 
     private lateinit var binding: ActivityAddressesBinding
     private var addressAdapter: AddressAdapter? = null
+
     // Enables selection of address when it is true
     private var mSelectableAddress: Boolean = false
+    // If address selection is enables, this will determine the selection mode
     private var mMode: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +48,10 @@ class AddressesActivity : UtilityClass() {
                 )
             }
 
-            // Might be temporary
+            // Check if there's an existing Int info
             if (intent.hasExtra(Constants.SELECTION_MODE)) {
-                mMode = intent.getIntExtra(
-                    Constants.SELECTION_MODE, 0
-                )
+                // Get the Int value (default value is -1)
+                mMode = intent.getIntExtra(Constants.SELECTION_MODE, -1)
             }
 
             setupAddressAdapter()  // Setup the Address RecyclerView Adapter
@@ -74,7 +75,7 @@ class AddressesActivity : UtilityClass() {
                         true
                     )
                 }
-            }
+            }  // end of setOnClickListener
         }  // end of with(binding)
 
     }  // end of onCreate method
@@ -99,9 +100,9 @@ class AddressesActivity : UtilityClass() {
     // Function to setup the RecyclerView adapter for addresses
     private fun setupAddressAdapter() {
         // Create a Builder for FirestoreRecyclerOptions
-        val options = FirestoreRecyclerOptions.Builder<Address>()
+        val options = FirestoreRecyclerOptions.Builder<UserAddress>()
             // Gets all the documents from addresses collection
-            .setQuery(FirestoreClass().getAddressQuery(), Address::class.java)
+            .setQuery(FirestoreClass().getAddressQuery(), UserAddress::class.java)
             .build()
 
         with(binding) {

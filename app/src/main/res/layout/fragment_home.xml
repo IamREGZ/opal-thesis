@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     android:orientation="vertical"
     tools:context=".ui.fragments.HomeFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_home_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,7 +88,7 @@
                     android:ellipsize="end"
                     android:focusable="false"
                     android:inputType="none"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:textColor="@color/app_black"
                     android:textSize="@dimen/main_text_size" />
 

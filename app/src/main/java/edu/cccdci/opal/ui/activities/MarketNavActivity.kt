@@ -3,14 +3,14 @@ package edu.cccdci.opal.ui.activities
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.geofire.GeoLocation
-import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.MarketAdapter
 import edu.cccdci.opal.databinding.ActivityMarketNavBinding
-import edu.cccdci.opal.dataclasses.Address
+import edu.cccdci.opal.dataclasses.CurrentLocation
 import edu.cccdci.opal.dataclasses.Market
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.layoutwrapper.WrapperLinearLayoutManager
@@ -23,14 +23,17 @@ class MarketNavActivity : UtilityClass() {
     private lateinit var marketAdapter: MarketAdapter
     private lateinit var mSharedPrefs: SharedPreferences
     private lateinit var mSPEditor: SharedPreferences.Editor
-    private var mCurrentLocation: LatLng? = null
     private var mCategoryTitle: String? = null
+    private var mCategoryDesc: String? = null
     private var mCategoryCode: Int? = null
-    private var mSelectedLocAddress: Address? = null
+    private var mCurLocJson: String? = null
+    private var mUserLocation: CurrentLocation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         binding = ActivityMarketNavBinding.inflate(layoutInflater)
 
         // Creates the Shared Preferences
@@ -40,56 +43,55 @@ class MarketNavActivity : UtilityClass() {
         // Create the editor for Shared Preferences
         mSPEditor = mSharedPrefs.edit()
 
-        if (intent.hasExtra(Constants.CURRENT_LOCATION)) {
-            mCurrentLocation = intent.getParcelableExtra(Constants.CURRENT_LOCATION)
-        }
+        // Check if there's an existing category title data
+        if (intent.hasExtra(Constants.CATEGORY_TITLE))
+            mCategoryTitle = intent.getStringExtra(Constants.CATEGORY_TITLE)
 
-        if (intent.hasExtra("category_title")) {
-            mCategoryTitle = intent.getStringExtra("category_title")!!
-        }
+        // Check if there's an existing category description data
+        if (intent.hasExtra(Constants.CATEGORY_DESC))
+            mCategoryDesc = intent.getStringExtra(Constants.CATEGORY_DESC)
 
-        if (intent.hasExtra("category_code")) {
-            mCategoryCode = intent.getIntExtra("category_code", 6)
-        }
+        // Check if there's an existing category code data
+        if (intent.hasExtra(Constants.CATEGORY_CODE))
+            mCategoryCode = intent.getIntExtra(Constants.CATEGORY_CODE, -1)
 
-        val selectedLocation = mSharedPrefs.getString(
-            Constants.CURRENT_ADDRESS_DETAILS, ""
-        )!!
+        // Get the current location in String JSON format
+        mCurLocJson = mSharedPrefs.getString(Constants.CURRENT_LOCATION, "")
 
         with(binding) {
             setContentView(root)
             // Setups the Action Bar of the current activity
             setupActionBar(tlbMarketNavActivity, false)
 
-            tvMarketNavTitle.text = mCategoryTitle!!
+            // Store the user's location from String JSON format
+            if (!mCurLocJson.isNullOrEmpty())
+                mUserLocation = Gson().fromJson(mCurLocJson, CurrentLocation::class.java)
 
-            if (selectedLocation.isNotEmpty()) {
-                mSelectedLocAddress = Gson().fromJson(
-                    selectedLocation, Address::class.java
-                )
+            // Set the market navigation title
+            tvMarketNavTitle.text = mCategoryTitle
+                ?: getString(R.string.market_navigation_title)
 
-                tvUserCurrentAddress.text = getString(
-                    R.string.current_location,
-                    mSelectedLocAddress!!.detailAdd,
-                    mSelectedLocAddress!!.barangay,
-                    mSelectedLocAddress!!.city,
-                    mSelectedLocAddress!!.province,
-                    mSelectedLocAddress!!.postal
-                )
-            }
+            tvMarketNavDesc.text = mCategoryDesc
+                ?: getString(R.string.market_navigation_desc)
 
+            // Set the user's current address
+            tvUserCurrentAddress.text = mUserLocation?.fullAddress
+                ?: getString(R.string.user_current_location)
+
+            // Get all nearby markets using the current location
             FirestoreClass().getNearbyLocations(
                 this@MarketNavActivity,
                 GeoLocation(
-                    mCurrentLocation!!.latitude,
-                    mCurrentLocation!!.longitude
+                    mUserLocation?.latitude ?: 0.0,
+                    mUserLocation?.longitude ?: 0.0
                 )
             )
         }  // end of with(binding)
 
     }  // end of onCreate method
 
-    fun getRetrievedMarkets(markets: List<Market>) {
+    // Function to display the list of nearby markets
+    internal fun getRetrievedMarkets(markets: List<Market>) {
         with(binding) {
             // Sets the layout type of the RecyclerView
             rvMarketNavResult.layoutManager = WrapperLinearLayoutManager(
@@ -99,12 +101,15 @@ class MarketNavActivity : UtilityClass() {
             // Create an object of Market Adapter
             marketAdapter = MarketAdapter(
                 this@MarketNavActivity, markets,
-                listOf(mCurrentLocation!!.latitude, mCurrentLocation!!.longitude)
+                listOf(
+                    mUserLocation?.latitude ?: 0.0,
+                    mUserLocation?.longitude ?: 0.0
+                )
             )
 
             // Sets the adapter of Markets RecyclerView
             rvMarketNavResult.adapter = marketAdapter
         }
-    }
+    }  // end of getRetrievedMarkets method
 
-}  // end of MarketNavActivity
+}  // end of MarketNavActivity class

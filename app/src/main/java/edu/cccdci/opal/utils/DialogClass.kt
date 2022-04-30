@@ -1,6 +1,8 @@
 package edu.cccdci.opal.utils
 
 import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import edu.cccdci.opal.adapters.CartAdapter
@@ -69,6 +71,12 @@ class DialogClass(
                 // Fragments only
                 if (mFragment != null) {
                     when (mFragment) {
+                        is HomeFragment -> {
+                            mContext.startActivity(
+                                Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                            )
+                        }
+
                         // Proceed with account deletion in Delete Account Fragment (Delete)
                         is DeleteAccountFragment -> mFragment.verifyCredentials()
 

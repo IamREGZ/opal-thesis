@@ -43,7 +43,7 @@ class CheckoutActivity
     private lateinit var mSPEditor: SharedPreferences.Editor
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var mSupportMap: SupportMapFragment
-    private var mSelectedAddress: Address? = null
+    private var mSelectedUserAddress: UserAddress? = null
     private var mIsInDeliveryCoverage: Boolean = false
     private var mSelectedPayment: String? = ""
     private var mUserInfo: User? = null
@@ -147,17 +147,18 @@ class CheckoutActivity
             // If the selected address is not empty, change the selected address object
             if (selectedAddress.isNotEmpty()) {
                 // Store the new address value
-                mSelectedAddress = Gson().fromJson(selectedAddress, Address::class.java)
+                mSelectedUserAddress = Gson().fromJson(selectedAddress, UserAddress::class.java)
 
                 setCheckoutAddress()  // Change the address text labels
             } else {
                 /* If it is empty, make the no selected address label visible
                  * and the layout of selected address gone.
                  */
-                if (llSelectedAddress.isVisible) {
-                    tvNoSelectedAddress.visibility = View.VISIBLE
+                if (llSelectedAddress.isVisible)
                     llSelectedAddress.visibility = View.GONE
-                }
+
+                if (tvNoSelectedAddress.isVisible)
+                    tvNoSelectedAddress.visibility = View.VISIBLE
 
                 // Change the delivery message attributes
                 toggleDeliveryMessagePanel(false)
@@ -187,7 +188,11 @@ class CheckoutActivity
                     ).apply {
                         // To enable address selection functionality in the target activity
                         putExtra(Constants.SELECTABLE_ENABLED, true)
-                        putExtra(Constants.SELECTION_MODE, 0)
+                        // Store the address selection mode code (Checkout)
+                        putExtra(
+                            Constants.SELECTION_MODE,
+                            Constants.SELECT_CHECKOUT_ADDRESS
+                        )
 
                         startActivity(this)  // Opens the activity
                     }  // end of apply
@@ -217,7 +222,7 @@ class CheckoutActivity
             clear()  // Clear all the markers set in the map
 
             // Get the delivery address coordinates
-            val delivery = Constants.getLocation(mSelectedAddress)
+            val delivery = Constants.getLocation(mSelectedUserAddress)
             // Create an object of delivery address' latitude and longitude
             val deliveryLoc = LatLng(delivery[0], delivery[1])
 
@@ -366,19 +371,19 @@ class CheckoutActivity
     /* Function to store the address retrieved from Firestore (default) or
      * the selected address from the selection activity.
      */
-    internal fun storeSelectedAddress(address: Address?) {
+    internal fun storeSelectedAddress(uAddress: UserAddress?) {
         hideProgressDialog()  // Hide the loading message
 
         // Store the address in the variable
-        mSelectedAddress = address
+        mSelectedUserAddress = uAddress
 
         // Change the output of address data if the address is not null
-        if (mSelectedAddress != null) {
+        if (mSelectedUserAddress != null) {
             /* Set the Shared Preference of selected address as the retrieved
              * default address.
              */
             mSPEditor.putString(
-                Constants.SELECTED_ADDRESS, Gson().toJson(mSelectedAddress)
+                Constants.SELECTED_ADDRESS, Gson().toJson(mSelectedUserAddress)
             ).apply()
 
             setCheckoutAddress()  // Change the delivery address output information
@@ -388,10 +393,11 @@ class CheckoutActivity
             // Make the Shared Preference of selected address blank
             mSPEditor.putString(Constants.SELECTED_ADDRESS, "").apply()
 
-            if (binding.llSelectedAddress.isVisible) {
+            if (binding.llSelectedAddress.isVisible)
                 binding.llSelectedAddress.visibility = View.GONE
+
+            if (!binding.tvNoSelectedAddress.isVisible)
                 binding.tvNoSelectedAddress.visibility = View.VISIBLE
-            }
 
             // Change the delivery message attributes
             toggleDeliveryMessagePanel(false)
@@ -404,7 +410,7 @@ class CheckoutActivity
     // Function to change the output of delivery address information
     private fun setCheckoutAddress() {
         with(binding) {
-            mSelectedAddress?.let { addr ->
+            mSelectedUserAddress?.let { addr ->
                 // Change all the respective views with address information
                 tvChkoutAddrContact.text = getString(
                     R.string.address_contact_info, addr.fullName, addr.phoneNum
@@ -470,7 +476,7 @@ class CheckoutActivity
             GeoDistance(this@CheckoutActivity)
                 .calculateDistance(
                     Constants.getLocation(mMarket),
-                    Constants.getLocation(mSelectedAddress)
+                    Constants.getLocation(mSelectedUserAddress)
                 )
         } else {
             // Change the delivery message attributes
@@ -543,13 +549,13 @@ class CheckoutActivity
 
         with(binding) {
             // Make the delivery message panel visible if there's an address selected
-            cvDeliveryMessagePanel.visibility = if (mSelectedAddress != null)
+            cvDeliveryMessagePanel.visibility = if (mSelectedUserAddress != null)
                 View.VISIBLE
             else
                 View.GONE
 
             // Has a selected address and within delivery coverage
-            if (mSelectedAddress != null && mIsInDeliveryCoverage) {
+            if (mSelectedUserAddress != null && mIsInDeliveryCoverage) {
                 /* Make the delivery info visible and address not in delivery
                  * coverage message not visible
                  */
@@ -566,7 +572,7 @@ class CheckoutActivity
                 )
             }
             // Has a selected address only
-            else if (mSelectedAddress != null) {
+            else if (mSelectedUserAddress != null) {
                 /* Make the address not in delivery coverage message visible
                  * and delivery info not visible
                  */
@@ -600,7 +606,7 @@ class CheckoutActivity
              * 4. There must be one selected payment method, and
              * 5. Special instructions (optional) must have at most 100 characters.
              */
-            btnPlaceOrder.isEnabled = mSelectedAddress != null &&
+            btnPlaceOrder.isEnabled = mSelectedUserAddress != null &&
                     mIsInDeliveryCoverage &&
                     !TextUtils.isEmpty(actvChkoutOrderAction.text.toString()
                         .trim { it <= ' ' }) &&
@@ -646,7 +652,7 @@ class CheckoutActivity
         // Store the Payment Method
         orderHashMap[Constants.ORDER_PAYMENT] = mSelectedPayment ?: ""
 
-        orderHashMap[Constants.ADDRESS] = mSelectedAddress?.let {
+        orderHashMap[Constants.ADDRESS] = mSelectedUserAddress?.let {
             // Store the user's address information
             OrderAddress(
                 it.fullName, it.phoneNum, it.province, it.city,

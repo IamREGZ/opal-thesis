@@ -15,8 +15,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.gson.Gson
 import edu.cccdci.opal.R
-import edu.cccdci.opal.dataclasses.Address
 import edu.cccdci.opal.dataclasses.CurrentLocation
+import edu.cccdci.opal.dataclasses.UserAddress
 import edu.cccdci.opal.ui.activities.AddressEditActivity
 import edu.cccdci.opal.utils.Constants
 
@@ -24,8 +24,8 @@ class AddressAdapter(
     private val activity: Activity,
     private val selectable: Boolean,
     private val mode: Int,
-    options: FirestoreRecyclerOptions<Address>
-): FirestoreRecyclerAdapter<Address, AddressAdapter.AddressViewHolder>(options) {
+    options: FirestoreRecyclerOptions<UserAddress>
+) : FirestoreRecyclerAdapter<UserAddress, AddressAdapter.AddressViewHolder>(options) {
 
     // Nested Class to hold views from the target layout
     inner class AddressViewHolder(
@@ -48,25 +48,25 @@ class AddressAdapter(
             .findViewById(R.id.ll_address_panel)
 
         // Function to set values to the specified views from address item
-        internal fun setAddressData(address: Address) {
+        internal fun setAddressData(uAddress: UserAddress) {
             // Store the address object values in the respective views
-            addrFullName.text = address.fullName
-            phoneNum.text = address.phoneNum
-            addrLine1.text = address.detailAdd
+            addrFullName.text = uAddress.fullName
+            phoneNum.text = uAddress.phoneNum
+            addrLine1.text = uAddress.detailAdd
             addrLine2.text = activity.getString(
-                R.string.addr_line_2, address.barangay, address.city,
-                address.province, address.postal
+                R.string.addr_line_2, uAddress.barangay, uAddress.city,
+                uAddress.province, uAddress.postal
             )
 
             /* Set the visibility of default address label depending the
              * default address status
              */
-            defaultAddr.visibility = if (address.default) View.VISIBLE else View.GONE
+            defaultAddr.visibility = if (uAddress.default) View.VISIBLE else View.GONE
 
             // Actions when the Edit icon is clicked
             editAddr.setOnClickListener {
                 // Opens the address editor
-                activity.startActivity(openEditorWithAddress(address))
+                activity.startActivity(openEditorWithAddress(uAddress))
             }
 
             // Enable address selection if the preceding activity is Checkout or Home
@@ -74,23 +74,23 @@ class AddressAdapter(
                 // Actions when the Address Item Layout is clicked
                 userAddrPanel.setOnClickListener {
                     // Selects the address and sends back the user to previous page
-                    selectAddress(address)
+                    selectAddress(uAddress)
                 }
             }  // end of if
 
         }  // end of setAddressData method
 
         // Function to return an Intent with Address class parcelable
-        private fun openEditorWithAddress(address: Address) : Intent {
+        private fun openEditorWithAddress(uAddress: UserAddress): Intent {
             // Create an Intent to launch AddressEditActivity
-            return Intent(activity, AddressEditActivity::class.java).run {
+            return Intent(activity, AddressEditActivity::class.java).apply {
                 // Stores the parcelable class
-                putExtra(Constants.USER_ADDRESS, address)
+                putExtra(Constants.USER_ADDRESS, uAddress)
             }
         }  // end of openEditorWithAddress class
 
         // Function to select this address and do something depending on the context
-        private fun selectAddress(address: Address) {
+        private fun selectAddress(uAddress: UserAddress) {
             // Creates the Shared Preferences
             val sharedPrefs = activity.getSharedPreferences(
                 Constants.OPAL_PREFERENCES,
@@ -100,24 +100,28 @@ class AddressAdapter(
             // Create the editor for Shared Preferences
             val spEditor: SharedPreferences.Editor = sharedPrefs.edit()
 
-            // Shared Preference for Selected Address
-            spEditor.putString(
-                if (mode == 0)
-                    Constants.SELECTED_ADDRESS
-                else
-                    Constants.CURRENT_ADDRESS_DETAILS,
-                Gson().toJson(address)
-            ).apply()
+            with(uAddress) {
+                spEditor.apply {
+                    when (mode) {
+                        // Address selection for Checkout
+                        Constants.SELECT_CHECKOUT_ADDRESS -> putString(
+                            Constants.SELECTED_ADDRESS, Gson().toJson(this@with)
+                        )
 
-            if (mode == 1) {
-                val curLoc = CurrentLocation(
-                    1, address.location!!.latitude, address.location.longitude
-                )
-
-                spEditor.putString(
-                    Constants.CURRENT_LOCATION, Gson().toJson(curLoc)
-                ).apply()
-            }
+                        // Address selection for Current Location
+                        Constants.SELECT_CURRENT_LOCATION -> putString(
+                            Constants.CURRENT_LOCATION, Gson().toJson(
+                                CurrentLocation(
+                                    Constants.FROM_USER_ADDRESS_CODE,
+                                    location?.latitude ?: 0.0,
+                                    location?.longitude ?: 0.0,
+                                    "$detailAdd, $barangay, $city, $province $postal"
+                                )
+                            )
+                        )
+                    }  // end of when
+                }.apply()
+            }  // end of with(address)
 
             activity.finish()  // Closes the activity
 
@@ -138,10 +142,10 @@ class AddressAdapter(
 
     // Function to implement the codes for each item in the RecyclerView
     override fun onBindViewHolder(
-        holder: AddressViewHolder, position: Int, address: Address
+        holder: AddressViewHolder, position: Int, uAddress: UserAddress
     ) {
         // Sets the values of address data to the current view
-        holder.setAddressData(address)
+        holder.setAddressData(uAddress)
     }  // end of onBindViewHolder method
 
 }  // end of AddressAdapter class

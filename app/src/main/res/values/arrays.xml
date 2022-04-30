@@ -24,9 +24,16 @@
 
     <!--  Browse Markets  -->
     <string-array name="browse_market_categories">
-        <item>Top Sales</item>
+        <item>Markets Near Me</item>
         <item>Bagsak Presyo</item>
+        <item>Suki Markets</item>
         <item>Recent Markets</item>
+    </string-array>
+    <string-array name="browse_market_description">
+        <item>Available markets within your area.</item>
+        <item>Markets with ongoing price drop promos.</item>
+        <item>Markets recommended by sukis.</item>
+        <item>Markets where you ordered recently.</item>
     </string-array>
 
     <!--  Market Categories  -->

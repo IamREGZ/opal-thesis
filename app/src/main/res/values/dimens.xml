@@ -108,9 +108,10 @@
     <dimen name="card_elevation">8dp</dimen>
 
     <!--  Market Browse Dimens  -->
-    <dimen name="browse_card_height">180dp</dimen>
+    <dimen name="browse_card_width">150dp</dimen>
+    <dimen name="browse_card_height">200dp</dimen>
     <dimen name="browse_card_corners">16dp</dimen>
-    <dimen name="browse_card_image_size">120dp</dimen>
+    <dimen name="browse_card_image_size">100dp</dimen>
 
     <!--  Market Category Dimens  -->
     <dimen name="category_card_width">240dp</dimen>

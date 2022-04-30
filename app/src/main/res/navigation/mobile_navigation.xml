@@ -49,12 +49,12 @@
 
     </fragment>
 
-    <!-- Categories Fragment -->
+    <!-- Cart Fragment -->
     <fragment
-        android:id="@+id/fragment_categories"
-        android:name="edu.cccdci.opal.ui.fragments.CategoriesFragment"
-        android:label="@string/categories"
-        tools:layout="@layout/fragment_categories" />
+        android:id="@+id/fragment_cart"
+        android:name="edu.cccdci.opal.ui.fragments.CartFragment"
+        android:label="@string/cart"
+        tools:layout="@layout/fragment_cart" />
 
     <!-- Notifications Fragment -->
     <fragment

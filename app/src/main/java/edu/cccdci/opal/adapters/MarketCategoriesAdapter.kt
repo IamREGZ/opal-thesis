@@ -1,6 +1,6 @@
 package edu.cccdci.opal.adapters
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -10,15 +10,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.model.LatLng
 import edu.cccdci.opal.R
+import edu.cccdci.opal.ui.activities.MainActivity
 import edu.cccdci.opal.ui.activities.MarketNavActivity
 import edu.cccdci.opal.utils.Constants
 
 class MarketCategoriesAdapter(
-    private val context: Context,
-    private val curLoc: Array<Double>,
-    private val categoriesList: Array<String>
+    private val activity: MainActivity,
+    private val categoriesList: Array<String>,
+    private val hasCurrentAddress: Boolean
 ) : RecyclerView.Adapter<MarketCategoriesAdapter.MarketCategoriesViewHolder>() {
 
     // Nested Class to hold views from the target layout
@@ -34,33 +34,29 @@ class MarketCategoriesAdapter(
             .findViewById(R.id.iv_market_category_image)
 
         // Function to set the Market Category Panel attributes
+        @SuppressLint("ResourceType")
         internal fun setCategoryPanel(title: String, position: Int) {
             // Change the card background color, depending on the position
             categoryCard.setCardBackgroundColor(
                 Color.parseColor(
-                    // Odd categories, green. Even categories, teal.
-                    if (position % 2 == 0) Constants.APP_GREEN else Constants.APP_TEAL
+                    activity.getString(
+                        // Odd categories, green. Even categories, teal.
+                        if (position % 2 == 0) R.color.primaryColorTheme
+                        else R.color.secondaryColorTheme
+                    )
                 )
             )
 
             // Change the category image, depending on the position
             categoryImage.setImageResource(
                 when (position) {
-                    // Meat
-                    0 -> R.drawable.ic_category_meat
-                    // Seafood
-                    1 -> R.drawable.ic_category_seafood
-                    // Poultry
-                    2 -> R.drawable.ic_category_poultry
-                    // Fruits
-                    3 -> R.drawable.ic_category_fruits
-                    // Vegetables
-                    4 -> R.drawable.ic_category_vegetables
-                    // Rice
-                    5 -> R.drawable.ic_category_rice
-                    // Others
-                    6 -> R.drawable.ic_category_others
-                    // Unknown
+                    Constants.CATEGORY_MEAT -> R.drawable.ic_category_meat
+                    Constants.CATEGORY_SEAFOOD -> R.drawable.ic_category_seafood
+                    Constants.CATEGORY_POULTRY -> R.drawable.ic_category_poultry
+                    Constants.CATEGORY_FRUITS -> R.drawable.ic_category_fruits
+                    Constants.CATEGORY_VEGETABLES -> R.drawable.ic_category_vegetables
+                    Constants.CATEGORY_RICE -> R.drawable.ic_category_rice
+                    Constants.CATEGORY_OTHERS -> R.drawable.ic_category_others
                     else -> R.drawable.ic_unknown
                 }
             )
@@ -68,22 +64,29 @@ class MarketCategoriesAdapter(
             // Change the category title
             categoryTitle.text = title
 
+            // Actions when one of the market category cards is clicked
             categoryCard.setOnClickListener {
-                val intent = Intent(
-                    context, MarketNavActivity::class.java
-                )
+                if (hasCurrentAddress) {
+                    // Make sure the user has selected a current location to proceed
+                    Intent(activity, MarketNavActivity::class.java).apply {
+                        // Store the market category title
+                        putExtra(Constants.CATEGORY_TITLE, title)
+                        // Store the market category code
+                        putExtra(Constants.CATEGORY_CODE, position)
 
-                intent.putExtra(
-                    Constants.CURRENT_LOCATION,
-                    LatLng(curLoc[0], curLoc[1])
-                )
+                        // Opens the Market Navigation Activity
+                        activity.startActivity(this)
+                    }  // end of apply
+                } else {
+                    // Display an error message
+                    activity.showSnackBar(
+                        activity,
+                        activity.getString(R.string.err_no_current_location),
+                        true
+                    )
+                }  // end of if-else
+            }  // end of setOnClickListener
 
-                intent.putExtra("category_title", title)
-
-                intent.putExtra("category_code", position)
-
-                context.startActivity(intent)
-            }
         }  // end of setCategoryPanel method
 
     }  // end of MarketCategoriesViewHolder class

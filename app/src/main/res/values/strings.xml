@@ -15,11 +15,21 @@
     <string name="strong_pass_special_chars">At least one (1) special character</string>
 
     <!--  Generic Error Messages  -->
-    <string name="err_permission_denied">
+    <string name="err_storage_permission_denied">
         Storage permission denied. You can also allow it from your device\'s settings.
+    </string>
+    <string name="err_fine_location_permission_denied">
+        Device location permission denied. You can also allow it from your device\'s
+        settings.
     </string>
     <string name="err_image_selection_failed">
         There was an error selecting the image file.
+    </string>
+    <string name="err_get_location_failed">
+        There was an error getting the device\'s location. Error cause: %s
+    </string>
+    <string name="err_no_device_location_result">
+        Error while retrieving device location. Please try again later.
     </string>
 
     <!--  User-related Form Validation Error Messages  -->
@@ -73,6 +83,9 @@
     <string name="err_address_limit">
         You cannot have more than five (5) addresses. Delete some of your addresses
         and try again.
+    </string>
+    <string name="err_no_current_location">
+        Please set your current location first before browsing for wet markets.
     </string>
 
     <!--  Market-related Form Validation Error Messages  -->
@@ -240,6 +253,9 @@
 
     <!--  System-related Message Prompts  -->
     <string name="msg_back_again_to_exit">Press back again to exit.</string>
+    <string name="msg_device_location_retrieved">
+        Device location retrieved successfully.
+    </string>
 
     <!--  Progress Dialog  -->
     <string name="msg_please_wait">Please wait&#8230;</string>
@@ -329,6 +345,11 @@
     <string name="dialog_remove_selected_items_title">Remove Selected Items</string>
     <string name="dialog_remove_selected_items_message">
         Are you sure you want to remove the selected item(s) from your cart?
+    </string>
+    <string name="dialog_enable_location_title">Enable Location Services</string>
+    <string name="dialog_enable_location_message">
+        This feature requires enabling location services on your device. Enable it
+        from your device settings first, and the select My Device\'s Location again.
     </string>
 
     <!--  Alert Dialog Buttons  -->
@@ -430,13 +451,14 @@
 
     <!--  Bottom Navigation  -->
     <string name="home">Home</string>
-    <string name="categories">Categories</string>
+    <string name="cart">Profile</string>
     <string name="notifications">Notifications</string>
 
     <!--  Home Header  -->
     <string name="home_greeting">Hi There!</string>
     <string name="home_welcome">Welcome to OPAL!</string>
     <string name="set_location">Set Location</string>
+    <string name="selected_location_option">%1$s (%2$s)</string>
     <string name="market_browse_head">Browse</string>
     <string name="market_categories_head">Categories</string>
 

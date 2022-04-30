@@ -1,22 +1,32 @@
 package edu.cccdci.opal.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
 import edu.cccdci.opal.R
-import edu.cccdci.opal.dataclasses.Address
-import edu.cccdci.opal.dataclasses.Location
+import edu.cccdci.opal.dataclasses.CurrentLocation
+import edu.cccdci.opal.dataclasses.LocationData
 import edu.cccdci.opal.dataclasses.Market
+import edu.cccdci.opal.dataclasses.UserAddress
+import edu.cccdci.opal.ui.fragments.HomeFragment
+import org.json.JSONException
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,6 +52,7 @@ object Constants {
     const val VENDOR: String = "vendor"
     const val CART: String = "cart"
     const val CART_ITEMS: String = "cartItems"
+    const val LOCATION_SETTINGS: String = "locSettings"
 
     // Cloud Firestore constants for Addresses
     const val ADDRESSES: String = "addresses"
@@ -136,6 +147,19 @@ object Constants {
     const val ORDER_TO_RETURN_CODE: Int = 6
     const val ORDER_RETURNED_CODE: Int = 7
 
+    // Market Browse/Category Codes
+    const val BROWSE_NEAR_ME: Int = 0
+    const val BROWSE_BAGSAK: Int = 1
+    const val BROWSE_SUKI: Int = 2
+    const val BROWSE_RECENT: Int = 3
+    const val CATEGORY_MEAT: Int = 0
+    const val CATEGORY_SEAFOOD: Int = 1
+    const val CATEGORY_POULTRY: Int = 2
+    const val CATEGORY_FRUITS: Int = 3
+    const val CATEGORY_VEGETABLES: Int = 4
+    const val CATEGORY_RICE: Int = 5
+    const val CATEGORY_OTHERS: Int = 6
+
     // For Shared Preferences and Parcelable
     const val OPAL_PREFERENCES: String = "OPALPrefs"
     const val SIGNED_IN_FULL_NAME: String = "signed_in_full_name"
@@ -157,12 +181,28 @@ object Constants {
     const val LOCATION_MARKERS_INFO: String = "location_markers_info"
     const val CURRENT_MARKER_POS: String = "current_marker_position"
     const val CURRENT_LOCATION: String = "current_location"
-    const val CURRENT_ADDRESS_DETAILS: String = "current_address_details"
     const val SELECTION_MODE: String = "selection_mode"
+    const val CATEGORY_CODE: String = "category_code"
+    const val CATEGORY_TITLE: String = "category_title"
+    const val CATEGORY_DESC: String = "category_desc"
 
     // Request Permission Codes
     const val READ_STORAGE_PERMISSION_CODE: Int = 2
     const val SELECT_IMAGE_REQUEST_CODE: Int = 1
+
+    // Current Location Options Codes
+    const val FROM_DEVICE_LOCATION_CODE: Int = 0
+    const val FROM_USER_ADDRESS_CODE: Int = 1
+
+    // Location Request Constants
+    const val LOC_REQ_INTERVAL: Long = 600000L  // 10 mins
+    const val LOC_REQ_FASTEST_INTERVAL: Long = 300000L  // 5 mins
+    const val LOC_REQ_MAX_WAIT_TIME: Long = 1800000L  // 30 mins
+    const val LOC_REQ_EXP_DURATION: Long = 120000L  // 20 mins
+
+    // Address Selection Mode Codes
+    const val SELECT_CHECKOUT_ADDRESS: Int = 0
+    const val SELECT_CURRENT_LOCATION: Int = 1
 
     // Dialog Action IDs
     const val DELETE_ADDRESS_ACTION: Int = 10
@@ -273,6 +313,84 @@ object Constants {
         )
     }  // end of getFileExtension method
 
+    // Function to get the device's location with address information
+    @SuppressLint("MissingPermission")
+    internal fun getDeviceLocation(
+        activity: Activity, location: Location?, fragment: Fragment? = null
+    ) {
+        var error: String? = null  // Error message (if available)
+        var result: String? = null  // Resulting location data
+
+        // If the retrieved location exists
+        if (location != null) {
+            try {
+                // Use Geocoder to parse location data into address information
+                val address = Geocoder(activity, Locale.getDefault())
+                    // Get the latitude and longitude, with one result
+                    .getFromLocation(
+                        location.latitude, location.longitude, 1
+                    )
+
+                if (fragment != null) {
+                    result = when (fragment) {
+                        is HomeFragment -> Gson().toJson(
+                            CurrentLocation(
+                                FROM_DEVICE_LOCATION_CODE,
+                                address[0].latitude,
+                                address[0].longitude,
+                                address[0].getAddressLine(0)
+                            )
+                        )
+
+                        else -> null
+                    }
+                }
+            } catch (e: IOException) {
+                // Log the error and store its message
+                e.printStackTrace()
+                error = e.message
+            } catch (e: JSONException) {
+                // Log the error and store its message
+                e.printStackTrace()
+                error = e.message
+            } catch (e: NullPointerException) {
+                // Log the error and store its message
+                e.printStackTrace()
+                error = e.message
+            } finally {
+                // If there's an error, display a Toast message
+                if (!error.isNullOrEmpty()) {
+                    Toast.makeText(
+                        activity,
+                        activity.getString(
+                            R.string.err_get_location_failed, error
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                /* If none, execute the rest of the codes, depending on the
+                 * activity or fragment.
+                 */
+                else {
+                    // Prevents NPE
+                    if (fragment != null) {
+                        when (fragment) {
+                            is HomeFragment -> fragment.storeLocationResult(result)
+                        }
+                    }
+                }
+            }  // end of try-catch-finally
+        } else {
+            // Display a Toast message if location is null
+            Toast.makeText(
+                activity,
+                activity.getString(R.string.err_no_device_location_result),
+                Toast.LENGTH_SHORT
+            ).show()
+        }  // end of if-else
+
+    }  // end of getDeviceLocation method
+
     // Function to get the formatted date according to the pattern
     internal fun formatDate(pattern: String, date: Date): String {
         return SimpleDateFormat(pattern, Locale.ENGLISH).format(date)
@@ -342,7 +460,7 @@ object Constants {
         return if (obj != null) {
             when (obj) {
                 // Get the coordinates for Address
-                is Address? -> getCoordinates(obj.location)
+                is UserAddress? -> getCoordinates(obj.location)
 
                 // Get the coordinates for Market
                 is Market? -> getCoordinates(obj.location)
@@ -355,17 +473,17 @@ object Constants {
     }  // end of getLocation method
 
     // Function to get the exact coordinates of the specified location
-    private fun getCoordinates(loc: Location?): List<Double> {
+    private fun getCoordinates(loc: LocationData?): List<Double> {
         // Return a list of coordinates if it is not null; otherwise, default
         return if (loc != null) listOf(loc.latitude, loc.longitude)
         else listOf(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
     }  // end of getCoordinates method
 
     // Function to get the current marker position in the map fragment
-    internal fun getMarkerLocationData(coordinates: LatLng?): Location {
+    internal fun getMarkerLocationData(coordinates: LatLng?): LocationData {
         return coordinates?.let {
             // The current available location
-            Location(
+            LocationData(
                 it.latitude, it.longitude,
                 GeoFireUtils.getGeoHashForLocation(
                     GeoLocation(it.latitude, it.longitude)
@@ -373,7 +491,7 @@ object Constants {
             )
         } ?: run {
             // Jose Rizal's house as the default coordinates
-            Location(
+            LocationData(
                 DEFAULT_LATITUDE, DEFAULT_LONGITUDE,
                 GeoFireUtils.getGeoHashForLocation(
                     GeoLocation(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)

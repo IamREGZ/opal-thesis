@@ -235,7 +235,7 @@ class ProductEditorActivity : UtilityClass(), View.OnClickListener,
                 // If the user denies the permission access
                 showSnackBar(
                     this@ProductEditorActivity,
-                    getString(R.string.err_permission_denied),
+                    getString(R.string.err_storage_permission_denied),
                     true
                 )
             }  // end of if-else

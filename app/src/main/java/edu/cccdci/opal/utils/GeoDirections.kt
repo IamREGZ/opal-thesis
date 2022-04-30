@@ -28,6 +28,7 @@ class GeoDirections(private val activity: Activity) {
     private val mHandler = Handler(Looper.getMainLooper())
     private val mGeoDirections = activity as GeoDirectionsResult
 
+    // Function to draw the route between two locations via HTTP request
     fun getDirections(origin: List<Double>, destination: List<Double>) {
         // Variable to store the result of directions route
         var result: List<List<LatLng>>? = null
@@ -208,11 +209,10 @@ class GeoDirections(private val activity: Activity) {
 
             // Store the polyline coordinates
             val polyLatLng = LatLng(
-                lat.toDouble() / 1E5,
-                lng.toDouble() / 1E5
+                lat.toDouble() / 1E5, lng.toDouble() / 1E5
             )
             poly.add(polyLatLng)
-        }
+        }  // end of while
 
         return poly
     }  // end of decodePoly method

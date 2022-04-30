@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.gson.Gson
 import edu.cccdci.opal.R
 import edu.cccdci.opal.adapters.CartAdapter
 import edu.cccdci.opal.dataclasses.*
@@ -107,14 +106,6 @@ class FirestoreClass {
                     Constants.SIGNED_IN_USER_ROLE, user.vendor
                 ).apply()
 
-                spEditor.putString(
-                    Constants.CURRENT_LOCATION, Gson().toJson(
-                        user.locSettings ?: CurrentLocation(
-                            -1, Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE
-                        )
-                    )
-                ).apply()
-
                 when (activity) {
                     // In Login Activity, it sends the user to the home activity
                     is LoginActivity -> activity.logInSuccessPrompt()
@@ -166,7 +157,8 @@ class FirestoreClass {
             // If it is successful
             .addOnSuccessListener {
                 when (activity) {
-                    is MainActivity -> activity.userSavedPrompt()
+                    // In Main Activity, it logs out the user
+                    is MainActivity -> activity.userAuthLogOut()
 
                     // In User Profile Activity, it sends the user to the home page
                     is UserProfileActivity -> activity.userInfoChangedPrompt()
@@ -424,7 +416,7 @@ class FirestoreClass {
     }  // end of getUserAddressReference method
 
     // Function to add user address data to Cloud Firestore
-    fun addUserAddress(activity: AddressEditActivity, addressInfo: Address) {
+    fun addUserAddress(activity: AddressEditActivity, uAddress: UserAddress) {
         // Access the collection named users.
         mFSInstance.collection(Constants.USERS)
             // Access the document named by the current user id
@@ -432,9 +424,9 @@ class FirestoreClass {
             // Access the collection named addresses. If none, Firestore will create it for you.
             .collection(Constants.ADDRESSES)
             // Access the document named by address id. If none, Firestore will create it for you.
-            .document(addressInfo.addressID)
+            .document(uAddress.addressID)
             // Sets the values in the address document and merge with the current object
-            .set(addressInfo, SetOptions.merge())
+            .set(uAddress, SetOptions.merge())
             // If it is successful
             .addOnSuccessListener {
                 // Prompt the user that the address was saved
@@ -481,8 +473,8 @@ class FirestoreClass {
                 /* If a document is found, get the found document and convert into
                  * an object (Address). Otherwise, null.
                  */
-                val address: Address? = if (documents != null && !documents.isEmpty)
-                    documents.documents[0].toObject(Address::class.java)
+                val uAddress: UserAddress? = if (documents != null && !documents.isEmpty)
+                    documents.documents[0].toObject(UserAddress::class.java)
                 else
                     null
 
@@ -491,10 +483,10 @@ class FirestoreClass {
                      * of found address or just update the modified address info.
                      */
                     is AddressEditActivity -> {
-                        if (address != null && address.default) {
+                        if (uAddress != null && uAddress.default) {
                             // Proceed to change the default status of found address
                             updateAddress(
-                                activity, address.addressID,
+                                activity, uAddress.addressID,
                                 hashMapOf(Constants.DEFAULT_ADDR to false),
                                 true
                             )
@@ -507,7 +499,7 @@ class FirestoreClass {
                     /* In Checkout Activity, it stores the result to the delivery
                      * address section.
                      */
-                    is CheckoutActivity -> activity.storeSelectedAddress(address)
+                    is CheckoutActivity -> activity.storeSelectedAddress(uAddress)
                 }
             }
             // If it failed
@@ -529,7 +521,7 @@ class FirestoreClass {
 
     // Function to get nearby locations within the 5 km radius from center
     fun getNearbyLocations(
-        activity: Activity, center: GeoLocation, selectAddress: Address? = null
+        activity: Activity, center: GeoLocation, selectUserAddress: UserAddress? = null
     ) {
         val radius = Constants.MAX_RADIUS_IN_M  // 5000 m or 5 km
         /* Used to create a circular boundary to limit geo queries within the
@@ -540,7 +532,7 @@ class FirestoreClass {
         // Variable to store all tasks to query nearby locations
         val tasks: MutableList<Task<QuerySnapshot>> = mutableListOf()
 
-        val locationQuery = if (selectAddress != null) {
+        val locationQuery = if (selectUserAddress != null) {
             // Get the collection of user's address for Checkout
             mFSInstance.collection(Constants.USERS)
                 .document(getCurrentUserID())
@@ -578,15 +570,15 @@ class FirestoreClass {
                             // Get all documents
                             for (doc in snap.documents) {
                                 val data = doc.toObject(
-                                    if (selectAddress != null)
-                                        Address::class.java  // For Checkout
+                                    if (selectUserAddress != null)
+                                        UserAddress::class.java  // For Checkout
                                     else
                                         Market::class.java  // For Market Navigation
                                 )!!
 
                                 // Store the document geo location
                                 val docLoc = when (data) {
-                                    is Address -> data.location?.let {
+                                    is UserAddress -> data.location?.let {
                                         GeoLocation(it.latitude, it.longitude)
                                     } ?: GeoLocation(0.0, 0.0)
 
@@ -611,12 +603,12 @@ class FirestoreClass {
 
                     }  // end of for (t)
 
-                    if (selectAddress != null) {
+                    if (selectUserAddress != null) {
                         /* Checkout - check if the selected address is in the
                          * delivery coverage
                          */
                         (activity as CheckoutActivity).checkAddressCoverage(
-                            selectAddress in matchedDocs.filterIsInstance<Address>()
+                            selectUserAddress in matchedDocs.filterIsInstance<UserAddress>()
                         )
                     } else {
                         // Market Navigation - get all matched documents

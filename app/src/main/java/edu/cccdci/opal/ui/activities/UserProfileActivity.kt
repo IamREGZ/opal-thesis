@@ -178,7 +178,7 @@ class UserProfileActivity : UtilityClass(), View.OnClickListener, View.OnLongCli
                 // If the user denies the permission access
                 showSnackBar(
                     this@UserProfileActivity,
-                    getString(R.string.err_permission_denied),
+                    getString(R.string.err_storage_permission_denied),
                     true
                 )
             }  // end of if-else

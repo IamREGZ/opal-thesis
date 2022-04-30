@@ -74,32 +74,38 @@ class MarketAdapter(
             else
                 categoryList[market.category]
 
+            // Load the market's image
             GlideLoader(activity).loadImage(market.image, mktImage)
 
+            // Get the distance between the user's current location and this market
             GeoDistance(activity, this).calculateDistance(
                 Constants.getLocation(market), currentLoc
             )
 
+            // Actions when one of the markets is clicked
             marketPanel.setOnClickListener {
-                val intent = Intent(
-                    activity, MarketPageActivity::class.java
-                )
+                // Create an Intent to launch MarketPageActivity
+                Intent(activity, MarketPageActivity::class.java).apply {
+                    // Store the market's info
+                    putExtra(Constants.MARKET_INFO, market)
 
-                intent.putExtra(Constants.MARKET_INFO, market)
+                    // Opens the Market Page Activity
+                    activity.startActivity(this)
+                }  // end of apply
+            }  // end of setOnClickListener
 
-                activity.startActivity(intent)
-            }
         }  // end of setMarketData method
 
+        // Overriding function to get the result of distance and duration calculations
         override fun setDistanceResult(res: String) {
             // Extract the values, separated by commas
             val distRes: List<String> = res.split(',')
 
+            // Set the results of distance and duration
             distance.text = activity.getString(
                 R.string.delivery_distance_value,
                 distRes[0].toDouble() / 1000
             )
-
             duration.text = activity.getString(
                 R.string.delivery_duration_value,
                 distRes[1].toInt() / 60

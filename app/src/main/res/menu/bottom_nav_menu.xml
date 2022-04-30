@@ -9,9 +9,9 @@
 
     <!-- Categories Menu Item -->
     <item
-        android:id="@+id/fragment_categories"
-        android:icon="@drawable/ic_categories"
-        android:title="@string/categories" />
+        android:id="@+id/fragment_cart"
+        android:icon="@drawable/ic_user"
+        android:title="@string/cart" />
 
     <!-- Notifications Menu Item -->
     <item

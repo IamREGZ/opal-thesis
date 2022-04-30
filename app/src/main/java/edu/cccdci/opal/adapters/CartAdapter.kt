@@ -149,11 +149,11 @@ class CartAdapter(
         position: Int, price: Double, weight: Double, qty: TextView,
         totalPrice: TextView, toAdd: Boolean = false
     ) {
-        // toAdd == true, add QTY; otherwise, subtract QTY (must be greater than 0)
+        // toAdd == true, add QTY; otherwise, subtract QTY (must be greater than 1)
         when {
             toAdd -> cartDataList[position].prodQTY++
 
-            cartDataList[position].prodQTY > 0 -> cartDataList[position].prodQTY--
+            cartDataList[position].prodQTY > 1 -> cartDataList[position].prodQTY--
 
             // Display an alert dialog with two action buttons (Remove & Cancel)
             else -> DialogClass(context, mObj = position, mAdapter = this)
@@ -165,8 +165,8 @@ class CartAdapter(
                 )
         }  // end of when
 
-        // Change the text values if the product QTY is greater than 0
-        if (cartDataList[position].prodQTY > 0) {
+        // Change the text values if the product QTY is greater than or equal to 1
+        if (cartDataList[position].prodQTY >= 1) {
             // Change the current total price and weight of the cart item
             cartDataList[position].prodPrice = price * cartDataList[position].prodQTY
             cartDataList[position].prodWeight = weight * cartDataList[position].prodQTY

@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 // Data class to store Address information
 @Parcelize
-data class Address(
+data class UserAddress(
     val addressID: String = "",
     val fullName: String = "",
     val phoneNum: String = "",
@@ -15,5 +15,5 @@ data class Address(
     val postal: Int = 0,
     val detailAdd: String = "",
     val default: Boolean = false,
-    val location: Location? = null
+    val location: LocationData? = null
 ) : Parcelable

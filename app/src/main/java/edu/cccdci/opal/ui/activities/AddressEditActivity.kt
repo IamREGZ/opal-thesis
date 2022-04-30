@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import edu.cccdci.opal.R
 import edu.cccdci.opal.databinding.ActivityAddressEditBinding
-import edu.cccdci.opal.dataclasses.Address
+import edu.cccdci.opal.dataclasses.UserAddress
 import edu.cccdci.opal.firestore.FirestoreClass
 import edu.cccdci.opal.utils.Constants
 import edu.cccdci.opal.utils.DialogClass
@@ -36,7 +36,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
     private val mProvinces: MutableList<HashMap<String, String>> = mutableListOf()
     private val mCities: MutableList<HashMap<String, String>> = mutableListOf()
     private var mSelectedProvinceID: String = ""
-    private var mAddress: Address? = null
+    private var mUserAddress: UserAddress? = null
     private var mCurrentMarkerPos: LatLng? = null
     private var mAddrHashMap: HashMap<String, Any?> = hashMapOf()
     private var mIsNewAddress: Boolean = false
@@ -60,12 +60,12 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
         // Check if there's an existing parcelable extra info
         if (intent.hasExtra(Constants.USER_ADDRESS)) {
             // Get data from the parcelable class
-            mAddress = intent.getParcelableExtra(Constants.USER_ADDRESS)
+            mUserAddress = intent.getParcelableExtra(Constants.USER_ADDRESS)
 
             setSelectedAddressValues()  // Store the address data values
         }
 
-        if (mAddress == null) {
+        if (mUserAddress == null) {
             /* Set the Shared Preference of current marker position blank
              * whenever a user creates a new address.
              */
@@ -160,7 +160,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
                 // Deletes the user's address
                 R.id.btn_delete_address -> {
                     // Prevent deletion of default address
-                    if (mAddress != null && mAddress!!.default) {
+                    if (mUserAddress != null && mUserAddress!!.default) {
                         showSnackBar(
                             this@AddressEditActivity,
                             getString(R.string.err_delete_default_address),
@@ -272,7 +272,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
     // Function to store existing address data in the respective fields
     private fun setSelectedAddressValues() {
         with(binding) {
-            mAddress?.let {
+            mUserAddress?.let {
                 // Fill up the available fields
                 etAddrFullName.setText(it.fullName)
                 etAddrPhone.setText(it.phoneNum)
@@ -565,7 +565,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
             // Display the loading message
             showProgressDialog(
                 this@AddressEditActivity, this@AddressEditActivity,
-                if (mAddress != null) getString(R.string.msg_saving_changes)
+                if (mUserAddress != null) getString(R.string.msg_saving_changes)
                 else getString(R.string.msg_please_wait)
             )
 
@@ -581,13 +581,13 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
     // Function to add (null mAddress) or update user address to Firestore
     internal fun addOrUpdateAddress() {
         // If mAddress object is null, add a new address
-        if (mAddress == null) {
+        if (mUserAddress == null) {
             // Get the document reference for the new address
             val addressRef = FirestoreClass().getUserAddressReference()
 
             with(binding) {
                 // Object to store user address data
-                mAddress = Address(
+                mUserAddress = UserAddress(
                     Constants.ADDRESS_ID_TEMP + addressRef.id,
                     etAddrFullName.text.toString().trim { it <= ' ' },
                     etAddrPhone.text.toString().trim { it <= ' ' },
@@ -603,13 +603,13 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
 
             // Adds the user address data in the Firestore Database
             FirestoreClass().addUserAddress(
-                this@AddressEditActivity, mAddress!!
+                this@AddressEditActivity, mUserAddress!!
             )
         }
         // If mAddress has a value, update the current address
         else {
             FirestoreClass().updateAddress(
-                this@AddressEditActivity, mAddress!!.addressID, mAddrHashMap
+                this@AddressEditActivity, mUserAddress!!.addressID, mAddrHashMap
             )
         }  // end of if-else
 
@@ -623,10 +623,10 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
         /* Store temporary object for comparison purposes if the page is for
          * creating new address
          */
-        if (mIsNewAddress) mAddress = Address()
+        if (mIsNewAddress) mUserAddress = UserAddress()
 
         with(binding) {
-            mAddress?.let { ad ->
+            mUserAddress?.let { ad ->
                 val fullName = etAddrFullName.text.toString().trim { it <= ' ' }
                 // Save the new full name if it is different from previous full name
                 if (fullName != ad.fullName)
@@ -689,13 +689,13 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
         }  // end of with(binding)
 
         // Revert back to null if the page is for creating new address
-        if (mIsNewAddress) mAddress = null
+        if (mIsNewAddress) mUserAddress = null
     }  // end of storeAddressChanges method
 
     // Function to delete user's address
     internal fun deleteUserAddress() {
         // Check if the mSelectedAddress object is not null
-        if (mAddress != null) {
+        if (mUserAddress != null) {
             // Display the loading message
             showProgressDialog(
                 this@AddressEditActivity, this@AddressEditActivity,
@@ -704,7 +704,7 @@ class AddressEditActivity : UtilityClass(), View.OnClickListener, OnMapReadyCall
 
             // Deletes the user address data in the Firestore Database
             FirestoreClass().deleteAddress(
-                this@AddressEditActivity, mAddress!!.addressID
+                this@AddressEditActivity, mUserAddress!!.addressID
             )
         }  // end of if
     }  // end of deleteUserAddress method

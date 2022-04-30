@@ -19,7 +19,6 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
     private var mUserInfo: User? = null
     private var mProdInfo: Product? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -34,23 +33,19 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
             if (intent.hasExtra(Constants.PRODUCT_DESCRIPTION)) {
                 mProdInfo = intent.getParcelableExtra(Constants.PRODUCT_DESCRIPTION)!!
 
-                if (mProdInfo != null) {
-                    with(mProdInfo!!) {
-                        // Stores the details of product
-                        tvPdName.text = name
-                        tvPdPrice.text = getString(
-                            R.string.product_price, price, unit
-                        )
-                        tvPdDesc.text = description
-                        // tvPdMarket.text = market[Constants.NAME]
+                mProdInfo?.let {
+                    // Stores the details of product
+                    tvPdName.text = it.name
+                    tvPdPrice.text = getString(
+                        R.string.product_price, it.price, it.unit
+                    )
+                    tvPdDesc.text = it.description
 
-                        // Load the product image
-                        GlideLoader(this@ProductDescActivity).loadImage(
-                            image, ivPdImage
-                        )
-                    }  // end of with(mProdInfo)
-                }  // end of if
-
+                    // Load the product image
+                    GlideLoader(this@ProductDescActivity).loadImage(
+                        it.image, ivPdImage
+                    )
+                }  // end of let
             }  // end of if
 
             // Gets the user profile data
@@ -60,7 +55,6 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
             btnAddToCart.setOnClickListener(this@ProductDescActivity)
             // Click event for Go to Cart Button
             btnGoToCart.setOnClickListener(this@ProductDescActivity)
-
         }  // end of with(binding)
 
     }  // end of onCreate method
@@ -72,21 +66,21 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
                 // Add the specific product to the cart when this button is clicked
                 R.id.btn_add_to_cart -> {
                     // Prevents NPE
-                    if (mUserInfo != null)
-                        addToCart()  // Proceed to add to cart
+                    if (mUserInfo != null) addToCart()  // Proceed to add to cart
                 }
 
                 // Go to Cart Activity when this button is clicked
                 R.id.btn_go_to_cart -> {
                     // Create an Intent to launch CartActivity
-                    val intent = Intent(
+                    Intent(
                         this@ProductDescActivity, CartActivity::class.java
-                    )
-                    // Add extra user information to intent
-                    intent.putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
+                    ).apply {
+                        // Add extra user information to intent
+                        putExtra(Constants.EXTRA_USER_INFO, mUserInfo)
 
-                    startActivity(intent)  // Opens the user cart activity
-                    finish()  // Closes the current activity
+                        startActivity(this)  // Opens the user cart activity
+                        finish()  // Closes the current activity
+                    }  // end of apply
                 }
             }  // end of when
         }  // end of if
@@ -129,7 +123,11 @@ class ProductDescActivity : UtilityClass(), View.OnClickListener {
             // Update user's cart in the Firestore database
             FirestoreClass().updateCart(
                 this@ProductDescActivity,
-                listOf(CartItem(mProdInfo!!.id, 1, mProdInfo!!.price, mProdInfo!!.weight)),
+                listOf(
+                    CartItem(
+                        mProdInfo!!.id, 1, mProdInfo!!.price, mProdInfo!!.weight
+                    )
+                ),
                 mProdInfo!!.marketID,
                 mUserInfo!!
             )
