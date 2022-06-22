@@ -7,17 +7,11 @@
         android:icon="@drawable/ic_home"
         android:title="@string/home" />
 
-    <!-- Markets Menu Item -->
-    <item
-        android:id="@+id/fragment_markets"
-        android:icon="@drawable/ic_markets"
-        android:title="@string/markets" />
-
     <!-- Categories Menu Item -->
     <item
-        android:id="@+id/fragment_categories"
-        android:icon="@drawable/ic_categories"
-        android:title="@string/categories" />
+        android:id="@+id/fragment_cart"
+        android:icon="@drawable/ic_user"
+        android:title="@string/cart" />
 
     <!-- Notifications Menu Item -->
     <item

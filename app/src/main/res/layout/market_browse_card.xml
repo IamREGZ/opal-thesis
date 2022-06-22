@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cv_market_browse"
+    android:layout_width="@dimen/browse_card_width"
+    android:layout_height="@dimen/browse_card_height"
+    android:layout_marginStart="@dimen/medium_large_mrg_pd"
+    android:layout_marginTop="@dimen/medium_mrg_pd"
+    android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+    android:layout_marginBottom="@dimen/medium_mrg_pd"
+    android:clipToPadding="false"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/dim_gray"
+    app:cardCornerRadius="@dimen/browse_card_corners"
+    app:cardElevation="@dimen/card_elevation">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/medium_large_mrg_pd">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_market_browse_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/market_browse_title"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/main_text_size" />
+
+        <ImageView
+            android:id="@+id/iv_market_browse_image"
+            android:layout_width="@dimen/browse_card_image_size"
+            android:layout_height="@dimen/browse_card_image_size"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/market_browse_image" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

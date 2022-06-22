@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import edu.cccdci.opal.R
@@ -17,6 +18,9 @@ class SettingsFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         // Inflate the layout for this fragment
         binding = FragmentSettingsBinding.inflate(inflater)
 
@@ -29,9 +33,10 @@ class SettingsFragment : Fragment(), View.OnClickListener {
             llChangePass.setOnClickListener(this@SettingsFragment)
             // Click event for Delete Account
             llDeleteAcc.setOnClickListener(this@SettingsFragment)
+
+            return root
         }  // end of with(binding)
 
-        return binding.root
     }  // end of onCreateView method
 
     // onClick events are declared here
@@ -39,20 +44,20 @@ class SettingsFragment : Fragment(), View.OnClickListener {
         if (view != null) {
             when (view.id) {
                 // Go to Notification Settings
-                R.id.ll_notification ->
-                    findNavController().navigate(R.id.settings_to_notif_settings)
+                R.id.ll_notification -> findNavController()
+                    .navigate(R.id.settings_to_notif_settings)
 
                 // Go to Location Settings
-                R.id.ll_location ->
-                    findNavController().navigate(R.id.settings_to_loc_settings)
+                R.id.ll_location -> findNavController()
+                    .navigate(R.id.settings_to_loc_settings)
 
                 // Go to Change Password
-                R.id.ll_change_pass ->
-                    findNavController().navigate(R.id.settings_to_change_pass)
+                R.id.ll_change_pass -> findNavController()
+                    .navigate(R.id.settings_to_change_pass)
 
                 // Go to Delete Account
-                R.id.ll_delete_acc ->
-                    findNavController().navigate(R.id.settings_to_del_account)
+                R.id.ll_delete_acc -> findNavController()
+                    .navigate(R.id.settings_to_del_account)
             }  // end of when
         }  // end of if
 

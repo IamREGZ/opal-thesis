@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/medium_large_mrg_pd"
+    tools:context=".ui.fragments.SettingsLocationFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/border_line_width"
+        android:background="@color/et_hint_black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/medium_large_mrg_pd"
+        android:paddingEnd="@dimen/medium_large_mrg_pd">
+
+        <edu.cccdci.opal.utils.MainTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/location_services"
+            android:textColor="@color/app_black"
+            android:textSize="@dimen/main_text_size" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/sm_location_services"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_mrg_pd"
+            android:checked="false" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/border_line_width"
+        android:background="@color/et_hint_black" />
+
+    <edu.cccdci.opal.utils.MainTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_large_mrg_pd"
+        android:layout_marginTop="@dimen/medium_mrg_pd"
+        android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+        android:text="@string/location_note"
+        android:textColor="@color/app_black"
+        android:textSize="@dimen/main_text_size" />
+
+</LinearLayout>

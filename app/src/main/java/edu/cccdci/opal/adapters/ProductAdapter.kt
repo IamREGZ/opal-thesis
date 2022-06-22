@@ -5,26 +5,56 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import edu.cccdci.opal.R
 import edu.cccdci.opal.dataclasses.Product
-import edu.cccdci.opal.dataclasses.User
 import edu.cccdci.opal.ui.activities.ProductDescActivity
 import edu.cccdci.opal.utils.Constants
+import edu.cccdci.opal.utils.GlideLoader
 
 class ProductAdapter(
-    val context: Context,
-    private val productDataList: MutableList<Product>
-) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+    private val context: Context,
+    options: FirestoreRecyclerOptions<Product>
+) : FirestoreRecyclerAdapter<Product, ProductAdapter.ProductViewHolder>(options) {
 
     // Nested Class to hold views from the target layout
-    class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.product_name)
-        val price: TextView = itemView.findViewById(R.id.product_price)
-        val market: TextView = itemView.findViewById(R.id.product_market)
-        val productCard: CardView = itemView.findViewById(R.id.cv_product)
+    inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        // Get all the ids of views from product (Home) item layout
+        private val name: TextView = itemView.findViewById(R.id.tv_product_name)
+        private val price: TextView = itemView.findViewById(R.id.tv_product_price)
+        private val image: ImageView = itemView.findViewById(R.id.iv_product_home_image)
+        private val productCard: CardView = itemView.findViewById(R.id.cv_product)
+
+        internal fun setProductData(product: Product) {
+            // Store the productData values in the respective views
+            name.text = product.name
+            price.text = context.getString(
+                R.string.product_price, product.price, product.unit
+            )
+
+            // Load the product image
+            GlideLoader(context).loadImage(product.image, image)
+
+            // Actions when the product card is clicked
+            productCard.setOnClickListener {
+                // Create an Intent to launch ProductDescActivity
+                val intent = Intent(
+                    context, ProductDescActivity::class.java
+                )
+                // Add product information to intent
+                intent.putExtra(Constants.PRODUCT_DESCRIPTION, product)
+
+                // Opens the edit user profile
+                context.startActivity(intent)
+            }  // end of setOnClickListener
+
+        }  // end of setProductData method
+
     }  // end of ProductViewHolder class
 
     // Function to inflate the layout in the RecyclerView
@@ -37,36 +67,11 @@ class ProductAdapter(
     }  // end of onCreateViewHolder method
 
     // Function to implement the codes for each item in the RecyclerView
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        // Get the object from the current position of the data list
-        val productData = productDataList[position]
-        val user = User()  // Might be temporary
-
-        with(holder) {
-            // Store the productData values in the respective views
-            name.text = productData.name
-            price.text = "₱${productData.price} / kg"
-            market.text = productData.market
-
-            // Actions when the product card is clicked
-            productCard.setOnClickListener {
-                // Create an Intent to launch ProductDescActivity
-                val intent = Intent(
-                    context, ProductDescActivity::class.java
-                )
-                // Add product information to intent (might be temporary)
-                intent.putExtra(Constants.PRODUCT_DESCRIPTION, productData)
-                intent.putExtra(Constants.EXTRA_USER_INFO, user)
-
-                // Opens the edit user profile
-                context.startActivity(intent)
-            }  // end of setOnClickListener
-
-        }  // end of with(holder)
-
+    override fun onBindViewHolder(
+        holder: ProductViewHolder, position: Int, product: Product
+    ) {
+        // Sets the values of market data to the current view (Home)
+        holder.setProductData(product)
     }  // end of onBindViewHolder method
-
-    // Function to get the number of items in the RecyclerView
-    override fun getItemCount(): Int = productDataList.size
 
 }  // end of ProductAdapter class

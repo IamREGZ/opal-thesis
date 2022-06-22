@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@color/primaryAccentColor" />
+
+    <corners
+        android:bottomLeftRadius="@dimen/cart_prod_qty_button_corners"
+        android:topLeftRadius="@dimen/cart_prod_qty_button_corners" />
+
+</shape>

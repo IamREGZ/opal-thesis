@@ -1,25 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  Resources containing string values  -->
 <resources>
     <!--  Name of Application  -->
     <string name="app_name">OPAL</string>
 
-    <!--  Strings for Log-in  -->
-    <string name="forgot_password">Forgot Password?</string>
+    <!--  Strong Password Strings  -->
+    <string name="strong_pass_head">Strong Password Requirements:</string>
+    <string name="strong_pass_indicator">Strong Password Indicator</string>
+    <string name="strong_pass_eight_chars">At least eight (8) characters</string>
+    <string name="strong_pass_lowercase">At least one (1) lowercase letter</string>
+    <string name="strong_pass_uppercase">At least one (1) uppercase letter</string>
+    <string name="strong_pass_digits">At least one (1) digit</string>
+    <string name="strong_pass_special_chars">At least one (1) special character</string>
+
+    <!--  Generic Error Messages  -->
+    <string name="err_storage_permission_denied">
+        Storage permission denied. You can also allow it from your device\'s settings.
+    </string>
+    <string name="err_fine_location_permission_denied">
+        Device location permission denied. You can also allow it from your device\'s
+        settings.
+    </string>
+    <string name="err_image_selection_failed">
+        There was an error selecting the image file.
+    </string>
+    <string name="err_get_location_failed">
+        There was an error getting the device\'s location. Error cause: %s
+    </string>
+    <string name="err_no_device_location_result">
+        Error while retrieving device location. Please try again later.
+    </string>
+
+    <!--  User-related Form Validation Error Messages  -->
+    <string name="err_blank_first_name">Please enter your first name.</string>
+    <string name="err_blank_last_name">Please enter your last name.</string>
+    <string name="err_first_name_length">First name should be 2 to 30 characters long.</string>
+    <string name="err_last_name_length">Last name should be 2 to 30 characters long.</string>
+    <string name="err_blank_email">Please enter your email address.</string>
+    <string name="err_wrong_email_format">Please enter a valid email address.</string>
+    <string name="err_blank_username">Please enter your username.</string>
+    <string name="err_admin_username">\"admin\" is not allowed for username.</string>
+    <string name="err_username_length">Username should be 6 to 20 characters long.</string>
+    <string name="err_invalid_username">Please enter a valid username.</string>
+    <string name="err_blank_password">Please enter your password.</string>
+    <string name="err_password_not_strong">
+        Please complete the requirements for strong password.
+    </string>
+    <string name="err_blank_confirm_password">Please enter confirm password.</string>
+    <string name="err_passwords_not_match">Passwords do not match.</string>
+    <string name="err_unchecked_tac">Please agree to our Terms and Conditions.</string>
+    <string name="err_no_profile_pic_to_remove">
+        No profile picture found. Tap the profile picture to select one.
+    </string>
+    <string name="err_blank_phone">Please enter your phone number.</string>
+    <string name="err_wrong_phone_format">Please enter a valid phone number.</string>
+    <string name="err_no_gender_selected">Please select your gender.</string>
+    <string name="err_register_login_failed">
+        Your account is successfully registered. However, there was a problem
+        logging in to your account.
+    </string>
+    <string name="err_blank_current_password">Please enter your current password.</string>
+    <string name="err_blank_new_password">Please enter your new password.</string>
+
+    <!--  Address-related Form Validation Error Messages  -->
+    <string name="err_blank_full_name">Please enter your full name.</string>
+    <string name="err_full_name_length">Full name should be 3 to 60 characters long.</string>
+    <string name="err_blank_province">Please select your province.</string>
+    <string name="err_blank_city">Please select your city/municipality.</string>
+    <string name="err_blank_brgy">Please select your barangay.</string>
+    <string name="err_blank_postal">Please enter your postal code.</string>
+    <string name="err_postal_format">Postal code should only contain numbers.</string>
+    <string name="err_postal_length">Postal code should have exactly 4 digits.</string>
+    <string name="err_blank_detailed">Please enter your detailed address.</string>
+    <string name="err_detailed_length">
+        Detailed address should be 10 to 100 characters long.
+    </string>
+    <string name="err_unselect_default_address">
+        Cannot unselect default address. Set another address as default instead.
+    </string>
+    <string name="err_delete_default_address">Default address cannot be deleted.</string>
+    <string name="err_address_limit">
+        You cannot have more than five (5) addresses. Delete some of your addresses
+        and try again.
+    </string>
+    <string name="err_no_current_location">
+        Please set your current location first before browsing for wet markets.
+    </string>
+
+    <!--  Market-related Form Validation Error Messages  -->
+    <string name="err_blank_market_name">Please enter the market name.</string>
+    <string name="err_market_name_length">
+        Market name should be 5 to 50 characters long.
+    </string>
+    <string name="err_blank_wet_market">
+        Please enter the name of parent wet market.
+    </string>
+    <string name="err_wet_market_length">
+        Parent wet market name should be 5 to 50 characters long.
+    </string>
+    <string name="err_no_mkt_category_selected">
+        Please select the market\'s category.
+    </string>
+    <string name="err_blank_custom_category">Please specify the custom category.</string>
+    <string name="err_custom_category_length">
+        Custom category should be 4 to 20 characters long.
+    </string>
+    <string name="err_no_market_pic_to_remove">
+        No market profile picture found. Tap the market profile picture panel
+        to select one.
+    </string>
+    <string name="err_blank_mkt_province">Please select the market\'s province.</string>
+    <string name="err_blank_mkt_city">Please select the market\'s city/municipality.</string>
+    <string name="err_blank_mkt_brgy">Please select the market\'s barangay.</string>
+    <string name="err_blank_mkt_postal">Please enter the market\'s postal code.</string>
+    <string name="err_blank_mkt_detailed">Please enter the market\'s detailed address.</string>
+    <string name="err_unchecked_vendor_tac">Please agree to the Vendor\'s T&amp;C.</string>
+
+    <!--  Product-related Form Validation Error Messages  -->
+    <string name="err_no_product_image_selected">Please select the product image.</string>
+    <string name="err_no_product_pic_to_remove">
+        No product image found. Tap the add product image to select one.
+    </string>
+    <string name="err_blank_product_name">Please enter the product name.</string>
+    <string name="err_product_name_length">
+        Product name should be 4 to 50 characters long.
+    </string>
+    <string name="err_blank_product_desc">Please enter the product description.</string>
+    <string name="err_product_desc_length">
+        Product description should be 10 to 400 characters long.
+    </string>
+    <string name="err_blank_product_price">Please enter the product price.</string>
+    <string name="err_product_price_format">Product price must be a decimal number.</string>
+    <string name="err_zero_or_negative_price">Product price must be greater than 0.</string>
+    <string name="err_no_unit_selected">Please select the product\'s measurement unit.</string>
+    <string name="err_blank_custom_unit">Please specify the custom unit.</string>
+    <string name="err_custom_unit_length">Custom unit should be 2 to 15 characters long.</string>
+    <string name="err_blank_product_weight">Please enter the product weight.</string>
+    <string name="err_product_weight_format">Product weight must be a decimal number.</string>
+    <string name="err_zero_or_negative_weight">Product weight must be greater than 0.</string>
+    <string name="err_blank_product_stock">Please enter the product stock.</string>
+    <string name="err_product_stock_format">Product stock must be a whole number.</string>
+    <string name="err_negative_stock">Product stock must not be a negative number.</string>
+
+    <!--  Order-related Error Message  -->
+    <string name="err_cart_weight_limit">
+        Your cart exceeds the weight limit of 25 kg. Please remove some of
+        your items in the cart.
+    </string>
+
+    <!--  Checkout Error Messages  -->
+    <string name="err_no_selected_address">
+        You haven\'t set one of your addresses as default delivery address.
+        Please select one from your address list.
+    </string>
+    <string name="err_address_not_in_coverage">
+        Your selected address is not within the market\'s delivery coverage.
+    </string>
+    <string name="err_route_not_in_coverage">
+        Cannot view route. Selected address is not within the market\'s
+        delivery coverage.
+    </string>
+
+    <!--  Google Maps API-related Error Messages  -->
+    <string name="err_failed_get_direction">
+        There was an error getting the travel duration and distance between
+        the market and customer\'s address.
+    </string>
+    <string name="err_failed_draw_route">
+        There was an error drawing the route between market and customer\'s address.
+    </string>
+
+    <!--  Unknown Form Validation Error Messages  -->
+    <string name="unk_err_name">Invalid name (EditText ID unknown).</string>
+    <string name="unk_err_long_text">
+        Invalid long text (EditText ID unknown).
+    </string>
+    <string name="unk_err_email">Invalid email address (EditText ID unknown).</string>
+    <string name="unk_err_phone">Invalid phone number (EditText ID unknown).</string>
+    <string name="unk_err_username">Invalid username (EditText ID unknown).</string>
+    <string name="unk_err_password">Invalid password (EditText ID unknown).</string>
+    <string name="unk_err_postal">Invalid postal code (EditText ID unknown).</string>
+    <string name="unk_err_specific_other">
+        Invalid specific other answer (EditText ID unknown).
+    </string>
+    <string name="unk_err_checkbox">
+        Please check all of the required checkboxes (CheckBox ID unknown).
+    </string>
+    <string name="unk_err_radio_group">
+        Please select one option from each radio group (RadioGroup ID unknown).
+    </string>
+    <string name="unk_err_actv_spinner">
+        Please select one item from each auto complete text view spinner
+        (AutoCompleteTextView ID unknown).
+    </string>
+    <string name="unk_err_numeric_text">Invalid numeric text (EditText ID unknown).</string>
+    <string name="unk_err_image">
+        Please add an image from your gallery to the required images
+        (ImageView ID src unknown).
+    </string>
+
+    <!--  User-related Message Prompts  -->
+    <string name="msg_register_success">Your account is successfully registered.</string>
+    <string name="msg_recovery_email_submitted">
+        Email sent successfully. Check your email to reset your password.
+    </string>
+    <string name="msg_logged_out">Logged out successfully.</string>
+    <string name="msg_profile_pic_removed">Your profile picture was removed.</string>
+    <string name="msg_user_info_changed">
+        Your user profile information was changed successfully.
+    </string>
+    <string name="msg_no_user_info_changed">
+        User profile information not saved. No changes were made.
+    </string>
+    <string name="msg_user_now_vendor">Congratulations! You\'re now a vendor!</string>
+    <string name="msg_pwd_change_success">Your password was changed successfully.</string>
+    <string name="msg_acc_delete_success">Your account was deleted successfully.</string>
+
+    <!--  Address-related Message Prompts  -->
+    <string name="msg_address_saved">Your address was saved successfully.</string>
+    <string name="msg_no_address_info_changed">
+        Address information not saved. No changes were made.
+    </string>
+    <string name="msg_address_deleted">Your address was deleted successfully.</string>
+
+    <!--  Market-related Message Prompts  -->
+    <string name="msg_market_pic_removed">
+        Your market\'s profile picture was removed.
+    </string>
+    <string name="msg_no_market_info_changed">
+        Market information not saved. No changes were made.
+    </string>
+    <string name="msg_market_saved">
+        Your market information was changed successfully.
+    </string>
+
+    <!--  Product-related Message Prompts  -->
+    <string name="msg_product_pic_removed">Product image was removed.</string>
+    <string name="msg_no_product_info_changed">
+        Product information not saved. No changes were made.
+    </string>
+    <string name="msg_product_saved">Your product was saved successfully.</string>
+    <string name="msg_product_deleted">Your product was deleted successfully.</string>
+    <string name="msg_product_unlisted">Product unlisted successfully.</string>
+    <string name="msg_product_relisted">Product relisted in stocks successfully.</string>
+    <string name="msg_added_to_cart">Added to cart successfully.</string>
+
+    <!--  Order-related Message Prompts  -->
+    <string name="msg_order_placed_success">
+        Your order was placed successfully. Thank you for choosing OPAL!
+    </string>
+
+    <!--  System-related Message Prompts  -->
+    <string name="msg_back_again_to_exit">Press back again to exit.</string>
+    <string name="msg_device_location_retrieved">
+        Device location retrieved successfully.
+    </string>
+
+    <!--  Progress Dialog  -->
+    <string name="msg_please_wait">Please wait&#8230;</string>
+    <string name="msg_saving_changes">Saving changes&#8230;</string>
+    <string name="msg_logging_in">Logging in&#8230;</string>
+
+    <!--  Alert Dialog  -->
+    <string name="dialog_log_out_title">Log Out</string>
+    <string name="dialog_log_out_message">Are you sure you want to log out?</string>
+    <string name="dialog_edit_user_title">Edit User Profile</string>
+    <string name="dialog_edit_user_message">
+        User profile information has been changed. Do you want to save changes?
+    </string>
+    <string name="dialog_profile_pic_remove_title">Remove Profile Picture</string>
+    <string name="dialog_profile_pic_remove_message">
+        Are you sure you want to remove your profile picture?
+    </string>
+    <string name="dialog_no_place_found_title">No %s found</string>
+    <string name="dialog_no_place_found_message">
+        The %1$s %2$s doesn\'t exist in the dataset. It may be renamed or deleted
+        by the admin. Please select an existing %3$s.
+    </string>
+    <string name="dialog_new_address_title">New Address</string>
+    <string name="dialog_new_address_message">
+        You haven\'t finished filling up the address information. Do you wish to
+        exit the page?
+    </string>
+    <string name="dialog_edit_address_title">Edit Address</string>
+    <string name="dialog_edit_address_message">
+        Address information has been changed. Do you want to save changes?
+    </string>
+    <string name="dialog_delete_address_title">Delete Address</string>
+    <string name="dialog_delete_address_message">
+        Are you sure you want to delete this address? This action cannot be undone.
+    </string>
+    <string name="dialog_delete_account_title">Confirm Account Deletion</string>
+    <string name="dialog_delete_account_message">
+        We\'re sad to see you go. However, this process cannot be undone once
+        you confirm your account deletion. Are you sure you want to delete
+        your account for good?
+    </string>
+    <string name="dialog_market_pic_remove_title">Remove Market Profile Picture</string>
+    <string name="dialog_market_pic_remove_message">
+        Are you sure you want to remove your market\'s profile picture?
+    </string>
+    <string name="dialog_vendor_reg_title">Vendor Registration</string>
+    <string name="dialog_vendor_reg_message">
+        You haven\'t finished filling up the market information. Do you wish to
+        exit the vendor registration?
+    </string>
+    <string name="dialog_edit_market_title">Edit Market</string>
+    <string name="dialog_edit_market_message">
+        Market information has been changed. Do you want to save changes?
+    </string>
+    <string name="dialog_product_pic_remove_title">Remove Product Image</string>
+    <string name="dialog_product_pic_remove_message">
+        Are you sure you want to remove this product\'s image? You need to add
+        an image to proceed.
+    </string>
+    <string name="dialog_add_product_title">Add Product</string>
+    <string name="dialog_add_product_message">
+        You haven\'t finished filling up the product information. Do you wish to
+        exit the page?
+    </string>
+    <string name="dialog_edit_product_title">Edit Product</string>
+    <string name="dialog_edit_product_message">
+        Product information has been changed. Do you want to save changes?
+    </string>
+    <string name="dialog_unlist_product_title">Unlist Product</string>
+    <string name="dialog_unlist_product_message">
+        Are you sure you want to unlist this product? Your customers will not
+        be able to view or buy this product once it is unlisted.
+    </string>
+    <string name="dialog_relist_product_title">Relist Product</string>
+    <string name="dialog_relist_product_message">
+        Proceed to relist this product? Your customers will be able to view
+        or buy this product again.
+    </string>
+    <string name="dialog_delete_product_title">Delete Product</string>
+    <string name="dialog_delete_product_message">
+        Are you sure you want to delete this product? This action cannot be undone.
+    </string>
+    <string name="dialog_remove_from_cart_title">Remove from Cart</string>
+    <string name="dialog_remove_from_cart_message">
+        Are you sure you want to remove this item from your cart?
+    </string>
+    <string name="dialog_remove_selected_items_title">Remove Selected Items</string>
+    <string name="dialog_remove_selected_items_message">
+        Are you sure you want to remove the selected item(s) from your cart?
+    </string>
+    <string name="dialog_enable_location_title">Enable Location Services</string>
+    <string name="dialog_enable_location_message">
+        This feature requires enabling location services on your device. Enable it
+        from your device settings first, and the select My Device\'s Location again.
+    </string>
+
+    <!--  Alert Dialog Buttons  -->
+    <string name="dialog_btn_yes">Yes</string>
+    <string name="dialog_btn_no">No</string>
+    <string name="dialog_btn_cancel">Cancel</string>
+    <string name="dialog_btn_ok">OK</string>
+    <string name="dialog_btn_save">Save</string>
+    <string name="dialog_btn_dont_save">Don\'t Save</string>
+    <string name="dialog_btn_log_out">Log Out</string>
+    <string name="dialog_btn_remove">Remove</string>
+    <string name="dialog_btn_delete">Delete</string>
+    <string name="dialog_btn_exit">Exit</string>
+    <string name="dialog_btn_continue">Continue</string>
+    <string name="dialog_btn_unlist">Unlist</string>
+    <string name="dialog_btn_relist">Relist</string>
+
+    <!--  Toolbar Titles  -->
+    <string name="tlb_title_user_profile">USER PROFILE</string>
+    <string name="tlb_title_be_vendor">BECOME A VENDOR</string>
+    <string name="tlb_title_prod_desc">DESCRIPTION</string>
+    <string name="tlb_title_addresses">YOUR ADDRESSES</string>
+    <string name="tlb_title_select_address">SELECT ADDRESS</string>
+    <string name="tlb_title_your_products">YOUR PRODUCTS</string>
+    <string name="tlb_title_add_prod">ADD PRODUCT</string>
+    <string name="tlb_title_edit_prod">EDIT PRODUCT</string>
+    <string name="tlb_title_new_address">NEW ADDRESS</string>
+    <string name="tlb_title_edit_address">EDIT ADDRESS</string>
+    <string name="tlb_title_my_cart">MY CART</string>
+    <string name="tlb_title_checkout">CHECKOUT</string>
+    <string name="tlb_title_delivery_route">DELIVERY ROUTE</string>
+    <string name="tlb_title_payment">PAYMENT METHODS</string>
+    <string name="tlb_title_vendor_reg">VENDOR REGISTRATION</string>
+    <string name="tlb_title_my_market">MY MARKET</string>
+    <string name="tlb_title_edit_market">EDIT MARKET</string>
+    <string name="tlb_title_market_details">MARKET DETAILS</string>
+    <string name="tlb_title_insights">SALES INSIGHTS</string>
+    <string name="tlb_title_select_location">SELECT LOCATION</string>
+
+    <!--  Log In Activity  -->
+    <string name="forgot_password_link">FORGOT PASSWORD?</string>
     <string name="login_btn">Log In</string>
     <string name="no_account_lbl">Don\'t have an account?</string>
-    <string name="register_link"><b>REGISTER</b></string>
+    <string name="register_link">REGISTER</string>
 
-    <!--  Strings for Register  -->
+    <!--  Register Activity  -->
     <string name="account_registration">ACCOUNT REGISTRATION</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email_address">Email Address</string>
+    <string name="email_helper">Examples: abc@gmail.com , opal@ccc.edu.ph</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="agree_to_lbl">I agree to the</string>
-    <string name="terms_and_conditions"><b>Terms and Conditions</b></string>
+    <string name="terms_and_conditions_link">TERMS &amp; CONDITIONS</string>
     <string name="register_btn">Register</string>
-    <string name="cancel_btn">Cancel</string>
+    <string name="have_account_lbl">Already have an account?</string>
+    <string name="login_link">LOG IN</string>
 
     <!--  Strings for Forgot Password  -->
     <string name="forgot_password_header">FORGOT PASSWORD</string>
@@ -29,63 +418,9 @@
     </string>
     <string name="submit">Submit</string>
 
-    <!--  Error Messages  -->
-    <string name="err_blank_fname">Please enter your first name.</string>
-    <string name="err_blank_lname">Please enter your last name.</string>
-    <string name="err_blank_email">Please enter your email address.</string>
-    <string name="err_blank_username">Please enter your username.</string>
-    <string name="err_blank_password">Please enter your password.</string>
-    <string name="err_blank_confirm_password">Please enter confirm password.</string>
-    <string name="err_passwords_not_match">Passwords do not match.</string>
-    <string name="err_unchecked_tac">Please agree to our T&amp;C.</string>
-    <string name="err_blank_phone">Please enter your phone number.</string>
-    <string name="err_no_gender_selected">Please select your gender.</string>
-    <string name="err_permission_denied">
-        Storage permission denied. You can also allow it from your device\'s settings.
-    </string>
-    <string name="err_image_selection_failed">
-        There was an error selecting the image file.
-    </string>
-    <string name="err_register_login_failed">
-        Your account is successfully registered. However, there was a problem
-        logging in to your account.
-    </string>
-    <string name="err_blank_current_password">Please enter your current password.</string>
-    <string name="err_blank_new_password">Please enter your new password.</string>
-
-    <!--  Message Prompts  -->
-    <string name="msg_register_success">Your account is successfully registered.</string>
-    <string name="msg_recovery_email_submitted">
-        Email sent successfully. Check your email to reset your password.
-    </string>
-    <string name="msg_logged_out">Logged out successfully.</string>
-    <string name="msg_user_info_changed">
-        Your user information is changed successfully.
-    </string>
-    <string name="msg_back_again_to_exit">Press back again to exit.</string>
-    <string name="msg_pwd_change_success">Your password was changed successfully.</string>
-    <string name="msg_acc_delete_success">Your account was deleted successfully.</string>
-    <string name="msg_user_now_vendor">Congratulations! You\'re now a vendor!</string>
-
-    <!--  Dialog Progress  -->
-    <string name="msg_please_wait">Please wait&#8230;</string>
-    <string name="msg_saving_changes">Saving changes&#8230;</string>
-    <string name="msg_logging_in">Logging in&#8230;</string>
-
-    <!--  Toolbar Titles  -->
-    <string name="tlb_title_user_profile">USER PROFILE</string>
-    <string name="tlb_title_be_vendor">BECOME A VENDOR</string>
-    <string name="tlb_title_prod_desc">DESCRIPTION</string>
-    <string name="tlb_title_add_prod">ADD PRODUCT</string>
-    <string name="tlb_title_edit_prod">EDIT PRODUCT</string>
-    <string name="tlb_title_add_address">ADD ADDRESS</string>
-    <string name="tlb_title_edit_address">EDIT ADDRESS</string>
-    <string name="tlb_title_my_cart">MY CART</string>
-
     <!--  Top App Bar  -->
     <string name="my_cart">My Cart</string>
     <string name="messages">Messages</string>
-    <string name="add">Add</string>
 
     <!--  Side Navigation Header  -->
     <string name="nav_profile_full_name">Name Surname</string>
@@ -109,16 +444,44 @@
 
     <!--  Side Nav Menu Items for Vendors  -->
     <string name="nav_subhead_vendor_center">Vendor Center</string>
-    <string name="nav_your_market">Your Market</string>
+    <string name="nav_my_market">My Market</string>
     <string name="nav_products">Products</string>
-    <string name="nav_customer_transactions">Customer Transactions</string>
+    <string name="nav_sales_history">Sales History</string>
     <string name="nav_insights">Insights</string>
 
     <!--  Bottom Navigation  -->
     <string name="home">Home</string>
-    <string name="markets">Markets</string>
-    <string name="categories">Categories</string>
+    <string name="cart">Profile</string>
     <string name="notifications">Notifications</string>
+
+    <!--  Home Header  -->
+    <string name="home_greeting">Hi There!</string>
+    <string name="home_welcome">Welcome to OPAL!</string>
+    <string name="set_location">Set Location</string>
+    <string name="selected_location_option">%1$s (%2$s)</string>
+    <string name="market_browse_head">Browse</string>
+    <string name="market_categories_head">Categories</string>
+
+    <!--  Market Browse Card View  -->
+    <string name="market_browse_title">Browse Title</string>
+    <string name="market_browse_image">Market Browse Image</string>
+
+    <!--  Market Category Card View  -->
+    <string name="market_category_title">Category Title</string>
+    <string name="market_category_image">Market Category Image</string>
+
+    <!--  Market Navigation Header  -->
+    <string name="market_navigation_title">Market Navigation Title</string>
+    <string name="market_navigation_desc">Market Navigation Description</string>
+    <string name="market_navigation_image">Market Navigation Image</string>
+    <string name="user_current_location_icon">Current Location Icon</string>
+    <string name="user_current_location">Current Location</string>
+
+    <!--  Market Card  -->
+    <string name="market_image">Market Image</string>
+    <string name="market_name">Market Name</string>
+    <string name="market_address">%1$s, %2$s</string>
+    <string name="market_location">Market Location</string>
 
     <!--  Notification Item  -->
     <string name="notif_head">Notification Head</string>
@@ -128,6 +491,8 @@
 
     <!--  User Profile  -->
     <string name="user_profile_photo_cd">User Profile Picture</string>
+    <string name="remove_image_lbl">Long press to remove</string>
+    <string name="phone_number_helper">Format: 09XXXXXXXXX or +639XXXXXXXXX</string>
     <string name="phone_number">Phone Number</string>
     <string name="gender_male">MALE</string>
     <string name="gender_female">FEMALE</string>
@@ -143,31 +508,13 @@
     <string name="empty_transactions">
         Your customers haven\'t placed their orders yet.
     </string>
-    <string name="empty_sad_icon">Empty sad icon</string>
-
-    <!--  Market Card View  -->
-    <string name="market_image">Market Image</string>
-    <string name="market_name">Market Name</string>
-    <string name="market_address">Market Address</string>
+    <string name="empty_sad_icon">Empty Sad Icon</string>
+    <string name="empty_cart_icon">Empty Cart Icon</string>
 
     <!--  Product Card View  -->
     <string name="product_name">Product Name</string>
-    <string name="product_price">₱12.34 / kg</string>
+    <string name="product_price">₱%1$.2f / %2$s</string>
     <string name="product_market">Product Market</string>
-
-    <!--  Fragment Placeholder Texts (to be removed soon)  -->
-    <string name="insights_fragment_text">
-        Sales graphs, trends, and reports will be placed here.
-    </string>
-    <string name="your_market_fragment_text">
-        User\'s current market information will be displayed here.
-    </string>
-    <string name="order_history_fragment_text">
-        Customer\'s orders will be listed here.
-    </string>
-    <string name="customer_transactions_fragment_text">
-        Vendor\'s transactions made will be listed here.
-    </string>
 
     <!--  Categories  -->
     <string name="vegetables"><i>Vegetables</i></string>
@@ -175,20 +522,27 @@
     <string name="seafoods"><i>Seafoods</i></string>
     <string name="expand_all"><u>Expand All</u></string>
 
+    <!--  Address Menu  -->
+    <string name="add_new_address">Add New Address</string>
+    <string name="addr_person_name">Person Name</string>
+    <string name="addr_phone_number">09XXXXXXXXX/+639XXXXXXXXX</string>
+    <string name="addr_line_1">Detailed Address</string>
+    <string name="addr_line_2">%1$s, %2$s, %3$s %4$d</string>
+    <string name="addr_default">Default</string>
+    <string name="addr_edit">Edit Address</string>
+
     <!--  Add/Edit Address  -->
-    <string name="add_address_head">NEW ADDRESS</string>
-    <string name="edit_address_head">EDIT ADDRESS</string>
     <string name="full_name">Full Name</string>
     <string name="province">Province</string>
-    <string name="city">City</string>
+    <string name="city_municipality">City/Municipality</string>
     <string name="barangay">Barangay</string>
     <string name="postal_code">Postal Code</string>
     <string name="detailed_address">Detailed Address</string>
     <string name="detailed_helper">
         House Number, Building Number, Street Name, etc.
     </string>
-    <string name="set_default_addr">Set as Default Address</string>
-    <string name="set_pickup_addr">Set as Pickup Address</string>
+    <string name="default_addr_lbl">Default Delivery Address</string>
+    <string name="delete_address">Delete Address</string>
 
     <!--  Settings Page  -->
     <string name="app_settings_head">Application Settings</string>
@@ -243,17 +597,20 @@
         <b>OPAL (Online Palengke)</b> exists to bring necessities at your doorsteps.
     </string>
     <string name="about_paragraph_1">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nullam faucibus, odio et laoreet porttitor, sapien lectus iaculis est,
-        vitae accumsan purus tortor sit amet est.
+        Wet market (<i>palengke</i>) products are one of the most essential
+        commodities in every Filipino family. We value their products, services,
+        and even their culture; that\'s why the OPAL application was developed
+        to bring <i>palengke</i> culture at the comfort of your own home.
     </string>
     <string name="about_paragraph_2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nulla consectetur, leo nec accumsan facilisis, tellus.
+        Envisioned to preserve the <i>palengke</i> culture for the next
+        generation, and to make OPAL a comfortable and accessible community
+        for both customers and vendors.
     </string>
     <string name="about_paragraph_3">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Phasellus at dapibus tellus. Ut nec accumsan.
+        Committed to reduce customer effort, to increase vendor opportunities,
+        and to promote the <i>palengke</i> culture to each nearby family
+        or community.
     </string>
     <string name="team_desc">
         Our team is composed of BS Computer Science students from City College
@@ -268,26 +625,24 @@
     <string name="pp_head_3">HOW DO WE STORE AND PROTECT YOUR INFORMATION?</string>
     <string name="pp_head_4">HOW CAN YOU OPT OUT OF DATA COLLECTION OR USAGE?</string>
     <string name="pp_paragraph_1">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        In vitae sem quis nulla feugiat tempus sed eget odio. Aliquam egestas
-        nibh sed dui vehicula lacinia. Morbi in turpis sapien. Nunc.
+        The information collected in this application (and any other platforms
+        used) are as follows: person\'s name, username, email address, telephone
+        number, etc. All of these information are required for registration
+        purposes.
     </string>
     <string name="pp_paragraph_2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Pellentesque lacinia quam non enim iaculis, sit amet finibus nulla
-        volutpat. Pellentesque in turpis eu metus viverra accumsan vel consectetur
-        mauris. Curabitur.
+        All information stated above are used for research and testing purposes
+        only. Unless the service comes from the trusted source, disclosure of
+        such information is strongly discouraged.
     </string>
     <string name="pp_paragraph_3">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc blandit
-        interdum augue, id blandit arcu. Mauris dictum accumsan ligula in
-        tincidunt. Suspendisse interdum placerat fringilla. Nunc auctor felis
-        magna, vel.
+        All information stated above are stored in a realtime database and the
+        security management is responsible for all operations revolving in the
+        front-end and back-end.
     </string>
     <string name="pp_paragraph_4">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Sed placerat est eu ante aliquet fringilla. Fusce finibus ante dui,
-        non congue orci imperdiet vel. Ut vel neque dolor. Donec a.
+        You may opt out of data collection or usage by either request or account
+        removal, as if it removes all of your personal data stored in the database.
     </string>
 
     <!--  Feedback Page  -->
@@ -300,38 +655,70 @@
     <string name="bav_rules_head">RULES &amp; REGULATIONS</string>
     <string name="bav_how_to_apply_head">HOW CAN I APPLY?</string>
     <string name="bav_paragraph_1">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Integer ante elit, dictum et neque ac, pretium porta libero.
-        In est lectus, interdum sit amet efficitur.
+        OPAL Vendors Community is an online community of vendors that takes
+        an extra step to sell food products to their customers.
     </string>
     <string name="bav_paragraph_2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Praesent posuere velit sit amet dolor fermentum, a facilisis
-        arcu congue. Donec et pulvinar arcu, ut pharetra.
+        Each vendor is subjected to the <b>Vendor\'s Terms and Conditions</b> and
+        <b>Community Guidelines</b>. Failure to comply those guidelines will result
+        to warnings, suspensions, or termination, depending on the violation.
     </string>
     <string name="bav_paragraph_3">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Mauris feugiat condimentum lacus, in laoreet justo dictum quis.
-        Nunc diam mi, faucibus vitae neque eu, auctor.
+        Application for vendor is absolutely free! Just enter your market
+        information and you\'re good to go!
     </string>
-    <string name="bav_instructions">
-        To proceed, you need to enter your password to confirm application
-        for OPAL Vendors Community. By clicking \"Apply Now,\" you also
-        agree to our <b><u>Vendor\'s Terms and Conditions</u></b>.
+    <string name="bav_enter_password_lbl">
+        Please enter your password to proceed with application for OPAL
+        Vendors Community.
     </string>
     <string name="bav_apply_now">Apply Now</string>
 
+    <!--  Market Editor Activity  -->
+    <string name="market_name_helper">Name of Market Stall (Puwesto)</string>
+    <string name="wet_market_name">Parent Wet Market (Palengke)</string>
+    <string name="wet_market_helper">
+        Examples: Mercado de Calamba, Calamba Trade Center, etc.
+    </string>
+    <string name="market_profile_pic_text">Market Profile Picture (Optional)</string>
+    <string name="market_profile_pic_example">
+        Examples: Market Logo, Front of Market Stall, etc.
+    </string>
+    <string name="market_category">Market Category</string>
+    <string name="other_cat_specify">Specify Category</string>
+    <string name="market_address_head">MARKET ADDRESS</string>
+    <string name="market_location_help">
+        Click on the map to change the location.
+    </string>
+    <string name="detailed_vendor_helper">
+        Stall Number, Building Number, Street Name, etc.
+    </string>
+    <string name="vendor_t_and_c_link">VENDOR\'S TERMS &amp; CONDITIONS</string>
+
     <!--  Product Description  -->
     <string name="product_desc">Product Description</string>
-    <string name="product_qty">Product Quantity</string>
-    <string name="product_vendor">Product Vendor</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="go_to_cart">Go to Cart</string>
+
+    <!--  Product Menu  -->
+    <string name="pd_add_new_product">Add New Product</string>
+    <string name="pd_inv_image">Product Inventory Image</string>
+    <string name="pd_inv_stock">Stock: %d</string>
+    <string name="pd_inv_sales">Sales: %d</string>
+    <string name="pd_inv_views">Views: %d</string>
+    <string name="more_menu">More</string>
+    <string name="pd_inv_unlist">Unlist</string>
+    <string name="pd_inv_edit">Edit</string>
+    <string name="pd_inv_delete">Delete</string>
+    <string name="pd_inv_relist">Relist</string>
 
     <!--  Product Editor  -->
     <string name="add_prod_image">Add Product Image</string>
     <string name="edit_price">Price (₱)</string>
-    <string name="edit_qty">Quantity</string>
+    <string name="edit_unit">Unit</string>
+    <string name="edit_custom_unit">Specify Custom Unit</string>
+    <string name="edit_custom_unit_helper">Examples: 350 oz, 1 L, bundle, etc.</string>
+    <string name="edit_weight">Weight (in kg)</string>
+    <string name="edit_stock">Stock</string>
     <string name="delete_product">Delete Product</string>
 
     <!--  Messages Editor  -->
@@ -340,12 +727,193 @@
     <string name="message_cd">Message Profile Picture</string>
 
     <!--  My Cart  -->
+    <string name="market_icon">Market Icon</string>
+    <string name="delete_all">Delete All</string>
+    <string name="weight_limit_warning_icon">Weight Limit Warning</string>
+    <string name="product_image">Product Image</string>
+    <string name="product_weight">%.2f kg</string>
+    <string name="cart_qty_minus">-</string>
+    <string name="cart_qty_counter">0</string>
+    <string name="cart_qty_plus">+</string>
+    <string name="total_weight">Total Weight</string>
     <string name="sub_total">Subtotal</string>
     <string name="delivery_fee">Delivery Fee</string>
+    <string name="total_price">Total Price</string>
+    <string name="default_price">₱0.00</string>
+    <string name="default_weight">0.00 kg</string>
+    <string name="item_price">₱%.2f</string>
+    <string name="btn_checkout">Checkout</string>
+    <string name="continue_browsing">Continue Browsing</string>
+
+    <!--  Checkout  -->
+    <string name="delivery_address">Delivery Address</string>
+    <string name="delivery_address_icon">Delivery Address Icon</string>
+    <string name="select_address">Select Address</string>
+    <string name="click_map_view_route_lbl">Click on the map to view delivery route.</string>
+    <string name="address_contact_info">%1$s | %2$s</string>
+    <string name="product_qty">QTY: %d</string>
+    <string name="delivery_message_icon">Delivery Message Icon</string>
+    <string name="est_delivery_time_lbl">Estimated Delivery Time</string>
+    <string name="order_instructions_icon">Order Instructions Icon</string>
+    <string name="order_instructions">Order Instructions</string>
+    <string name="order_not_available_lbl">
+        If one (or more) product(s) is/are not available:
+    </string>
+    <string name="order_unavailable_select_action">Order Unavailable Action</string>
+    <string name="special_instructions">Special Instructions (Optional)</string>
+    <string name="special_instructions_helper">
+        Examples: Chop the whole chicken, cut pork loin into chops, etc.
+    </string>
+    <string name="payment_method_icon">Payment Method Icon</string>
     <string name="payment_method">Payment Method</string>
-    <string name="total_price">Total</string>
-    <string name="cart_price">₱0.00</string>
-    <string name="cash_on_delivery">Cash on Delivery</string>
-    <string name="btn_check_out">Check Out</string>
+    <string name="select_payment">Select Payment Method</string>
+    <string name="payment_selection">Payment Selection Status</string>
+    <string name="items_receipt_icon">Items Receipt Icon</string>
+    <string name="items_receipt">Items Receipt</string>
+    <string name="chkout_total_payment">Total Payment</string>
+    <string name="chkout_place_order">Place Order</string>
+    <string name="chkout_delivery_fee_distance">Delivery Fee (%.1f km)</string>
+    <string name="chkout_delivery_duration">%d mins.</string>
+
+    <!--  Order/Sales History  -->
+    <string name="market_customer_icon">Market/Customer Icon</string>
+    <string name="market_customer_name">Market/Customer Name</string>
+    <string name="order_id">Order ID</string>
+    <string name="order_date">Order Date</string>
+    <string name="order_items">Order Items</string>
+    <string name="empty_order_items">
+        <i>No items found. A retrieval error might be the cause of this problem.</i>
+    </string>
+    <string name="order_item_qty_default">Total (n items):</string>
+    <string name="order_status_icon">Order Status Icon</string>
+    <string name="order_status">Status</string>
+
+    <!--  Order Details  -->
+    <string name="order_details">Order Details</string>
+    <string name="od_det_status_title">Status Title</string>
+    <string name="od_det_status_desc">Status Description</string>
+    <string name="od_det_status_icon">Order Status Icon (Large)</string>
+    <string name="od_det_payment_info">Payment Information</string>
+    <string name="od_det_subtotal_default">Subtotal (n items)</string>
+    <string name="od_det_information_icon">Order Information Icon</string>
+    <string name="od_det_information">Order Information</string>
+    <string name="order_id_placeholder">OPLXXXXXXXXXXXXX</string>
+    <string name="payment_date">Payment Date</string>
+    <string name="delivery_date">Delivery Date</string>
+    <string name="return_date">Return Date</string>
+    <string name="order_date_placeholder">yyyy-MM-dd HH:mm:ss</string>
+    <string name="od_det_other_info">Other Information</string>
+    <string name="order_unavailable_action">Order Unavailable Action</string>
+    <string name="od_det_special_instructions">Special Instructions</string>
+
+    <!--  Order Statuses  -->
+    <string name="order_pending">Pending</string>
+    <string name="order_to_deliver">To Deliver</string>
+    <string name="order_out_for_delivery">Out for Delivery</string>
+    <string name="order_delivered">Delivered</string>
+    <string name="order_cancelled">Cancelled</string>
+    <string name="order_return_request">Return/Refund Requested</string>
+    <string name="order_to_return">To Return/Refund</string>
+    <string name="order_returned">Returned/Refunded</string>
+    <string name="order_unknown">Unknown</string>
+
+    <!--  Order Status Description (Generic)  -->
+    <string name="order_fail_reason">Reason: %s.</string>
+    <string name="order_unknown_desc">
+        Unable to determine the status due to unexpected error or other reasons.
+    </string>
+
+    <!--  Order Status Description for Customers  -->
+    <string name="cs_od_pending_desc">Awaiting confirmation from your market vendor.</string>
+    <string name="cs_od_to_deliver_desc">
+        Your %1$s %2$s being prepared by your market vendor.
+    </string>
+    <string name="cs_od_ofd_desc">Your %1$s %2$s on %3$s way to your doorsteps.</string>
+    <string name="cs_od_delivered_desc">
+        Your %1$s %2$s successfully delivered. Thank you for choosing OPAL!
+    </string>
+    <string name="cs_od_return_req_desc">Awaiting approval from your market vendor.</string>
+    <string name="cs_od_return_acc_desc">
+        Please wait for your %s to return to market vendor.
+    </string>
+    <string name="cs_od_returned_desc">
+        Your %1$s %2$s successfully returned to your market vendor. %3$s
+    </string>
+
+    <!--  Order Status Description for Vendors  -->
+    <string name="vd_od_pending_desc">
+        Confirm customer\'s order to begin the delivery process.
+    </string>
+    <string name="vd_od_to_deliver_desc">
+        Prepare the %s specified before handing over to your designated rider.
+    </string>
+    <string name="vd_od_ofd_desc">
+        Customer\'s %1$s %2$s on %3$s way to its delivery address.
+    </string>
+    <string name="vd_od_delivered_desc">
+        Customer\'s %1$s %2$s successfully delivered.
+    </string>
+    <string name="vd_od_return_req_desc">
+        Please respond to customer\'s return/refund request. %s
+    </string>
+    <string name="vd_od_return_acc_desc">
+        Please wait for the customer\'s %s to arrive back at your market.
+    </string>
+    <string name="vd_od_returned_desc">
+        Customer\'s %1$s %2$s successfully returned. %3$s
+    </string>
+
+    <!--  Order Details Call to Action Buttons  -->
+    <string name="contact_customer_vendor">Contact %s</string>
+    <string name="default_cta_1">CTA 1</string>
+    <string name="default_cta_2">CTA 2</string>
+    <string name="cancel_order_btn">Cancel Order</string>
+    <string name="confirm_order_btn">Confirm Order</string>
+    <string name="start_delivery_btn">Start Delivery</string>
+    <string name="return_refund_btn">Return/Refund</string>
+    <string name="mark_as_paid_btn">Mark as Paid</string>
+    <string name="order_delivered_btn">Delivered</string>
+    <string name="order_not_delivered_btn">Not Delivered</string>
+    <string name="rate_market_btn">Rate Market</string>
+    <string name="view_rating_btn">View Rating</string>
+    <string name="buy_again_btn">Buy Again</string>
+    <string name="view_cust_rating_btn">View Customer\'s Rating</string>
+    <string name="cancel_request_btn">Cancel Request</string>
+    <string name="accept_request_btn">Accept Request</string>
+    <string name="reject_request_btn">Reject Request</string>
+    <string name="order_returned_btn">Order Returned/Refunded</string>
+
+    <!--  My Market  -->
+    <string name="market_products">Market Products</string>
+    <string name="market_product_sold">Products Sold</string>
+    <string name="market_visits">Market Visits</string>
+    <string name="market_rating">Market Rating</string>
+    <string name="zero_count">0</string>
+    <string name="rating_count">%.1f / 5.0</string>
+    <string name="my_market_more_details">More Details</string>
+    <string name="my_market_edit_market">Edit Market</string>
+    <string name="market_category_icon">Market Category Icon</string>
+    <string name="market_address_icon">Market Address Icon</string>
+    <string name="market_delivery_fee_icon">Market Delivery Fee Icon</string>
+    <string name="market_other_category">%1$s (%2$s)</string>
+
+    <!--  Insights  -->
+    <string name="insight_total_sales">Total Sales</string>
+    <string name="insight_total_orders">Total Orders</string>
+    <string name="insight_regular_customers">Regular Customers</string>
+    <string name="insight_conversion_rate">Conversion Rate</string>
+    <string name="percentage_value">%.1f%%</string>
+
+    <!--  Map Activity  -->
+    <string name="map_marker">Map Marker</string>
+    <string name="select_location_button">Select Location</string>
+    <string name="delivery_distance_label">Delivery Distance</string>
+    <string name="delivery_distance_value">%.1f km</string>
+    <string name="delivery_duration_label">Delivery Duration</string>
+    <string name="delivery_duration_value">%d min</string>
+
+    <!--  Testing Purposes  -->
+    <string name="current_location">%1$s, %2$s, %3$s, %4$s %5$d</string>
+    <string name="market_address_detailed">%1$s, %2$s, %3$s, %4$s, %5$s %6$d</string>
 
 </resources>

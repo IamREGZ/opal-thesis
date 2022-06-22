@@ -39,36 +39,53 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="@dimen/medium_large_mrg_pd"
-            android:paddingEnd="@dimen/medium_large_mrg_pd">
+            android:paddingTop="@dimen/large_mrg_pd"
+            android:paddingEnd="@dimen/medium_large_mrg_pd"
+            android:paddingBottom="@dimen/large_mrg_pd">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_user_profile_photo"
                 android:layout_width="@dimen/profile_user_photo_size"
                 android:layout_height="@dimen/profile_user_photo_size"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/large_mrg_pd"
-                android:layout_marginBottom="@dimen/medium_large_mrg_pd"
                 android:contentDescription="@string/user_profile_photo_cd"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_prof_image_placeholder"
                 app:civ_border_color="@color/primaryAccentColor"
                 app:civ_border_width="@dimen/profile_user_stroke_width" />
 
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_delete_profile_pic_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="@string/remove_image_lbl"
+                android:textColor="@color/secondaryAccentColor"
+                android:textSize="@dimen/main_text_size" />
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_profile_fname"
+                android:id="@+id/til_profile_first_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_mrg_pd"
+                android:layout_marginTop="@dimen/small_mrg_pd"
                 android:hint="@string/first_name"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
                 app:boxCornerRadiusBottomStart="@dimen/et_radius"
                 app:boxCornerRadiusTopEnd="@dimen/et_radius"
                 app:boxCornerRadiusTopStart="@dimen/et_radius"
-                app:boxStrokeWidth="@dimen/et_stroke_width">
+                app:boxStrokeWidth="@dimen/et_stroke_width"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/max_chars_person_name"
+                app:counterTextColor="@color/app_black">
 
                 <edu.cccdci.opal.utils.MainEditText
-                    android:id="@+id/et_profile_fname"
+                    android:id="@+id/et_profile_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
@@ -78,21 +95,24 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_profile_lname"
+                android:id="@+id/til_profile_last_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_mrg_pd"
+                android:layout_marginTop="@dimen/small_mrg_pd"
                 android:hint="@string/last_name"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
                 app:boxCornerRadiusBottomStart="@dimen/et_radius"
                 app:boxCornerRadiusTopEnd="@dimen/et_radius"
                 app:boxCornerRadiusTopStart="@dimen/et_radius"
-                app:boxStrokeWidth="@dimen/et_stroke_width">
+                app:boxStrokeWidth="@dimen/et_stroke_width"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/max_chars_person_name"
+                app:counterTextColor="@color/app_black">
 
                 <edu.cccdci.opal.utils.MainEditText
-                    android:id="@+id/et_profile_lname"
+                    android:id="@+id/et_profile_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
@@ -106,7 +126,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_mrg_pd"
+                android:layout_marginTop="@dimen/small_mrg_pd"
                 android:hint="@string/email_address"
                 android:textColorHint="@color/et_hint_black"
                 app:boxCornerRadiusBottomEnd="@dimen/et_radius"
@@ -119,12 +139,14 @@
                     android:id="@+id/et_profile_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/app_black"
                     android:textSize="@dimen/main_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!--  Temporarily Disabled  -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_profile_username"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -143,6 +165,7 @@
                     android:id="@+id/et_profile_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:inputType="text"
                     android:textColor="@color/app_black"
                     android:textSize="@dimen/main_text_size" />
@@ -161,7 +184,10 @@
                 app:boxCornerRadiusBottomStart="@dimen/et_radius"
                 app:boxCornerRadiusTopEnd="@dimen/et_radius"
                 app:boxCornerRadiusTopStart="@dimen/et_radius"
-                app:boxStrokeWidth="@dimen/et_stroke_width">
+                app:boxStrokeWidth="@dimen/et_stroke_width"
+                app:helperText="@string/phone_number_helper"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="@color/app_black">
 
                 <edu.cccdci.opal.utils.MainEditText
                     android:id="@+id/et_profile_phone"
@@ -186,11 +212,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/profile_rb_gender_marginStartEnd"
                     android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
+                    android:background="@drawable/radio_button_box"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/gender_male"
-                    android:textColor="@drawable/custom_rb_text_color"
+                    android:textColor="@drawable/radio_button_box_text"
                     android:textSize="@dimen/main_text_size" />
 
                 <edu.cccdci.opal.utils.MainRadioButton
@@ -200,11 +226,11 @@
                     android:layout_marginStart="@dimen/profile_rb_gender_marginStartEnd"
                     android:layout_marginEnd="@dimen/profile_rb_gender_marginStartEnd"
                     android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
+                    android:background="@drawable/radio_button_box"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/gender_female"
-                    android:textColor="@drawable/custom_rb_text_color"
+                    android:textColor="@drawable/radio_button_box_text"
                     android:textSize="@dimen/main_text_size" />
 
                 <edu.cccdci.opal.utils.MainRadioButton
@@ -213,11 +239,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/profile_rb_gender_marginStartEnd"
                     android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
+                    android:background="@drawable/radio_button_box"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/gender_other"
-                    android:textColor="@drawable/custom_rb_text_color"
+                    android:textColor="@drawable/radio_button_box_text"
                     android:textSize="@dimen/main_text_size" />
 
             </RadioGroup>
@@ -227,10 +253,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_large_height"
                 android:layout_marginTop="@dimen/large_mrg_pd"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/button_primary"
+                android:letterSpacing="0.0"
+                android:padding="@dimen/button_padding"
                 android:text="@string/save_changes_btn"
                 android:textColor="@color/app_white"
-                android:textSize="@dimen/button_large_text_size" />
+                android:textSize="@dimen/button_large_text_size"
+                app:backgroundTint="@null" />
 
         </LinearLayout>
 

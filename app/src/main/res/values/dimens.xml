@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--  Resources containing dimen values  -->
 <resources>
     <!--  App Logo  -->
     <dimen name="opal_logo_size">200dp</dimen>
@@ -7,6 +8,9 @@
     <!--  Text Sizes  -->
     <dimen name="main_text_size">18sp</dimen>
     <dimen name="header_text_size">24sp</dimen>
+    <dimen name="secondary_text_size">16sp</dimen>
+    <dimen name="large_head_text_size">36sp</dimen>
+    <dimen name="xl_head_text_size">48sp</dimen>
     <dimen name="button_large_text_size">22sp</dimen>
     <dimen name="button_small_text_size">18sp</dimen>
     <dimen name="progress_text_size">16sp</dimen>
@@ -15,11 +19,17 @@
     <dimen name="categories_expand_text_size">16sp</dimen>
     <dimen name="card_head_text_size">18sp</dimen>
     <dimen name="card_desc_text_size">14sp</dimen>
+    <dimen name="pd_inv_info_text_size">14sp</dimen>
 
     <!--  Button Dimens  -->
     <dimen name="button_radius">15dp</dimen>
-    <dimen name="button_large_height">50dp</dimen>
-    <dimen name="button_small_height">40dp</dimen>
+    <dimen name="button_large_height">54dp</dimen>
+    <dimen name="button_small_height">48dp</dimen>
+    <dimen name="button_stroke">2dp</dimen>
+    <dimen name="button_padding">2dp</dimen>
+    <dimen name="button_icon_size">24dp</dimen>
+    <dimen name="button_icon_padding_small">4dp</dimen>
+    <dimen name="button_icon_padding_large">12dp</dimen>
     <dimen name="radio_button_radius">10dp</dimen>
     <dimen name="radio_button_stroke">2dp</dimen>
 
@@ -27,8 +37,9 @@
     <dimen name="et_login_radius">15dp</dimen>
     <dimen name="et_radius">10dp</dimen>
     <dimen name="et_stroke_width">2dp</dimen>
-    <dimen name="et_feedback_msg_height">180dp</dimen>
-    <dimen name="et_detailed_addr_height">80dp</dimen>
+    <dimen name="et_feedback_msg_height">150dp</dimen>
+    <dimen name="et_detailed_addr_height">100dp</dimen>
+    <dimen name="et_special_instructions_height">100dp</dimen>
 
     <!--  General Margins & Paddings  -->
     <dimen name="small_mrg_pd">5dp</dimen>
@@ -37,16 +48,24 @@
     <dimen name="large_mrg_pd">24dp</dimen>
     <dimen name="xl_mrg_pd">36dp</dimen>
     <dimen name="tlb_title_paddingStart">-25dp</dimen>
+    <dimen name="checkbox_marginEnd">-15dp</dimen>
+
+    <!--  Icon Sizes  -->
+    <dimen name="small_icon_size">20dp</dimen>
+    <dimen name="medium_icon_size">36dp</dimen>
+    <dimen name="large_icon_size">48dp</dimen>
+    <dimen name="xl_icon_size">80dp</dimen>
+    <dimen name="check_icon_size">24dp</dimen>
 
     <!--  Login Dimens  -->
-    <dimen name="login_layout_padding">30dp</dimen>
-
-    <!--  Register Dimens  -->
-    <dimen name="register_layout_padding">16dp</dimen>
+    <dimen name="login_layout_padding">32dp</dimen>
 
     <!--  Progress Dialog Dimens  -->
     <dimen name="progress_dialog_padding">8dp</dimen>
     <dimen name="progress_spinner_size">60dp</dimen>
+
+    <!--  Alert Dialog Dimens  -->
+    <dimen name="alert_dialog_padding">15dp</dimen>
 
     <!--  Sidebar Dimens  -->
     <dimen name="nav_profile_picture_size">120dp</dimen>
@@ -55,7 +74,7 @@
     <!--  User Profile Dimens  -->
     <dimen name="profile_user_stroke_width">4dp</dimen>
     <dimen name="profile_user_photo_size">160dp</dimen>
-    <dimen name="profile_rg_gender_height">50dp</dimen>
+    <dimen name="profile_rg_gender_height">48dp</dimen>
     <dimen name="profile_rb_gender_marginStartEnd">3dp</dimen>
 
     <!--  Notification Dimens  -->
@@ -67,9 +86,16 @@
     <dimen name="categories_margin_big">20dp</dimen>
     <dimen name="categories_margin_small">10dp</dimen>
 
+    <!--  Address Dimens  -->
+    <dimen name="addr_label_stroke_width">2dp</dimen>
+    <dimen name="addr_label_stroke_radius">20dp</dimen>
+    <dimen name="addr_label_size_x">7dp</dimen>
+    <dimen name="addr_label_size_y">3dp</dimen>
+    <dimen name="addr_map_height">240dp</dimen>
+
     <!--  Settings Dimens  -->
     <dimen name="ic_forward_size">24dp</dimen>
-    <dimen name="settings_line_width">1dp</dimen>
+    <dimen name="border_line_width">1dp</dimen>
     <dimen name="warning_icon_size">120dp</dimen>
 
     <!--  Product Description Dimens  -->
@@ -80,5 +106,64 @@
     <dimen name="card_size">150dp</dimen>
     <dimen name="card_radius">5dp</dimen>
     <dimen name="card_elevation">8dp</dimen>
+
+    <!--  Market Browse Dimens  -->
+    <dimen name="browse_card_width">150dp</dimen>
+    <dimen name="browse_card_height">200dp</dimen>
+    <dimen name="browse_card_corners">16dp</dimen>
+    <dimen name="browse_card_image_size">100dp</dimen>
+
+    <!--  Market Category Dimens  -->
+    <dimen name="category_card_width">240dp</dimen>
+    <dimen name="category_card_height">160dp</dimen>
+    <dimen name="category_card_image_size">90dp</dimen>
+
+    <!--  Market Dimens  -->
+    <dimen name="market_image_size">100dp</dimen>
+
+    <!--  Product Inventory Dimens  -->
+    <dimen name="product_inv_image_size">100dp</dimen>
+    <dimen name="product_inv_image_border_size">102dp</dimen>
+    <dimen name="product_inv_image_corners">10dp</dimen>
+
+    <!--  Cart Dimens  -->
+    <dimen name="cart_prod_selector_marginEnd">-10dp</dimen>
+    <dimen name="cart_prod_image_size">80dp</dimen>
+    <dimen name="cart_prod_image_border_size">82dp</dimen>
+    <dimen name="cart_prod_image_corners">10dp</dimen>
+    <dimen name="cart_prod_qty_button_corners">10dp</dimen>
+    <dimen name="cart_prod_qty_height">32dp</dimen>
+    <dimen name="cart_prod_qty_button_width">36dp</dimen>
+    <dimen name="cart_prod_qty_count_width">45dp</dimen>
+    <dimen name="cont_browse_btn_width">240dp</dimen>
+
+    <!--  Checkout Dimens  -->
+    <dimen name="checkout_panel_corners">16dp</dimen>
+    <dimen name="checkout_panel_elevation">8dp</dimen>
+    <dimen name="checkout_payment_stroke">2dp</dimen>
+    <dimen name="checkout_payment_corners">10dp</dimen>
+    <dimen name="checkout_delivery_addr_corners">10dp</dimen>
+    <dimen name="checkout_delivery_addr_elevation">4dp</dimen>
+    <dimen name="checkout_delivery_addr_height">150dp</dimen>
+
+    <!--  Market Editor Dimens  -->
+    <dimen name="market_image_panel_stroke">2dp</dimen>
+    <dimen name="market_image_panel_corners">10dp</dimen>
+    <dimen name="mkt_edit_image_size">100dp</dimen>
+    <dimen name="mkt_edit_image_border_size">104dp</dimen>
+    <dimen name="rounded_rect_image_corners">15dp</dimen>
+    <dimen name="mkt_location_map_height">150dp</dimen>
+    <dimen name="mkt_location_map_corners">10dp</dimen>
+    <dimen name="mkt_location_map_elevation">4dp</dimen>
+
+    <!--  My Market Dimens  -->
+    <dimen name="my_market_profile_size">150dp</dimen>
+    <dimen name="my_market_profile_border_size">154dp</dimen>
+
+    <!--  Map Page Dimens  -->
+    <dimen name="map_button_width">200dp</dimen>
+    <dimen name="map_distance_panel_width">240dp</dimen>
+    <dimen name="map_distance_panel_corners">10dp</dimen>
+    <dimen name="map_distance_panel_elevation">4dp</dimen>
 
 </resources>

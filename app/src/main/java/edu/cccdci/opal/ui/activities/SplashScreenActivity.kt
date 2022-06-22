@@ -1,5 +1,6 @@
 package edu.cccdci.opal.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -10,15 +11,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import edu.cccdci.opal.databinding.ActivitySplashScreenBinding
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashScreenBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         // Force disable dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
 
         with(binding) {
@@ -50,7 +52,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
                 finish()  // Closes the Splash Screen
             }  // end of withEndAction
-
         }  // end of with(binding)
 
     }  // end of onCreate method

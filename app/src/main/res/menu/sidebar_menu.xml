@@ -24,8 +24,8 @@
 
     <!-- Sign Out Menu Item -->
     <item
-        android:id="@+id/nav_sign_out"
-        android:icon="@drawable/ic_sign_out"
+        android:id="@+id/nav_log_out"
+        android:icon="@drawable/ic_log_out"
         android:title="@string/nav_log_out" />
 
     <!-- For Vendors Only -->
@@ -36,9 +36,9 @@
         <menu>
             <!-- Your Market Submenu Item -->
             <item
-                android:id="@+id/nav_your_market"
-                android:icon="@drawable/ic_your_market"
-                android:title="@string/nav_your_market" />
+                android:id="@+id/nav_my_market"
+                android:icon="@drawable/ic_market"
+                android:title="@string/nav_my_market" />
 
             <!-- Products Submenu Item -->
             <item
@@ -46,17 +46,18 @@
                 android:icon="@drawable/ic_products"
                 android:title="@string/nav_products" />
 
-            <!-- Customer Transactions Submenu Item -->
+            <!-- Sales History Submenu Item -->
             <item
-                android:id="@+id/nav_customer_transactions"
-                android:icon="@drawable/ic_customer_transactions"
-                android:title="@string/nav_customer_transactions" />
+                android:id="@+id/nav_sales_history"
+                android:icon="@drawable/ic_sales_history"
+                android:title="@string/nav_sales_history" />
 
             <!-- Insights Submenu Item -->
             <item
                 android:id="@+id/nav_insights"
                 android:icon="@drawable/ic_insights"
                 android:title="@string/nav_insights" />
+
         </menu>
 
     </item>

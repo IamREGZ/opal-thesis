@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Radio Button (Box) Drawable  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  Checked Radio Button (Solid Teal Color)  -->
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/secondaryAccentColor" />
+            <corners android:radius="@dimen/radio_button_radius" />
+        </shape>
+    </item>
+
+    <!--  Unchecked Radio Button (Outlined Button)  -->
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <stroke android:width="@dimen/radio_button_stroke" android:color="@color/medium_gray" />
+            <corners android:radius="@dimen/radio_button_radius" />
+        </shape>
+    </item>
+
+    <!--  Disabled Radio Button (Solid Gray Color)  -->
+<!--    <item android:state_enabled="false">-->
+<!--        <shape android:shape="rectangle">-->
+<!--            <solid android:color="@color/dim_gray" />-->
+<!--            <corners android:radius="@dimen/radio_button_radius" />-->
+<!--        </shape>-->
+<!--    </item>-->
+</selector>

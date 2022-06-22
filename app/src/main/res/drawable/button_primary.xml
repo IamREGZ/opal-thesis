@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Primary Button Drawable  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  Enabled Button (Solid Green Color)  -->
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/primaryAccentColor" />
+            <corners android:radius="@dimen/button_radius" />
+        </shape>
+    </item>
+
+    <!--  Disabled Button (Solid Gray Color)  -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/dim_gray" />
+            <corners android:radius="@dimen/button_radius" />
+        </shape>
+    </item>
+</selector>

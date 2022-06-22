@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activities.MapActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tlb_map_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@color/primaryColorTheme">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_map_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/tlb_title_paddingStart"
+            android:paddingEnd="0dp"
+            android:text=""
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/header_text_size" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/mpfr_delivery_route_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_map_marker_centered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/map_marker"
+            android:paddingBottom="@dimen/xl_mrg_pd"
+            android:src="@drawable/ic_map_marker_primary"
+            android:visibility="gone" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_map_distance_panel"
+            android:layout_width="@dimen/map_distance_panel_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/large_mrg_pd"
+            android:clipToPadding="false"
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/map_distance_panel_corners"
+            app:cardElevation="@dimen/map_distance_panel_elevation">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:padding="@dimen/medium_mrg_pd">
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="@dimen/small_mrg_pd"
+                    android:layout_marginEnd="@dimen/small_mrg_pd"
+                    android:layout_marginBottom="@dimen/medium_mrg_pd"
+                    android:gravity="center"
+                    android:text="@string/delivery_distance_label"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/secondary_text_size" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="@dimen/small_mrg_pd"
+                    android:layout_marginEnd="@dimen/small_mrg_pd"
+                    android:layout_marginBottom="@dimen/medium_mrg_pd"
+                    android:gravity="center"
+                    android:text="@string/delivery_duration_label"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/secondary_text_size" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:id="@+id/tv_map_route_distance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="@dimen/small_mrg_pd"
+                    android:layout_marginEnd="@dimen/small_mrg_pd"
+                    android:gravity="center"
+                    android:text="@string/delivery_distance_value"
+                    android:textColor="@color/primaryAccentColor"
+                    android:textSize="@dimen/header_text_size" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:id="@+id/tv_map_route_duration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="@dimen/small_mrg_pd"
+                    android:layout_marginEnd="@dimen/small_mrg_pd"
+                    android:gravity="center"
+                    android:text="@string/delivery_duration_value"
+                    android:textColor="@color/secondaryAccentColor"
+                    android:textSize="@dimen/header_text_size" />
+
+            </GridLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <edu.cccdci.opal.utils.MainButton
+            android:id="@+id/btn_select_location"
+            android:layout_width="@dimen/map_button_width"
+            android:layout_height="@dimen/button_small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/large_mrg_pd"
+            android:background="@drawable/button_primary"
+            android:letterSpacing="0.0"
+            android:padding="@dimen/button_padding"
+            android:text="@string/select_location_button"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/main_text_size"
+            android:visibility="gone"
+            app:backgroundTint="@null" />
+
+    </RelativeLayout>
+
+</LinearLayout>

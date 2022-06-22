@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Secondary Button Text Drawable  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  Enabled Button (Green Text)  -->
+    <item android:color="@color/primaryAccentColor" android:state_enabled="true" />
+
+    <!--  Disabled Button (Dark Gray Text)  -->
+    <item android:color="@color/dim_gray" android:state_enabled="false" />
+</selector>

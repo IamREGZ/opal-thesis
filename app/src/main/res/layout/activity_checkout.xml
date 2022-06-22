@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    android:orientation="vertical"
+    tools:context=".ui.activities.CheckoutActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tlb_checkout_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@color/primaryColorTheme">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_checkout_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/tlb_title_paddingStart"
+            android:paddingEnd="0dp"
+            android:text="@string/tlb_title_checkout"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/header_text_size" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_white"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/medium_mrg_pd"
+            android:paddingTop="@dimen/medium_mrg_pd"
+            android:paddingEnd="@dimen/medium_mrg_pd"
+            android:paddingBottom="@dimen/medium_large_mrg_pd">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_mrg_pd"
+                android:clipToPadding="false"
+                app:cardCornerRadius="@dimen/checkout_panel_corners"
+                app:cardElevation="@dimen/checkout_panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/medium_mrg_pd">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/small_mrg_pd"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/medium_icon_size"
+                            android:layout_height="@dimen/medium_icon_size"
+                            android:contentDescription="@string/delivery_address_icon"
+                            android:src="@drawable/ic_location" />
+
+                        <edu.cccdci.opal.utils.HeaderTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/medium_mrg_pd"
+                            android:layout_marginEnd="@dimen/medium_mrg_pd"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/delivery_address"
+                            android:textColor="@color/primaryAccentColor"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <ImageView
+                            android:id="@+id/iv_select_address"
+                            android:layout_width="@dimen/medium_icon_size"
+                            android:layout_height="@dimen/medium_icon_size"
+                            android:contentDescription="@string/select_address"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:src="@drawable/ic_edit" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_selected_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/medium_mrg_pd"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/checkout_delivery_addr_height"
+                            android:layout_marginStart="@dimen/small_mrg_pd"
+                            android:layout_marginTop="@dimen/small_mrg_pd"
+                            android:layout_marginEnd="@dimen/small_mrg_pd"
+                            android:layout_marginBottom="@dimen/medium_mrg_pd"
+                            android:clipToPadding="false"
+                            app:cardCornerRadius="@dimen/checkout_delivery_addr_corners"
+                            app:cardElevation="@dimen/checkout_delivery_addr_elevation">
+
+                            <androidx.fragment.app.FragmentContainerView
+                                android:id="@+id/mpfr_checkout_address"
+                                android:name="com.google.android.gms.maps.SupportMapFragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+                            android:gravity="center"
+                            android:text="@string/click_map_view_route_lbl"
+                            android:textColor="@color/secondaryAccentColor"
+                            android:textSize="@dimen/secondary_text_size" />
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:id="@+id/tv_chkout_addr_contact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/small_mrg_pd"
+                            android:text="@string/address_contact_info"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:id="@+id/tv_chkout_addr_line_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/small_mrg_pd"
+                            android:text="@string/addr_line_1"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:id="@+id/tv_chkout_addr_line_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/addr_line_2"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                    </LinearLayout>
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/tv_no_selected_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/medium_mrg_pd"
+                        android:layout_marginEnd="@dimen/medium_mrg_pd"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/xl_mrg_pd"
+                        android:paddingBottom="@dimen/xl_mrg_pd"
+                        android:text="@string/err_no_selected_address"
+                        android:textColor="@color/colorErrorMessage"
+                        android:textSize="@dimen/main_text_size"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_delivery_message_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_mrg_pd"
+                android:clipToPadding="false"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/dim_gray"
+                app:cardCornerRadius="@dimen/checkout_panel_corners"
+                app:cardElevation="@dimen/checkout_panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/medium_large_mrg_pd">
+
+                    <ImageView
+                        android:id="@+id/iv_delivery_message_icon"
+                        android:layout_width="@dimen/xl_icon_size"
+                        android:layout_height="@dimen/xl_icon_size"
+                        android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                        android:contentDescription="@string/delivery_message_icon"
+                        app:tint="@color/app_white" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_chkout_delivery_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/small_mrg_pd"
+                            android:text="@string/est_delivery_time_lbl"
+                            android:textColor="@color/app_white"
+                            android:textSize="@dimen/main_text_size" />
+
+                        <edu.cccdci.opal.utils.HeaderTextView
+                            android:id="@+id/tv_chkout_delivery_duration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/chkout_delivery_duration"
+                            android:textColor="@color/app_white"
+                            android:textSize="@dimen/header_text_size" />
+
+                    </LinearLayout>
+
+                    <edu.cccdci.opal.utils.MainTextView
+                        android:id="@+id/tv_address_not_in_coverage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/err_address_not_in_coverage"
+                        android:textColor="@color/app_white"
+                        android:textSize="@dimen/main_text_size"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_mrg_pd"
+                android:clipToPadding="false"
+                app:cardCornerRadius="@dimen/checkout_panel_corners"
+                app:cardElevation="@dimen/checkout_panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/medium_mrg_pd">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/medium_mrg_pd"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/medium_icon_size"
+                            android:layout_height="@dimen/medium_icon_size"
+                            android:layout_marginEnd="@dimen/medium_mrg_pd"
+                            android:contentDescription="@string/market_icon"
+                            android:src="@drawable/ic_market" />
+
+                        <edu.cccdci.opal.utils.HeaderTextView
+                            android:id="@+id/tv_chkout_market"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/market_name"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_items_chkout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_mrg_pd"
+                android:clipToPadding="false"
+                app:cardCornerRadius="@dimen/checkout_panel_corners"
+                app:cardElevation="@dimen/checkout_panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/medium_mrg_pd">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/medium_mrg_pd"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/medium_icon_size"
+                            android:layout_height="@dimen/medium_icon_size"
+                            android:layout_marginEnd="@dimen/medium_mrg_pd"
+                            android:contentDescription="@string/order_instructions_icon"
+                            android:src="@drawable/ic_order_instructions" />
+
+                        <edu.cccdci.opal.utils.HeaderTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/order_instructions"
+                            android:textColor="@color/primaryAccentColor"
+                            android:textSize="@dimen/header_text_size" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/medium_mrg_pd"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/medium_mrg_pd"
+                        android:paddingEnd="@dimen/medium_mrg_pd">
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/order_not_available_lbl"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_chkout_order_action"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/medium_mrg_pd"
+                            android:hint="@string/order_unavailable_select_action"
+                            android:textColorHint="@color/et_hint_black"
+                            app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/et_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/et_radius"
+                            app:boxCornerRadiusTopStart="@dimen/et_radius"
+                            app:boxStrokeWidth="@dimen/et_stroke_width"
+                            app:endIconTint="@color/app_black">
+
+                            <edu.cccdci.opal.utils.CustomACTV
+                                android:id="@+id/actv_chkout_order_action"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:inputType="none"
+                                android:textColor="@color/app_black"
+                                android:textSize="@dimen/main_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_chkout_special_instructions"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/medium_mrg_pd"
+                            android:hint="@string/special_instructions"
+                            android:textColorHint="@color/et_hint_black"
+                            app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/et_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/et_radius"
+                            app:boxCornerRadiusTopStart="@dimen/et_radius"
+                            app:boxStrokeWidth="@dimen/et_stroke_width"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="@integer/max_chars_special_instructions"
+                            app:counterTextColor="@color/app_black"
+                            app:helperText="@string/special_instructions_helper"
+                            app:helperTextEnabled="true"
+                            app:helperTextTextColor="@color/app_black">
+
+                            <edu.cccdci.opal.utils.MainEditText
+                                android:id="@+id/et_chkout_special_instructions"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/et_special_instructions_height"
+                                android:gravity="top"
+                                android:inputType="textMultiLine"
+                                android:overScrollMode="always"
+                                android:scrollbarStyle="insideInset"
+                                android:scrollbars="vertical"
+                                android:textColor="@color/app_black"
+                                android:textSize="@dimen/main_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_mrg_pd"
+                android:clipToPadding="false"
+                app:cardCornerRadius="@dimen/checkout_panel_corners"
+                app:cardElevation="@dimen/checkout_panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/medium_mrg_pd">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/medium_mrg_pd"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/medium_icon_size"
+                            android:layout_height="@dimen/medium_icon_size"
+                            android:layout_marginEnd="@dimen/medium_mrg_pd"
+                            android:contentDescription="@string/payment_method_icon"
+                            android:src="@drawable/ic_payment" />
+
+                        <edu.cccdci.opal.utils.HeaderTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/payment_method"
+                            android:textColor="@color/primaryAccentColor"
+                            android:textSize="@dimen/header_text_size" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_payment_method"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/small_mrg_pd"
+                        android:background="@drawable/outlined_text_layout_large"
+                        android:backgroundTint="@color/app_white"
+                        android:clipToPadding="false"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/medium_large_mrg_pd">
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:id="@+id/tv_chkout_payment_method"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/select_payment"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                        <View
+                            android:layout_width="@dimen/ic_forward_size"
+                            android:layout_height="@dimen/ic_forward_size"
+                            android:layout_marginStart="@dimen/medium_mrg_pd"
+                            android:background="@drawable/ic_forward" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_mrg_pd"
+                android:clipToPadding="false"
+                app:cardCornerRadius="@dimen/checkout_panel_corners"
+                app:cardElevation="@dimen/checkout_panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/medium_mrg_pd">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/medium_mrg_pd"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/medium_icon_size"
+                            android:layout_height="@dimen/medium_icon_size"
+                            android:layout_marginEnd="@dimen/medium_mrg_pd"
+                            android:contentDescription="@string/items_receipt_icon"
+                            android:src="@drawable/ic_items_receipt" />
+
+                        <edu.cccdci.opal.utils.HeaderTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/items_receipt"
+                            android:textColor="@color/primaryAccentColor"
+                            android:textSize="@dimen/header_text_size" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/medium_mrg_pd"
+                        android:paddingTop="@dimen/small_mrg_pd"
+                        android:paddingEnd="@dimen/medium_mrg_pd"
+                        android:paddingBottom="@dimen/small_mrg_pd">
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/sub_total"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:id="@+id/tv_chkout_subtotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/medium_mrg_pd"
+                            android:text="@string/default_price"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/medium_mrg_pd"
+                        android:paddingTop="@dimen/small_mrg_pd"
+                        android:paddingEnd="@dimen/medium_mrg_pd"
+                        android:paddingBottom="@dimen/small_mrg_pd">
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:id="@+id/tv_chkout_delivery_fee_distance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/delivery_fee"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                        <edu.cccdci.opal.utils.MainTextView
+                            android:id="@+id/tv_chkout_delivery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/medium_mrg_pd"
+                            android:text="@string/default_price"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/medium_mrg_pd"
+                        android:paddingTop="@dimen/small_mrg_pd"
+                        android:paddingEnd="@dimen/medium_mrg_pd"
+                        android:paddingBottom="@dimen/small_mrg_pd">
+
+                        <edu.cccdci.opal.utils.HeaderTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/total_price"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                        <edu.cccdci.opal.utils.HeaderTextView
+                            android:id="@+id/tv_chkout_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/medium_mrg_pd"
+                            android:text="@string/default_price"
+                            android:textColor="@color/app_black"
+                            android:textSize="@dimen/main_text_size" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/card_elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/medium_large_mrg_pd"
+            android:paddingTop="@dimen/medium_mrg_pd"
+            android:paddingEnd="@dimen/medium_large_mrg_pd"
+            android:paddingBottom="@dimen/medium_mrg_pd">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/small_mrg_pd"
+                    android:text="@string/chkout_total_payment"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+                <edu.cccdci.opal.utils.HeaderTextView
+                    android:id="@+id/tv_chkout_total_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_price"
+                    android:textColor="@color/secondaryAccentColor"
+                    android:textSize="@dimen/header_text_size" />
+
+            </LinearLayout>
+
+            <edu.cccdci.opal.utils.MainButton
+                android:id="@+id/btn_place_order"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_small_height"
+                android:layout_weight="1"
+                android:background="@drawable/button_primary"
+                android:enabled="false"
+                android:letterSpacing="0.0"
+                android:padding="@dimen/button_padding"
+                android:text="@string/chkout_place_order"
+                android:textColor="@color/app_white"
+                android:textSize="@dimen/button_small_text_size"
+                app:backgroundTint="@null" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

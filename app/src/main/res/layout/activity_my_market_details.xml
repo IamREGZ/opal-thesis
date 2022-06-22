@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    android:orientation="vertical"
+    tools:context=".ui.activities.MyMarketDetailsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tlb_user_market_details_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@color/primaryColorTheme">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_user_market_details_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/tlb_title_paddingStart"
+            android:paddingEnd="0dp"
+            android:text="@string/tlb_title_market_details"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/header_text_size" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/medium_large_mrg_pd">
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:id="@+id/tv_mkt_det_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_mrg_pd"
+            android:layout_marginTop="@dimen/small_mrg_pd"
+            android:layout_marginEnd="@dimen/large_mrg_pd"
+            android:layout_marginBottom="@dimen/medium_mrg_pd"
+            android:text="@string/market_name"
+            android:textColor="@color/app_black"
+            android:textSize="@dimen/header_text_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_large_mrg_pd"
+            android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/medium_large_mrg_pd"
+            android:paddingTop="@dimen/medium_mrg_pd"
+            android:paddingEnd="@dimen/medium_large_mrg_pd"
+            android:paddingBottom="@dimen/medium_mrg_pd">
+
+            <ImageView
+                android:layout_width="@dimen/medium_icon_size"
+                android:layout_height="@dimen/medium_icon_size"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:contentDescription="@string/market_category_icon"
+                android:src="@drawable/ic_market_category" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_mkt_det_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/market_category"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_large_mrg_pd"
+            android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/medium_large_mrg_pd"
+            android:paddingTop="@dimen/medium_mrg_pd"
+            android:paddingEnd="@dimen/medium_large_mrg_pd"
+            android:paddingBottom="@dimen/medium_mrg_pd">
+
+            <ImageView
+                android:layout_width="@dimen/medium_icon_size"
+                android:layout_height="@dimen/medium_icon_size"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:contentDescription="@string/market_address_icon"
+                android:src="@drawable/ic_location" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_mkt_det_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/market_address_detailed"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_large_mrg_pd"
+            android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/medium_large_mrg_pd"
+            android:paddingTop="@dimen/medium_mrg_pd"
+            android:paddingEnd="@dimen/medium_large_mrg_pd"
+            android:paddingBottom="@dimen/medium_mrg_pd">
+
+            <ImageView
+                android:layout_width="@dimen/medium_icon_size"
+                android:layout_height="@dimen/medium_icon_size"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:contentDescription="@string/market_delivery_fee_icon"
+                android:src="@drawable/ic_delivery_fee" />
+
+            <edu.cccdci.opal.utils.MainTextView
+                android:id="@+id/tv_mkt_det_delivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_price"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/main_text_size" />
+
+        </LinearLayout>
+
+        <edu.cccdci.opal.utils.HeaderTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_mrg_pd"
+            android:layout_marginTop="@dimen/medium_mrg_pd"
+            android:layout_marginEnd="@dimen/large_mrg_pd"
+            android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+            android:text="@string/market_location"
+            android:textColor="@color/app_black"
+            android:textSize="@dimen/main_text_size" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/mpfr_market_address"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

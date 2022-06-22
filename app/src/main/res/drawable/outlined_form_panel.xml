@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <stroke
+        android:width="@dimen/market_image_panel_stroke"
+        android:color="@color/medium_gray" />
+    <corners android:radius="@dimen/market_image_panel_corners" />
+
+</shape>

@@ -4,40 +4,134 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     android:orientation="vertical"
     tools:context=".ui.fragments.HomeFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_home"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:scrollbars="none" />
-
-    <LinearLayout
-        android:id="@+id/ll_empty_home"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_home_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none"
         android:visibility="gone">
 
-        <ImageView
-            android:layout_width="@dimen/empty_icon_size"
-            android:layout_height="@dimen/empty_icon_size"
-            android:layout_marginBottom="@dimen/medium_large_mrg_pd"
-            android:contentDescription="@string/empty_sad_icon"
-            android:src="@drawable/ic_sad"
-            app:tint="@color/et_hint_black" />
-
-        <edu.cccdci.opal.utils.MainTextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/medium_large_mrg_pd"
-            android:layout_marginEnd="@dimen/medium_large_mrg_pd"
-            android:text="@string/empty_products"
-            android:textSize="@dimen/main_text_size" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/large_mrg_pd"
+                android:paddingTop="@dimen/medium_large_mrg_pd"
+                android:paddingEnd="@dimen/large_mrg_pd"
+                android:paddingBottom="@dimen/medium_large_mrg_pd">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <edu.cccdci.opal.utils.HeaderTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_greeting"
+                        android:textColor="@color/primaryAccentColor"
+                        android:textSize="@dimen/xl_head_text_size" />
+
+                    <edu.cccdci.opal.utils.HeaderTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_welcome"
+                        android:textColor="@color/app_black"
+                        android:textSize="@dimen/header_text_size" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/opal_small_logo_size"
+                    android:layout_height="@dimen/opal_small_logo_size"
+                    android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/opal_logo_rounded" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_current_location"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:layout_marginBottom="@dimen/large_mrg_pd"
+                android:hint="@string/set_location"
+                android:textColorHint="@color/et_hint_black"
+                app:boxCornerRadiusBottomEnd="@dimen/et_radius"
+                app:boxCornerRadiusBottomStart="@dimen/et_radius"
+                app:boxCornerRadiusTopEnd="@dimen/et_radius"
+                app:boxCornerRadiusTopStart="@dimen/et_radius"
+                app:boxStrokeWidth="@dimen/et_stroke_width"
+                app:endIconTint="@color/app_black"
+                app:startIconDrawable="@drawable/ic_location"
+                app:startIconTint="@color/app_black">
+
+                <edu.cccdci.opal.utils.CustomACTV
+                    android:id="@+id/actv_current_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:maxLines="2"
+                    android:textColor="@color/app_black"
+                    android:textSize="@dimen/main_text_size" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:text="@string/market_browse_head"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/header_text_size" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_market_browse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/medium_large_mrg_pd"
+                android:scrollbars="none" />
+
+            <edu.cccdci.opal.utils.HeaderTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_large_mrg_pd"
+                android:layout_marginEnd="@dimen/medium_large_mrg_pd"
+                android:layout_marginBottom="@dimen/medium_mrg_pd"
+                android:text="@string/market_categories_head"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/header_text_size" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_market_categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/large_mrg_pd"
+                android:scrollbars="none" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatRadioButton
 
+/**
+ * A class for implementing custom typeface for RadioButton
+ */
 class MainRadioButton(
     context: Context, attrs: AttributeSet
 ) : AppCompatRadioButton(context, attrs), FontImplementation {
@@ -13,4 +16,5 @@ class MainRadioButton(
         typeface = applyBoldFont(context, attrs)
     }
 
-}
+}  // end of MainRadioButton class
+
